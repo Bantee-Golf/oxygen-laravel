@@ -1,0 +1,32 @@
+
+
+// Oxygen routes
+
+Route::group(['middleware' => 'auth'], function()
+{
+	Route::group(['prefix' => 'account'], function ()
+	{
+		Route::group(['prefix' => 'groups'], function () {
+            Route::get (  '/',			'Auth\Groups\GroupsController@index');
+            Route::get (  '/new',		'Auth\Groups\GroupsController@create');
+            Route::post(  '/',			'Auth\Groups\GroupsController@store');
+            Route::post(  '/users',		'Auth\Groups\GroupsController@storeUsers');
+            Route::get (  '{id}/users', 	'Auth\Groups\GroupsController@showUsers');
+            Route::delete('/{roleId}/users/{userId}', 'Auth\Groups\GroupsController@destroyUser');
+            Route::get (  '/{id}/edit',	'Auth\Groups\GroupsController@edit');
+            Route::put (  '/{id}',		'Auth\Groups\GroupsController@update');
+            Route::delete('/{id}',	'Auth\Groups\GroupsController@destroy');
+        });
+
+		Route::get('invitations',			'Auth\InvitationsController@index');
+		Route::post('invitations',			'Auth\InvitationsController@send');
+		Route::get('invitations/{id}/edit',	'Auth\InvitationsController@edit');
+		Route::put('invitations/{id}',		'Auth\InvitationsController@update');
+		Route::delete('invitations/{id}',	'Auth\InvitationsController@destroy');
+	});
+});
+
+Route::get('invitations/join/{code}', [
+	'as'	=> 'invitations.join',
+	'uses'	=> 'Auth\InvitationsController@showJoin'
+]);

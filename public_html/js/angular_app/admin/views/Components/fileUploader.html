@@ -1,0 +1,8 @@
+<div class="form-group" ng-class="{'has-error': hasError()}">
+	<label class="control-label" ng-show="showTitle()">{{form.title}}</label>
+
+	<div sp-form-file-upload ng-model="$$value$$" ng-disabled="form.readonly"></div>
+
+	<span class="help-block">{{ (hasError() && errorMessage(schemaError())) || form.description}}</span>
+</div>
+

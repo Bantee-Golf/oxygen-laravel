@@ -1,0 +1,85 @@
+
+.modal-content-wrapper {
+  h2 {
+	margin-top: 0;
+  }
+  .modal-footer {
+	border-top: 1px solid #eaeaea;
+	margin-bottom: 0;
+	padding-bottom: 0;
+  }
+}
+
+.form-group {
+  .ui-select-match-item {
+	background: #8092C2;
+	color: #eaeaea;
+	font-weight: bold;
+	font-size: 12px;
+	padding: 8px 5px;
+  }
+}
+
+.multi-item-list {
+  margin-top: 30px;
+  &.options-list {
+	margin-top: 0;
+  }
+  .row {
+	margin-bottom: 10px;
+  }
+  .btn-field {
+	min-height: 52px;
+	font-size: 20px;
+  }
+  .btn-field-single {
+	min-width: 100%;
+  }
+}
+
+.value-editor {
+	border: 1px solid #eaeaea;
+	border-radius: 5px;
+	padding: 15px;
+  .item-row {
+	margin-bottom: 15px;
+  }
+}
+
+.data-form {
+  margin-top: 20px;
+	.row {
+	  margin-bottom: 30px;
+	  font-size: 18px;
+	  color: #8593a6;
+	  .control-label {
+
+	  }
+	  &:last-child {
+		margin-top: 30px;
+	  }
+	}
+}
+
+table {
+  tr {
+	&.inactive {
+	  color: #C7C7C7;
+	  background: #FDFDFD;
+	}
+  }
+}
+
+.file-gallery {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  .thumbnail-container {
+	display: inline-block;
+	margin-right: 20px;
+  }
+  .remove-button {
+	width: 85%;
+	margin: 5px -5px 0 5px;
+  }
+}

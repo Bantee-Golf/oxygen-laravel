@@ -1,0 +1,54 @@
+{
+    "name": "emedia/oxygen",
+    "description": "SASS foundation Package for Laravel 5",
+    "type": "project",
+    "repositories": [
+        {
+            "type":"vcs",
+            "url":"/www/sites-laravel/packager/packages/emedia/MultiTenant",
+            "url_live":"https://bitbucket.org/elegantmedia/multitenant-laravel"
+        },
+        {
+            "type":"vcs",
+            "url":"/www/sites-laravel/packager/packages/emedia/Generators",
+            "url_live":"https://bitbucket.org/elegantmedia/laravel-generators"
+        },
+        {
+            "type":"vcs",
+            "url":"/www/sites-laravel/packager/packages/emedia/Helpers",
+            "url_live":"https://bitbucket.org/elegantmedia/laravel-helpers"
+        },
+        {
+            "type":"vcs",
+            "url":"/www/sites-laravel/packager/packages/emedia/MediaManager",
+            "url_live":"git@bitbucket.org:elegantmedia/mediamanager-laravel.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": "5.0.x|5.1.x",
+        "emedia/multi-tenant": "dev-master",
+        "emedia/helpers": "dev-master",
+        "emedia/media-manager": "dev-master",
+        "zizaco/entrust": "dev-laravel-5"
+    },
+    "require-dev": {
+        "emedia/generators": "dev-master",
+        "laracasts/generators": "^1.1"
+    },
+    "license": "Proprietary",
+    "authors": [
+        {
+            "name": "Shane Perera",
+            "email": "shane@shaneperera.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "EMedia\\Oxygen\\": "src/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    }
+}

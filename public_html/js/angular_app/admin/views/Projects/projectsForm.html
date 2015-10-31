@@ -1,0 +1,204 @@
+<div class="nav-action-buttons">
+	<button class="btn btn-default" action-go-back>&laquo; Back</button>
+</div>
+
+<h1 ng-if="!model.id">Add a Project</h1>
+<h1 ng-if="model.id" >Edit Project</h1>
+
+<form class="form-horizontal" ng-submit="saveModel()">
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Project Name</label>
+		<div class="col-sm-10">
+			<input class="form-control" ng-model="model.name" ng-disabled="model.projectStarted">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Allocate to</label>
+		<div class="col-sm-10">
+
+			<ui-select ng-model="model.workers"
+			           theme="bootstrap"
+			           ng-disabled="model.projectStarted"
+			           close-on-select="false" title="Choose a person">
+				<ui-select-match placeholder="Select person...">{{$select.selected.full_name}} &lt;{{$select.selected.employee_id}}&gt;</ui-select-match>
+				<ui-select-choices repeat="worker in workers | filter:$select.search">
+					<div ng-bind-html="worker.full_name"></div>
+					<small>
+						ID: {{ worker.employee_id }}
+						Location: {{ worker.location }}
+						<!--email: {{worker.email}}-->
+						<!--age: <span ng-bind-html="''+worker.name"></span>-->
+					</small>
+				</ui-select-choices>
+			</ui-select>
+
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Start Date</label>
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-sm-5">
+					<input type="text" class="form-control"
+						   ng-model="model.start_date"
+						   ng-disabled="model.projectStarted"
+						   data-min-date="today"
+						   bs-datepicker>
+				</div>
+
+				<div class="col-sm-2">
+					<label class="col-sm-12 control-label">End Date</label>
+				</div>
+				<div class="col-sm-5">
+					<input type="text"
+						   class="form-control"
+						   ng-model="model.end_date"
+						   data-min-date="{{model.start_date}}"
+						   ng-disabled="model.projectLocked"
+						   bs-datepicker>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="work_type" class="col-sm-2 control-label">Work Type</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" ng-disabled="model.projectStarted" id="work_type" ng-model="model.work_type">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Road</label>
+		<div class="col-sm-10">
+			<ui-select ng-model="model.road_id" theme="bootstrap" ng-disabled="model.projectStarted" close-on-select="false" title="Choose a road">
+				<ui-select-match placeholder="Select road...">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="road.id as road in roads | filter:$select.search">
+					<div ng-bind-html="road.name"></div>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="distance_start" class="col-sm-2 control-label">Chainage</label>
+		<div class="col-sm-10">
+			<div class="row">
+				<div class="col-sm-5">
+					<input type="text" class="form-control" id="distance_start" ng-disabled="model.projectStarted" ng-model="model.distance_start" placeholder="Start">
+				</div>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" id="distance_end" ng-disabled="model.projectStarted" ng-model="model.distance_end" placeholder="End (optional)">
+				</div>
+				<div class="col-sm-2">
+					<a ng-if="model.road_id"
+					   href="{{ mapDataUrl() }}"
+					   target="_blank" class="btn btn-default btn-lg col-sm-12">View Map</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Meta Custom Data Section -->
+	<div sp-json-multi-item-text ng-model="model.custom_data" ng-disabled="model.projectStarted"></div>
+
+	<!-- Value editor for distance -->
+	<div class="col-sm-12 form-group">
+		<label class="col-sm-2 control-label">Work Line Items</label>
+
+		<div class="col-sm-10" sp-value-editor ng-model="model.custom_destination_data"></div>
+	</div>
+
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Checklists</label>
+		<div class="col-sm-10">
+			<div sp-form-multi-items-text
+				 ng-model="model.tasks"
+				 ng-disabled="model.projectStarted"
+				 ng-resource-url="'#section/tasks'"></div>
+
+			<button type="button" ng-click="addChecklist()" class="btn btn-success" ng-hide="model.projectStarted"><em class="fa fa-plus-circle"></em> Add a Checklist</button>
+		</div>
+	</div>
+
+	<div class="col-sm-offset-2 col-sm-10 alert alert-danger" ng-show="errors.length">
+		<div ng-repeat="error in errors">{{ error }}</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type="submit" class="btn btn-success btn-lg btn-wide">Save <span ng-if="model.status == 'Draft'">as Draft</span></button>
+			<button type="button"
+					ng-click="saveAndStartProject()"
+					ng-show="model.status == 'Draft'"
+					class="btn btn-success btn-lg btn-wide">Save and Start Project</button>
+			<button type="button" class="btn btn-warning btn-lg" action-go-back>Cancel</button>
+		</div>
+	</div>
+</form>
+
+<script type="text/ng-template" id="checklistTemplate.html">
+	<div class="modal-content-wrapper">
+		<h2>Add a Checklist</h2>
+
+		<form class="form-horizontal">
+
+			<div ng-init="checklistType = 'existing'">
+				<label class="radio-inline">
+					<input type="radio" ng-model="checklistType" value="existing"> Use Existing Template
+				</label>
+				<label class="radio-inline">
+					<input type="radio"
+					       ng-model="checklistType"
+					       ng-change="checklistTypeChanged(checklistType)"
+					       value="new"> Create New Checklist
+				</label>
+			</div>
+
+			<div class="form-group" ng-if="checklistType == 'existing'">
+				<label class="col-sm-3 control-label">Use Template</label>
+				<div class="col-sm-9">
+					<select class="form-control"
+					        ng-model="selectedChecklist"
+					        ng-options="checklist.name for checklist in checklistTemplates track by checklist.id"
+					        ng-change="changed(selectedChecklist)">
+						<option value="">Select</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group" ng-if="checklistType == 'new'">
+				<label class="col-sm-3 control-label">Use Template</label>
+				<div class="col-sm-9">
+					<input class="form-control" ng-model="selectedChecklist.name" />
+				</div>
+			</div>
+
+			<div class="multi-item-list" ng-if="selectedChecklist.items.length || checklistType == 'new'">
+				<label class="control-label">Checklist</label>
+				<div>
+					<div class="row" ng-repeat="c in selectedChecklist.items track by $index">
+						<div class="col-sm-10">
+							<input type="text" ng-model="c.name" class="form-control" />
+						</div>
+						<div class="col-sm-2">
+							<button type="button" class="btn btn-danger btn-field btn-field-single" data-title="Delete" bs-tooltip ng-click="removeChecklistItem(selectedChecklist.items, $index)"><em class="fa fa-close"></em></button>
+						</div>
+					</div>
+					<div>
+						<button type="button" class="btn btn-success" ng-click="addChecklistItem(selectedChecklist.items)"><em class="fa fa-plus-circle"></em> Add New Item</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="row form-group modal-footer">
+				<div class="col-sm-12 text-right">
+					<button class="btn btn-default btn-wide pull-left" ng-click="$hide()">Cancel</button>
+					<button class="btn btn-success btn-wide"
+							ng-show="selectedChecklist.items.length"
+							ng-click="addTemplate(selectedChecklist)">Add</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</script>
