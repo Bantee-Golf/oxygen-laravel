@@ -23,7 +23,7 @@ trait RegistersUsers
 	 */
 	public function getRegister()
 	{
-		return view('auth.register');
+		return view('oxygen::auth.register');
 	}
 
 	/**
@@ -44,7 +44,7 @@ trait RegistersUsers
 		}
 
 		// if we have an incoming code, let the user join that team
-		$invitationsRepo = App::make('AppAdmin\Entities\Invitations\InvitationRepository');
+		$invitationsRepo = App::make('App\Entities\Invitations\InvitationRepository');
 		if ( ! empty($invitation_code = Session::get('invitation_code')) ) {
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
 			if (!$invite)

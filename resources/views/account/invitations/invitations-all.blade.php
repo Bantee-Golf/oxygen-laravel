@@ -1,8 +1,8 @@
-@extends('layouts.account')
+@extends('oxygen::layouts.account')
 
 @section('content')
 
-    @include('partials.flash')
+    @include('oxygen::partials.flash')
 
     <div class="container-fluid">
         <h2>Invitations</h2>

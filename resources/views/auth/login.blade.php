@@ -54,6 +54,15 @@
 								<a href="/password/email">Forgot Your Password?</a>
 							</div>
 						</div>
+
+						<hr/>
+
+						<div class="form-group">
+							<div class="col-md-6 col-md-offset-4">
+								Don't have an account?
+								<a href="/auth/register">Signup for a New Account</a>
+							</div>
+						</div>
 					</form>
 				</div>
 			</div>

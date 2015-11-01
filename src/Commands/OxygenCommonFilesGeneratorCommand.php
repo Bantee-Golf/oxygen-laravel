@@ -39,6 +39,9 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 		// update middleware
 		$this->updateMiddleware();
 
+		// update app service providers
+		$this->updateServiceProviders();
+
 		// we don't ask for confirmation on this
 		$this->updateKnownStrings();
 
@@ -110,6 +113,60 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 			}
 		}
 	}
+
+	private function updateServiceProviders()
+	{
+		if ($this->confirm('Update service providers in app.php?', true))
+		{
+			$editor = new FileEditor();
+			$inputFile = config_path('app.php');
+
+			$fields = [
+				[
+					'name'	=> 'providers',
+					'value' => '// Oxygen Support Providers '
+				],
+				[
+					'name'	=> 'providers',
+					'value' => "EMedia\MultiTenant\MultiTenantServiceProvider::class"
+				],
+				[
+					'name'	=> 'providers',
+					'value' => "EMedia\Generators\GeneratorServiceProvider::class"
+				],
+				[
+					'name'	=> 'providers',
+					'value' => "EMedia\MediaManager\MediaManagerServiceProvider::class"
+				],
+				[
+					'name'	=> 'providers',
+					'value' => "EMedia\Oxygen\OxygenServiceProvider::class"
+				],
+				[
+					'name'	=> 'aliases',
+					'value' => '// Oxygen Aliases '
+				],
+				[
+					'name'	=> 'aliases',
+					'value' => "'TenantManager' => EMedia\MultiTenant\Facades\TenantManager::class"
+				],
+				[
+					'name'	=> 'aliases',
+					'value' => "'FileHandler'   => EMedia\MediaManager\Facades\FileHandler::class"
+				],
+				[
+					'name'	=> 'aliases',
+					'value' => "'ImageHandler'  => EMedia\MediaManager\Facades\ImageHandler::class"
+				]
+			];
+
+			if ($editor->addPropertyValuesToFile($inputFile, $fields, config_path('appnew.php')))
+			{
+				$this->info('Service Providers updated.');
+			}
+		}
+	}
+
 
 	protected function addGenericRoutes()
 	{
@@ -222,5 +279,7 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 	{
 		$this->files->put($path, str_replace($search, $replace, $this->files->get($path)));
 	}
+
+
 
 }

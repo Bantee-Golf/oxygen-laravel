@@ -2,18 +2,15 @@
 
 namespace AppAdmin\Http\Controllers\Auth\Groups;
 
-use AppAdmin\Models\Role;
-use AppAdmin\Models\RoleRepository;
-use AppAdmin\Models\TenantRepository;
-use AppAdmin\Tenant;
+use App\Entities\Auth\Models\Role;
+use App\Entities\Auth\Models\RoleRepository;
+use App\Entities\Auth\Models\TenantRepository;
 use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
-use AppAdmin\Http\Requests;
-use AppAdmin\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 

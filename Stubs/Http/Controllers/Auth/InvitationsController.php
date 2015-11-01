@@ -47,7 +47,7 @@ class InvitationsController extends Controller
     {
         $invitations = Invitation::orderBy('sent_at', 'desc')->orderBy('claimed_at', 'desc')->get();
         $roles       = $this->roleRepository->allExcept(['owner']);
-        return view('account.invitations.invitations-all', compact('invitations', 'roles'));
+        return view('oxygen::account.invitations.invitations-all', compact('invitations', 'roles'));
     }
 
     /**
@@ -139,7 +139,7 @@ class InvitationsController extends Controller
             'subject'=> $subject
         ];
 
-        Mail::queue('emails.invitations.invitation_group', $data, function($message) use ($invite, $subject)
+        Mail::queue('oxygen::emails.invitations.invitation_group', $data, function($message) use ($invite, $subject)
         {
             $message->to($invite->email)
                     ->subject($subject);
@@ -179,13 +179,13 @@ class InvitationsController extends Controller
                 $plausibleUser = User::where('email', $invite->email)->first();
                 if ($plausibleUser) {
                     // if user has an account, prompt to login
-                    return view('account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser'));
+                    return view('oxygen::account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser'));
                 }
             }
 
             // this is a new user, let her register
             // consider everything else as a new user (you should not get here)
-            return view('account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser'));
+            return view('oxygen::account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser'));
         }
         else
         {

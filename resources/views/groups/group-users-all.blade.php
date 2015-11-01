@@ -1,4 +1,4 @@
-@extends('layouts.account')
+@extends('oxygen::layouts.account')
 
 @section('content')
 
@@ -8,7 +8,7 @@
         <li class="active">{{ $role->display_name }}</li>
     </ol>
 
-    @include('partials.flash')
+    @include('oxygen::partials.flash')
 
     <div class="container-fluid">
         <h2>Users in {{ $role->display_name }}</h2>

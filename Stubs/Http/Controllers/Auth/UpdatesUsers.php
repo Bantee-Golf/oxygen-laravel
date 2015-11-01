@@ -13,7 +13,7 @@ trait UpdatesUsers
 	{
 		$user 		= Auth::user();
 
-		if ($user) return view('auth.profile', compact('user'));
+		if ($user) return view('oxygen::auth.profile', compact('user'));
 
 		return Redirect::to('dashboard');
 	}

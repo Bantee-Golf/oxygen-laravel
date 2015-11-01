@@ -1,81 +1,50 @@
-@extends('adminPanel::app')
+@extends('oxygen::layouts.account')
 
 @section('content')
+
+@include('oxygen::partials.flash')
+
 <div class="container-fluid">
 	<div class="row">
-        <div class="col-md-8 col-md-offset-2">
-
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            @if (Session::has('success'))
-                <div class="alert alert-success">
-                    <strong>Success</strong> {{ Session::get('success') }}
-                </div>
-            @endif
+        <div class="col-md-12">
 
             <div class="panel panel-default">
                 <div class="panel-heading">Your Profile</div>
                 <div class="panel-body">
 
-                    <div class="row">
-                        <label class="col-md-4 control-label">E-Mail Address</label>
-                        <div class="col-md-6">
-                            {{ $user->email }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Reset Password</div>
-				<div class="panel-body">
-
-					<form class="form-horizontal" role="form" method="POST" action="/password/update">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<form class="form-horizontal" role="form" method="POST" action="/auth/profile">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+						<input type="hidden" name="_method" value="PUT" />
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Current Password</label>
+							<label class="col-md-4 control-label">E-Mail Address</label>
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="current_password" value="">
+								<span class="display-label">{{ $user->email }}</span>
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">New Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
+						@if ($user->name)
+							<div class="form-group">
+								<label class="col-md-4 control-label">Name</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="name" value="{{ $user->name }}">
+								</div>
 							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Confirm New Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password_confirmation">
-							</div>
-						</div>
+						@endif
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
-									Reset Password
+								<button type="submit" class="btn btn btn-success btn-lg btn-wide ">
+									Update Profile
 								</button>
 							</div>
 						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
 	</div>
 </div>
 @endsection

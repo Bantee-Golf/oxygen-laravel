@@ -8,7 +8,6 @@ use Illuminate\Auth\Passwords\PasswordBroker;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class PasswordController extends Controller
@@ -41,18 +40,12 @@ class PasswordController extends Controller
                 'getUpdate', 'postUpdate'
             ]
         ]);
-
-        $appName 	= Config::get('settings.applicationName');
-        $title		= 'My Account';
-
-        View::share('appName', $appName);
-        View::share('title', $title);
     }
 
     public function getUpdate()
     {
         $user = Auth::user();
-        return view('account.password-edit', compact('user'));
+        return view('oxygen::account.password-edit', compact('user'));
     }
 
     /**
