@@ -1,10 +1,10 @@
 <?php
 
-namespace AppAdmin\Http\Controllers\Auth\Groups;
+namespace App\Http\Controllers\Auth\Groups;
 
-use App\Entities\Auth\Models\Role;
-use App\Entities\Auth\Models\RoleRepository;
-use App\Entities\Auth\Models\TenantRepository;
+use App\Entities\Auth\Role;
+use App\Entities\Auth\RoleRepository;
+use App\Entities\Auth\TenantRepository;
 use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
@@ -80,7 +80,7 @@ class GroupsController extends Controller
 			}
 		}
 
-		return view('groups.groups-all', compact('rolesData', 'availableRoles', 'user', 'users'));
+		return view('oxygen::groups.groups-all', compact('rolesData', 'availableRoles', 'user', 'users'));
 	}
 
 	/**
@@ -91,7 +91,7 @@ class GroupsController extends Controller
 	public function create()
 	{
 		$role = new Role();
-		return view('groups.groups-new', ['mode' => 'new', 'role' => $role]);
+		return view('oxygen::groups.groups-new', ['mode' => 'new', 'role' => $role]);
 	}
 
 	public function validationCriteria()
@@ -177,7 +177,7 @@ class GroupsController extends Controller
 		$availableRoles = Role::select()->where('name', '<>', 'owner')->get()->toArray();
 		$tenant = TenantManager::getTenant();
 		$users = $tenant->users;
-		return view('groups.group-users-all', compact('role', 'users', 'availableRoles'));
+		return view('oxygen::groups.group-users-all', compact('role', 'users', 'availableRoles'));
 	}
 
 	/**
@@ -202,7 +202,7 @@ class GroupsController extends Controller
 		$role = Role::find($id);
 		$mode = 'edit';
 
-		return view('groups.groups-edit', compact('role', 'mode'));
+		return view('oxygen::groups.groups-edit', compact('role', 'mode'));
 	}
 
 	/**

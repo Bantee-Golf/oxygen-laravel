@@ -1,4 +1,4 @@
-@extends('adminPanel::layouts.master-front')
+@extends('oxygen::layouts.master-front')
 
 @section('title', $title)
 

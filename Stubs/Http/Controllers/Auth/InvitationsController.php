@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -77,7 +78,7 @@ class InvitationsController extends Controller
         ]);
 
         // TODO: validate if the role is valid
-        $role = Role::find($request->get('role_id'));
+        $role = $this->roleRepository->find($request->get('role_id'));
 
         // extract and validate emails
         $emails = $request->get('invitation_emails');
@@ -167,7 +168,7 @@ class InvitationsController extends Controller
                 if ($invite->email == $user->email) {
                     // join user to the team
                     if ($result = $this->acceptInvite($invite, $user))
-                        return view('account.invitations.invitations-join', compact('invite'));
+                        return view('oxygen::account.invitations.invitations-join', compact('invite'));
                 } else {
                     // this is an invite for someone else, logout and try again
                     Auth::logout();

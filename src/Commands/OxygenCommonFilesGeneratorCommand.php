@@ -23,6 +23,11 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 				'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_invitations_table.php',
 				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_invitations_table.php'),
 				'name'	=> 'Invitations Migration'
+			],
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Config/bower.stub',
+				'path'  => base_path('bower.json'),
+				'name'	=> 'bower.json'
 			]
 		];
 		return $stubMap;
@@ -40,7 +45,7 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 		$this->updateMiddleware();
 
 		// update app service providers
-		$this->updateServiceProviders();
+		// $this->updateServiceProviders();
 
 		// we don't ask for confirmation on this
 		$this->updateKnownStrings();
@@ -85,6 +90,10 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 			$inputFile = app_path('Http/Kernel.php');
 
 			$fields = [
+				[
+					'name'	=> 'middleware',
+					'value' => "\App\Http\Middleware\LoadViewSettings::class"
+				],
 				[
 					'name'	=> 'routeMiddleware',
 					'value' => "'auth.acl' => \App\Http\Middleware\AuthenticateAcl::class"
@@ -187,6 +196,11 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 				'path'		=> app_path('Http/Middleware/RedirectIfAuthenticated.php'),
 				'search'	=> "return redirect('/home');",
 				'replace'	=> "return redirect('/dashboard');"
+			],
+			[
+				'path'		=> config_path('mail.php'),
+				'search'	=> "'from' => ['address' => null, 'name' => null],",
+				'replace'	=> "'from' => ['address' => 'shane7@gmail.com', 'name' => 'Shane (Dev)'],"
 			]
 		];
 
@@ -211,6 +225,13 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['public-source'],
+				]
+			],
+			[
+				'command'		=> 'vendor:publish',
+				'arguments'		=> [
+					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+					'--tag'			=> ['public-assets'],
 				]
 			],
 			[

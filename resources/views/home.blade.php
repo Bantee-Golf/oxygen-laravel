@@ -1,4 +1,4 @@
-@extends('adminPanel::app')
+@extends('oxygen::app')
 
 @section('content')
 <div class="container">

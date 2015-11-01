@@ -27,7 +27,7 @@
 
     {{--@include ('adminPanel::partials.navigation')--}}
 
-    @include('adminPanel::partials.flash')
+    @include('oxygen::partials.flash')
 
     <ui-view></ui-view>
 

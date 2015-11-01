@@ -1,4 +1,4 @@
-@extends('adminPanel::layouts.master-angular')
+@extends('oxygen::layouts.master-angular')
 
 @section('title', $title)
 

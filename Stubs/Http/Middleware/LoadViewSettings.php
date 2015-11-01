@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
-class Authenticate
+class LoadViewSettings
 {
 	/**
 	 * The Guard implementation.

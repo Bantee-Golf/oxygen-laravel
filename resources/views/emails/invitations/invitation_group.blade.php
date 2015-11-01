@@ -1,4 +1,4 @@
-@extends('emails.email-template')
+@extends('oxygen::emails.email-template')
 
 @section('subject', $subject)
 

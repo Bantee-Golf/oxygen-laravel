@@ -14,7 +14,7 @@
                     <div class="panel-heading">Group Details</div>
                     <div class="panel-body">
 
-                        @include('groups.groups-form')
+                        @include('oxygen::groups.groups-form')
 
                     </div>
                 </div>

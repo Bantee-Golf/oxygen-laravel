@@ -35,6 +35,10 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__.'/../public_html/js' => base_path('public_html/js'),
 		], 'public-assets');
 
+		$this->publishes([
+			__DIR__.'/../public_html/css' => base_path('public_html/css'),
+		], 'public-assets');
+
 		// publish Auth controllers
 		$this->publishes([
 			__DIR__.'/../Stubs/Http/Controllers/Auth' => app_path('Http/Controllers/Auth'),

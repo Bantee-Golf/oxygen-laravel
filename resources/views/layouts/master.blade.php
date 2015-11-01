@@ -23,20 +23,20 @@
 
     @yield ('meta')
 
-    @include('adminPanel::partials.tracking')
+    @include('oxygen::partials.tracking')
 
 </head>
 <body>
 @if (empty($noHeaderFooter))
-    @include('adminPanel::partials.header')
+    @include('oxygen::partials.header')
 @endif
 
-@include('adminPanel::partials.flash')
+@include('oxygen::partials.flash')
 
 @yield('contents')
 
 @if (empty($noHeaderFooter))
-    @include('adminPanel::partials.footer')
+    @include('oxygen::partials.footer')
 @endif
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

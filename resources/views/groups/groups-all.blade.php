@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    @include('groups.add-users-to-group')
+    @include('oxygen::groups.add-users-to-group')
 
 
 @endsection

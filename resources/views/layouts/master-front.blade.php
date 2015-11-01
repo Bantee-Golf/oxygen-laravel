@@ -31,7 +31,7 @@
 
     @yield ('meta')
 
-    @include('adminPanel::partials.tracking')
+    @include('oxygen::partials.tracking')
 </head>
 
 <body id="page-top" class="front-end">
@@ -80,7 +80,7 @@
     @yield('contents')
 
     @if (empty($noHeaderFooter))
-        @include('adminPanel::partials.footer')
+        @include('oxygen::partials.footer')
     @endif
 
             <!-- jQuery -->
