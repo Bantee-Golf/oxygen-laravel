@@ -37,7 +37,7 @@ class OxygenServiceProvider extends ServiceProvider
 
 		$this->publishes([
 			__DIR__.'/../public_html/css' => base_path('public_html/css'),
-		], 'public-assets');
+		], 'public-assets') ;
 
 		// publish Auth controllers
 		$this->publishes([
