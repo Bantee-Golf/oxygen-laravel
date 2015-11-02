@@ -26,6 +26,20 @@ class AuthController extends Controller
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
     use UpdatesUsers;
 
+    public function getLogin()
+    {
+        if (view()->exists('auth.authenticate')) {
+            return view('auth.authenticate');
+        }
+
+        return view('oxygen::auth.login');
+    }
+
+    public function getRegister()
+    {
+        return view('oxygen::auth.register');
+    }
+
     /**
      * Create a new authentication controller instance.
      *
