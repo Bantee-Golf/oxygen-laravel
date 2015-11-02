@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
 class Authenticate {
@@ -59,7 +59,7 @@ class Authenticate {
 		{
 			// TODO: handle multiple tenants
 			$user = $this->auth->user();
-			App::make('TenantManager')->setTenant($user->tenants()->first());
+			TenantManager::setTenant($user->tenants()->first());
 		}
 
 

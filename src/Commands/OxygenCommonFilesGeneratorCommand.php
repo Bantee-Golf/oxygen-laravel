@@ -28,6 +28,11 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 				'stub'	=> __DIR__ . '/../../Stubs/Config/bower.stub',
 				'path'  => base_path('bower.json'),
 				'name'	=> 'bower.json'
+			],
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Common/User.php',
+				'path'  => app_path('User.php'),
+				'name'	=> 'User.php'
 			]
 		];
 		return $stubMap;
@@ -67,9 +72,13 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 
 				if ($this->files->exists($stubData['path']))
 				{
-					$this->error($stubData['name'] . ' already exists.');
+					if ($this->confirm($stubData['path'] . ' already exists. Override?', false)) {
 
-					continue;
+					} else {
+						$this->error($stubData['name'] . ' already exists. Skipped.');
+
+						continue;
+					}
 				}
 
 				$this->makeDirectory($stubData['path']);
@@ -201,6 +210,16 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 				'path'		=> config_path('mail.php'),
 				'search'	=> "'from' => ['address' => null, 'name' => null],",
 				'replace'	=> "'from' => ['address' => 'shane7@gmail.com', 'name' => 'Shane (Dev)'],"
+			],
+			[
+				'path'		=> app_path('Http/routes.php'),
+				'search'	=> "return view('adminPanel::pages.home'",
+				'replace'	=> "return view('oxygen::pages.home'"
+			],
+			[
+				'path'		=> app_path('Http/Controllers/DashboardController.php'),
+				'search'	=> "adminPanel::dashboard.dashboard",
+				'replace'	=> "oxygen::dashboard.dashboard"
 			]
 		];
 

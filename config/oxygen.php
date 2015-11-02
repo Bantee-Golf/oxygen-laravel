@@ -8,4 +8,7 @@ return [
 	// we disable dashboard login in dev for easier testing
 	'enableAuthentication' => env('DASHBOARD_AUTHENTICATION', true),
 
+
+	'invitationRepo'	=> EMedia\Oxygen\Entities\Invitations\InvitationRepository::class,
+
 ];
