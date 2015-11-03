@@ -41,7 +41,6 @@ class LoadViewSettings
 
 		View::share('appName', $appName);
 		View::share('title', $title);
-		if ($user = $this->auth->user()) View::share('user', $user);
 
 		return $next($request);
 	}
