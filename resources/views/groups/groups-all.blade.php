@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <h2>User Groups</h2>
 
-        @if ($user->hasRole(['admin', 'owner']))
+        @if ($user->is(['admin', 'owner'], 'or'))
             <a href="/account/groups/new" class="btn btn-lg btn-wide btn-success"><i class="fa fa-plus-circle"></i> Add a New Group</a>
             <br/><br/>
         @else
@@ -37,9 +37,9 @@
                                 @foreach ($rolesData as $role)
                                     <tr>
                                         <td>
-                                            <strong>{{ $role['display_name'] }}</strong>
-                                            @if (in_array($role['name'], ['admin', 'owner']))
-                                                <span class="label label-primary">{{ ucfirst($role['name']) }}</span>
+                                            <strong>{{ $role['name'] }}</strong>
+                                            @if (in_array($role['slug'], ['admin', 'owner']))
+                                                <span class="label label-primary">{{ ucfirst($role['slug']) }}</span>
                                             @endif
                                         </td>
                                         <td>{{ $role['description'] }}</td>
@@ -52,26 +52,26 @@
                                             </a>
                                         </td>
                                         <td>
-                                            @if ($user->hasRole(['admin', 'owner']) && $role['name'] != 'owner')
+                                            @if ($user->is(['admin', 'owner'], 'or') && $role['slug'] != 'owner')
                                                 <span data-toggle="modal" data-target="#userControlModal" data-role_id="{{ $role['id'] }}">
                                                     <button
                                                        class="btn btn-warning"
                                                        data-toggle="tooltip"
-                                                       title="Add a User to {{ $role['display_name'] }}">
+                                                       title="Add a User to {{ $role['name'] }}">
                                                         <i class="fa fa-user-plus"></i> Add
                                                     </button>
                                                 </span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($user->hasRole(['admin', 'owner']))
+                                            @if ($user->is(['admin', 'owner'], 'or'))
                                                 <a href="/account/groups/{{ $role['id'] }}/edit"
                                                    class="btn btn-info"
                                                    data-toggle="tooltip"
                                                    title="Edit">
                                                     <i class="fa fa-pencil-square-o"></i> Edit
                                                 </a>
-                                                @if (!in_array($role['name'], Config::get('multiTenant.defaultRoleNames')))
+                                                @if (!in_array($role['slug'], Config::get('multiTenant.defaultRoleNames')))
                                                     <form class="form-inline" role="form" method="POST" action="/account/groups/{{ $role['id'] }}"
                                                           data-toggle="tooltip" title="Delete">
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />

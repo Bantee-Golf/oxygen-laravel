@@ -44,7 +44,7 @@ class AuthenticateAcl
 		}
 
 		$user = $this->auth->user();
-		if (!$user->hasRole($allowedRoles)) {
+		if (!$user->is($allowedRoles, 'or')) {
 			if ($request->ajax()) {
 				return response('Unauthorized.', 401);
 			} else {

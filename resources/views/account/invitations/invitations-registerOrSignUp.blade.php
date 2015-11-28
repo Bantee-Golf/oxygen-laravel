@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            @include('partials.flash')
+            @include('oxygen::partials.flash')
 
             <div class="col-md-8 col-md-offset-2">
 

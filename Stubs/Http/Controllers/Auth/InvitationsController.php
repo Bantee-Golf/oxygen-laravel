@@ -77,6 +77,10 @@ class InvitationsController extends Controller
             'invitation_emails.required'    => 'Please add at least one valid email address'
         ]);
 
+        // generate and send emails
+        $user = Auth::user();
+        $user = User::find($user->id);  // this is reloaded from DB, because of an issue with 'toArray' method on Laravel-acl package
+
         // TODO: validate if the role is valid
         $role = $this->roleRepository->find($request->get('role_id'));
 
@@ -88,9 +92,14 @@ class InvitationsController extends Controller
 
         $validEmails   = [];
         $invalidEmails = [];
+
         foreach ($emails as $email) {
             if (!empty($email)) {
                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+                    // don't invite current user to the same role
+                    if ($email == $user->email && $user->is($role->slug)) continue;
+
                     $validEmails[] = $email;
                 } else {
                     $invalidEmails[] = $email;
@@ -98,17 +107,15 @@ class InvitationsController extends Controller
             }
         }
 
-        // generate and send emails
-        $user = Auth::user();
         $this->sendInvitations($user, $role, $validEmails);
 
         if (count($invalidEmails) > 0)
             return redirect()->back()
-                    ->withInput([
-                        'invitation_emails' => implode("\r", $invalidEmails),
-                        'success_emails'    => implode(", ", $validEmails)
-                    ])
-                    ->with('alert', 'Some emails are invalid. Please check them again.');
+                ->withInput([
+                    'invitation_emails' => implode("\r", $invalidEmails),
+                    'success_emails'    => implode(", ", $validEmails)
+                ])
+                ->with('alert', 'Some emails are invalid. Please check them again.');
 
         return redirect()->back()->with('success', 'Hooray! The invitations will be sent shortly.');
     }
@@ -143,7 +150,7 @@ class InvitationsController extends Controller
         Mail::queue('oxygen::emails.invitations.invitation_group', $data, function($message) use ($invite, $subject)
         {
             $message->to($invite->email)
-                    ->subject($subject);
+                ->subject($subject);
         });
 
         $this->invitationsRepo->touchSentTime($invite);
@@ -167,8 +174,10 @@ class InvitationsController extends Controller
             if ($user = Auth::user()) {
                 if ($invite->email == $user->email) {
                     // join user to the team
-                    if ($result = $this->acceptInvite($invite, $user))
+                    if ($result = $this->acceptInvite($invite, $user)) {
+                        Session::forget('invitation_code');
                         return view('oxygen::account.invitations.invitations-join', compact('invite'));
+                    }
                 } else {
                     // this is an invite for someone else, logout and try again
                     Auth::logout();
@@ -196,7 +205,12 @@ class InvitationsController extends Controller
 
     public function acceptInvite($invite, $user)
     {
+        // TODO: CRITICAL ISSUE: this is setting the tenant to the first user
+        // this causes a bug issue when multiple tenants are available per user
+        // the user gets switched to the first related tenant, instead of the original one
+
         // get the current tenant
+        TenantManager::setTenant($user->tenants()->first());
         $currentTenant = TenantManager::getTenant();
 
         // set the tenant to new one, so we get the right Role

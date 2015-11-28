@@ -23,7 +23,7 @@
                         <label for="exampleInputEmail1">Invite to Group</label>
                         <select class="form-control" name="role_id">
                             @foreach ($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->display_name }}</option>
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
                             @endforeach
                         </select>
                     </div>

@@ -9,7 +9,7 @@ use Zizaco\Entrust\EntrustRole;
 class Role extends EntrustRole
 {
 
-	protected $fillable = ['display_name', 'description'];
+	protected $fillable = ['name', 'description'];
 
 	use TenantScopedModelTrait;
 

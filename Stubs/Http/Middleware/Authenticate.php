@@ -54,7 +54,8 @@ class Authenticate {
 
 			if (!$user) return $this->rejectRequest($request);
 
-			// TODO: handle multiple tenants
+			// TODO: handle multiple tenants and save in session
+			// TODO: MUST check acceptInvite() in InvitationsController
 			TenantManager::setTenant($user->tenants()->first());
 		}
 
@@ -68,9 +69,9 @@ class Authenticate {
 		if ($request->ajax() || $request->wantsJson())
 		{
 			$response = [
-				'result'	=> false,
-				'message'	=> 'You need to login to access this data. If you logged-in already, your session may have been expired. Please try to login again.',
-				'type'		=> 'UNAUTHORIZED_USER'
+					'result'	=> false,
+					'message'	=> 'You need to login to access this data. If you logged-in already, your session may have been expired. Please try to login again.',
+					'type'		=> 'UNAUTHORIZED_USER'
 			];
 			return response($response, 401);
 		}

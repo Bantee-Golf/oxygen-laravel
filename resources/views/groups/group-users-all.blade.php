@@ -5,16 +5,16 @@
     <ol class="breadcrumb">
         {{--<li><a href="/account">My Account</a></li>--}}
         <li><a href="/account/groups">User Groups</a></li>
-        <li class="active">{{ $role->display_name }}</li>
+        <li class="active">{{ $role->name }}</li>
     </ol>
 
     @include('oxygen::partials.flash')
 
     <div class="container-fluid">
-        <h2>Users in {{ $role->display_name }}</h2>
+        <h2>Users in {{ $role->name }}</h2>
 
-        @if ($user->hasRole(['admin', 'owner']))
-            @if ($role->name == 'owner')
+        @if ($user->is(['admin', 'owner'], 'or'))
+            @if ($role->slug == 'owner')
                 {{-- Only 1 owner is allowed --}}
             @else
                 <button type="button"
@@ -56,8 +56,8 @@
                                         </td>
                                         <td>{{ $currentUser->email }}</td>
                                         <td>
-                                            @if ($user->hasRole(['admin', 'owner']))
-                                                @if ($role->name == 'owner' && count($role->users) == 1)
+                                            @if ($user->is(['admin', 'owner'], 'or'))
+                                                @if ($role->slug == 'owner' && count($role->users) == 1)
                                                     {{-- Last Owner can't leave the role --}}
                                                     <button class="btn btn-danger disabled"><i class="fa fa-trash"></i>
                                                         Leave Role

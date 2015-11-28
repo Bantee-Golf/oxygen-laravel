@@ -46,7 +46,7 @@ class GroupsController extends Controller
 
 		// only owners/admins should be able to add, edit, delete groups
 		$this->middleware('auth.acl:roles[owner|admin]', ['except' => [
-			'index'
+				'index', 'showUsers'
 		]]);
 
 		$this->tenantRepository = $tenantRepository;
@@ -75,7 +75,7 @@ class GroupsController extends Controller
 			$roleData['description'] = Str::words($role->description, 50);
 			// $roleData['user_count']  = $role->users()->count;	// TODO: fix query
 			$rolesData[] = $roleData;
-			if ($role->name != 'owner') {
+			if ($role->slug != 'owner') {
 				$availableRoles[] = $roleData;
 			}
 		}
@@ -97,11 +97,11 @@ class GroupsController extends Controller
 	public function validationCriteria()
 	{
 		$data['rules'] = [
-			'display_name' 	=> 'required'
+				'name' 	=> 'required'
 		];
 
 		$data['messages'] = [
-			'display_name.required'	=> 'An User Group Name is required'
+				'name.required'	=> 'An User Group Name is required'
 		];
 		return $data;
 	}
@@ -129,14 +129,14 @@ class GroupsController extends Controller
 
 		// TODO: this must have a unique slug
 
-		$roleName = $this->roleRepository->getNextSlug($request->get('display_name'));
+		$roleSlug = $this->roleRepository->getNextSlug($request->get('name'));
 
 		$role   = new Role();
 		$role->fill($request->all());
-		$role->name = $roleName;
+		$role->slug = $roleSlug;
 		$result = $role->save();
 
-		return redirect('/account/groups')->with('success', 'The group ' . $role->display_name . ' has been created.');
+		return redirect('/account/groups')->with('success', 'The group ' . $role->name . ' has been created.');
 	}
 
 	public function storeUsers(Request $request)
@@ -154,7 +154,7 @@ class GroupsController extends Controller
 					$savedUser = $this->tenantRepository->getUserByTenant($userId, $tenant->id);
 					if ($savedUser) {
 						// if already in group, ignore the request
-						if ($savedUser->hasRole($role->name)) continue;
+						if ($savedUser->is($role->slug)) continue;
 					}
 
 					// add the user to role
@@ -167,14 +167,14 @@ class GroupsController extends Controller
 		// return response(['message' => 'something'], 404);
 
 		return [
-			'result'	=> 'success'
+				'result'	=> 'success'
 		];
 	}
 
 	public function showUsers($groupId)
 	{
 		$role = $this->roleRepository->usersInRole($groupId);
-		$availableRoles = Role::select()->where('name', '<>', 'owner')->get()->toArray();
+		$availableRoles = Role::select()->where('slug', '<>', 'owner')->get()->toArray();
 		$tenant = TenantManager::getTenant();
 		$users = $tenant->users;
 		return view('oxygen::groups.group-users-all', compact('role', 'users', 'availableRoles'));
@@ -237,8 +237,8 @@ class GroupsController extends Controller
 		$role = Role::find($id);
 
 		// user can't delete default roles
-		if (in_array($role->name, Config::get('multiTenant.defaultRoleNames'))) {
-			return $this->redirectWithError($role->display_name . ' is a default role, and cannot be deleted.');
+		if (in_array($role->slug, Config::get('multiTenant.defaultRoleNames'))) {
+			return $this->redirectWithError($role->name . ' is a default role, and cannot be deleted.');
 		}
 
 		if ($role) {
@@ -255,7 +255,7 @@ class GroupsController extends Controller
 		if (!$role) return $this->redirectWithError('Invalid user group.');
 
 		// last account owner can't leave the role
-		if (in_array($role->name, ['owner'])) {
+		if (in_array($role->slug, ['owner'])) {
 			$users = $this->roleRepository->usersInRole($role->id, false);
 			if (count($users) <= 1)
 				return $this->redirectWithError('The last member of the group ' . $role->name . ' cannot leave the role.');

@@ -72,7 +72,7 @@
                     <div class="nav-headline">My Account</div>
                     <ul class="nav nav-stacked nav-wide">
                         <li><a href="/account/groups"><em class="fa fa-users"></em> User Groups</a></li>
-                        @if ($user->hasRole(['admin', 'owner']))
+                        @if ($user->is(['admin', 'owner'], 'or'))
                             <li><a href="/account/invitations"><em class="fa fa-user-plus"></em> Invite Users</a></li>
                         @endif
                     </ul>
