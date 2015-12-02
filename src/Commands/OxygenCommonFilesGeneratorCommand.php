@@ -137,28 +137,20 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 
 			$fields = [
 				[
+					'name'	=> 'routeMiddleware',
+					'value' => "'auth' => \EMedia\Oxygen\Http\Middleware\Authenticate::class"
+				],
+				[
 					'name'	=> 'middleware',
-					'value' => "\App\Http\Middleware\LoadViewSettings::class"
+					'value' => "\EMedia\Oxygen\Http\Middleware\LoadViewSettings::class"
 				],
 				[
 					'name'	=> 'routeMiddleware',
-					'value' => "'auth.acl' => \App\Http\Middleware\AuthenticateAcl::class"
+					'value' => "'auth.acl' => \EMedia\Oxygen\Http\Middleware\AuthenticateAcl::class"
 				],
 				[
 					'name'	=> 'routeMiddleware',
-					'value' => "'auth.api' => \App\Http\Middleware\ApiAuthenticate::class"
-				],
-				[
-					'name'	=> 'routeMiddleware',
-					'value' => "'role' => Zizaco\Entrust\Middleware\EntrustRole::class"
-				],
-				[
-					'name'	=> 'routeMiddleware',
-					'value' => "'permission' => Zizaco\Entrust\Middleware\EntrustPermission::class"
-				],
-				[
-					'name'	=> 'routeMiddleware',
-					'value' => "'ability' => Zizaco\Entrust\Middleware\EntrustAbility::class"
+					'value' => "'auth.api' => \EMedia\Oxygen\Http\Middleware\ApiAuthenticate::class"
 				]
 			];
 
@@ -297,13 +289,13 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 					'--tag'			=> ['auth-logic'],
 				]
 			],
-			[
-				'command'		=> 'vendor:publish',
-				'arguments'		=> [
-					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['auth-middleware'],
-				]
-			],
+//			[
+//				'command'		=> 'vendor:publish',
+//				'arguments'		=> [
+//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+//					'--tag'			=> ['auth-middleware'],
+//				]
+//			],
 			[
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
@@ -340,7 +332,7 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 		// get microtime of file generation to preserve migration sequence
 		$time = explode(" ", microtime());
 
-		// change the format to 2008_07_14_010813.982
+		// change the format to 2008_07_14_010813.98232
 		return date("Y_m_d_His", $time[1]) . '.' . substr((string)$time[0], 2, 5);
 	}
 

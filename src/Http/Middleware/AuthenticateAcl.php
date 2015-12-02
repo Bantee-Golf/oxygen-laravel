@@ -4,7 +4,6 @@ namespace EMedia\Oxygen\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\View;
 
 class AuthenticateAcl
 {
@@ -44,7 +43,7 @@ class AuthenticateAcl
 		}
 
 		$user = $this->auth->user();
-		if (!$user->is($allowedRoles, 'or')) {
+		if (!$user->is($allowedRoles)) {
 			if ($request->ajax()) {
 				return response('Unauthorized.', 401);
 			} else {

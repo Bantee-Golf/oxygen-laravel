@@ -65,20 +65,8 @@ class OxygenServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-//		$this->app->singleton("EMedia.AdminConsole", function () {
-//			return App::make("EMedia\\AdminConsole\\Commands\\{$registration}GeneratorCommand");
-//		});
-//		$this->commands("EMedia.AdminConsole");
 		$registrations = [
 			'OxygenCommonFiles',
-//			'Model',
-//			'Repository',
-//			'Controller',
-//			'ModelMigration',
-//			'ModelRelationshipMigration',
-//			'Resource',
-//			'Seeder',
-//			'ConfigFiles'
 		];
 
 		foreach ($registrations as $registration)

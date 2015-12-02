@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace EMedia\Oxygen\Http\Middleware;
 
 use Closure;
 use EMedia\MultiTenant\Facades\TenantManager;
