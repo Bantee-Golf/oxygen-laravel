@@ -11,37 +11,14 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 	protected $signature = 'oxygen:setup';
 	protected $description = 'Generate common files for the Oxygen project';
 
-	protected function getStubMap()
-	{
-		$stubMap = [
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Migrations/001_create_tenant_groups_tables.php',
-				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_tenant_groups_tables.php'),
-				'name'	=> 'TenantGroups Migration'
-			],
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_invitations_table.php',
-				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_invitations_table.php'),
-				'name'	=> 'Invitations Migration'
-			],
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Config/bower.stub',
-				'path'  => base_path('bower.json'),
-				'name'	=> 'bower.json'
-			],
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Common/User.php',
-				'path'  => app_path('User.php'),
-				'name'	=> 'User.php'
-			]
-		];
-		return $stubMap;
-	}
 
 	public function fire()
 	{
+		// generate the migrations
+		$this->generateMigrations();
+
 		// generate the files from stubs
-		$this->compileStubs();
+		$this->compileStubs($this->getStubMap());
 
 		// update routes
 		$this->addGenericRoutes();
@@ -59,10 +36,70 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 		$this->publishFiles();
 	}
 
-	public function compileStubs()
-	{
-		$stubMap = $this->getStubMap();
 
+	protected function generateMigrations()
+	{
+		// migration order
+		// tenants
+		// bouncer
+		// bouncer updates
+		// invitations
+
+		// publish tenants
+		$stubMap = [
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Migrations/001_create_tenants_tables.php',
+				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_tenants_tables.php'),
+				'name'	=> 'Tenants Migration',
+			]
+		];
+		$this->compileStubs($stubMap);
+
+		// bouncer migration (for roles and ACL)
+		$bouncerPublishCommand = [
+			'command'		=> 'vendor:publish',
+			'arguments'		=> [
+				'--provider'	=> 'Silber\Bouncer\BouncerServiceProvider',
+				'--tag'			=> ['migrations'],
+			]
+		];
+		$this->call($bouncerPublishCommand['command'], $bouncerPublishCommand['arguments']);
+
+		// remaining migrations
+		$stubMap = [
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Migrations/003_update_bouncer_tables.php',
+				'path'  => database_path('migrations/' . $this->getTimestamp() . '_update_bouncer_tables.php'),
+				'name'	=> 'Update bouncer tables to support multi-tenantcy'
+			],
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_invitations_table.php',
+				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_invitations_table.php'),
+				'name'	=> 'Invitations Migration'
+			]
+		];
+		$this->compileStubs($stubMap);
+	}
+
+	protected function getStubMap()
+	{
+		$stubMap = [
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Config/bower.stub',
+				'path'  => base_path('bower.json'),
+				'name'	=> 'bower.json'
+			],
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Common/User.php',
+				'path'  => app_path('User.php'),
+				'name'	=> 'User.php'
+			]
+		];
+		return $stubMap;
+	}
+
+	public function compileStubs($stubMap = [])
+	{
 		foreach ($stubMap as $stubData)
 		{
 			$name = $this->parseName($stubData['name']);
@@ -301,10 +338,10 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 	protected function getTimestamp()
 	{
 		// get microtime of file generation to preserve migration sequence
-		$time = explode(" ",microtime());
+		$time = explode(" ", microtime());
 
 		// change the format to 2008_07_14_010813.982
-		return date("Y_m_d_His", $time[1]) . '.' .substr((string)$time[0], 2, 3);
+		return date("Y_m_d_His", $time[1]) . '.' . substr((string)$time[0], 2, 5);
 	}
 
 	/**

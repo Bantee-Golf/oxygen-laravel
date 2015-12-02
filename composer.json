@@ -30,8 +30,7 @@
         "emedia/multi-tenant": "dev-master",
         "emedia/helpers": "dev-master",
         "emedia/media-manager": "dev-master",
-        "zizaco/entrust": "dev-laravel-5",
-        "kodeine/laravel-acl": "~1.0@dev"
+        "silber/bouncer": "^0.0.25"
     },
     "require-dev": {
         "emedia/generators": "dev-master",
