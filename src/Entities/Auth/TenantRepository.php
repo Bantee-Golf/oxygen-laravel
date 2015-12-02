@@ -2,9 +2,10 @@
 
 namespace EMedia\Oxygen\Entities\Auth;
 
+use EMedia\Oxygen\Entities\BaseRepository;
 use Illuminate\Support\Facades\App;
 
-class TenantRepository
+class TenantRepository extends BaseRepository
 {
 
 	public function getUserByTenant($userId, $tenantId)

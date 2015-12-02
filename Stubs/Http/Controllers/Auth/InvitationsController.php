@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use App\Entities\Auth\RoleRepository;
 use EMedia\MultiTenant\Facades\TenantManager;
 use EMedia\Oxygen\Entities\Invitations\Invitation;
 use EMedia\Oxygen\Entities\Invitations\InvitationRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -27,11 +25,10 @@ class InvitationsController extends Controller
      */
     private $roleRepository;
 
-    public function __construct(InvitationRepository $invitationsRepo,
-                                RoleRepository $roleRepository)
+    public function __construct(InvitationRepository $invitationsRepo)
     {
         $this->invitationsRepo = $invitationsRepo;
-        $this->roleRepository = $roleRepository;
+        $this->roleRepository = App::make('RoleRepository');
 
         // only account owners and admins can send invitations
         $this->middleware('auth.acl:roles[owner|admin]', ['except' => [
@@ -51,15 +48,6 @@ class InvitationsController extends Controller
         return view('oxygen::account.invitations.invitations-all', compact('invitations', 'roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -77,10 +65,6 @@ class InvitationsController extends Controller
             'invitation_emails.required'    => 'Please add at least one valid email address'
         ]);
 
-        // generate and send emails
-        $user = Auth::user();
-        $user = User::find($user->id);  // this is reloaded from DB, because of an issue with 'toArray' method on Laravel-acl package
-
         // TODO: validate if the role is valid
         $role = $this->roleRepository->find($request->get('role_id'));
 
@@ -92,14 +76,9 @@ class InvitationsController extends Controller
 
         $validEmails   = [];
         $invalidEmails = [];
-
         foreach ($emails as $email) {
             if (!empty($email)) {
                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-                    // don't invite current user to the same role
-                    if ($email == $user->email && $user->is($role->slug)) continue;
-
                     $validEmails[] = $email;
                 } else {
                     $invalidEmails[] = $email;
@@ -107,6 +86,8 @@ class InvitationsController extends Controller
             }
         }
 
+        // generate and send emails
+        $user = Auth::user();
         $this->sendInvitations($user, $role, $validEmails);
 
         if (count($invalidEmails) > 0)
@@ -174,10 +155,8 @@ class InvitationsController extends Controller
             if ($user = Auth::user()) {
                 if ($invite->email == $user->email) {
                     // join user to the team
-                    if ($result = $this->acceptInvite($invite, $user)) {
-                        Session::forget('invitation_code');
+                    if ($result = $this->acceptInvite($invite, $user))
                         return view('oxygen::account.invitations.invitations-join', compact('invite'));
-                    }
                 } else {
                     // this is an invite for someone else, logout and try again
                     Auth::logout();
@@ -186,7 +165,8 @@ class InvitationsController extends Controller
             } else {
                 Session::put('invitation_code', $invite->invitation_code);
                 // if user doesn't have an account, prompt to register
-                $plausibleUser = User::where('email', $invite->email)->first();
+                $userModel = App::make(config('auth.model'));
+                $plausibleUser = $userModel::where('email', $invite->email)->first();
                 if ($plausibleUser) {
                     // if user has an account, prompt to login
                     return view('oxygen::account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser'));
@@ -205,12 +185,7 @@ class InvitationsController extends Controller
 
     public function acceptInvite($invite, $user)
     {
-        // TODO: CRITICAL ISSUE: this is setting the tenant to the first user
-        // this causes a bug issue when multiple tenants are available per user
-        // the user gets switched to the first related tenant, instead of the original one
-
         // get the current tenant
-        TenantManager::setTenant($user->tenants()->first());
         $currentTenant = TenantManager::getTenant();
 
         // set the tenant to new one, so we get the right Role

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace EMedia\Oxygen\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 

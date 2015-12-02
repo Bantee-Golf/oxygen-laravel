@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace EMedia\Oxygen\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +11,7 @@ trait UpdatesUsers
 
 	public function getProfile()
 	{
-		$user 		= Auth::user();
+		$user = Auth::user();
 
 		if ($user) return view('oxygen::auth.profile', compact('user'));
 

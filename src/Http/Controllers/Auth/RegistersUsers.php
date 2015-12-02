@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace EMedia\Oxygen\Http\Controllers\Auth;
 
-use App\Entities\Auth\Role;
-use App\Entities\Auth\Tenant;
 use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 
 trait RegistersUsers
@@ -44,7 +40,10 @@ trait RegistersUsers
 		}
 
 		// if we have an incoming code, let the user join that team
-		$invitationsRepo = App::make(Config::get('oxygen.invitationRepo'));
+		$invitationsRepo = app(config('oxygen.invitationRepo'));
+		$tenantRepo		 = app(config('multiTenant.tenantRepository'));
+		$roleRepo		 = app(config('multiTenant.roleRepository'));
+
 		if ( ! empty($invitation_code = Session::get('invitation_code')) ) {
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
 			if (!$invite)
@@ -52,10 +51,10 @@ trait RegistersUsers
 						->back()
 						->withInput($request->except('password', 'confirm_password'))
 						->with('error', 'The invitation is already used or expired. Please login or register for a new account.');
-			$tenant = Tenant::find($invite->tenant_id);
+			$tenant = $tenantRepo->find($invite->tenant_id);
 		} else {
 			// create a tenant
-			$tenant = Tenant::create($request->all());
+			$tenant = $tenantRepo->create($request->all());
 		}
 
 		TenantManager::setTenant($tenant);
@@ -70,19 +69,18 @@ trait RegistersUsers
 			// since the tenant is set now, we can retrieve the correct invitation as Eloquent
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code);
 			$invitationsRepo->claim($invite);
-			Session::forget('invitation_code');
 			Session::flash('success', 'Your account has been created and you\'ve accepted the invitation');
 		} else {
 			// add the default Roles
-			$defaultRoles = Config::get('multiTenant.defaultRoles');
+			$defaultRoles = config('multiTenant.defaultRoles');
 			foreach ($defaultRoles as $defaultRole) {
-				$role = new Role();
+				$role = $roleRepo->newModel();
 				$role->fill($defaultRole);
-				$role->slug = $defaultRole['slug'];
+				$role->name = $defaultRole['name'];
 				$role->save();
 
 				// add this user as the default Owner
-				if ($defaultRole['slug'] == 'owner') $user->roles()->attach($role->id);
+				if ($defaultRole['name'] == 'owner') $user->roles()->attach($role->id);
 			}
 		}
 
