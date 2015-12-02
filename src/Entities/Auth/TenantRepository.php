@@ -1,17 +1,15 @@
 <?php
 
-
-namespace App\Entities\Auth;
+namespace EMedia\Oxygen\Entities\Auth;
 
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 
 class TenantRepository
 {
 
 	public function getUserByTenant($userId, $tenantId)
 	{
-		$userModel = App::make(Config::get('auth.model'));
+		$userModel = App::make(config('auth.model'));
 		$query = $userModel::where('id', $userId)
 					 ->whereHas('roles', function ($q) use ($tenantId) {
 					 	$q->where('tenant_id', $tenantId);

@@ -13,6 +13,12 @@ abstract class BaseRepository {
 		$this->model = $model;
 	}
 
+	public function newModel()
+	{
+		$class = get_class($this->model);
+		return new $class;
+	}
+
 	public function all($relationships = [])
 	{
 		$query = $this->model->select();

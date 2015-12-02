@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Entities\Auth;
+namespace EMedia\Oxygen\Entities\Auth;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
 
 class Tenant extends Model
 {
@@ -12,6 +11,6 @@ class Tenant extends Model
 
 	public function users()
 	{
-		return $this->belongsToMany(Config::get('auth.model'));
+		return $this->belongsToMany(config('auth.model'));
     }
 }

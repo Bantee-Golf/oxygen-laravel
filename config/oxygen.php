@@ -11,7 +11,6 @@ return [
 
 	'invitationRepo'	=> EMedia\Oxygen\Entities\Invitations\InvitationRepository::class,
 
-
-	'abilityModel'		=> App\Entities\Auth\Ability::class,
+	'abilityModel'		=> EMedia\Oxygen\Entities\Auth\Ability::class,
 
 ];

@@ -76,6 +76,9 @@ class OxygenServiceProvider extends ServiceProvider
 			});
 			$this->commands("emedia.oxygen.{$registration}Generator");
 		}
+
+		$this->app->bind('RoleRepository', 	 config('multiTenant.roleRepository'));
+		$this->app->bind('TenantRepository', config('multiTenant.tenantRepository'));
 	}
 
 }

@@ -1,10 +1,9 @@
 <?php
 
 
-namespace App\Entities\Auth;
+namespace EMedia\Oxygen\Entities\Auth;
 
-
-use App\Entities\BaseRepository;
+use EMedia\Oxygen\Entities\BaseRepository;
 
 class RoleRepository extends BaseRepository
 {
@@ -70,10 +69,5 @@ class RoleRepository extends BaseRepository
 	{
 		return $role->users()->detach($userId);
 	}
-
-	public function usersByRole(){
-
-	}
-
 
 }
