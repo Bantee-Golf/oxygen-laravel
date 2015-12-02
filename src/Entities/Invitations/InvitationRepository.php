@@ -4,6 +4,7 @@
 namespace EMedia\Oxygen\Entities\Invitations;
 
 
+use EMedia\MultiTenant\Facades\TenantManager;
 use EMedia\Oxygen\Entities\BaseRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -25,12 +26,12 @@ class InvitationRepository extends BaseRepository
 	{
 		if ($allTenants)
 		{
-			$invitation = DB::select('SELECT *
-									  FROM invitations
-									  WHERE invitation_code = ?
-									  	AND claimed_at IS NULL
-									  LIMIT 1', [$invitation_code]);
-			return $invitation[0];
+			TenantManager::disable();
+			$invitation = Invitation::where('invitation_code', $invitation_code)
+								->whereNull('claimed_at')
+								->first();
+			TenantManager::enable();
+			return $invitation;
 		}
 
 		return Invitation::where('invitation_code', $invitation_code)

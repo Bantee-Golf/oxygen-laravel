@@ -39,7 +39,7 @@ trait RegistersUsers
 
 		if ($validator->fails()) {
 			$this->throwValidationException(
-				$request, $validator
+					$request, $validator
 			);
 		}
 
@@ -49,9 +49,9 @@ trait RegistersUsers
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
 			if (!$invite)
 				return redirect()
-							->back()
-							->withInput($request->except('password', 'confirm_password'))
-							->with('error', 'The invitation is already used or expired. Please login or register for a new account.');
+						->back()
+						->withInput($request->except('password', 'confirm_password'))
+						->with('error', 'The invitation is already used or expired. Please login or register for a new account.');
 			$tenant = Tenant::find($invite->tenant_id);
 		} else {
 			// create a tenant
@@ -70,6 +70,7 @@ trait RegistersUsers
 			// since the tenant is set now, we can retrieve the correct invitation as Eloquent
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code);
 			$invitationsRepo->claim($invite);
+			Session::forget('invitation_code');
 			Session::flash('success', 'Your account has been created and you\'ve accepted the invitation');
 		} else {
 			// add the default Roles
@@ -77,11 +78,11 @@ trait RegistersUsers
 			foreach ($defaultRoles as $defaultRole) {
 				$role = new Role();
 				$role->fill($defaultRole);
-				$role->name = $defaultRole['name'];
+				$role->slug = $defaultRole['slug'];
 				$role->save();
 
 				// add this user as the default Owner
-				if ($defaultRole['name'] == 'owner') $user->roles()->attach($role->id);
+				if ($defaultRole['slug'] == 'owner') $user->roles()->attach($role->id);
 			}
 		}
 

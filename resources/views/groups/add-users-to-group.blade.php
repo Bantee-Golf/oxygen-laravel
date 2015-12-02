@@ -21,7 +21,7 @@
                         <label for="recipient-name" class="control-label">Select Roles</label>
                         <select class="form-control select2" id="selectRoles" name="selectRoles[]" multiple="multiple" style="width: 100%">
                             @foreach ($availableRoles as $availableRole)
-                                <option value="{{ $availableRole['id'] }}">{{ $availableRole['display_name'] }}</option>
+                                <option value="{{ $availableRole['id'] }}">{{ $availableRole['name'] }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -82,7 +82,7 @@
                         method: "post",
                         url: "/account/groups/users",
                         data: $(form).serialize()
-                    }).done(function( data ) {
+                    }).success(function( data ) {
                         // don't clear or hide the modal, since we're going to reload the page
                         // clear the drop down
                         // $('.select2').select2('val', []);

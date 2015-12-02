@@ -3,7 +3,7 @@
 namespace App;
 
 use EMedia\MultiTenant\Auth\MultiTenantUserTrait;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
+use EMedia\Oxygen\Entities\Traits\OxygenUserTrait;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -15,8 +15,8 @@ class User extends Model implements CanResetPasswordContract, AuthenticatableCon
 {
 	use Authenticatable, CanResetPassword;
 
-	use MultiTenantUserTrait, EntrustUserTrait {
-		EntrustUserTrait::roles insteadof MultiTenantUserTrait;
+	use MultiTenantUserTrait, OxygenUserTrait {
+		OxygenUserTrait::roles insteadof MultiTenantUserTrait;
 	}
 
 	/**
