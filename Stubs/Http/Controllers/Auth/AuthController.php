@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
 use EMedia\Oxygen\Http\Controllers\Auth\AuthenticatesAndRegistersUsers;
 use EMedia\Oxygen\Http\Controllers\Auth\UpdatesUsers;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class AuthController extends Controller
 {

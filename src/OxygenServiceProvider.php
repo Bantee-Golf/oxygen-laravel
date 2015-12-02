@@ -79,8 +79,6 @@ class OxygenServiceProvider extends ServiceProvider
 
 		$this->app->bind('RoleRepository', 	 config('multiTenant.roleRepository'));
 		$this->app->bind('TenantRepository', config('multiTenant.tenantRepository'));
-
-		$this->app->register('');
 	}
 
 }
