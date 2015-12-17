@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use EMedia\MultiTenant\Facades\TenantManager;
 use EMedia\Oxygen\Http\Controllers\Auth\AuthenticatesAndRegistersUsers;
 use EMedia\Oxygen\Http\Controllers\Auth\UpdatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 
@@ -40,6 +43,41 @@ class AuthController extends Controller
     public function getRegister()
     {
         return view('oxygen::auth.register');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        // see if this login is accepting any invitation tokens
+        // if we have an incoming code, let the user join that team
+        $invitationsRepo = app(config('oxygen.invitationRepo'));
+        $tenantRepo		 = app(config('multiTenant.tenantRepository'));
+        $roleRepo		 = app(config('multiTenant.roleRepository'));
+
+        if ( ! empty($invitation_code = Session::get('invitation_code')) ) {
+            $invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
+            if (!$invite)
+                return redirect()
+                    ->intended($this->redirectPath())
+                    ->with('error', 'The invitation is already used or expired.');
+
+            // see if you can get a valid tenant
+            if (($tenant = $tenantRepo->find($invite->tenant_id)) && !empty($invite->role_id)) {
+                // the RoleID should already be attached with the tenant
+                TenantManager::setTenant($tenant);
+                $role = $roleRepo->find($invite->role_id);
+
+                // attach tenant and the role
+                $tenant->users()->attach($user->id);
+                $user->roles()->attach($role->id);
+
+                return redirect()
+                    ->intended($this->redirectPath())
+                    ->with('success', 'You\'ve accepted the invitation and joined the team.');
+            };
+        }
+
+        // if there are no invitations, proceed as usual
+        return redirect()->intended($this->redirectPath());
     }
 
     /**
