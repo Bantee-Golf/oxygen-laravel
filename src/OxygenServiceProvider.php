@@ -13,6 +13,11 @@ class OxygenServiceProvider extends ServiceProvider
 		// load default views
 		$this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen');
 
+		// register routes
+		if (! $this->app->routesAreCached()) {
+			require __DIR__.'/Http/routes.php';
+		}
+
 		// allow user to publish views
 		$this->publishes([
 			__DIR__.'/../resources/views' => base_path('resources/views/vendor/oxygen'),

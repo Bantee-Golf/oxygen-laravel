@@ -24,7 +24,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Company Name</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="company_name" value="{{ old('name') }}">
+								<input type="text" class="form-control" name="company_name" value="{{ old('company_name') }}">
 							</div>
 						</div>
 

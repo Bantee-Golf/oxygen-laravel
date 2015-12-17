@@ -6,7 +6,6 @@ use Closure;
 use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class Authenticate {
@@ -38,7 +37,7 @@ class Authenticate {
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (Config::get('app.enableAuthentication'))
+		if (config('app.enableAuthentication'))
 		{
 			if ($this->auth->guest())
 			{
@@ -48,18 +47,25 @@ class Authenticate {
 		else
 		{
 			$user = $this->auth->user();
+
+			// login to a default account for testing
 			if (!$user && App::environment() == 'local') {
 				$user = $this->auth->loginUsingId(1);
 			}
 
 			if (!$user) return $this->rejectRequest($request);
 
-			// TODO: handle multiple tenants and save in session
+			// DONE: handle multiple tenants and save in session
 			// TODO: MUST check acceptInvite() in InvitationsController
-			TenantManager::setTenant($user->tenants()->first());
+			if (TenantManager::isTenantNotSet()) TenantManager::setTenant($user->tenants()->first());
+
 		}
 
 		if ($user = $this->auth->user()) View::share('user', $user);
+		if (TenantManager::isTenantSet()) {
+			$tenant = TenantManager::getTenant();
+			View::share('tenant', $tenant);
+		}
 
 		return $next($request);
 	}

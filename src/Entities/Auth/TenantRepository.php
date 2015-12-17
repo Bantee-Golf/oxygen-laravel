@@ -27,4 +27,21 @@ class TenantRepository extends BaseRepository
 		return $query->first();
 	}
 
+
+	/**
+	 * Check if a given UserID belongs to a TenantID
+	 *
+	 * @param $userId
+	 * @param $tenantId
+	 * @return Tenant, null
+	 */
+	public function getTenantByUser($userId, $tenantId)
+	{
+		$query = $this->model->where('id', $tenantId)
+							 ->whereHas('users', function ($q) use ($userId) {
+							 	$q->where('user_id', $userId);
+							 });
+		return $query->first();
+	}
+
 }

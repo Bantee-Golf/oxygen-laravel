@@ -3,8 +3,8 @@
 namespace EMedia\Oxygen\Http\Middleware;
 
 use Closure;
+use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class LoadViewSettings
@@ -36,12 +36,19 @@ class LoadViewSettings
 	 */
 	public function handle($request, Closure $next)
 	{
-		$appName 	= Config::get('settings.applicationName');
+		$appName 	= config('settings.applicationName');
 		$title		= 'My Account';
 
 		View::share('appName', $appName);
 		View::share('title', $title);
-		if ($user = $this->auth->user()) View::share('user', $user);
+
+		if ($user = $this->auth->user()) {
+			View::share('user', $user);
+
+			// Tenants
+			// $tenants = TenantManager::allTenants();
+			View::share('tenants', $user->tenants);
+		}
 
 		return $next($request);
 	}

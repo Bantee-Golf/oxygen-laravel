@@ -51,10 +51,27 @@
                             <!--</ul>-->
 
                             <ul class="nav navbar-nav navbar-top-links navbar-right">
-                                <li class="user-greeting">{{ $user->email }}</li>
+                                @if (isset($tenant))
+                                    <li class="user-greeting">{{ $tenant->company_name }}</li>
+                                @endif
+
+                                @if (isset($tenants))
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle"
+                                           data-toggle="dropdown" role="button"
+                                           aria-haspopup="true" aria-expanded="false">Team <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            @foreach ($tenants as $tenant)
+                                                <li><a href="/account/teams/switch/{{ $tenant->id }}">{{ $tenant->company_name }}</a></li>
+                                            @endforeach
+                                            {{--<li role="separator" class="divider"></li>--}}
+                                            {{--<li><a href="#">Add New Team</a></li>--}}
+                                        </ul>
+                                    </li>
+                                @endif
+
                                 <li class="active"><a href="/auth/profile">Account</a></li>
                                 <li><a href="/auth/logout">Logout</a></li>
-                                <!-- /.dropdown -->
                             </ul>
                         </div>
                     </div>
@@ -72,7 +89,7 @@
                     <div class="nav-headline">My Account</div>
                     <ul class="nav nav-stacked nav-wide">
                         <li><a href="/account/groups"><em class="fa fa-users"></em> User Groups</a></li>
-                        @if ($user->is('admin', 'owner'))
+                        @if ($user->is(['admin', 'owner']))
                             <li><a href="/account/invitations"><em class="fa fa-user-plus"></em> Invite Users</a></li>
                         @endif
                     </ul>
