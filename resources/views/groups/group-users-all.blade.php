@@ -13,15 +13,15 @@
     <div class="container-fluid">
         <h2>Users in {{ $role->name }}</h2>
 
-        @if ($user->is(['admin', 'owner'], 'or'))
-            @if ($role->slug == 'owner')
+        @if ($user->is(['admin', 'owner']))
+            @if ($role->name == 'owner')
                 {{-- Only 1 owner is allowed --}}
             @else
                 <button type="button"
                    class="btn btn-lg btn-wide btn-warning"
                    data-toggle="modal"
                    data-target="#userControlModal"
-                   data-role_id="{{ $role['id'] }}"><i class="fa fa-user-plus"></i> Add a New User</button>
+                   data-role_id=""><i class="fa fa-user-plus"></i> Add a New User</button>
                 <br/><br/>
             @endif
         @else
@@ -57,7 +57,7 @@
                                         <td>{{ $currentUser->email }}</td>
                                         <td>
                                             @if ($user->is(['admin', 'owner'], 'or'))
-                                                @if ($role->slug == 'owner' && count($role->users) == 1)
+                                                @if ($role->name == 'owner' && count($role->users) == 1)
                                                     {{-- Last Owner can't leave the role --}}
                                                     <button class="btn btn-danger disabled"><i class="fa fa-trash"></i>
                                                         Leave Role

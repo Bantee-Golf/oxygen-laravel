@@ -153,6 +153,9 @@ class GroupsController extends Controller
 	public function showUsers($groupId)
 	{
 		$role = $this->roleRepository->usersInRole($groupId);
+
+		if (!$role) return redirect()->route('account');
+
 		$availableRoles = $this->roleRepository->allExcept(['owner'])->toArray();
 		$tenant = TenantManager::getTenant();
 		$users = $tenant->users;

@@ -27,6 +27,7 @@ class TeamController extends Controller
 
 		if (!empty($tenant)) {
 			TenantManager::setTenant($tenant);
+			// TODO: what if the user is not authenticated to view 'back' page's content?
 			return redirect()->back();
 		}
 
