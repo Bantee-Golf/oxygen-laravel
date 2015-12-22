@@ -5,31 +5,30 @@
     "repositories": [
         {
             "type":"vcs",
-            "url":"/www/sites-laravel/packager/packages/emedia/MultiTenant",
+            "url":"/www/sites-laravel/workbench/EMedia/MultiTenant",
             "url_live":"https://bitbucket.org/elegantmedia/multitenant-laravel"
         },
         {
             "type":"vcs",
-            "url":"/www/sites-laravel/packager/packages/emedia/Generators",
+            "url":"/www/sites-laravel/workbench/EMedia/Generators",
             "url_live":"https://bitbucket.org/elegantmedia/laravel-generators"
         },
         {
             "type":"vcs",
-            "url":"/www/sites-laravel/packager/packages/emedia/Helpers",
+            "url":"/www/sites-laravel/workbench/EMedia/Helpers",
             "url_live":"https://bitbucket.org/elegantmedia/laravel-helpers"
         },
         {
             "type":"vcs",
-            "url":"/www/sites-laravel/packager/packages/emedia/MediaManager",
+            "url":"/www/sites-laravel/workbench/EMedia/MediaManager",
             "url_live":"git@bitbucket.org:elegantmedia/mediamanager-laravel.git"
         }
     ],
     "require": {
         "php": ">=5.5.9",
         "illuminate/support": "5.0.x|5.1.x",
-        "emedia/multi-tenant": "dev-master",
-        "emedia/helpers": "dev-master",
-        "emedia/media-manager": "dev-master",
+        "emedia/multi-tenant": "^0.0.1",
+        "emedia/helpers": "0.1.x",
         "silber/bouncer": "^0.0.25"
     },
     "require-dev": {
