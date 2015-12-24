@@ -75,9 +75,9 @@ class Authenticate {
 		if ($request->ajax() || $request->wantsJson())
 		{
 			$response = [
-					'result'	=> false,
-					'message'	=> 'You need to login to access this data. If you logged-in already, your session may have been expired. Please try to login again.',
-					'type'		=> 'UNAUTHORIZED_USER'
+				'result'	=> false,
+				'message'	=> 'You need to login to access this data. If you logged-in already, your session may have been expired. Please try to login again.',
+				'type'		=> 'UNAUTHORIZED_USER'
 			];
 			return response($response, 401);
 		}

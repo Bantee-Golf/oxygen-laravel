@@ -5,13 +5,13 @@
     <ol class="breadcrumb">
         {{--<li><a href="/account">My Account</a></li>--}}
         <li><a href="/account/groups">User Groups</a></li>
-        <li class="active">{{ $role->name }}</li>
+        <li class="active">{{ $role->display_name }}</li>
     </ol>
 
     @include('oxygen::partials.flash')
 
     <div class="container-fluid">
-        <h2>Users in {{ $role->name }}</h2>
+        <h2>Users in {{ $role->display_name }}</h2>
 
         @if ($user->is(['admin', 'owner']))
             @if ($role->name == 'owner')
@@ -21,7 +21,7 @@
                    class="btn btn-lg btn-wide btn-warning"
                    data-toggle="modal"
                    data-target="#userControlModal"
-                   data-role_id=""><i class="fa fa-user-plus"></i> Add a New User</button>
+                   data-role_id="{{ $role['id'] }}"><i class="fa fa-user-plus"></i> Add a New User</button>
                 <br/><br/>
             @endif
         @else
@@ -56,7 +56,7 @@
                                         </td>
                                         <td>{{ $currentUser->email }}</td>
                                         <td>
-                                            @if ($user->is(['admin', 'owner'], 'or'))
+                                            @if ($user->is(['admin', 'owner']))
                                                 @if ($role->name == 'owner' && count($role->users) == 1)
                                                     {{-- Last Owner can't leave the role --}}
                                                     <button class="btn btn-danger disabled"><i class="fa fa-trash"></i>

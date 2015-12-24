@@ -10,7 +10,7 @@
     <div class="form-group">
         <label class="col-md-4 control-label">User Group Name</label>
         <div class="col-md-6">
-            <input type="text" class="form-control" name="name" value="{{ $role->name }}">
+            <input type="text" class="form-control" name="display_name" value="{{ $role->display_name }}">
         </div>
     </div>
 

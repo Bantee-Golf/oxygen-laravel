@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="/css/dist/app.css"/>
     <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="/css/theme/select2.custom.css" />
+    {{--<link rel="stylesheet" href="/css/theme/select2.custom.css" />--}}
     {{--<link rel="stylesheet" href="/bower_components/select2-bootstrap-css/select2-bootstrap.min.css" />--}}
 
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css" />

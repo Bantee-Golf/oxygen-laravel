@@ -11,7 +11,7 @@ class TenantRepository extends BaseRepository
 
 	public function __construct()
 	{
-		$model = app(config('multiTenant.tenantModel'));
+		$model = app(config('auth.tenantModel'));
 		parent::__construct($model);
 		$this->model = $model;
 	}

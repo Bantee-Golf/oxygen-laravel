@@ -14,13 +14,11 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen');
 
 		// register routes
-		if (! $this->app->routesAreCached()) {
-			require __DIR__.'/Http/routes.php';
-		}
+		// if (! $this->app->routesAreCached()) require __DIR__.'/Http/routes.php';
 
 		// allow user to publish views
 		$this->publishes([
-			__DIR__.'/../resources/views' => base_path('resources/views/vendor/oxygen'),
+			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen'),
 		], 'views');
 
 //		$this->publishes([
@@ -30,32 +28,39 @@ class OxygenServiceProvider extends ServiceProvider
 //		$this->publishes([
 //			__DIR__.'/../resources/views/emails' => base_path('resources/views/emails'),
 //		], 'views-auth');
+//		$this->publishes([
+//
+//		], 'public-assets') ;
 
-		// publish public assets
+		// assets which should be compiled before publishing (JS source, SASS etc)
 		$this->publishes([
-			__DIR__.'/../resources/assets' => base_path('resources/assets'),
-		], 'public-source');
+			__DIR__ . '/../resources/assets' => base_path('resources/assets'),
+		], 'source-public-assets');
 
+		// public static assets (JS, CSS etc)
 		$this->publishes([
-			__DIR__.'/../public_html/js' => base_path('public_html/js'),
+			__DIR__ . '/../public_html/js'  => public_path('/js'),
+			__DIR__ . '/../public_html/css' => public_path('/css'),
 		], 'public-assets');
 
+		// publish common controllers
 		$this->publishes([
-			__DIR__.'/../public_html/css' => base_path('public_html/css'),
-		], 'public-assets') ;
+				__DIR__ . '/../Stubs/Http/Controllers/Common' => app_path('Http/Controllers'),
+		], 'common-controllers');
 
 		// publish Auth controllers
 		$this->publishes([
-			__DIR__.'/../Stubs/Http/Controllers/Auth' => app_path('Http/Controllers/Auth'),
-		], 'auth-logic');
+			__DIR__ . '/../Stubs/Http/Controllers/Auth' => app_path('Http/Controllers/Auth'),
+		], 'auth-controllers');
 
-		$this->publishes([
-			__DIR__.'/../Stubs/Entities/Auth' => app_path('Entities/Auth'),
-		], 'auth-logic');
 
-		$this->publishes([
-			__DIR__.'/../Stubs/Http/Middleware' => app_path('Http/Middleware'),
-		], 'auth-middleware');
+//		$this->publishes([
+//			__DIR__.'/../Stubs/Entities/Auth' => app_path('Entities/Auth'),
+//		], 'auth-logic');
+
+//		$this->publishes([
+//			__DIR__.'/../Stubs/Http/Middleware' => app_path('Http/Middleware'),
+//		], 'auth-middleware');
 
 		// publish config
 		$this->publishes([
@@ -70,20 +75,18 @@ class OxygenServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$registrations = [
-			'OxygenCommonFiles',
-		];
+		$this->mergeConfigFrom( __DIR__ . '/../config/auth.php', 'auth');
 
-		foreach ($registrations as $registration)
+		if ($this->app->environment() == 'local')
 		{
-			$this->app->singleton("emedia.oxygen.{$registration}Generator", function () use ($registration) {
-				return App::make("EMedia\\Oxygen\\Commands\\{$registration}GeneratorCommand");
+			$this->app->singleton("emedia.oxygen.setup", function () {
+				return app("EMedia\\Oxygen\\Commands\\OxygenSetupCommand");
 			});
-			$this->commands("emedia.oxygen.{$registration}Generator");
+			$this->commands("emedia.oxygen.setup");
 		}
 
-		$this->app->bind('RoleRepository', 	 config('multiTenant.roleRepository'));
-		$this->app->bind('TenantRepository', config('multiTenant.tenantRepository'));
+		$this->app->bind('RoleRepository', 	 config('oxygen.roleRepository'));
+		$this->app->bind('TenantRepository', config('oxygen.tenantRepository'));
 	}
 
 }

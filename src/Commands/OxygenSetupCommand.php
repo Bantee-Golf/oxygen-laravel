@@ -2,18 +2,25 @@
 
 namespace EMedia\Oxygen\Commands;
 
-use EMedia\Generators\Commands\CommonFilesGeneratorCommand;
+use EMedia\Generators\Commands\BaseGeneratorCommand;
+// use EMedia\Generators\Commands\CommonFilesGeneratorCommand;
 use EMedia\Generators\Parsers\FileEditor;
 
-class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
+class OxygenSetupCommand extends BaseGeneratorCommand
 {
 
 	protected $signature = 'oxygen:setup';
 	protected $description = 'Generate common files for the Oxygen project';
+	protected $projectOptions = [
+		'multiTenant' => true
+	];
 
 
 	public function fire()
 	{
+		// get developer input
+		$this->getDeveloperInput();
+
 		// generate the migrations
 		$this->generateMigrations();
 
@@ -34,6 +41,17 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 
 		// publish assets and other files
 		$this->publishFiles();
+	}
+
+
+	/**
+	 *	Get user input to customise setup
+	 *
+	 */
+	protected function getDeveloperInput()
+	{
+		if ( ! $this->confirm('Should the project have Multi-Tenant support?', false) )
+			$this->projectOptions['multiTenant'] = false;
 	}
 
 
@@ -98,39 +116,11 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 		return $stubMap;
 	}
 
-	public function compileStubs($stubMap = [])
-	{
-		foreach ($stubMap as $stubData)
-		{
-			$name = $this->parseName($stubData['name']);
 
-			if ($this->confirm('Create ' . $stubData['path'] . '?', true))
-			{
-
-				if ($this->files->exists($stubData['path']))
-				{
-					if ($this->confirm($stubData['path'] . ' already exists. Override?', false)) {
-
-					} else {
-						$this->error($stubData['name'] . ' already exists. Skipped.');
-
-						continue;
-					}
-				}
-
-				$this->makeDirectory($stubData['path']);
-
-				// parse each file and write
-				$this->files->put($stubData['path'], $this->buildClass($name, $stubData['stub']));
-
-				$this->info($stubData['name'] . ' created successfully.');
-			}
-		}
-	}
 
 	protected function updateMiddleware()
 	{
-		if ($this->confirm('Update middleware?', true))
+		if ($this->confirm('Update Kernel.php with new middleware?', true))
 		{
 			$editor = new FileEditor();
 			$inputFile = app_path('Http/Kernel.php');
@@ -161,6 +151,7 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 		}
 	}
 
+	// DEPRECATED
 	private function updateServiceProviders()
 	{
 		if ($this->confirm('Update service providers in app.php?', true))
@@ -254,6 +245,10 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 
 		foreach ($stringsToReplace as $stringData)
 		{
+			if ( ! $this->files->exists($stringData['path']) ) {
+				$this->error($stringData['path'] . ' not found.');
+				continue;
+			}
 			$this->replaceIn($stringData['path'], $stringData['search'], $stringData['replace']);
 		}
 	}
@@ -272,7 +267,7 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['public-source'],
+					'--tag'			=> ['source-public-assets'],
 				]
 			],
 			[
@@ -286,7 +281,14 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['auth-logic'],
+					'--tag'			=> ['common-controllers'],
+				]
+			],
+			[
+				'command'		=> 'vendor:publish',
+				'arguments'		=> [
+					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+					'--tag'			=> ['auth-controllers'],
 				]
 			],
 //			[
@@ -317,6 +319,16 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 		}
 	}
 
+	protected function buildClass($name, $stubPath = null)
+	{
+		if (!$stubPath) $stubPath = $this->getStub();
+
+		$stub = $this->files->get($stubPath);
+		$this->replaceNamespace($stub, $name);
+
+		return $stub;
+	}
+
 	/**
 	 * Get the stub file for the generator.
 	 *
@@ -326,29 +338,6 @@ class OxygenCommonFilesGeneratorCommand extends CommonFilesGeneratorCommand
 	{
 		return '';
 	}
-
-	protected function getTimestamp()
-	{
-		// get microtime of file generation to preserve migration sequence
-		$time = explode(" ", microtime());
-
-		// change the format to 2008_07_14_010813.98232
-		return date("Y_m_d_His", $time[1]) . '.' . substr((string)$time[0], 2, 5);
-	}
-
-	/**
-	 * Replace the given string in the given file.
-	 *
-	 * @param  string  $path
-	 * @param  string|array  $search
-	 * @param  string|array  $replace
-	 * @return void
-	 */
-	protected function replaceIn($path, $search, $replace)
-	{
-		$this->files->put($path, str_replace($search, $replace, $this->files->get($path)));
-	}
-
 
 
 }

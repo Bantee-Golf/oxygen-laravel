@@ -3,7 +3,7 @@
 
 namespace EMedia\Oxygen\Entities\Auth;
 
-use EMedia\Oxygen\Entities\BaseRepository;
+use EMedia\QuickData\Entities\BaseRepository;
 
 class RoleRepository extends BaseRepository
 {

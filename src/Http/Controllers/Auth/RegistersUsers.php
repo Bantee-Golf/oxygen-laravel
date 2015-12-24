@@ -40,9 +40,9 @@ trait RegistersUsers
 		}
 
 		// if we have an incoming code, let the user join that team
-		$invitationsRepo = app(config('oxygen.invitationRepo'));
-		$tenantRepo		 = app(config('multiTenant.tenantRepository'));
-		$roleRepo		 = app(config('multiTenant.roleRepository'));
+		$invitationsRepo = app(config('acl.invitationRepo'));
+		$tenantRepo		 = app('TenantRepository');
+		$roleRepo		 = app('RoleRepository');
 
 		if ( ! empty($invitation_code = Session::get('invitation_code')) ) {
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
