@@ -29,6 +29,10 @@ class UpdateBouncerTables extends Migration
 			$table->unique(['name', 'tenant_id']);
 		});
 
+		Schema::table('invitations', function ($table) {
+			$table->foreign('tenant_id')->references('id')->on('tenants');
+		});
+
 	}
 
 	/**
@@ -38,6 +42,10 @@ class UpdateBouncerTables extends Migration
 	 */
 	public function down()
 	{
+		Schema::table('roles', function ($table) {
+			$table->dropColumn('tenant_id');
+		});
+
 		Schema::table('abilities', function ($table) {
 			$table->dropUnique('abilities_name_entity_id_entity_type_tenant_id_unique');
 

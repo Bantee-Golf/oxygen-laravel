@@ -71,7 +71,7 @@
                                                title="Edit">
                                                 <i class="fa fa-pencil-square-o"></i> Edit
                                             </a>
-                                            @if (!in_array($role['name'], Config::get('multiTenant.defaultRoleNames')))
+                                            @if (!in_array($role['name'], config('acl.defaultRoleNames')))
                                                 <form class="form-inline" role="form" method="POST" action="/account/groups/{{ $role['id'] }}"
                                                       data-toggle="tooltip" title="Delete">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -82,18 +82,6 @@
                                         @endif
                                     </td>
                                 </tr>
-                                {{--@foreach ($role['users'] as $roleMember)--}}
-                                {{--<tr>--}}
-                                {{--<td>--}}
-                                {{--{{ $roleMember['email'] }}--}}
-                                {{--@if ($user->email == $roleMember['email'])--}}
-                                {{--<span class="label label-success">You</span>--}}
-                                {{--@endif--}}
-                                {{--</td>--}}
-                                {{--<td colspan="2">{{ $roleMember['name'] }}</td>--}}
-                                {{--<td></td>--}}
-                                {{--</tr>--}}
-                                {{--@endforeach--}}
                             @endforeach
                             </tbody>
                         </table>

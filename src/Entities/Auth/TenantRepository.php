@@ -2,7 +2,7 @@
 
 namespace EMedia\Oxygen\Entities\Auth;
 
-use EMedia\Oxygen\Entities\BaseRepository;
+use App\Entities\BaseRepository;
 
 class TenantRepository extends BaseRepository
 {

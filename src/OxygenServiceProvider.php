@@ -53,6 +53,10 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__ . '/../Stubs/Http/Controllers/Auth' => app_path('Http/Controllers/Auth'),
 		], 'auth-controllers');
 
+		$this->publishes([
+				__DIR__ . '/../Stubs/Seeds' => database_path('seeds'),
+		], 'database-seeds');
+
 
 //		$this->publishes([
 //			__DIR__.'/../Stubs/Entities/Auth' => app_path('Entities/Auth'),
@@ -85,8 +89,8 @@ class OxygenServiceProvider extends ServiceProvider
 			$this->commands("emedia.oxygen.setup");
 		}
 
-		$this->app->bind('RoleRepository', 	 config('oxygen.roleRepository'));
-		$this->app->bind('TenantRepository', config('oxygen.tenantRepository'));
+		$this->app->bind('RoleRepository', 	 config('auth.roleRepository'));
+		$this->app->bind('TenantRepository', config('auth.tenantRepository'));
 	}
 
 }

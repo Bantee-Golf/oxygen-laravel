@@ -72,7 +72,7 @@ trait RegistersUsers
 			Session::flash('success', 'Your account has been created and you\'ve accepted the invitation');
 		} else {
 			// add the default Roles
-			$defaultRoles = config('multiTenant.defaultRoles');
+			$defaultRoles = config('acl.defaultRoles');
 			foreach ($defaultRoles as $defaultRole) {
 				$role = $roleRepo->newModel();
 				$role->fill($defaultRole);

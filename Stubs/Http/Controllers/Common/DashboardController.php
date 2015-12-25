@@ -1,8 +1,6 @@
 <?php
 
-namespace EMedia\Oxygen\Http\Controllers;
-
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
 
 class DashboardController extends Controller
 {
