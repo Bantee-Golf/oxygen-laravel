@@ -159,7 +159,7 @@ class InvitationsController extends Controller
             } else {
                 Session::put('invitation_code', $invite->invitation_code);
                 // if user doesn't have an account, prompt to register
-                $userModel = App::make(config('auth.model'));
+                $userModel = app(config('auth.model'));
                 $plausibleUser = $userModel::where('email', $invite->email)->first();
                 if ($plausibleUser) {
                     // if user has an account, prompt to login
@@ -179,16 +179,19 @@ class InvitationsController extends Controller
 
     public function acceptInvite($invite, $user)
     {
-        // get the current tenant
-        $currentTenant = TenantManager::getTenant();
+        if (TenantManager::multiTenancyIsActive()) {
+            // get the current tenant
+            $currentTenant = TenantManager::getTenant();
 
-        // set the tenant to new one, so we get the right Role
-        TenantManager::setTenantById($invite->tenant_id);
+            // set the tenant to new one, so we get the right Role
+            TenantManager::setTenantById($invite->tenant_id);
+        }
+
         $role = $this->roleRepository->find($invite->role_id);
 
         if (!$role) {
             // reset the old tenant
-            TenantManager::setTenant($currentTenant);
+            if (TenantManager::multiTenancyIsActive()) TenantManager::setTenant($currentTenant);
             return false;
         }
 

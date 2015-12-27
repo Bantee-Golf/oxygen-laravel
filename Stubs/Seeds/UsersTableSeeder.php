@@ -17,8 +17,13 @@ class UsersTableSeeder extends Seeder
 			'email'	 => 'shane.emedia@gmail.com',
 			'password' => bcrypt('123456')
 		]);
-		$tenant = Tenant::find(1);
-		TenantManager::setTenant($tenant);
+
+		if (TenantManager::multiTenantIsActive())
+		{
+			$tenant = Tenant::find(1);
+			TenantManager::setTenant($tenant);
+			$user->tenants()->save($tenant);
+		}
 
 		$role = Role::create([
 			'name'			=> 'admin',
@@ -26,7 +31,6 @@ class UsersTableSeeder extends Seeder
 			'description'	=> 'Admin project'
 		]);
 		$user->roles()->save($role);
-		$user->tenants()->save($tenant);
 
 		$role = Role::create([
 			'name'			=> 'owner',
@@ -50,11 +54,16 @@ class UsersTableSeeder extends Seeder
 		// new user
 		$user = User::create([
 			'name'	 => 'Clarke Kent',
-			'email'	 => 'shane.emedia+john@gmail.com',
+			'email'	 => 'shane.emedia+kent@gmail.com',
 			'password' => bcrypt('123456')
 		]);
-		$tenant = Tenant::find(2);
-		TenantManager::setTenant($tenant);
+
+		if (TenantManager::multiTenantIsActive())
+		{
+			$tenant = Tenant::find(2);
+			TenantManager::setTenant($tenant);
+			$user->tenants()->save($tenant);
+		}
 
 		$role = Role::create([
 			'name'			=> 'admin',
@@ -62,7 +71,7 @@ class UsersTableSeeder extends Seeder
 			'description'	=> 'Admin project'
 		]);
 		$user->roles()->save($role);
-		$user->tenants()->save($tenant);
+
 	}
 
 }

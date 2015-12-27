@@ -21,17 +21,6 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen'),
 		], 'views');
 
-//		$this->publishes([
-//			__DIR__.'/../resources/views/auth' => base_path('resources/views/auth'),
-//		], 'views-auth');
-//
-//		$this->publishes([
-//			__DIR__.'/../resources/views/emails' => base_path('resources/views/emails'),
-//		], 'views-auth');
-//		$this->publishes([
-//
-//		], 'public-assets') ;
-
 		// assets which should be compiled before publishing (JS source, SASS etc)
 		$this->publishes([
 			__DIR__ . '/../resources/assets' => base_path('resources/assets'),
@@ -57,19 +46,12 @@ class OxygenServiceProvider extends ServiceProvider
 				__DIR__ . '/../Stubs/Seeds' => database_path('seeds'),
 		], 'database-seeds');
 
-
-//		$this->publishes([
-//			__DIR__.'/../Stubs/Entities/Auth' => app_path('Entities/Auth'),
-//		], 'auth-logic');
-
-//		$this->publishes([
-//			__DIR__.'/../Stubs/Http/Middleware' => app_path('Http/Middleware'),
-//		], 'auth-middleware');
-
 		// publish config
 		$this->publishes([
-			__DIR__.'/../config/' => config_path(),
+			__DIR__.'/../config/acl.php'  => config_path('acl.php'),
+			// __DIR__.'/../config/auth.php' => config_path('auth.php'),
 		], 'config');
+
 	}
 
 	/**

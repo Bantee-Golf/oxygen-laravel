@@ -8,10 +8,20 @@ return [
 	// we disable dashboard login in dev for easier testing
 	'enableAuthentication' => env('DASHBOARD_AUTHENTICATION', true),
 
-	'tenantModel'		=> '\EMedia\Oxygen\Entities\Auth\Tenant',
-	'tenantRepository'  => '\EMedia\Oxygen\Entities\Auth\TenantRepository',
-	'abilityModel'		=> '\EMedia\Oxygen\Entities\Auth\Ability',
-	'roleModel'			=> '\EMedia\Oxygen\Entities\Auth\Role',
-	'roleRepository'	=> '\EMedia\Oxygen\Entities\Auth\RoleRepository',
+//	'abilityModel'		=> '\EMedia\Oxygen\Entities\Auth\Ability',
+//	'roleModel'			=> '\EMedia\Oxygen\Entities\Auth\Role',
+//	'roleRepository'	=> '\EMedia\Oxygen\Entities\Auth\RoleRepository',
+//
+//	'tenantModel'		=> '\EMedia\Ozone\Entities\Auth\Tenant',
+//	'tenantRepository'  => '\EMedia\Ozone\Entities\Auth\TenantRepository',
+//	'multiTenantActive' => false,
+
+		'abilityModel'		=> config('oxygen.abilityModel'), //'\EMedia\Oxygen\Entities\Auth\Ability',
+		'roleModel'			=> config('oxygen.roleModel'), //'\EMedia\Oxygen\Entities\Auth\Role',
+		'roleRepository'	=> config('oxygen.roleRepository'), //'\EMedia\Oxygen\Entities\Auth\RoleRepository',
+
+		'tenantModel'		=> config('oxygen.tenantModel'), //'\EMedia\Ozone\Entities\Auth\Tenant',
+		'tenantRepository'  => config('oxygen.tenantRepository'), //'\EMedia\Ozone\Entities\Auth\TenantRepository',
+		'multiTenantActive' => false,
 
 ];

@@ -54,7 +54,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// $this->updateServiceProviders();
 
 		// we don't ask for confirmation on this
-		$this->updateKnownStrings();
+		$this->replaceKnownStrings();
 
 		// publish assets and other files
 		$this->publishFiles();
@@ -72,20 +72,25 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	{
 		$userInput = [];
 
-		$userInput['projectName'] = $this->anticipate('What is the project name? (REQUIRED)', [], 'Star Wars');
+		$userInput['projectName'] = $this->ask('What is the project name? (REQUIRED)');
 		$userInput['fromEmail']   = $this->ask('What is the `from` email address for system emails?');
 
-		if ( ! $this->confirm('Should the project have Multi-Tenant support?', false) )
-			$userInput['multiTenant'] = false;
+		if ( $this->confirm('Should the project have Multi-Tenant support?', false) )
+			$userInput['multiTenant'] = true;
 
-		$this->projectConfig = array_merge($userInput, $this->projectConfig);
+		$this->projectConfig = array_merge($this->projectConfig, $userInput);
+//		if ($this->projectConfig['multiTenant'] && get_class($this) !== 'EMedia\Ozone\Commands\OzoneSetupCommand') {
+//			$this->error('For multi-tenant support use `Ozone` package.');
+//			exit;
+//		}
+
 	}
 
 	protected function defaultConfig()
 	{
 		return [
 			'description'	=> 'Setup options for Oxygen assets',
-			'multiTenant'	=> true,
+			'multiTenant'	=> false,
 		];
 	}
 
@@ -115,14 +120,13 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		if ($this->projectConfig['multiTenant'])
 		{
 			// publish tenants
-			$stubMap = [
+			$this->compileStubs([
 				[
 					'stub' => __DIR__ . '/../../Stubs/Migrations/001_create_tenants_tables.php',
 					'path' => database_path('migrations/' . $this->getTimestamp() . '_create_tenants_tables.php'),
 					'name' => 'Tenants Migration',
 				]
-			];
-			$this->compileStubs($stubMap);
+			]);
 		}
 
 		// bouncer migration (for roles and ACL)
@@ -138,19 +142,19 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$this->call($bouncerPublishCommand['command'], $bouncerPublishCommand['arguments']);
 		}
 
-		$this->compileStubs([
+		$this->compileStubs([[
 			'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_invitations_table.php',
 			'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_invitations_table.php'),
 			'name'	=> 'Invitations Migration'
-		]);
+		]]);
 
 		if ($this->projectConfig['multiTenant'])
 		{
-			$this->compileStubs([
-					'stub' => __DIR__ . '/../../Stubs/Migrations/003_update_bouncer_tables.php',
-					'path' => database_path('migrations/' . $this->getTimestamp() . '_update_bouncer_tables.php'),
-					'name' => 'Update bouncer tables to support multi-tenantcy'
-			]);
+			$this->compileStubs([[
+				'stub' => __DIR__ . '/../../Stubs/Migrations/003_update_bouncer_tables.php',
+				'path' => database_path('migrations/' . $this->getTimestamp() . '_update_bouncer_tables.php'),
+				'name' => 'Update bouncer tables to support multi-tenancy'
+			]]);
 		}
 
 	}
@@ -162,13 +166,32 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'stub'	=> __DIR__ . '/../../Stubs/Config/bower.stub',
 				'path'  => base_path('bower.json'),
 				'name'	=> 'bower.json'
-			],
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Common/User.php',
-				'path'  => app_path('User.php'),
-				'name'	=> 'User.php'
 			]
 		];
+
+		if ($this->projectConfig['multiTenant']) {
+			$stubMap[] = [
+				'stub'	=> __DIR__ . '/../../Stubs/Common/User.MultiTenant.php',
+				'path'  => app_path('User.php'),
+				'name'	=> 'User.php'
+			];
+			$stubMap[] = [
+				'stub'	=> __DIR__ . '/../../Stubs/Config/oxygen-multiTenant.php',
+				'path'  => config_path('oxygen.php'),
+				'name'	=> 'Multi-tenant configuration'
+			];
+		} else {
+			$stubMap[] = [
+				'stub'	=> __DIR__ . '/../../Stubs/Common/User.SingleTenant.php',
+				'path'  => app_path('User.php'),
+				'name'	=> 'User.php'
+			];
+			$stubMap[] = [
+				'stub'	=> __DIR__ . '/../../Stubs/Config/oxygen-singleTenant.php',
+				'path'  => config_path('oxygen.php'),
+				'name'	=> 'Single-tenant configuration'
+			];
+		}
 		return $stubMap;
 	}
 
@@ -208,60 +231,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		}
 	}
 
-	// DEPRECATED
-	private function updateServiceProviders()
-	{
-		if ($this->confirm('Update service providers in app.php?', true))
-		{
-			$editor = new FileEditor();
-			$inputFile = config_path('app.php');
-
-			$fields = [
-				[
-					'name'	=> 'providers',
-					'value' => '// Oxygen Support Providers '
-				],
-				[
-					'name'	=> 'providers',
-					'value' => "EMedia\MultiTenant\MultiTenantServiceProvider::class"
-				],
-				[
-					'name'	=> 'providers',
-					'value' => "EMedia\Generators\GeneratorServiceProvider::class"
-				],
-				[
-					'name'	=> 'providers',
-					'value' => "EMedia\MediaManager\MediaManagerServiceProvider::class"
-				],
-				[
-					'name'	=> 'providers',
-					'value' => "EMedia\Oxygen\OxygenServiceProvider::class"
-				],
-				[
-					'name'	=> 'aliases',
-					'value' => '// Oxygen Aliases '
-				],
-				[
-					'name'	=> 'aliases',
-					'value' => "'TenantManager' => EMedia\MultiTenant\Facades\TenantManager::class"
-				],
-				[
-					'name'	=> 'aliases',
-					'value' => "'FileHandler'   => EMedia\MediaManager\Facades\FileHandler::class"
-				],
-				[
-					'name'	=> 'aliases',
-					'value' => "'ImageHandler'  => EMedia\MediaManager\Facades\ImageHandler::class"
-				]
-			];
-
-			if ($editor->addPropertyValuesToFile($inputFile, $fields, config_path('appnew.php')))
-			{
-				$this->info('Service Providers updated.');
-			}
-		}
-	}
-
 
 	protected function addGenericRoutes()
 	{
@@ -279,7 +248,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		}
 	}
 
-	protected function updateKnownStrings()
+	protected function replaceKnownStrings()
 	{
 		$fromEmail   = $this->projectConfig['fromEmail'];
 		$projectName = $this->projectConfig['projectName'];
@@ -304,18 +273,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'path'		=> app_path('Http/routes.php'),
 				'search'	=> "return view('adminPanel::pages.home'",
 				'replace'	=> "return view('oxygen::pages.home'"
-			],
-//			[
-//				'path'		=> app_path('Http/Controllers/DashboardController.php'),
-//				'search'	=> "adminPanel::dashboard.dashboard",
-//				'replace'	=> "oxygen::dashboard.dashboard"
-//			]
+			]
 		];
 
 		foreach ($stringsToReplace as $stringData)
 		{
 			if ( ! $this->files->exists($stringData['path']) ) {
 				$this->error($stringData['path'] . ' not found.');
+				$this->progressLog['errors'][] = $stringData['path'] . ' not found to update.';
 				continue;
 			}
 			$this->replaceIn($stringData['path'], $stringData['search'], $stringData['replace']);
@@ -347,7 +312,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['public-assets'],
-				]
+				],
+				'desc'			=> 'JS, CSS and other assets in public folder'
 			],
 			[
 				'command'		=> 'vendor:publish',
@@ -370,13 +336,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 					'--tag'			=> ['auth-controllers'],
 				]
 			],
-//			[
-//				'command'		=> 'vendor:publish',
-//				'arguments'		=> [
-//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-//					'--tag'			=> ['auth-middleware'],
-//				]
-//			],
 			[
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
@@ -386,7 +345,27 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			]
 		];
 
-		if ($this->confirm('Publish assets?', false))
+//		if ($this->projectConfig['multiTenant']) {
+//			$assetInfo[] = [
+//				'command'		=> 'vendor:publish',
+//				'arguments'		=> [
+//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+//					'--tag'			=> ['config-multiTenant'],
+//					'--force'		=> true,
+//				]
+//			];
+//		} else {
+//			$assetInfo[] = [
+//				'command'		=> 'vendor:publish',
+//				'arguments'		=> [
+//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+//					'--tag'			=> ['config-singleTenant'],
+//					'--force'		=> true,
+//				]
+//			];
+//		}
+
+		if ($this->confirm('Publish project assets?', true))
 		{
 			foreach ($assetInfo as $asset)
 			{
@@ -397,6 +376,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 					$this->call($asset['command'], $asset['arguments']);
 			}
 		}
+
+
 	}
 
 	protected function showProgressLog()
@@ -405,6 +386,12 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 		foreach ($this->progressLog['info'] as $message)
 			$this->info($message);
+
+		if (count($this->progressLog['errors'])) {
+			$this->error('ERROR SUMMARY:');
+			foreach ($this->progressLog['errors'] as $message)
+				$this->error($message);
+		}
 	}
 
 	protected function buildClass($name, $stubPath = null)
@@ -425,6 +412,60 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	protected function getStub()
 	{
 		return '';
+	}
+
+	// DEPRECATED
+	private function updateServiceProviders()
+	{
+		if ($this->confirm('Update service providers in app.php?', true))
+		{
+			$editor = new FileEditor();
+			$inputFile = config_path('app.php');
+
+			$fields = [
+					[
+							'name'	=> 'providers',
+							'value' => '// Oxygen Support Providers '
+					],
+					[
+							'name'	=> 'providers',
+							'value' => "EMedia\MultiTenant\MultiTenantServiceProvider::class"
+					],
+					[
+							'name'	=> 'providers',
+							'value' => "EMedia\Generators\GeneratorServiceProvider::class"
+					],
+					[
+							'name'	=> 'providers',
+							'value' => "EMedia\MediaManager\MediaManagerServiceProvider::class"
+					],
+					[
+							'name'	=> 'providers',
+							'value' => "EMedia\Oxygen\OxygenServiceProvider::class"
+					],
+					[
+							'name'	=> 'aliases',
+							'value' => '// Oxygen Aliases '
+					],
+					[
+							'name'	=> 'aliases',
+							'value' => "'TenantManager' => EMedia\MultiTenant\Facades\TenantManager::class"
+					],
+					[
+							'name'	=> 'aliases',
+							'value' => "'FileHandler'   => EMedia\MediaManager\Facades\FileHandler::class"
+					],
+					[
+							'name'	=> 'aliases',
+							'value' => "'ImageHandler'  => EMedia\MediaManager\Facades\ImageHandler::class"
+					]
+			];
+
+			if ($editor->addPropertyValuesToFile($inputFile, $fields, config_path('appnew.php')))
+			{
+				$this->info('Service Providers updated.');
+			}
+		}
 	}
 
 

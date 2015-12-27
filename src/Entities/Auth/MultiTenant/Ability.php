@@ -1,7 +1,7 @@
 <?php
 
 
-namespace EMedia\Oxygen\Entities\Auth;
+namespace EMedia\Oxygen\Entities\Auth\MultiTenant;
 
 use EMedia\MultiTenant\Scoping\Traits\TenantScopedModelTrait;
 use Silber\Bouncer\Database\Ability as BouncerAbility;

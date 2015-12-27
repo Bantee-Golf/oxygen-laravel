@@ -47,7 +47,7 @@ class AuthController extends Controller
     {
         // see if this login is accepting any invitation tokens
         // if we have an incoming code, let the user join that team
-        $invitationsRepo = app(config('oxygen.invitationRepo'));
+        $invitationsRepo = app(config('acl.invitationRepo'));
         $tenantRepo		 = app('TenantRepository');
         $roleRepo		 = app('RoleRepository');
 
@@ -59,13 +59,19 @@ class AuthController extends Controller
                     ->with('error', 'The invitation is already used or expired.');
 
             // see if you can get a valid tenant
-            if (($tenant = $tenantRepo->find($invite->tenant_id)) && !empty($invite->role_id)) {
+            // if (($tenant = $tenantRepo->find($invite->tenant_id)) && !empty($invite->role_id)) {
+            if (!empty($invite->role_id)) {
                 // the RoleID should already be attached with the tenant
-                TenantManager::setTenant($tenant);
+
+                if (TenantManager::multiTenancyIsActive()) {
+                    $tenant = $tenantRepo->find($invite->tenant_id);
+                    TenantManager::setTenant($tenant);
+                    $tenant->users()->attach($user->id);
+                }
+
                 $role = $roleRepo->find($invite->role_id);
 
                 // attach tenant and the role
-                $tenant->users()->attach($user->id);
                 $user->roles()->attach($role->id);
 
                 return redirect()

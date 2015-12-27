@@ -1,5 +1,6 @@
 <?php
 
+use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +15,8 @@ class DatabaseSeeder extends Seeder
 	{
 		Model::unguard();
 
-		$this->call(TenantsTableSeeder::class);
+		if (TenantManager::multiTenantIsActive()) $this->call(TenantsTableSeeder::class);
+
 		$this->call(UsersTableSeeder::class);
 
 		Model::reguard();

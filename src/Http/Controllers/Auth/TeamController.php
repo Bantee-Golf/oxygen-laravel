@@ -20,6 +20,9 @@ class TeamController extends Controller
 	 */
 	public function switchTeam($teamId)
 	{
+		if ( ! TenantManager::multiTenantIsActive())
+			return redirect()->to('dashboard')->with('error', 'Invalid request.');
+
 		$this->tenantRepository = app('TenantRepository');
 		$user = Auth::user();
 

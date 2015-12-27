@@ -5,11 +5,6 @@
     "repositories": [
         {
             "type":"vcs",
-            "url":"/www/sites-laravel/workbench/EMedia/MultiTenant/.git",
-            "url_live":"https://bitbucket.org/elegantmedia/multitenant-laravel"
-        },
-        {
-            "type":"vcs",
             "url":"/www/sites-laravel/workbench/EMedia/Generators",
             "url_live":"https://bitbucket.org/elegantmedia/laravel-generators"
         },
@@ -21,18 +16,12 @@
         },
         {
             "type":"vcs",
-            "url":"/www/sites-laravel/workbench/EMedia/MediaManager",
-            "url_live":"git@bitbucket.org:elegantmedia/mediamanager-laravel.git"
-        },
-        {
-            "type":"vcs",
             "url":"/www/sites-laravel/workbench/EMedia/QuickData"
         }
     ],
     "require": {
         "php": ">=5.5.9",
         "illuminate/support": "5.0.x|5.1.x|5.2.x",
-        "emedia/multi-tenant": "dev-master",
         "emedia/helpers": "dev-master",
         "silber/bouncer": "^0.0.25",
         "emedia/quick-data": "dev-master",

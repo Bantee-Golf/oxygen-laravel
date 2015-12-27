@@ -51,17 +51,21 @@ trait RegistersUsers
 						->back()
 						->withInput($request->except('password', 'confirm_password'))
 						->with('error', 'The invitation is already used or expired. Please login or register for a new account.');
-			$tenant = $tenantRepo->find($invite->tenant_id);
+			if (TenantManager::multiTenancyIsActive()) $tenant = $tenantRepo->find($invite->tenant_id);
 		} else {
 			// create a tenant
-			$tenant = $tenantRepo->create($request->all());
+			if (TenantManager::multiTenancyIsActive()) $tenant = $tenantRepo->create($request->all());
 		}
 
-		TenantManager::setTenant($tenant);
+		if (TenantManager::multiTenancyIsActive()) {
+			TenantManager::setTenant($tenant);
 
-		// create a user and attach to tenant
-		$user = $this->create($request->all());
-		$tenant->users()->attach($user->id);
+			// create a user and attach to tenant
+			$user = $this->create($request->all());
+			$tenant->users()->attach($user->id);
+		} else {
+			$user = $this->create($request->all());
+		}
 
 		// assign this user as the admin of the tenant
 		if ( ! empty($invite->role_id) ) {

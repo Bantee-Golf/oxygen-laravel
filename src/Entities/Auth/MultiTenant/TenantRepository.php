@@ -1,6 +1,6 @@
 <?php
 
-namespace EMedia\Oxygen\Entities\Auth;
+namespace EMedia\Oxygen\Entities\Auth\MultiTenant;
 
 use App\Entities\BaseRepository;
 
@@ -20,9 +20,9 @@ class TenantRepository extends BaseRepository
 	{
 		$userModel = app(config('auth.model'));
 		$query = $userModel::where('id', $userId)
-					 ->whereHas('roles', function ($q) use ($tenantId) {
-					 	$q->where('tenant_id', $tenantId);
-					 });
+			->whereHas('roles', function ($q) use ($tenantId) {
+				$q->where('tenant_id', $tenantId);
+			});
 
 		return $query->first();
 	}
@@ -38,9 +38,9 @@ class TenantRepository extends BaseRepository
 	public function getTenantByUser($userId, $tenantId)
 	{
 		$query = $this->model->where('id', $tenantId)
-							 ->whereHas('users', function ($q) use ($userId) {
-							 	$q->where('user_id', $userId);
-							 });
+			->whereHas('users', function ($q) use ($userId) {
+				$q->where('user_id', $userId);
+			});
 		return $query->first();
 	}
 

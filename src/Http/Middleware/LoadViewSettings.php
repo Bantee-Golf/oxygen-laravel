@@ -47,7 +47,7 @@ class LoadViewSettings
 
 			// Tenants
 			// $tenants = TenantManager::allTenants();
-			View::share('tenants', $user->tenants);
+			if (TenantManager::multiTenantIsActive()) View::share('tenants', $user->tenants);
 		}
 
 		return $next($request);

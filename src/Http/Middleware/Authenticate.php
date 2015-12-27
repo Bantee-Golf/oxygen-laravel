@@ -57,12 +57,13 @@ class Authenticate {
 
 			// DONE: handle multiple tenants and save in session
 			// TODO: MUST check acceptInvite() in InvitationsController
-			if (TenantManager::isTenantNotSet()) TenantManager::setTenant($user->tenants()->first());
+			if (TenantManager::multiTenantIsActive() && TenantManager::isTenantNotSet())
+				TenantManager::setTenant($user->tenants()->first());
 
 		}
 
 		if ($user = $this->auth->user()) View::share('user', $user);
-		if (TenantManager::isTenantSet()) {
+		if (TenantManager::multiTenantIsActive() && TenantManager::isTenantSet()) {
 			$tenant = TenantManager::getTenant();
 			View::share('tenant', $tenant);
 		}

@@ -7,7 +7,6 @@ use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 class GroupsController extends Controller
@@ -23,7 +22,7 @@ class GroupsController extends Controller
 	{
 		$this->auth = $auth;
 		$this->roleRepository   = 	app('RoleRepository');
-		$this->tenantRepository = 	app('TenantRepository');
+		if (TenantManager::multiTenancyIsActive()) $this->tenantRepository = app('TenantRepository');
 
 		// only owners/admins should be able to add, edit, delete groups
 		$this->middleware('auth.acl:roles[owner|admin]', ['except' => [
@@ -41,8 +40,12 @@ class GroupsController extends Controller
 	public function index()
 	{
 		$roles  = $this->roleRepository->all();
-		$tenant = TenantManager::getTenant();
-		$users  = $tenant->users;
+		if (TenantManager::multiTenancyIsActive()) {
+			$tenant = TenantManager::getTenant();
+			$users  = $tenant->users;
+		} else {
+			$users = \User::all();
+		}
 
 		$rolesData = [];
 		$availableRoles = [];
@@ -123,14 +126,18 @@ class GroupsController extends Controller
 		$roleIds = $request->get('selectRoles');
 		$userIds = $request->get('selectUsers');
 
-		$tenant  = TenantManager::getTenant();
-
 		foreach ($roleIds as $roleId) {
 			$role = $this->roleRepository->find($roleId);
 			if ($role) {
 				foreach ($userIds as $userId) {
 					// the user should already be in some team for this tenant
-					$savedUser = $this->tenantRepository->getUserByTenant($userId, $tenant->id);
+					if (TenantManager::multiTenancyIsActive()) {
+						$tenant  = TenantManager::getTenant();
+						$savedUser = $this->tenantRepository->getUserByTenant($userId, $tenant->id);
+					} else {
+						$savedUser = \User::find($userId);
+					}
+
 					if ($savedUser) {
 						// if already in group, ignore the request
 						if ($savedUser->is($role->name)) continue;
@@ -157,8 +164,13 @@ class GroupsController extends Controller
 		if (!$role) return redirect()->route('account');
 
 		$availableRoles = $this->roleRepository->allExcept(['owner'])->toArray();
-		$tenant = TenantManager::getTenant();
-		$users = $tenant->users;
+
+		if (TenantManager::multiTenancyIsActive()) {
+			$tenant = TenantManager::getTenant();
+			$users = $tenant->users;
+		} else {
+			$users = \User::all();
+		}
 		return view('oxygen::groups.group-users-all', compact('role', 'users', 'availableRoles'));
 	}
 

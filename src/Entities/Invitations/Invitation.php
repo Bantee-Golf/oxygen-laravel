@@ -3,14 +3,11 @@
 namespace EMedia\Oxygen\Entities\Invitations;
 
 use Carbon\Carbon;
-use EMedia\MultiTenant\Scoping\Traits\TenantScopedModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Invitation extends Model
 {
 	protected $fillable = ['email'];
-
-	use TenantScopedModelTrait;
 
 	public function getDates()
 	{
