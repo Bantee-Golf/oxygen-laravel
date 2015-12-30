@@ -36,6 +36,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// get developer input
 		$this->getDeveloperInput();
 
+		$this->generateGeneratorPackageFiles();
+
 		// generate the migrations
 		$this->generateMigrations();
 
@@ -105,6 +107,12 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		file_put_contents($this->configFile, json_encode($this->projectConfig, JSON_PRETTY_PRINT));
 	}
 
+
+	protected function generateGeneratorPackageFiles()
+	{
+		$this->call('scaffold:common:config');
+		$this->call('scaffold:common');
+	}
 
 	protected function generateMigrations()
 	{
