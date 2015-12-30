@@ -130,5 +130,5 @@ On `.env` file, by adding `DASHBOARD_AUTHENTICATION=false`, it will skip the log
 
 
 ## Issues/Bugs?
-- Submit a pull request (on a new branch) or log an issue.
+- Submit a pull request (on a new branch) or [submit an issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues).
 - **Do not** commit new changes directly to the `master` branch.

@@ -5,19 +5,19 @@
     "repositories": [
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/laravel-generators"
+            "url":"https://bitbucket.org/elegantmedia/laravel-generators.git"
         },
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/laravel-helpers"
+            "url":"https://bitbucket.org/elegantmedia/laravel-helpers.git"
         },
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/quickdata-laravel"
+            "url":"https://bitbucket.org/elegantmedia/quickdata-laravel.git"
         },
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/multitenant-laravel"
+            "url":"https://bitbucket.org/elegantmedia/multitenant-laravel.git"
         }
     ],
     "require": {
