@@ -22,9 +22,11 @@ This package has the built-in support for the following.
 ## Requirements
 
 The following are required for a successful installation.
+
 - [Laravel 5.2+](https://laravel.com/docs/5.2#installing-laravel)
 
 To install CSS JS for the dashboard, the following are required.
+
 - [NodeJS with NPM](https://docs.npmjs.com/getting-started/installing-node)
 - [Bower](http://bower.io/#install-bower)
 
