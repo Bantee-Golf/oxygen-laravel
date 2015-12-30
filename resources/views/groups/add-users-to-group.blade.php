@@ -1,9 +1,3 @@
-
-{{--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userControlModal" data-whatever="@mdo">Open modal for @mdo</button>--}}
-{{--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userControlModal" data-whatever="@fat">Open modal for @fat</button>--}}
-{{--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userControlModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>--}}
-{{--...more buttons...--}}
-
 <div class="modal fade" id="userControlModal" tabindex="-1" role="dialog" aria-labelledby="userControlModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -111,6 +105,9 @@
                 $('#selectRoles').select2('val', role_id);
 
                 modal.find('.modal-title').text('Add New Users to a Group');
+
+                hideModalErrorMessage();
+                hideLoadingIndicator();
             });
 
             $('#userControlModal').on('hidden.bs.modal', function (event) {

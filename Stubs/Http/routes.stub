@@ -1,72 +1,71 @@
-// Oxygen routes
-
-// Home
-Route::get('/', function () {
-	return view('oxygen::pages.home', ['title' => 'The Awesomeness Starts Here...']);
-});
 
 
-// User login
-Route::get( 'auth/login', 	 'Auth\AuthController@getLogin');
-Route::post('auth/login', 	 'Auth\AuthController@postLogin');
-Route::get( 'auth/logout',   'Auth\AuthController@getLogout');
-
-// Registration
-Route::get( 'auth/register', 'Auth\AuthController@getRegister');
-Route::post('auth/register', 'Auth\AuthController@postRegister');
-
-
-Route::group(['middleware' => 'auth'], function()
-{
-	// dashboard
-	Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@dashboard']);
-
-	// auth
-	Route::get('auth/profile', 	['as' => 'account', 'uses' => 'Auth\AuthController@getProfile']);
-	Route::put('auth/profile', 	'Auth\AuthController@updateProfile');
-	Route::get('password/update',	'Auth\PasswordController@getUpdate');
-	Route::post('password/update',	'Auth\PasswordController@postUpdate');
-
-	// my account
-	Route::group(['prefix' => 'account'], function ()
-	{
-		// groups (roles)
-		Route::group(['prefix' => 'groups'], function () {
-            Route::get (  '/',			'Auth\Groups\GroupsController@index');
-            Route::get (  '/new',		'Auth\Groups\GroupsController@create');
-            Route::post(  '/',			'Auth\Groups\GroupsController@store');
-            Route::post(  '/users',		'Auth\Groups\GroupsController@storeUsers');
-            Route::get (  '{id}/users', 	'Auth\Groups\GroupsController@showUsers');
-            Route::delete('/{roleId}/users/{userId}', 'Auth\Groups\GroupsController@destroyUser');
-            Route::get (  '/{id}/edit',	'Auth\Groups\GroupsController@edit');
-            Route::put (  '/{id}',		'Auth\Groups\GroupsController@update');
-            Route::delete('/{id}',	'Auth\Groups\GroupsController@destroy');
-        });
-
-		Route::get('invitations',			'Auth\InvitationsController@index');
-		Route::post('invitations',			'Auth\InvitationsController@send');
-		Route::get('invitations/{id}/edit',	'Auth\InvitationsController@edit');
-		Route::put('invitations/{id}',		'Auth\InvitationsController@update');
-		Route::delete('invitations/{id}',	'Auth\InvitationsController@destroy');
-
-		// switch tenants (teams)
-		Route::get('teams/switch/{id}', 'Auth\TeamController@switchTeam');
+// Start Oxygen routes
+Route::group(['middleware' => ['web']], function () {
+	// Home
+	Route::get('/', function () {
+		return view('oxygen::pages.home', ['title' => 'The Awesomeness Starts Here...']);
 	});
+
+	// User login
+	Route::get( 'auth/login', 	 'Auth\AuthController@getLogin');
+	Route::post('auth/login', 	 'Auth\AuthController@postLogin');
+	Route::get( 'auth/logout',   'Auth\AuthController@getLogout');
+
+	// Registration
+	Route::get( 'auth/register', 'Auth\AuthController@getRegister');
+	Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+	Route::group(['middleware' => 'auth'], function()
+	{
+		// dashboard
+		Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@dashboard']);
+
+		// auth
+		Route::get('auth/profile', 	['as' => 'account', 'uses' => 'Auth\AuthController@getProfile']);
+		Route::put('auth/profile', 	'Auth\AuthController@updateProfile');
+		Route::get('password/update',	'Auth\PasswordController@getUpdate');
+		Route::post('password/update',	'Auth\PasswordController@postUpdate');
+
+		// my account
+		Route::group(['prefix' => 'account'], function ()
+		{
+			// groups (roles)
+			Route::group(['prefix' => 'groups'], function () {
+	            Route::get (  '/',			'Auth\Groups\GroupsController@index');
+	            Route::get (  '/new',		'Auth\Groups\GroupsController@create');
+	            Route::post(  '/',			'Auth\Groups\GroupsController@store');
+	            Route::post(  '/users',		'Auth\Groups\GroupsController@storeUsers');
+	            Route::get (  '{id}/users', 	'Auth\Groups\GroupsController@showUsers');
+	            Route::delete('/{roleId}/users/{userId}', 'Auth\Groups\GroupsController@destroyUser');
+	            Route::get (  '/{id}/edit',	'Auth\Groups\GroupsController@edit');
+	            Route::put (  '/{id}',		'Auth\Groups\GroupsController@update');
+	            Route::delete('/{id}',	'Auth\Groups\GroupsController@destroy');
+	        });
+
+			Route::get('invitations',			'Auth\InvitationsController@index');
+			Route::post('invitations',			'Auth\InvitationsController@send');
+			Route::get('invitations/{id}/edit',	'Auth\InvitationsController@edit');
+			Route::put('invitations/{id}',		'Auth\InvitationsController@update');
+			Route::delete('invitations/{id}',	'Auth\InvitationsController@destroy');
+
+			// switch tenants (teams) - only for Multi-tenants
+			Route::get('teams/switch/{id}', 'Auth\TeamController@switchTeam');
+		});
+	});
+
+	Route::get('invitations/join/{code}', [
+		'as'	=> 'invitations.join',
+		'uses'	=> 'Auth\InvitationsController@showJoin'
+	]);
+
+	Route::get('auth/{_missing}', 'Auth\AuthController@missingMethod');
+	Route::post('auth/{_missing}', 'Auth\AuthController@missingMethod');
+
+	// reset password
+	Route::get('password/email',	'Auth\PasswordController@getEmail');
+	Route::post('password/email',	'Auth\PasswordController@postEmail');
+	Route::get('password/reset/{one?}/{two?}/{three?}/{four?}/{five?}',	'Auth\PasswordController@getReset');
+	Route::post('password/reset',	'Auth\PasswordController@postReset');
 });
-
-
-Route::get('invitations/join/{code}', [
-	'as'	=> 'invitations.join',
-	'uses'	=> 'Auth\InvitationsController@showJoin'
-]);
-
-Route::get('auth/{_missing}', 'Auth\AuthController@missingMethod');
-Route::post('auth/{_missing}', 'Auth\AuthController@missingMethod');
-
-// reset password
-Route::get('password/email',	'Auth\PasswordController@getEmail');
-Route::post('password/email',	'Auth\PasswordController@postEmail');
-Route::get('password/reset/{one?}/{two?}/{three?}/{four?}/{five?}',	'Auth\PasswordController@getReset');
-Route::post('password/reset',	'Auth\PasswordController@postReset');
-
 // End Oxygen routes

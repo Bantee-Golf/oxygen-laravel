@@ -28,4 +28,9 @@ trait OxygenUserTrait
 		return $this->bouncerIs($roles);
 	}
 
+	public function hasFirstName()
+	{
+		return (empty($this->name))? false: true;
+	}
+
 }

@@ -17,15 +17,20 @@
         {
             "type":"vcs",
             "url":"/www/sites-laravel/workbench/EMedia/QuickData"
+        },
+        {
+            "type":"vcs",
+            "url":"/www/sites-laravel/workbench/EMedia/MultiTenant"
         }
     ],
     "require": {
         "php": ">=5.5.9",
-        "illuminate/support": "5.0.x|5.1.x|5.2.x",
+        "illuminate/support": "5.2.x",
         "emedia/helpers": "dev-master",
         "silber/bouncer": "^0.0.25",
         "emedia/quick-data": "dev-master",
-        "emedia/generators": "dev-master"
+        "emedia/generators": "dev-master",
+        "emedia/multi-tenant": "dev-master"
     },
     "require-dev": {
         "laracasts/generators": "^1.1"

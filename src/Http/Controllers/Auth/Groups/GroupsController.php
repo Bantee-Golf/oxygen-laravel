@@ -2,8 +2,9 @@
 
 namespace EMedia\Oxygen\Http\Controllers\Auth\Groups;
 
+use App\User;
 use EMedia\MultiTenant\Facades\TenantManager;
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -44,7 +45,7 @@ class GroupsController extends Controller
 			$tenant = TenantManager::getTenant();
 			$users  = $tenant->users;
 		} else {
-			$users = \User::all();
+			$users = User::all();
 		}
 
 		$rolesData = [];
@@ -135,7 +136,7 @@ class GroupsController extends Controller
 						$tenant  = TenantManager::getTenant();
 						$savedUser = $this->tenantRepository->getUserByTenant($userId, $tenant->id);
 					} else {
-						$savedUser = \User::find($userId);
+						$savedUser = User::find($userId);
 					}
 
 					if ($savedUser) {
@@ -149,7 +150,7 @@ class GroupsController extends Controller
 			}
 		}
 
-		// return an error to the user
+		// for testing: return an error to the user
 		// return response(['message' => 'something'], 404);
 
 		return [
@@ -161,7 +162,7 @@ class GroupsController extends Controller
 	{
 		$role = $this->roleRepository->usersInRole($groupId);
 
-		if (!$role) return redirect()->route('account');
+		if (!$role) return redirect()->route('account')->with('error', 'Invalid group request.');
 
 		$availableRoles = $this->roleRepository->allExcept(['owner'])->toArray();
 
@@ -169,7 +170,7 @@ class GroupsController extends Controller
 			$tenant = TenantManager::getTenant();
 			$users = $tenant->users;
 		} else {
-			$users = \User::all();
+			$users = User::all();
 		}
 		return view('oxygen::groups.group-users-all', compact('role', 'users', 'availableRoles'));
 	}

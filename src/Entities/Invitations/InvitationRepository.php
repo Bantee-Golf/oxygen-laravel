@@ -4,6 +4,7 @@
 namespace EMedia\Oxygen\Entities\Invitations;
 
 use Carbon\Carbon;
+use EMedia\MultiTenant\Facades\TenantManager;
 use EMedia\QuickData\Entities\BaseRepository;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
@@ -21,14 +22,6 @@ class InvitationRepository extends BaseRepository
 
 	public function getValidInvitationByCode($invitation_code, $allTenants = false)
 	{
-		if ($allTenants)
-		{
-			$invitation = Invitation::where('invitation_code', $invitation_code)
-								->whereNull('claimed_at')
-								->first();
-			return $invitation;
-		}
-
 		return Invitation::where('invitation_code', $invitation_code)
 				->whereNull('claimed_at')
 				->first();
@@ -56,12 +49,18 @@ class InvitationRepository extends BaseRepository
 	public function createNewInvitation($inviteEmail = null, $user = null, $role, $senderName = null, $team = null)
 	{
 		$inviteEmail = trim($inviteEmail);
+		$tenant 	 = null;
 		if (empty($inviteEmail)) return false;
+
+		if (TenantManager::multiTenancyIsActive()) {
+			$tenant = TenantManager::getTenant();
+		}
 
 		// if there's already an invite for this user, return that
 		$query = Invitation::where('email', trim($inviteEmail));
 		// if ($team) $query->where('team_id', $team->id);
 		// if ($user) $query->where('referrer_id', $user->id);
+		if ($tenant) $query->where('tenant_id', $tenant->id);
 		$invite = $query->first();
 
 		if ( (!$invite) || empty($invite->invitation_code))
@@ -74,8 +73,8 @@ class InvitationRepository extends BaseRepository
 				$invite->invitation_code 	= $invitationCode;
 				$invite->role_id = $role->id;
 				// if ($senderName) $invite->first_name = $senderName;
-				// if ($team) $invite->team_id 	= $team->id;
-				if ($user) $invite->referrer_id = $user->id;
+				if ($tenant) $invite->tenant_id 	= $tenant->id;
+				if ($user)   $invite->referrer_id 	= $user->id;
 
 				// use Laravel method instead of REMOTE_ADDR, useful if we need a load balancer in the future
 				$invite->referrer_ip = Request::getClientIp();

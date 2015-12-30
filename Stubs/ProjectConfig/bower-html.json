@@ -1,0 +1,26 @@
+{
+  "name": "Oxygen Panel",
+  "version": "0.0.1",
+  "authors": [
+    "Shane Perera <shane@shaneperera.com>"
+  ],
+  "description": "Oxygen Admin Panel for Apps",
+  "license": "MIT",
+  "homepage": "http://www.elegantmedia.com.au/",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public_html/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "typeahead.js": "~0.11.1",
+    "select2": "~4.0.0",
+    "select2-bootstrap-css": "~1.4.6",
+    "jquery-validation": "~1.14.0",
+    "font-awesome": "fontawesome#~4.5.0"
+  }
+}

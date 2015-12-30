@@ -1,4 +1,4 @@
-@extends('oxygen::app')
+@extends('oxygen::layouts.master-auth')
 
 @section('content')
 <div class="container-fluid">
@@ -21,12 +21,14 @@
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Company Name</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="company_name" value="{{ old('company_name') }}">
+						@if (TenantManager::multiTenancyIsActive())
+							<div class="form-group">
+								<label class="col-md-4 control-label">Company Name</label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" name="company_name" value="{{ old('company_name') }}">
+								</div>
 							</div>
-						</div>
+						@endif
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">E-Mail Address</label>

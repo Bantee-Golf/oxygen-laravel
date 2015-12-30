@@ -78,14 +78,20 @@ trait RegistersUsers
 			// add the default Roles
 			$defaultRoles = config('acl.defaultRoles');
 			foreach ($defaultRoles as $defaultRole) {
-				$role = $roleRepo->newModel();
-				$role->fill($defaultRole);
-				$role->name = $defaultRole['name'];
-				$role->save();
+				// create the default roles if they don't exist
+				// this can be Seeded for single-tenants, but required in multi-tenancy
+				$role = $roleRepo->findByName($defaultRole['name']);
+				if (!$role) {
+					$role = $roleRepo->newModel();
+					$role->fill($defaultRole);
+					$role->name = $defaultRole['name'];
+					$role->save();
+				}
 
-				// add this user as the default Owner
-				if ($defaultRole['name'] == 'owner') $user->roles()->attach($role->id);
+				// add this role when the user registers
+				if ($defaultRole['assignWhenRegister']) $user->roles()->attach($role->id);
 			}
+			Session::flash('success', 'Your account has been created and you\'re now logged in.');
 		}
 
 		Auth::login($user);

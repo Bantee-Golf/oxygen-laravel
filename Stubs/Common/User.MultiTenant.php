@@ -4,39 +4,16 @@ namespace App;
 
 use EMedia\MultiTenant\Auth\MultiTenantUserTrait;
 use EMedia\Oxygen\Entities\Traits\OxygenUserTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-
-class User extends Model implements CanResetPasswordContract, AuthenticatableContract
+class User extends Authenticatable
 {
-	use Authenticatable, CanResetPassword;
 
 	use MultiTenantUserTrait, OxygenUserTrait {
 		OxygenUserTrait::roles insteadof MultiTenantUserTrait;
 	}
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'users';
-
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
 	protected $fillable = ['name', 'email', 'password'];
+	protected $hidden   = ['password', 'remember_token'];
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = ['password', 'remember_token'];
 }

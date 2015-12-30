@@ -1,4 +1,4 @@
-@extends('oxygen::layouts.master-front')
+@extends('oxygen::layouts.master-frontend')
 
 @section('title', $title)
 

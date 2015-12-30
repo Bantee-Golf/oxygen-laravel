@@ -8,17 +8,15 @@ use EMedia\QuickData\Entities\BaseRepository;
 class RoleRepository extends BaseRepository
 {
 
-	protected $model;
-
-	public function __construct(Role $model)
+	public function __construct()
 	{
+		$model = app(config('auth.roleModel'));
 		parent::__construct($model);
-		$this->model = $model;
 	}
 
 	public function allExcept(array $exceptRoles)
 	{
-		$query = Role::select();
+		$query = $this->model->select();
 		foreach ($exceptRoles as $role) {
 			$query->where('name', '<>', $role);
 		}
@@ -26,9 +24,14 @@ class RoleRepository extends BaseRepository
 		return $query->get();
 	}
 
+	public function findByName($roleName)
+	{
+		return $this->model->where('name', $roleName)->first();
+	}
+
 	public function exists($roleName)
 	{
-		$role = Role::where('name', $roleName)->first();
+		$role = $this->model->where('name', $roleName)->first();
 		return ($role)? true: false;
 	}
 
@@ -57,7 +60,7 @@ class RoleRepository extends BaseRepository
 
 	public function usersInRole($groupId, $onlyFirstResult = true)
 	{
-		$query =  Role::where('id', $groupId)->with('users');
+		$query = $this->model->select()->where('id', $groupId)->with('users');
 
 		// if (count($except)) $query->whereNotIn('name', $except);
 		if ($onlyFirstResult) return $query->first();

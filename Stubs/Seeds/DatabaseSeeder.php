@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 	{
 		Model::unguard();
 
-		if (TenantManager::multiTenantIsActive()) $this->call(TenantsTableSeeder::class);
+		if (TenantManager::multiTenancyIsActive()) $this->call(TenantsTableSeeder::class);
 
 		$this->call(UsersTableSeeder::class);
 

@@ -21,16 +21,23 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen'),
 		], 'views');
 
-		// assets which should be compiled before publishing (JS source, SASS etc)
+		// SASS files
 		$this->publishes([
-			__DIR__ . '/../resources/assets' => base_path('resources/assets'),
-		], 'source-public-assets');
+			__DIR__ . '/../resources/assets/sass' => base_path('resources/assets/sass'),
+		], 'source-sass');
 
 		// public static assets (JS, CSS etc)
 		$this->publishes([
-			__DIR__ . '/../public_html/js'  => public_path('/js'),
+			__DIR__ . '/../public_html/js/theme'  => public_path('/js/theme'),
 			__DIR__ . '/../public_html/css' => public_path('/css'),
+			__DIR__ . '/../public_html/favicon.ico' => public_path('/favicon.ico'),
 		], 'public-assets');
+
+		// angular app source
+		$this->publishes([
+			__DIR__ . '/../resources/assets/js' => base_path('resources/assets/js'),
+			__DIR__ . '/../public_html/js' 		=> public_path('/js'),
+		], 'angular-source');
 
 		// publish common controllers
 		$this->publishes([
@@ -48,8 +55,7 @@ class OxygenServiceProvider extends ServiceProvider
 
 		// publish config
 		$this->publishes([
-			__DIR__.'/../config/acl.php'  => config_path('acl.php'),
-			// __DIR__.'/../config/auth.php' => config_path('auth.php'),
+				__DIR__.'/../config/settings.php' => config_path('settings.php')
 		], 'config');
 
 	}

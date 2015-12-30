@@ -7,8 +7,8 @@
     <title>@yield('title', 'Welcome')</title>
     <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW" />
 
-    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/dist/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="//oss.maxcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/dist/app.css" />
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -59,8 +59,10 @@
 
 @yield('content')
 
-<!-- Scripts -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+@yield('scripts')
+
 </body>
 </html>

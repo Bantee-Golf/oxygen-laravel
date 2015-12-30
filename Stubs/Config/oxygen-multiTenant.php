@@ -8,6 +8,6 @@ return [
 
 	'tenantModel'		=> '\EMedia\Oxygen\Entities\Auth\MultiTenant\Tenant',
 	'tenantRepository'  => '\EMedia\Oxygen\Entities\Auth\MultiTenant\TenantRepository',
-	'multiTenantActive' => false,
+	'multiTenantActive' => true,
 
 ];

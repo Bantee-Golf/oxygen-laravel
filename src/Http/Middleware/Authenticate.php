@@ -37,7 +37,7 @@ class Authenticate {
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (config('app.enableAuthentication'))
+		if (config('auth.dashboardAuthentication'))
 		{
 			if ($this->auth->guest())
 			{
@@ -57,13 +57,13 @@ class Authenticate {
 
 			// DONE: handle multiple tenants and save in session
 			// TODO: MUST check acceptInvite() in InvitationsController
-			if (TenantManager::multiTenantIsActive() && TenantManager::isTenantNotSet())
+			if (TenantManager::multiTenancyIsActive() && TenantManager::isTenantNotSet())
 				TenantManager::setTenant($user->tenants()->first());
 
 		}
 
 		if ($user = $this->auth->user()) View::share('user', $user);
-		if (TenantManager::multiTenantIsActive() && TenantManager::isTenantSet()) {
+		if (TenantManager::multiTenancyIsActive() && TenantManager::isTenantSet()) {
 			$tenant = TenantManager::getTenant();
 			View::share('tenant', $tenant);
 		}

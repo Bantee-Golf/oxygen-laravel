@@ -1,4 +1,4 @@
-@extends('oxygen::app')
+@extends('oxygen::layouts.master-auth')
 
 @section('content')
 

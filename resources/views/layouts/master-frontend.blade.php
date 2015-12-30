@@ -9,17 +9,14 @@
     <title>@yield('title', 'EM Project')</title>
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//oss.maxcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 
     <!-- Custom Fonts -->
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//oss.maxcdn.com/fontawesome/4.5.0/css/font-awesome.min.css" />
 
-    <!-- Plugin CSS -->
-    <link rel="stylesheet" href="/css/theme/animate.min.css" type="text/css">
-
-    <!-- Custom CSS -->
+    <link rel="stylesheet" href="//oss.maxcdn.com/animatecss/3.5.0/animate.min.css" type="text/css">
     <link rel="stylesheet" href="/css/theme/creative.css" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -72,9 +69,7 @@
                 </li>
             </ul>
         </div>
-        <!-- /.navbar-collapse -->
     </div>
-    <!-- /.container-fluid -->
 </nav>
 
     @yield('contents')
@@ -83,18 +78,14 @@
         @include('oxygen::partials.footer')
     @endif
 
-            <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//oss.maxcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
+    {{-- All files below are to support the frontend theme. --}}
+    {{-- If you're changing the frontend, remove all files below. --}}
     <script src="js/theme/jquery.easing.min.js"></script>
     <script src="js/theme/jquery.fittext.js"></script>
     <script src="js/theme/wow.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
     <script src="js/theme/creative.js"></script>
 
     @yield('scripts')

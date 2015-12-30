@@ -31,12 +31,10 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	public function fire()
 	{
-		$this->readSetupConfig();
+		// $this->readSetupConfig();
 
 		// get developer input
 		$this->getDeveloperInput();
-
-		$this->saveSetupConfig();
 
 		// generate the migrations
 		$this->generateMigrations();
@@ -53,14 +51,16 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// update app service providers
 		// $this->updateServiceProviders();
 
-		// we don't ask for confirmation on this
-		$this->replaceKnownStrings();
-
 		// publish assets and other files
 		$this->publishFiles();
 
+		// we don't ask for confirmation on this
+		$this->replaceKnownStrings();
+
 		// Setup Completed! Show any info to the user.
 		$this->showProgressLog();
+
+		// $this->saveSetupConfig();
 	}
 
 
@@ -72,18 +72,15 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	{
 		$userInput = [];
 
-		$userInput['projectName'] = $this->ask('What is the project name? (REQUIRED)');
-		$userInput['fromEmail']   = $this->ask('What is the `from` email address for system emails?');
+		$userInput['projectName'] 	 = $this->ask('What is the project name?');
+		$userInput['fromEmail']   	 = $this->ask('What is the `from` email address for system emails?');
+		$userInput['seedAdminEmail'] = $this->anticipate('What is your email to seed the database?', [], $userInput['fromEmail']);
+		$userInput['dashboardType']  = $this->choice('What should be the type of the dashboard?', ['HTML/CSS (Default)', 'Angular'], 0);
 
-		if ( $this->confirm('Should the project have Multi-Tenant support?', false) )
+		if ($this->confirm('Should the project have Multi-Tenant support?', false))
 			$userInput['multiTenant'] = true;
 
 		$this->projectConfig = array_merge($this->projectConfig, $userInput);
-//		if ($this->projectConfig['multiTenant'] && get_class($this) !== 'EMedia\Ozone\Commands\OzoneSetupCommand') {
-//			$this->error('For multi-tenant support use `Ozone` package.');
-//			exit;
-//		}
-
 	}
 
 	protected function defaultConfig()
@@ -142,17 +139,25 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$this->call($bouncerPublishCommand['command'], $bouncerPublishCommand['arguments']);
 		}
 
-		$this->compileStubs([[
-			'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_invitations_table.php',
-			'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_invitations_table.php'),
-			'name'	=> 'Invitations Migration'
-		]]);
+		$stubMap = [
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_invitations_table.php',
+				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_invitations_table.php'),
+				'name'	=> 'Invitations Migration'
+			],
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Migrations/003_update_bouncer_tables_common.php',
+				'path'  => database_path('migrations/' . $this->getTimestamp() . '_update_bouncer_tables_common.php'),
+				'name'	=> 'Add new columns to Bouncer tables'
+			]
+		];
+		$this->compileStubs($stubMap);
 
 		if ($this->projectConfig['multiTenant'])
 		{
 			$this->compileStubs([[
-				'stub' => __DIR__ . '/../../Stubs/Migrations/003_update_bouncer_tables.php',
-				'path' => database_path('migrations/' . $this->getTimestamp() . '_update_bouncer_tables.php'),
+				'stub' => __DIR__ . '/../../Stubs/Migrations/004_update_bouncer_tables_multi_tenant.php',
+				'path' => database_path('migrations/' . $this->getTimestamp() . '_update_bouncer_tables_multi_tenant.php'),
 				'name' => 'Update bouncer tables to support multi-tenancy'
 			]]);
 		}
@@ -161,13 +166,19 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	protected function getStubMap()
 	{
-		$stubMap = [
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Config/bower.stub',
-				'path'  => base_path('bower.json'),
-				'name'	=> 'bower.json'
-			]
+		$stubMap = [];
+
+		$stub = [
+			'path'	=> base_path('bower.json'),
+			'name'	=> 'Bower config',
 		];
+
+		if ($this->projectConfig['dashboardType'] == 'Angular') {
+			$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower-angular.json';
+		} else {
+			$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower-html.json';
+		}
+		$stubMap[] = $stub;
 
 		if ($this->projectConfig['multiTenant']) {
 			$stubMap[] = [
@@ -176,9 +187,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'name'	=> 'User.php'
 			];
 			$stubMap[] = [
-				'stub'	=> __DIR__ . '/../../Stubs/Config/oxygen-multiTenant.php',
+				'stub'	=> __DIR__ . '/../../Stubs/config/oxygen-multiTenant.php',
 				'path'  => config_path('oxygen.php'),
 				'name'	=> 'Multi-tenant configuration'
+			];
+			$stubMap[] = [
+				'stub'	=> __DIR__ . '/../../Stubs/config/acl-multiTenant.php',
+				'path'  => config_path('acl.php'),
+				'name'	=> 'ACL for multi-tenant configuration'
 			];
 		} else {
 			$stubMap[] = [
@@ -187,11 +203,19 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'name'	=> 'User.php'
 			];
 			$stubMap[] = [
-				'stub'	=> __DIR__ . '/../../Stubs/Config/oxygen-singleTenant.php',
+				'stub'	=> __DIR__ . '/../../Stubs/config/oxygen-singleTenant.php',
 				'path'  => config_path('oxygen.php'),
 				'name'	=> 'Single-tenant configuration'
 			];
+			$stubMap[] = [
+				'stub'	=> __DIR__ . '/../../Stubs/config/acl-singleTenant.php',
+				'path'  => config_path('acl.php'),
+				'name'	=> 'ACL for single-tenant configuration'
+			];
 		}
+
+		$this->progressLog['info'][] = 'Bower installation should be completed. Run `bower install`.';
+
 		return $stubMap;
 	}
 
@@ -207,14 +231,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$fields = [
 				[
 					'name'	=> 'routeMiddleware',
-					'value' => "'auth' => \EMedia\Oxygen\Http\Middleware\Authenticate::class"
-				],
-				[
-					'name'	=> 'middleware',
-					'value' => "\EMedia\Oxygen\Http\Middleware\LoadViewSettings::class"
-				],
-				[
-					'name'	=> 'routeMiddleware',
 					'value' => "'auth.acl' => \EMedia\Oxygen\Http\Middleware\AuthenticateAcl::class"
 				],
 				[
@@ -228,6 +244,17 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				$this->info('Middleware updated.');
 				$this->progressLog['info'][] = 'Middleware updated. Check `Http\Kernel.php` for duplicate entries.';
 			}
+
+			$fields = [
+				[
+					'name'	=> 'web',
+					'value' => "\EMedia\Oxygen\Http\Middleware\LoadViewSettings::class"
+				],
+			];
+			$editor->addArrayValuesToFile($inputFile, $fields);
+			$this->replaceIn($inputFile,
+				"'auth' => \App\Http\Middleware\Authenticate::class",
+				"'auth' => \EMedia\Oxygen\Http\Middleware\Authenticate::class");
 		}
 	}
 
@@ -256,7 +283,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stringsToReplace = [
 			[
 				'path'		=> app_path('Http/Middleware/RedirectIfAuthenticated.php'),
-				'search'	=> "return redirect('/home');",
+				'search'	=> "return redirect('/');",
 				'replace'	=> "return redirect('/dashboard');"
 			],
 			[
@@ -270,21 +297,39 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'replace'	=> "$projectName"
 			],
 			[
-				'path'		=> app_path('Http/routes.php'),
-				'search'	=> "return view('adminPanel::pages.home'",
-				'replace'	=> "return view('oxygen::pages.home'"
+				'path'		=> config_path('auth.php'),
+				'search'	=> "auth.emails.password",
+				'replace'	=> "oxygen::emails.password"
+			],
+			[
+				'path'		=> database_path('seeds/UsersTableSeeder.php'),
+				'search'	=> "shane.emedia@gmail.com",
+				'replace'	=> $this->projectConfig['seedAdminEmail']
 			]
 		];
 
+		if ($this->projectConfig['dashboardType'] == 'Angular') {
+			$stringsToReplace[] = [
+				'path'		=> app_path('Http/Controllers/DashboardController.php'),
+				'search'	=> "return view('oxygen::dashboard.dashboard'",
+				'replace'	=> "return view('oxygen::dashboard.dashboard-angular'"
+			];
+		};
+
 		foreach ($stringsToReplace as $stringData)
 		{
-			if ( ! $this->files->exists($stringData['path']) ) {
-				$this->error($stringData['path'] . ' not found.');
-				$this->progressLog['errors'][] = $stringData['path'] . ' not found to update.';
-				continue;
-			}
 			$this->replaceIn($stringData['path'], $stringData['search'], $stringData['replace']);
 		}
+	}
+
+	protected function replaceIn($path, $search, $replace)
+	{
+		if ( ! $this->files->exists($path) ) {
+			$this->error($path . ' not found.');
+			$this->progressLog['errors'][] = $path . ' not found to update.';
+			return false;
+		}
+		parent::replaceIn($path, $search, $replace);
 	}
 
 	protected function publishFiles()
@@ -295,6 +340,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['views'],
+					'--force'		=> true,
 				],
 				'desc'			=> 'default views (say `no` if you do not intent do modify default views)',
 				'default'		=> false
@@ -303,15 +349,17 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['source-public-assets'],
+					'--tag'			=> ['source-sass'],
+					'--force'		=> false,
 				],
-				'desc' 			=> 'uncompiled assets (SASS, JS source files etc.)'
+				'desc' 			=> 'uncompiled SASS files'
 			],
 			[
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['public-assets'],
+					'--force'		=> true,
 				],
 				'desc'			=> 'JS, CSS and other assets in public folder'
 			],
@@ -320,6 +368,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['database-seeds'],
+					'--force'		=> true,
 				]
 			],
 			[
@@ -327,6 +376,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['common-controllers'],
+					'--force'		=> true,
 				]
 			],
 			[
@@ -334,6 +384,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['auth-controllers'],
+					'--force'		=> true,
 				]
 			],
 			[
@@ -341,29 +392,20 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['config'],
+					'--force'		=> true,
 				]
 			]
 		];
 
-//		if ($this->projectConfig['multiTenant']) {
-//			$assetInfo[] = [
-//				'command'		=> 'vendor:publish',
-//				'arguments'		=> [
-//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-//					'--tag'			=> ['config-multiTenant'],
-//					'--force'		=> true,
-//				]
-//			];
-//		} else {
-//			$assetInfo[] = [
-//				'command'		=> 'vendor:publish',
-//				'arguments'		=> [
-//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-//					'--tag'			=> ['config-singleTenant'],
-//					'--force'		=> true,
-//				]
-//			];
-//		}
+		if ($this->projectConfig['dashboardType'] == 'Angular') {
+			$assetInfo[] = [
+				'command'		=> 'vendor:publish',
+				'arguments'		=> [
+					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+					'--tag'			=> ['angular-source'],
+				]
+			];
+		}
 
 		if ($this->confirm('Publish project assets?', true))
 		{
@@ -383,6 +425,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	protected function showProgressLog()
 	{
 		$this->info('*** SETUP COMPLETED! ***');
+		$this->info('');
 
 		foreach ($this->progressLog['info'] as $message)
 			$this->info($message);

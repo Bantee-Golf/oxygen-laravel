@@ -4,8 +4,8 @@
 namespace EMedia\Oxygen\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Guard;
 use Illuminate\Auth\Passwords\PasswordBroker;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
