@@ -38,6 +38,7 @@ laravel new star-wars
 ```
 
 2) It's suggested at this point you'll change the `public` dir to `public_html` as it's the convention used in most cPanel based servers.
+
 - Rename `public` folder to `public_html`
 - In `app\Providers\AppServiceProvider.php` change the `boot()` function contents.
 ```
