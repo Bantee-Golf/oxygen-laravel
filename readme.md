@@ -1,5 +1,6 @@
 # Oxygen - Admin Dashboard for Laravel 5.2+
 
+![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
 
 ## Summary
 
@@ -9,7 +10,7 @@ This package has the built-in support for the following.
 - Auto-generated frontend template (based on Bootstrap).
 - User registrations, logins, roles, permissions and object level permission control.
 - User invitations, invitation control, and user management.
-- Single-tenant, and Multi-tenant configuration.
+- Single-tenant and Multi-tenant configuration.
 - ApiDoc.js Template
 - Auto-sync nested relationships when creating/updating objects (Use this with care!!!).
 - Auto-handles CRUD requests in Controllers based on extended repositories.
