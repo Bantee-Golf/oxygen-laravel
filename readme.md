@@ -35,47 +35,51 @@ To install CSS JS for the dashboard, the following are required.
 This package is intended to be installed on a **new Laravel project**. You'll be able to install it on an existing project, but might need to change some configuration.
 
 
-1) Create a new Laravel project
+1) Create a new Laravel project and go to the directory
 ```
-laravel new star-wars
+composer create-project --prefer-dist laravel/laravel [project-name]
+cd [project-name]
 ```
 
-2) It's suggested at this point you'll change the `public` dir to `public_html` as it's the convention used in most cPanel based servers.
 
-- Rename `public` folder to `public_html`
-- In `app\Providers\AppServiceProvider.php` change the `boot()` function contents.
-```
-	public function boot()
-	{
-	    $this->app->bind('path.public', function() {
-	        return base_path().'/public_html';
-	    });
-	}
-```
-- Change it in `server.php` if you intend to use the built-in web server.
-
-3) Update `composer.json`. 
+2) Update `composer.json`. 
 
 This package and some dependent packages are available in private repositories. Change the `repositories` section to add the new repository, or create a new section in the file.
 
 ```
-	"repositories": [
+    "repositories": [
         {
             "type":"vcs",
-            "url":"git@bitbucket.org:elegantmedia/oxygen-laravel.git"
+            "url":"https://bitbucket.org/elegantmedia/oxygen-laravel.git"
+        },
+        {
+            "type":"vcs",
+            "url":"https://bitbucket.org/elegantmedia/laravel-generators.git"
+        },
+        {
+            "type":"vcs",
+            "url":"https://bitbucket.org/elegantmedia/laravel-helpers.git"
+        },
+        {
+            "type":"vcs",
+            "url":"https://bitbucket.org/elegantmedia/quickdata-laravel.git"
+        },
+        {
+            "type":"vcs",
+            "url":"https://bitbucket.org/elegantmedia/multitenant-laravel.git"
         }
     ],
 ```
 
-4) Require the package into composer through the command line.
+3) Require the package into composer through the command line.
 ```
-composer require emedia\oxygen
+composer require emedia/oxygen:0.0.x
 ```
 
-5) Open `config/app.php` and add the following,
+4) Open `config/app.php` and add the following,
 At the end of `providers` add:
 ```
-	EMedia\Oxygen\OxygenServiceProvider::class,
+    EMedia\Oxygen\OxygenServiceProvider::class,
     EMedia\MultiTenant\MultiTenantServiceProvider::class,
     EMedia\Generators\GeneratorServiceProvider::class,
     Silber\Bouncer\BouncerServiceProvider::class,
@@ -87,11 +91,18 @@ At the end of `aliases` add:
 	'Bouncer' => Silber\Bouncer\BouncerFacade::class,
 ```
 
+5) **(Optional Step)** It's suggested at this point you'll change the `public` dir to `public_html` as it's the convention used in most cPanel based servers.
+
+To do this, run the following command.
+```
+php artisan scaffold:move:public
+```
+
 6) Create your `.env` file and add the database and other details.
 
-7) After everything is done, run the following in the command line.
+7) Commit your changes to Git, because next step will change some of the default files.
 
-Before running the commands below, commit your changes to Git, because it will alter the default settings in your Laravel project.
+8) After everything is done, run the following in the command line.
 
 ```
 php artisan oxygen:setup
@@ -101,7 +112,7 @@ When you run the setup, it will ask ask a series of questions. Unless you want t
 
 After the installation is complete, see if it gives you any errors or other information. You might have to manually fix them.
 
-8) The setup is now complete. Run the following to complete the installation.
+9) The setup is now complete. Run the following to complete the installation.
 
 Install required CSS, JS for the project.
 ```
@@ -115,7 +126,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
-9) Open the home page in a browser. Your default user login password is listed in the `database/seeds/UsersTableSeeder.php` file.
+10) Open the home page in a browser. Your default user login password is listed in the `database/seeds/UsersTableSeeder.php` file.
 
 ### Tips
 
