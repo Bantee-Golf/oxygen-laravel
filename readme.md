@@ -50,23 +50,23 @@ This package and some dependent packages are available in private repositories. 
     "repositories": [
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/oxygen-laravel.git"
+            "url":"git@bitbucket.org:elegantmedia/oxygen-laravel.git"
         },
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/laravel-generators.git"
+            "url":"git@bitbucket.org:elegantmedia/laravel-generators.git"
         },
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/laravel-helpers.git"
+            "url":"git@bitbucket.org:elegantmedia/laravel-helpers.git"
         },
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/quickdata-laravel.git"
+            "url":"git@bitbucket.org:elegantmedia/quickdata-laravel.git"
         },
         {
             "type":"vcs",
-            "url":"https://bitbucket.org/elegantmedia/multitenant-laravel.git"
+            "url":"git@bitbucket.org:elegantmedia/multitenant-laravel.git"
         }
     ],
 ```
