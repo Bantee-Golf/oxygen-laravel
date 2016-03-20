@@ -47,7 +47,7 @@ class AuthenticateAcl
 			if ($request->ajax()) {
 				return response('Unauthorized.', 401);
 			} else {
-				return redirect()->route('account')->with('error', "You don't have permissions to access that page. Please contact admin.");
+				return redirect()->to('/')->with('error', "You don't have permissions to access that page. Please contact admin.");
 			}
 		}
 

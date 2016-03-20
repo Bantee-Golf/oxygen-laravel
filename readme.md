@@ -139,6 +139,13 @@ On `.env` file, by adding `DASHBOARD_AUTHENTICATION=false`, it will skip the log
 - Roles and Permissions are implemented with [Bouncer. Read the docs.](https://github.com/JosephSilber/bouncer)
 - If you're going to use auto-syncing relationships (with `HandlesEntityCRUD` trait), **do not** use `Route::resource` for that controller. It will expose a security vulnerability.
 
+## Additional Details
+
+If you want to publish the views after the installation, run
+```
+php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --tag=views --force
+```
+
 
 ## Issues/Bugs?
 - Submit a pull request (on a new branch) or [submit an issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues).
