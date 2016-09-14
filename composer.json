@@ -22,7 +22,7 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "illuminate/support": "5.2.x",
+        "illuminate/support": "5.2.x|5.3.*",
         "emedia/helpers": "0.0.x",
         "silber/bouncer": "^0.1.7",
         "emedia/quick-data-laravel": "0.0.x",

@@ -4,6 +4,7 @@ namespace EMedia\Oxygen\Http\Middleware;
 
 use Closure;
 use EMedia\MultiTenant\Facades\TenantManager;
+use Exception;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
@@ -50,7 +51,11 @@ class Authenticate {
 
 			// login to a default account for testing
 			if (!$user && App::environment() == 'local') {
-				$user = $this->auth->loginUsingId(1);
+				try {
+					$user = $this->auth->loginUsingId(1);
+				} catch (Exception $e) {
+					throw new Exception('Unable to login. Are there users in the database?');
+				}
 			}
 
 			if (!$user) return $this->rejectRequest($request);
