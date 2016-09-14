@@ -7,9 +7,7 @@ use Silber\Bouncer\Database\HasRolesAndAbilities;
 trait OxygenUserTrait
 {
 
-	use HasRolesAndAbilities {
-		HasRolesAndAbilities::is as bouncerIs;
-	}
+	use HasRolesAndAbilities;
 
 	/**
 	 * Override the Bouncer trait's is function and allow passing in an array of roles
@@ -22,10 +20,10 @@ trait OxygenUserTrait
 	{
 
 		if (is_array($roles)) {
-			return call_user_func_array([$this, 'bouncerIs'], $roles);
+			return call_user_func_array([$this, 'isAll'], $roles);
 		}
 
-		return $this->bouncerIs($roles);
+		return $this->isA($roles);
 	}
 
 	public function hasFirstName()
