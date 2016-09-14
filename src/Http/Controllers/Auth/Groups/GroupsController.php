@@ -141,7 +141,7 @@ class GroupsController extends Controller
 
 					if ($savedUser) {
 						// if already in group, ignore the request
-						if ($savedUser->is($role->name)) continue;
+						if ($savedUser->isA($role->name)) continue;
 					}
 
 					// add the user to role

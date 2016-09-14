@@ -7,7 +7,7 @@
                 <ul class="nav nav-stacked nav-wide">
                     <li><a href="/dashboard"><em class="fa fa-tachometer"></em> Dashboard</a></li>
                 </ul>
-                @if ($user->is(config('acl.adminRoleNames')))
+                @if ($user->isA(config('acl.adminRoleNames')))
                     <div class="nav-headline">My Account</div>
                     <ul class="nav nav-stacked nav-wide">
                         <li><a href="/account/groups"><em class="fa fa-users"></em> User Groups</a></li>

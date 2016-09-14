@@ -1,6 +1,8 @@
-# Oxygen - Admin Dashboard for Laravel 5.2+
+# Oxygen - Admin Dashboard for Laravel 5.3+
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
+
+### [For Laravel 5.2, use version `0.1.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/4f121b0574945a6278979f696b59f0c20637735c/?at=0.1.4).
 
 ## Summary
 
@@ -33,6 +35,8 @@ To install CSS JS for the dashboard, the following are required.
 ## Installation
 
 This package is intended to be installed on a **new Laravel project**. You'll be able to install it on an existing project, but might need to change some configuration.
+
+
 
 
 1) Create a new Laravel project and go to the directory

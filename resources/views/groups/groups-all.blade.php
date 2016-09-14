@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <h2>User Groups</h2>
 
-        @if ($user->is(['admin', 'owner']))
+        @if ($user->isA(['admin', 'owner']))
             <a href="/account/groups/new" class="btn btn-lg btn-wide btn-success"><i class="fa fa-plus-circle"></i> Add a New Group</a>
             <br/><br/>
         @else
@@ -52,7 +52,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        @if ($user->is(['admin', 'owner']) && $role['name'] != 'owner')
+                                        @if ($user->isA(['admin', 'owner']) && $role['name'] != 'owner')
                                             <span data-toggle="modal" data-target="#userControlModal" data-role_id="{{ $role['id'] }}">
                                                     <button
                                                             class="btn btn-warning"
@@ -64,7 +64,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($user->is(['admin', 'owner']))
+                                        @if ($user->isA(['admin', 'owner']))
                                             <a href="/account/groups/{{ $role['id'] }}/edit"
                                                class="btn btn-info"
                                                data-toggle="tooltip"

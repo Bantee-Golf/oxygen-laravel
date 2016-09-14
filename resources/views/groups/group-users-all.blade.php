@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <h2>Users in {{ $role->display_name }}</h2>
 
-        @if ($user->is(['admin', 'owner']))
+        @if ($user->isA(['admin', 'owner']))
             @if ($role->name == 'owner')
                 {{-- Only 1 owner is allowed --}}
             @else
@@ -56,7 +56,7 @@
                                         </td>
                                         <td>{{ $currentUser->email }}</td>
                                         <td>
-                                            @if ($user->is(['admin', 'owner']))
+                                            @if ($user->isA(['admin', 'owner']))
                                                 @if ($role->name == 'owner' && count($role->users) == 1)
                                                     {{-- Last Owner can't leave the role --}}
                                                     <button class="btn btn-danger disabled"><i class="fa fa-trash"></i>
