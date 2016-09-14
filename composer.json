@@ -24,7 +24,7 @@
         "php": ">=5.5.9",
         "illuminate/support": "5.2.x|5.3.*",
         "emedia/helpers": "0.0.x",
-        "silber/bouncer": "^0.1.7",
+        "silber/bouncer": "v1.0.0-alpha.2",
         "emedia/quick-data-laravel": "0.0.x",
         "emedia/generators": "0.2.x",
         "emedia/multi-tenant": "0.0.x"
