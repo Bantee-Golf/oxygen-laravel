@@ -26,7 +26,7 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesAndRegistersUsers;
     use UpdatesUsers;
 
     public function getLogin()
