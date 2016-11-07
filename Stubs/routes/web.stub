@@ -1,7 +1,6 @@
 
 
 // Start Oxygen routes
-Route::group(['middleware' => ['web']], function () {
 	// Home
 	Route::get('/', function () {
 		return view('oxygen::pages.home', ['title' => 'The Awesomeness Starts Here...']);

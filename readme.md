@@ -77,7 +77,8 @@ This package and some dependent packages are available in private repositories. 
 
 3) Require the package into composer through the command line.
 ```
-composer require emedia/oxygen:0.0.x
+composer require silber/bouncer:v1.0.0-alpha.3
+composer require emedia/oxygen
 ```
 
 4) Open `config/app.php` and add the following,
@@ -102,7 +103,7 @@ To do this, run the following command.
 php artisan scaffold:move:public
 ```
 
-6) Create your `.env` file and add the database and other details.
+6) Edit `.env` file and add the database and other details.
 
 7) Commit your changes to Git, because next step will change some of the default files.
 
