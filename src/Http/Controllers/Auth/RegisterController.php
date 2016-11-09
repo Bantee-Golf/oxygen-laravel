@@ -2,25 +2,86 @@
 
 namespace EMedia\Oxygen\Http\Controllers\Auth;
 
+use App\User;
 use EMedia\MultiTenant\Facades\TenantManager;
-use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
-trait RegistersUsers
+class RegisterController extends Controller
 {
-	use RedirectsUsers;
+	/*
+	|--------------------------------------------------------------------------
+	| Register Controller
+	|--------------------------------------------------------------------------
+	|
+	| This controller handles the registration of new users as well as their
+	| validation and creation. By default this controller uses a trait to
+	| provide this functionality without requiring any additional code.
+	|
+	*/
+
+	use RegistersUsers;
 
 	/**
-	 * Show the application registration form.
+	 * Where to redirect users after login / registration.
 	 *
-	 * @return \Illuminate\Http\Response
+	 * @var string
 	 */
-	public function getRegister()
+	protected $redirectTo = '/dashboard';
+
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
 	{
+		$this->middleware('guest');
+	}
+
+	public function showRegistrationForm()
+	{
+		if (view()->exists('auth.register')) {
+			return view('auth.register');
+		}
+
 		return view('oxygen::auth.register');
 	}
+
+	/**
+	 * Get a validator for an incoming registration request.
+	 *
+	 * @param  array  $data
+	 * @return \Illuminate\Contracts\Validation\Validator
+	 */
+	protected function validator(array $data)
+	{
+		return Validator::make($data, [
+			'name' => 'required|max:255',
+			'email' => 'required|email|max:255|unique:users',
+			'password' => 'required|min:6|confirmed',
+		]);
+	}
+
+	/**
+	 * Create a new user instance after a valid registration.
+	 *
+	 * @param  array  $data
+	 * @return User
+	 */
+	protected function create(array $data)
+	{
+		return User::create([
+			'name' => $data['name'],
+			'email' => $data['email'],
+			'password' => bcrypt($data['password']),
+		]);
+	}
+
 
 	/**
 	 * Handle a registration request for the application.
@@ -28,16 +89,10 @@ trait RegistersUsers
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function postRegister(Request $request)
+	public function register(Request $request)
 	{
-		$validator = $this->validator($request->all());
+		$this->validator($request->all())->validate();
 		$invitation_code = null;
-
-		if ($validator->fails()) {
-			$this->throwValidationException(
-					$request, $validator
-			);
-		}
 
 		// if we have an incoming code, let the user join that team
 		$invitationsRepo = app(config('acl.invitationRepo'));
@@ -48,9 +103,9 @@ trait RegistersUsers
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
 			if (!$invite)
 				return redirect()
-						->back()
-						->withInput($request->except('password', 'confirm_password'))
-						->with('error', 'The invitation is already used or expired. Please login or register for a new account.');
+					->back()
+					->withInput($request->except('password', 'confirm_password'))
+					->with('error', 'The invitation is already used or expired. Please login or register for a new account.');
 			if (TenantManager::multiTenancyIsActive()) $tenant = $tenantRepo->find($invite->tenant_id);
 		} else {
 			// create a tenant
@@ -94,8 +149,10 @@ trait RegistersUsers
 			Session::flash('success', 'Your account has been created and you\'re now logged in.');
 		}
 
-		Auth::login($user);
+		event(new Registered($user));
+		$this->guard()->login($user);
 
-		return redirect($this->redirectPath());
+		return $this->registered($request, $user)
+			?: redirect($this->redirectPath());
 	}
 }

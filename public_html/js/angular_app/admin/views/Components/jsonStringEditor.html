@@ -1,9 +1,0 @@
-<div class="form-group" ng-class="{'has-error': hasError()}">
-	<label class="control-label" ng-show="showTitle()">{{form.title}}</label>
-
-	<div sp-json-string-editor
-		 ng-model="$$value$$"
-		 ng-disabled="form.readonly"></div>
-
-	<span class="help-block">{{ (hasError() && errorMessage(schemaError())) || form.description}}</span>
-</div>

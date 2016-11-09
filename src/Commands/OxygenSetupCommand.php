@@ -77,7 +77,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$userInput['projectName'] 	 = $this->ask('What is the project name?');
 		$userInput['fromEmail']   	 = $this->ask('What is the `from` email address for system emails?');
 		$userInput['seedAdminEmail'] = $this->anticipate('What is your email to seed the database?', [], $userInput['fromEmail']);
-		$userInput['dashboardType']  = $this->choice('What should be the type of the dashboard?', ['HTML/CSS (Default)', 'Angular'], 0);
+		// $userInput['dashboardType']  = $this->choice('What should be the type of the dashboard?', ['HTML/CSS (Default)', 'Angular'], 0);
 
 		if ($this->confirm('Should the project have Multi-Tenant support?', false))
 			$userInput['multiTenant'] = true;
@@ -181,11 +181,13 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			'name'	=> 'Bower config',
 		];
 
+		/*
 		if ($this->projectConfig['dashboardType'] == 'Angular') {
 			$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower-angular.json';
 		} else {
-			$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower-html.json';
 		}
+		*/
+		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower-html.json';
 		$stubMap[] = $stub;
 
 		if ($this->projectConfig['multiTenant']) {
@@ -272,7 +274,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// ask the user and update the routes file if required
 		if ($this->confirm("Update routes file with routes for auth, invitations, roles?", true))
 		{
-			$routesStub = $this->files->get(__DIR__ . '/../../Stubs/routes/web.stub');
+			$routesStub = $this->files->get(__DIR__ . '/../../Stubs/routes/web.php');
 			$routesFilePath = base_path('routes/web.php');
 			$result = $this->files->append($routesFilePath, $routesStub);
 			if ($result)
@@ -300,8 +302,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'replace'	=> "'from' => ['address' => '$fromEmail', 'name' => '$projectName (Dev)'],"
 			],
 			[
-				'path'		=> config_path('settings.php'),
-				'search'	=> "Application Admin Panel",
+				'path'		=> config_path('app.php'),
+				'search'	=> "Laravel",
 				'replace'	=> "$projectName"
 			],
 			[
@@ -316,6 +318,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			]
 		];
 
+		/*
 		if ($this->projectConfig['dashboardType'] == 'Angular') {
 			$stringsToReplace[] = [
 				'path'		=> app_path('Http/Controllers/DashboardController.php'),
@@ -323,6 +326,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'replace'	=> "return view('oxygen::dashboard.dashboard-angular'"
 			];
 		};
+		*/
 
 		foreach ($stringsToReplace as $stringData)
 		{
@@ -405,7 +409,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			]
 		];
 
-		if ($this->projectConfig['dashboardType'] == 'Angular') {
+		/*if ($this->projectConfig['dashboardType'] == 'Angular') {
 			$assetInfo[] = [
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
@@ -413,7 +417,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 					'--tag'			=> ['angular-source'],
 				]
 			];
-		}
+		}*/
 
 		if ($this->confirm('Publish project assets?', true))
 		{

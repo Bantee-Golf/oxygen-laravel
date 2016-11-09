@@ -8,7 +8,7 @@
 
 This package has the built-in support for the following.
 
-- Auto-generated admin dashboard based on either HTML5 or AngularJS.
+- Auto-generated admin dashboard.
 - Auto-generated frontend template (based on Bootstrap).
 - User registrations, logins, roles, permissions and object level permission control.
 - User invitations, invitation control, and user management.
@@ -25,7 +25,7 @@ This package has the built-in support for the following.
 
 The following are required for a successful installation.
 
-- [Laravel 5.2+](https://laravel.com/docs/5.2#installing-laravel)
+- [Laravel 5.3+](https://laravel.com/docs/5.3#installing-laravel)
 
 To install CSS JS for the dashboard, the following are required.
 

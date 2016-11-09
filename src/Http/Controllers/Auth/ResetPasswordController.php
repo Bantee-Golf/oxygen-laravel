@@ -1,17 +1,15 @@
 <?php
 
-
 namespace EMedia\Oxygen\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Passwords\PasswordBroker;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Passwords\PasswordBroker;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PasswordController extends Controller
+class ResetPasswordController extends Controller
 {
 	/*
 	|--------------------------------------------------------------------------
@@ -27,7 +25,7 @@ class PasswordController extends Controller
 	use ResetsPasswords;
 
 	/**
-	 * Create a new password controller instance.
+	 * Create a new controller instance.
 	 *
 	 * @return void
 	 */
@@ -42,6 +40,23 @@ class PasswordController extends Controller
 			]
 		]);
 	}
+
+	/**
+	 * Display the password reset view for the given token.
+	 *
+	 * If no token is present, display the link request form.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  string|null  $token
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function showResetForm(Request $request, $token = null)
+	{
+		return view('oxygen::auth.passwords.reset')->with(
+			['token' => $token, 'email' => $request->email]
+		);
+	}
+
 
 	public function getUpdate()
 	{
@@ -79,30 +94,5 @@ class PasswordController extends Controller
 			return redirect()->back()->withErrors(['Failed to save the new password. Try with another password.']);
 
 		return redirect()->back()->with('success', 'Password successfully updated.');
-	}
-
-	/**
-	 * Display the password reset view for the given token.
-	 *
-	 * @param  string  $token
-	 * @return \Illuminate\Http\Response
-	 */
-	public function getReset($token = null)
-	{
-		if (is_null($token)) {
-			throw new NotFoundHttpException;
-		}
-
-		return view('oxygen::auth.reset')->with('token', $token);
-	}
-
-	/**
-	 * Display the form to request a password reset link.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function getEmail()
-	{
-		return view('oxygen::auth.password');
 	}
 }

@@ -22,15 +22,16 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "illuminate/support": "5.3.*",
+        "laravel/framework": "5.3.*",
         "emedia/helpers": "0.0.x",
-        "silber/bouncer": "v1.0.0-alpha.3 as 1.0",
+        "silber/bouncer": "v1.0.0-alpha.3",
         "emedia/quick-data-laravel": "0.0.x",
         "emedia/generators": "0.2.x",
         "emedia/multi-tenant": "0.0.x"
     },
     "require-dev": {
-        "laracasts/generators": "^1.1"
+        "laracasts/generators": "^1.1",
+        "phpunit/phpunit": "^5.6"
     },
     "license": "proprietary",
     "authors": [
@@ -43,5 +44,10 @@
         "psr-4": {
             "EMedia\\Oxygen\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
     }
 }
