@@ -9,7 +9,7 @@
 				<div class="panel-heading">Login</div>
 				<div class="panel-body">
 
-					<form class="form-horizontal" role="form" method="POST" action="/auth/login">
+					<form class="form-horizontal" role="form" method="POST" action="/login">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
@@ -51,7 +51,7 @@
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								Don't have an account?
-								<a href="/auth/register">Signup for a New Account</a>
+								<a href="/register">Signup for a New Account</a>
 							</div>
 						</div>
 					</form>

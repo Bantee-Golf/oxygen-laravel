@@ -173,7 +173,7 @@ class InvitationsController extends Controller
         }
         else
         {
-            return redirect('/auth/login')->with('error', 'The invitation is already used or expired. Please login, or register for a new account.');
+            return redirect('/login')->with('error', 'The invitation is already used or expired. Please login, or register for a new account.');
         }
     }
 

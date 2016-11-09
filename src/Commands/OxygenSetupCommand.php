@@ -274,7 +274,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// ask the user and update the routes file if required
 		if ($this->confirm("Update routes file with routes for auth, invitations, roles?", true))
 		{
-			$routesStub = $this->files->get(__DIR__ . '/../../Stubs/routes/web.php');
+			$routesStub = $this->files->get(__DIR__ . '/../../Stubs/routes/web.stub');
 			$routesFilePath = base_path('routes/web.php');
 			$result = $this->files->append($routesFilePath, $routesStub);
 			if ($result)

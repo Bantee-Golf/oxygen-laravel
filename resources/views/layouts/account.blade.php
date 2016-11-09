@@ -19,7 +19,7 @@
                 <ul class="nav nav-stacked nav-wide">
                     <li><a href="/auth/profile"><em class="fa fa-user"></em> My Profile</a></li>
                     <li><a href="/password/update"><em class="fa fa-lock"></em> Change Password</a></li>
-                    <li><a href="/auth/logout"><em class="fa fa-sign-out"></em> Logout</a></li>
+                    <li><a href="/logout"><em class="fa fa-sign-out"></em> Logout</a></li>
                 </ul>
             </div>
 

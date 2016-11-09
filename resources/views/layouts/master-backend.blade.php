@@ -68,7 +68,7 @@
                                 @endif
 
                                 <li class="active"><a href="/auth/profile">Account</a></li>
-                                <li><a href="/auth/logout">Logout</a></li>
+                                <li><a href="/logout">Logout</a></li>
                             </ul>
                         </div>
                     </div>

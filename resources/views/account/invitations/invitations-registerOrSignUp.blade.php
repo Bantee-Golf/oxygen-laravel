@@ -21,7 +21,7 @@
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse @if (!$plausibleUser) in @endif" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
-                                <form class="form-horizontal" role="form" method="POST" action="/auth/register">
+                                <form class="form-horizontal" role="form" method="POST" action="/register">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
 
@@ -94,7 +94,7 @@
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse @if ($plausibleUser) in @endif" role="tabpanel" aria-labelledby="headingTwo">
                             <div class="panel-body">
-                                <form class="form-horizontal" role="form" method="POST" action="/auth/login">
+                                <form class="form-horizontal" role="form" method="POST" action="/login">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
 

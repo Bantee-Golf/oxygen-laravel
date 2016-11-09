@@ -11,7 +11,7 @@
                 <div class="nav-headline">[ ADD YOUR TITLE ]</div>
                 <ul class="nav nav-stacked nav-wide">
                     <li><a href="/auth/profile"><em class="fa fa-user"></em> My Profile</a></li>
-                    <li><a href="/auth/logout"><em class="fa fa-sign-out"></em> Logout</a></li>
+                    <li><a href="/logout"><em class="fa fa-sign-out"></em> Logout</a></li>
                 </ul>
 
             </div>
