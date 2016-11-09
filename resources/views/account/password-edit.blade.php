@@ -11,7 +11,7 @@
                     <div class="panel-heading">Change Password</div>
                     <div class="panel-body">
 
-                        <form class="form-horizontal" role="form" method="POST" action="/password/update">
+                        <form class="form-horizontal" role="form" method="POST" action="/account/password/update">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                             <div class="form-group">

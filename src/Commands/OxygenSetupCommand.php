@@ -293,7 +293,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stringsToReplace = [
 			[
 				'path'		=> app_path('Http/Middleware/RedirectIfAuthenticated.php'),
-				'search'	=> "return redirect('/');",
+				'search'	=> "return redirect('/home');",
 				'replace'	=> "return redirect('/dashboard');"
 			],
 			[

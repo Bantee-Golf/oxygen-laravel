@@ -27,15 +27,15 @@ Route::group(['middleware' => 'auth'], function()
 	// dashboard
 	Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@dashboard']);
 
-	// auth
-	Route::get('auth/profile', 	['as' => 'account', 'uses' => 'Auth\AuthController@getProfile']);
-	Route::put('auth/profile', 	'Auth\AuthController@updateProfile');
-	Route::get('password/update',	'Auth\PasswordController@getUpdate');
-	Route::post('password/update',	'Auth\PasswordController@postUpdate');
-
 	// my account
 	Route::group(['prefix' => 'account'], function ()
 	{
+		// auth
+		Route::get('/profile', 	'Auth\ProfileController@getProfile')->name('account');
+		Route::put('/profile', 	'Auth\ProfileController@updateProfile');
+		Route::get('/password/update',	'Auth\ResetPasswordController@getUpdate');
+		Route::post('/password/update',	'Auth\ResetPasswordController@postUpdate');
+
 		// groups (roles)
 		Route::group(['prefix' => 'groups'], function () {
 			Route::get (  '/',			'Auth\Groups\GroupsController@index');

@@ -19,7 +19,7 @@ class CreateInvitationsTable extends Migration {
 			$table->string('email');
 			$table->string('invitation_code');
 			$table->integer('referrer_id')->nullable()->references('id')->on('users');
-			$table->integer('referrer_ip')->nullable();
+			$table->string('referrer_ip')->nullable();
 			$table->dateTime('sent_at')->nullable();
 			$table->dateTime('claimed_at')->nullable();
 			$table->timestamps();

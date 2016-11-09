@@ -5,6 +5,7 @@ namespace EMedia\Oxygen\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 trait UpdatesUsers
 {
@@ -35,6 +36,13 @@ trait UpdatesUsers
 		if ($result) return redirect()->back()->with('success', 'Your profile has been updated.');
 
 		return redirect()->back()->withErrors();
+	}
+
+	protected function updateValidator(array $data)
+	{
+		return Validator::make($data, [
+			'name' => 'required|max:255'
+		]);
 	}
 
 

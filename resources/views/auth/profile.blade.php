@@ -11,7 +11,7 @@
                 <div class="panel-heading">Your Profile</div>
                 <div class="panel-body">
 
-					<form class="form-horizontal" role="form" method="POST" action="/auth/profile">
+					<form class="form-horizontal" role="form" method="POST" action="/account/profile">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}" />
 						<input type="hidden" name="_method" value="PUT" />
 
