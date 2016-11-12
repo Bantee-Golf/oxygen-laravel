@@ -58,7 +58,7 @@ class OxygenServiceProvider extends ServiceProvider
 
 		// publish config
 		$this->publishes([
-			__DIR__.'/../config/oxygen.php' => config_path('oxygen.php')
+			__DIR__.'/../Stubs/config/oxygen.php' => config_path('oxygen.php')
 		], 'oxygen-config');
 
 		$this->registerCustomValidators();
