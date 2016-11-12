@@ -36,7 +36,7 @@ class LoadViewSettings
 	 */
 	public function handle($request, Closure $next)
 	{
-		$appName 	= config('settings.applicationName');
+		$appName 	= config('app.name');
 		$title		= 'My Account';
 
 		View::share('appName', $appName);

@@ -2,8 +2,10 @@
 
 namespace EMedia\Oxygen;
 
-use Illuminate\Support\Facades\App;
+use EMedia\Oxygen\Commands\OxygenSetupCommand;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Silber\Bouncer\Database\Models;
 
 class OxygenServiceProvider extends ServiceProvider
 {
@@ -12,9 +14,6 @@ class OxygenServiceProvider extends ServiceProvider
 	{
 		// load default views
 		$this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen');
-
-		// register routes
-		// if (! $this->app->routesAreCached()) require __DIR__.'/Http/routes.php';
 
 		// allow user to publish views
 		$this->publishes([
@@ -33,15 +32,14 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__ . '/../public_html/favicon.ico' => public_path('/favicon.ico'),
 		], 'public-assets');
 
-		// angular app source
+		// web components
 		$this->publishes([
-			__DIR__ . '/../resources/assets/js' => base_path('resources/assets/js'),
-			__DIR__ . '/../public_html/js' 		=> public_path('/js'),
-		], 'angular-source');
+			__DIR__ . '/../resources/assets/components' => base_path('resources/assets/components'),
+		], 'web-components');
 
 		// publish common controllers
 		$this->publishes([
-				__DIR__ . '/../Stubs/Http/Controllers/Common' => app_path('Http/Controllers'),
+			__DIR__ . '/../Stubs/Http/Controllers/Common' => app_path('Http/Controllers'),
 		], 'common-controllers');
 
 		// publish Auth controllers
@@ -50,13 +48,15 @@ class OxygenServiceProvider extends ServiceProvider
 		], 'auth-controllers');
 
 		$this->publishes([
-				__DIR__ . '/../Stubs/Seeds' => database_path('seeds'),
+			__DIR__ . '/../Stubs/Seeds' => database_path('seeds'),
 		], 'database-seeds');
 
 		// publish config
 		$this->publishes([
-				__DIR__.'/../config/settings.php' => config_path('settings.php')
-		], 'config');
+			__DIR__.'/../config/oxygen.php' => config_path('oxygen.php')
+		], 'oxygen-config');
+
+		$this->registerCustomValidators();
 
 	}
 
@@ -68,17 +68,38 @@ class OxygenServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->mergeConfigFrom( __DIR__ . '/../config/auth.php', 'auth');
+		$this->mergeConfigFrom( __DIR__ . '/../config/app.php',  'app');
 
-		if ($this->app->environment() == 'local')
+		if ($this->app->environment() === 'local')
 		{
 			$this->app->singleton("emedia.oxygen.setup", function () {
-				return app("EMedia\\Oxygen\\Commands\\OxygenSetupCommand");
+				return app(OxygenSetupCommand::class);
 			});
 			$this->commands("emedia.oxygen.setup");
 		}
 
-		$this->app->bind('RoleRepository', 	 config('auth.roleRepository'));
-		$this->app->bind('TenantRepository', config('auth.tenantRepository'));
+		Models::setAbilitiesModel(config('auth.abilityModel'));
+		Models::setRolesModel(config('auth.roleModel'));
+		Models::setUsersModel(config('auth.model'));
+	}
+
+	private function registerCustomValidators()
+	{
+		// custom validation rules
+
+		// match array count is equal
+		// eg: match_count_with:permission::name
+		// this will match the array count between both fields
+		Validator::extend('match_count_with', function ($attribute, $value, $parameters, $validator) {
+			// dd(count($value));
+			$otherFieldCount = request()->get($parameters[0]);
+			return (count($value) === count($otherFieldCount));
+		});
+
+		// custom message
+		Validator::replacer('match_count_with', function ($message, $attribute, $rule, $parameters) {
+			return "The values given in two array fields don't match.";
+		});
 	}
 
 }

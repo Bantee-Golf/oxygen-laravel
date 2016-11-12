@@ -7,8 +7,14 @@
 	<div class="row">
         <div class="col-md-12">
 
+			<div class="title-container">
+				<div class="page-title">
+					<h1>My Profile</h1>
+				</div>
+			</div>
+
             <div class="panel panel-default">
-                <div class="panel-heading">Your Profile</div>
+                <div class="panel-heading">Edit Profile</div>
                 <div class="panel-body">
 
 					<form class="form-horizontal" role="form" method="POST" action="/account/profile">

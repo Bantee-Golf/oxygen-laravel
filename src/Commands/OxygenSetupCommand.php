@@ -180,15 +180,21 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			'path'	=> base_path('bower.json'),
 			'name'	=> 'Bower config',
 		];
-
-		/*
-		if ($this->projectConfig['dashboardType'] == 'Angular') {
-			$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower-angular.json';
-		} else {
-		}
-		*/
-		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower-html.json';
+		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower.json';
 		$stubMap[] = $stub;
+
+		$stub = [
+			'path'	=> base_path('gulpfile.js'),
+			'name'	=> 'gulpfile.js',
+		];
+		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/gulpfile.js';
+		$stubMap[] = $stub;
+
+		$stubMap[] = [
+			'stub'	=> __DIR__ . '/../../Stubs/config/oxygen.php',
+			'path'  => config_path('oxygen.php'),
+			'name'	=> 'Oxygen Configuration'
+		];
 
 		if ($this->projectConfig['multiTenant']) {
 			$stubMap[] = [
@@ -196,32 +202,23 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'path'  => app_path('User.php'),
 				'name'	=> 'User.php'
 			];
-			$stubMap[] = [
-				'stub'	=> __DIR__ . '/../../Stubs/config/oxygen-multiTenant.php',
-				'path'  => config_path('oxygen.php'),
-				'name'	=> 'Multi-tenant configuration'
-			];
-			$stubMap[] = [
+			/*$stubMap[] = [
 				'stub'	=> __DIR__ . '/../../Stubs/config/acl-multiTenant.php',
 				'path'  => config_path('acl.php'),
 				'name'	=> 'ACL for multi-tenant configuration'
-			];
+			];*/
 		} else {
 			$stubMap[] = [
 				'stub'	=> __DIR__ . '/../../Stubs/Common/User.SingleTenant.php',
 				'path'  => app_path('User.php'),
 				'name'	=> 'User.php'
 			];
-			$stubMap[] = [
-				'stub'	=> __DIR__ . '/../../Stubs/config/oxygen-singleTenant.php',
-				'path'  => config_path('oxygen.php'),
-				'name'	=> 'Single-tenant configuration'
-			];
+			/*
 			$stubMap[] = [
 				'stub'	=> __DIR__ . '/../../Stubs/config/acl-singleTenant.php',
 				'path'  => config_path('acl.php'),
 				'name'	=> 'ACL for single-tenant configuration'
-			];
+			];*/
 		}
 
 		$this->progressLog['info'][] = 'Bower installation should be completed. Run `bower install`.';
@@ -241,7 +238,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$fields = [
 				[
 					'name'	=> 'routeMiddleware',
-					'value' => "'auth.acl' => \EMedia\Oxygen\Http\Middleware\AuthenticateAcl::class"
+					'value' => "'auth.acl' => \EMedia\Oxygen\Http\Middleware\AuthorizeAcl::class"
 				],
 				[
 					'name'	=> 'routeMiddleware',
@@ -293,12 +290,15 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stringsToReplace = [
 			[
 				'path'		=> app_path('Http/Middleware/RedirectIfAuthenticated.php'),
-				'search'	=> "return redirect('/home');",
+				'search'	=> "return redirect('/');",
 				'replace'	=> "return redirect('/dashboard');"
 			],
 			[
 				'path'		=> config_path('mail.php'),
-				'search'	=> "'from' => ['address' => null, 'name' => null],",
+				'search'	=> "'from' => [
+        'address' => 'hello@example.com',
+        'name' => 'Example',
+    ]",
 				'replace'	=> "'from' => ['address' => '$fromEmail', 'name' => '$projectName (Dev)'],"
 			],
 			[
@@ -307,26 +307,11 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'replace'	=> "$projectName"
 			],
 			[
-				'path'		=> config_path('auth.php'),
-				'search'	=> "auth.emails.password",
-				'replace'	=> "oxygen::emails.password"
-			],
-			[
-				'path'		=> database_path('seeds/UsersTableSeeder.php'),
-				'search'	=> "shane.emedia@gmail.com",
+				'path'		=> database_path('seeds/Auth/UsersTableSeeder.php'),
+				'search'	=> "info@elegantmedia.com.au",
 				'replace'	=> $this->projectConfig['seedAdminEmail']
 			]
 		];
-
-		/*
-		if ($this->projectConfig['dashboardType'] == 'Angular') {
-			$stringsToReplace[] = [
-				'path'		=> app_path('Http/Controllers/DashboardController.php'),
-				'search'	=> "return view('oxygen::dashboard.dashboard'",
-				'replace'	=> "return view('oxygen::dashboard.dashboard-angular'"
-			];
-		};
-		*/
 
 		foreach ($stringsToReplace as $stringData)
 		{
@@ -478,42 +463,42 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$inputFile = config_path('app.php');
 
 			$fields = [
-					[
-							'name'	=> 'providers',
-							'value' => '// Oxygen Support Providers '
-					],
-					[
-							'name'	=> 'providers',
-							'value' => "EMedia\MultiTenant\MultiTenantServiceProvider::class"
-					],
-					[
-							'name'	=> 'providers',
-							'value' => "EMedia\Generators\GeneratorServiceProvider::class"
-					],
-					[
-							'name'	=> 'providers',
-							'value' => "EMedia\MediaManager\MediaManagerServiceProvider::class"
-					],
-					[
-							'name'	=> 'providers',
-							'value' => "EMedia\Oxygen\OxygenServiceProvider::class"
-					],
-					[
-							'name'	=> 'aliases',
-							'value' => '// Oxygen Aliases '
-					],
-					[
-							'name'	=> 'aliases',
-							'value' => "'TenantManager' => EMedia\MultiTenant\Facades\TenantManager::class"
-					],
-					[
-							'name'	=> 'aliases',
-							'value' => "'FileHandler'   => EMedia\MediaManager\Facades\FileHandler::class"
-					],
-					[
-							'name'	=> 'aliases',
-							'value' => "'ImageHandler'  => EMedia\MediaManager\Facades\ImageHandler::class"
-					]
+				[
+					'name'	=> 'providers',
+					'value' => '// Oxygen Support Providers '
+				],
+				[
+					'name'	=> 'providers',
+					'value' => "EMedia\MultiTenant\MultiTenantServiceProvider::class"
+				],
+				[
+					'name'	=> 'providers',
+					'value' => "EMedia\Generators\GeneratorServiceProvider::class"
+				],
+				[
+					'name'	=> 'providers',
+					'value' => "EMedia\MediaManager\MediaManagerServiceProvider::class"
+				],
+				[
+					'name'	=> 'providers',
+					'value' => "EMedia\Oxygen\OxygenServiceProvider::class"
+				],
+				[
+					'name'	=> 'aliases',
+					'value' => '// Oxygen Aliases '
+				],
+				[
+					'name'	=> 'aliases',
+					'value' => "'TenantManager' => EMedia\MultiTenant\Facades\TenantManager::class"
+				],
+				[
+					'name'	=> 'aliases',
+					'value' => "'FileHandler'   => EMedia\MediaManager\Facades\FileHandler::class"
+				],
+				[
+					'name'	=> 'aliases',
+					'value' => "'ImageHandler'  => EMedia\MediaManager\Facades\ImageHandler::class"
+				]
 			];
 
 			if ($editor->addPropertyValuesToFile($inputFile, $fields, config_path('appnew.php')))

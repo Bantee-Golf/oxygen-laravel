@@ -53,9 +53,9 @@ class LoginController extends Controller
 	{
 		// see if this login is accepting any invitation tokens
 		// if we have an incoming code, let the user join that team
-		$invitationsRepo = app(config('acl.invitationRepo'));
-		$tenantRepo		 = app('TenantRepository');
-		$roleRepo		 = app('RoleRepository');
+		$invitationsRepo = app(config('auth.invitationRepository'));
+		$tenantRepo		 = app(config('auth.tenantRepository'));
+		$roleRepo		 = app(config('auth.roleRepository'));
 
 		if ( ! empty($invitation_code = Session::get('invitation_code')) ) {
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);

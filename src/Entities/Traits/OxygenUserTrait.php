@@ -2,14 +2,25 @@
 
 namespace EMedia\Oxygen\Entities\Traits;
 
+use App\Entities\Auth\Ability;
+use App\Entities\Auth\Role;
+
 use Silber\Bouncer\Database\HasRolesAndAbilities;
+use Silber\Bouncer\Database\Models;
 
 trait OxygenUserTrait
 {
 
 	use HasRolesAndAbilities {
-		HasRolesAndAbilities::isA as bouncerIsA;
+		HasRolesAndAbilities::isA as bouncerIs;
 	}
+
+	public function getFullNameAttribute()
+	{
+		return implode_not_empty(' ', [$this->name, $this->last_name]);
+	}
+
+	// use Authorizable;
 
 	/**
 	 * Override the Bouncer trait's is function and allow passing in an array of roles

@@ -22,14 +22,32 @@ class GroupsController extends Controller
 	public function __construct(Guard $auth)
 	{
 		$this->auth = $auth;
-		$this->roleRepository   = 	app('RoleRepository');
-		if (TenantManager::multiTenancyIsActive()) $this->tenantRepository = app('TenantRepository');
+		$this->roleRepository = app(config('auth.roleRepository'));
+		if (TenantManager::multiTenancyIsActive()) $this->tenantRepository = app(config('auth.tenantRepository'));
 
-		// only owners/admins should be able to add, edit, delete groups
-		$this->middleware('auth.acl:roles[owner|admin]', ['except' => [
+		$this->middleware('auth.acl:permissions[view-groups]', ['only' => [
 			'index'
 		]]);
 
+		$this->middleware('auth.acl:permissions[view-group-users]', ['only' => [
+			'showUsers'
+		]]);
+
+		$this->middleware('auth.acl:permissions[edit-group-users]', ['only' => [
+			'storeUsers'
+		]]);
+
+		$this->middleware('auth.acl:permissions[add-groups]', ['only' => [
+			'create', 'store'
+		]]);
+
+		$this->middleware('auth.acl:permissions[edit-groups]', ['only' => [
+			'edit', 'update'
+		]]);
+
+		$this->middleware('auth.acl:permissions[delete-groups]', ['only' => [
+			'destroy', 'destroyUser'
+		]]);
 	}
 
 
@@ -80,11 +98,11 @@ class GroupsController extends Controller
 	public function validationCriteria()
 	{
 		$data['rules'] = [
-			'display_name' 	=> 'required'
+			'title' => 'required'
 		];
 
 		$data['messages'] = [
-			'display_name.required'	=> 'An User Group Name is required'
+			'title.required' => 'An User Group Name is required'
 		];
 		return $data;
 	}
@@ -112,16 +130,23 @@ class GroupsController extends Controller
 
 		// TODO: this must have a unique slug
 
-		$roleName = $this->roleRepository->getNextSlug($request->get('display_name'));
+		$roleName = $this->roleRepository->getNextSlug($request->get('title'));
 
 		$role   = $this->roleRepository->newModel();
 		$role->fill($request->all());
-		$role->name = $roleName;
 		$result = $role->save();
 
-		return redirect('/account/groups')->with('success', 'The group ' . $role->display_name . ' has been created.');
+		return redirect('/account/groups')->with('success', 'The group ' . $role->title . ' has been created.');
 	}
 
+	/**
+	 *
+	 * Store Users for given Roles and return a JSON response.
+	 *
+	 * @param Request $request
+	 *
+	 * @return array
+	 */
 	public function storeUsers(Request $request)
 	{
 		$roleIds = $request->get('selectRoles');
@@ -141,7 +166,7 @@ class GroupsController extends Controller
 
 					if ($savedUser) {
 						// if already in group, ignore the request
-						if ($savedUser->isA($role->name)) continue;
+						if ($savedUser->isAn($role->name)) continue;
 					}
 
 					// add the user to role
@@ -221,8 +246,8 @@ class GroupsController extends Controller
 		$role = $this->roleRepository->find($id);
 
 		// user can't delete default roles
-		if (in_array($role->name, config('acl.defaultRoleNames') )) {
-			return $this->redirectWithError($role->display_name . ' is a default role, and cannot be deleted.');
+		if (!$role->allow_to_be_deleted) {
+			return $this->redirectWithError($role->title . ' is a default role, and cannot be deleted.');
 		}
 
 		if ($role) {
@@ -239,9 +264,10 @@ class GroupsController extends Controller
 
 		if (!$role) return $this->redirectWithError('Invalid user group.');
 
+		// don't delete the last super-admin or admin - because we'll lose account admin access
 		// last account owner can't leave the role
-		if (in_array($role->name, ['owner'])) {
-			$users = $this->roleRepository->usersInRole($role->id, false);
+		if (in_array($role->name, ['super-admin', 'admin'])) {
+			$users = $role->users;
 			if (count($users) <= 1)
 				return $this->redirectWithError('The last member of the group ' . $role->name . ' cannot leave the role.');
 		}

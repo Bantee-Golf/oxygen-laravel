@@ -95,9 +95,9 @@ class RegisterController extends Controller
 		$invitation_code = null;
 
 		// if we have an incoming code, let the user join that team
-		$invitationsRepo = app(config('acl.invitationRepo'));
-		$tenantRepo		 = app('TenantRepository');
-		$roleRepo		 = app('RoleRepository');
+		$invitationsRepo = app(config('auth.invitationRepository'));
+		$tenantRepo		 = app(config('auth.tenantRepository'));
+		$roleRepo		 = app(config('auth.roleRepository'));
 
 		if ( ! empty($invitation_code = Session::get('invitation_code')) ) {
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
@@ -131,20 +131,20 @@ class RegisterController extends Controller
 			Session::flash('success', 'Your account has been created and you\'ve accepted the invitation');
 		} else {
 			// add the default Roles
-			$defaultRoles = config('acl.defaultRoles');
-			foreach ($defaultRoles as $defaultRole) {
+			$defaultRoles = $roleRepo->getAssignByDefaultRoles();
+			foreach ($defaultRoles as $role) {
 				// create the default roles if they don't exist
 				// this can be Seeded for single-tenants, but required in multi-tenancy
-				$role = $roleRepo->findByName($defaultRole['name']);
+				/*$role = $roleRepo->findByName($defaultRole['name']);
 				if (!$role) {
 					$role = $roleRepo->newModel();
 					$role->fill($defaultRole);
 					$role->name = $defaultRole['name'];
 					$role->save();
-				}
+				}*/
 
 				// add this role when the user registers
-				if ($defaultRole['assignWhenRegister']) $user->roles()->attach($role->id);
+				$user->roles()->attach($role->id);
 			}
 			Session::flash('success', 'Your account has been created and you\'re now logged in.');
 		}

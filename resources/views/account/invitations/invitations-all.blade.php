@@ -1,15 +1,15 @@
 @extends('oxygen::layouts.account')
 
 @section('content')
-
-    @include('oxygen::partials.flash')
-
     <div class="container-fluid">
-        <h2>Invitations</h2>
 
-        {{--<a href="/account/groups/new" class="btn btn-lg btn-wide btn-success"><i class="fa fa-plus-circle"></i> Add a New Group</a>--}}
+        <div class="title-container">
+            <div class="page-title">
+                <h1>Invite New Users</h1>
+            </div>
+        </div>
 
-        <br/><br/>
+        @include('oxygen::partials.flash')
 
         <div class="row">
             <div class="col-md-12">
@@ -23,7 +23,7 @@
                         <label for="exampleInputEmail1">Invite to Group</label>
                         <select class="form-control" name="role_id">
                             @foreach ($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->display_name }}</option>
+                                <option value="{{ $role->id }}">{{ $role->title }}</option>
                             @endforeach
                         </select>
                     </div>

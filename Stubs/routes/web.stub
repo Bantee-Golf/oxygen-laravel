@@ -47,6 +47,22 @@ Route::group(['middleware' => 'auth'], function()
 			Route::get (  '/{id}/edit',	'Auth\Groups\GroupsController@edit');
 			Route::put (  '/{id}',		'Auth\Groups\GroupsController@update');
 			Route::delete('/{id}',	'Auth\Groups\GroupsController@destroy');
+
+			// permissions for role
+            Route::group(['prefix' => '{roleId}/permissions'], function () {
+                Route::get ('/', 'Auth\Abilities\AbilitiesController@editRoleAbilities');
+                Route::put ('/', 'Auth\Abilities\AbilitiesController@updateRoleAbilities');
+            });
+		});
+
+		// abilities (permissions)
+		Route::group(['prefix' => 'permission-categories'], function () {
+			Route::get ('/new', 		'Auth\Abilities\AbilityCategoriesController@create');
+			Route::get ('/', 			'Auth\Abilities\AbilityCategoriesController@index');
+			Route::get ('/{id}/edit',	'Auth\Abilities\AbilityCategoriesController@edit');
+			Route::post('/', 			'Auth\Abilities\AbilityCategoriesController@store');
+			Route::put ('/{id}', 		'Auth\Abilities\AbilityCategoriesController@update');
+			Route::delete('/{id}',		'Auth\Abilities\AbilityCategoriesController@destroy');
 		});
 
 		Route::get('invitations',			'Auth\InvitationsController@index');

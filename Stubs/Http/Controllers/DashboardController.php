@@ -7,7 +7,10 @@ class DashboardController extends Controller
 
 	public function dashboard()
 	{
-		$data = ['title' => config('settings.applicationName')];
+		$data = [
+			'appName' => config('app.name'),
+			'pageTitle' => config('app.name') . ' Dashboard',
+		];
 
 		return view('oxygen::dashboard.dashboard', $data);
 	}

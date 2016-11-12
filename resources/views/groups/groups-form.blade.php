@@ -10,7 +10,7 @@
     <div class="form-group">
         <label class="col-md-4 control-label">User Group Name</label>
         <div class="col-md-6">
-            <input type="text" class="form-control" name="display_name" value="{{ $role->display_name }}">
+            <input type="text" class="form-control" name="title" value="{{ $role->title }}">
         </div>
     </div>
 
@@ -23,7 +23,7 @@
 
     <div class="form-group">
         <div class="col-md-6 col-md-offset-4">
-            <button type="submit" class="btn btn btn-success btn-lg btn-wide ">
+            <button type="submit" class="btn btn btn-success btn-lg btn-wide">
                 @if ($mode === 'edit')
                     Update Group
                 @else

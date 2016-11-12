@@ -1,11 +1,14 @@
 @extends('oxygen::layouts.account')
 
 @section('content')
-
-    @include('oxygen::partials.flash')
-
     <div class="container-fluid">
-        <h2>User Groups</h2>
+        <div class="title-container">
+            <div class="page-title">
+                <h1>User Groups</h1>
+            </div>
+        </div>
+
+        @include('oxygen::partials.flash')
 
         <div class="row">
             <div class="col-md-12">
@@ -20,6 +23,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 @endsection

@@ -5,6 +5,9 @@
 @section('contents')
     <header>
         <div class="header-content">
+
+            @include('oxygen::partials.flash')
+
             <div class="header-content-inner">
                 <h1>Your Favorite Source of Free Bootstrap Themes</h1>
                 <hr>

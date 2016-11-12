@@ -32,6 +32,11 @@ class UpdateBouncerTablesMultiTenant extends Migration
 			$table->foreign('tenant_id')->references('id')->on('tenants');
 		});
 
+		Schema::table('permissions', function ($table) {
+			$table->integer('tenant_id')->unsigned();
+			$table->foreign('tenant_id')->references('id')->on('tenants');
+		});
+
 	}
 
 	/**
@@ -41,6 +46,10 @@ class UpdateBouncerTablesMultiTenant extends Migration
 	 */
 	public function down()
 	{
+		Schema::table('permissions', function ($table) {
+			$table->dropColumn('tenant_id');
+		});
+
 		Schema::table('invitations', function ($table) {
 			$table->dropForeign('invitations_tenant_id_foreign');
 			$table->dropColumn('tenant_id');

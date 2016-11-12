@@ -23,7 +23,7 @@ class TeamController extends Controller
 		if ( ! TenantManager::multiTenancyIsActive())
 			return redirect()->to('dashboard')->with('error', 'Invalid request.');
 
-		$this->tenantRepository = app('TenantRepository');
+		$this->tenantRepository = app(config('auth.tenantRepository'));
 		$user = Auth::user();
 
 		$tenant = $this->tenantRepository->getTenantByUser($user->id, $teamId);

@@ -15,7 +15,7 @@
                         <label for="recipient-name" class="control-label">Select Roles</label>
                         <select class="form-control select2" id="selectRoles" name="selectRoles[]" multiple="multiple" style="width: 100%">
                             @foreach ($availableRoles as $availableRole)
-                                <option value="{{ $availableRole['id'] }}">{{ $availableRole['display_name'] }}</option>
+                                <option value="{{ $availableRole['id'] }}">{{ $availableRole['title'] }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -43,7 +43,7 @@
     </div>
 </div>
 
-@section('scripts')
+@push('scripts')
     <script>
 
         $(document).ready(function() {
@@ -116,4 +116,4 @@
             });
         });
     </script>
-@stop
+@endpush

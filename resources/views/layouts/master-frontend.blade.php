@@ -43,7 +43,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Start Bootstrap</a>
+            <a class="navbar-brand page-scroll" href="#page-top">{{ (empty($appName))? config('app.name'): $appName }}</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -61,12 +61,21 @@
                 <li>
                     <a class="page-scroll" href="#contact">Contact</a>
                 </li>
-                <li>
-                    <a class="page-scroll" href="/login">Login</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="/register">Register</a>
-                </li>
+                @if (Auth::user())
+                    <li>
+                        <a class="page-scroll" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/logout">Logout</a>
+                    </li>
+                @else
+                    <li>
+                        <a class="page-scroll" href="/login">Login</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/register">Register</a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

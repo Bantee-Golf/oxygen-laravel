@@ -7,13 +7,18 @@
                 <ul class="nav nav-stacked nav-wide">
                     <li><a href="/dashboard"><em class="fa fa-tachometer"></em> Dashboard</a></li>
                 </ul>
-                @if ($user->isA(config('acl.adminRoleNames')))
-                    <div class="nav-headline">My Account</div>
-                    <ul class="nav nav-stacked nav-wide">
+                <div class="nav-headline">My Account</div>
+                <ul class="nav nav-stacked nav-wide">
+                    @if ($user->can('view-groups'))
                         <li><a href="/account/groups"><em class="fa fa-users"></em> User Groups</a></li>
+                    @endif
+                    @if ($user->can('view-permissions'))
+                        <li><a href="/account/permission-categories"><em class="fa fa-wrench"></em> Permission Groups</a></li>
+                    @endif
+                    @if ($user->can('invite-group-users'))
                         <li><a href="/account/invitations"><em class="fa fa-user-plus"></em> Invite Users</a></li>
-                    </ul>
-                @endif
+                    @endif
+                </ul>
 
                 <div class="nav-headline">My Profile</div>
                 <ul class="nav nav-stacked nav-wide">

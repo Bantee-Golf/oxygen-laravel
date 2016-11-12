@@ -12,45 +12,58 @@
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
     {{--<link rel="stylesheet" href="/bower_components/bootstrap-additions/dist/bootstrap-additions.min.css" />--}}
 
-    <link rel="stylesheet" href="/css/dist/app.css"/>
     <link rel="stylesheet" href="/bower_components/select2/dist/css/select2.min.css" />
     <link rel="stylesheet" href="/css/theme/select2.custom.css" />
     {{--<link rel="stylesheet" href="/bower_components/select2-bootstrap-css/select2-bootstrap.min.css" />--}}
 
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css" />
 
+    <link rel="stylesheet" href="{{ elixir("css/dist/dashboard.css") }}" />
+
+    @stack('stylesheets')
+
     <link rel="shortcut icon" href="/favicon.ico"/>
+
+    @stack('meta')
+
+    <style>
+        table form.form-inline {
+            display: inline-block;
+        }
+
+        .new-line-element {
+            margin-bottom: 10px;
+        }
+    </style>
 
     <head>
 <body>
 
-<div id="admin-wrapper" class="user-account">
+<div id="dashboard-wrapper">
 
-    <div id="admin-home">
+    <div id="dashboard-home">
 
         <div class="account-header">
             <div class="container-fluid">
-                <nav class="navbar navbar-dreamjobs" role="navigation" style="margin-bottom: 0">
+                <nav class="navbar navbar-oxygen" role="navigation" style="margin-bottom: 0">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
                                 <span class="sr-only">Toggle navigation</span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="logo navbar-brand" href="/" target="_blank">{{ $appName }}</a>
+                            <a class="logo navbar-brand" href="/" target="_blank">{{ (empty($appName))? config('app.name'): $appName }}</a>
                         </div>
 
-                        <div class="collapse navbar-collapse">
-                            <!--<ul class="nav navbar-top-links navbar-nav">-->
-                            <!--<li><a href="#setup">Account Setup</a></li>-->
-                            <!--</ul>-->
-
+                        <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
                             <ul class="nav navbar-nav navbar-top-links navbar-right">
                                 @if (isset($tenant))
                                     <li class="user-greeting">{{ $tenant->company_name }}</li>
                                 @endif
+
+                                <li class="user-greeting">{{ $user->full_name }}</li>
 
                                 @if (isset($tenants))
                                     <li class="dropdown">
@@ -107,13 +120,22 @@
 <script src="/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script src="/bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
 
+<script src="/bower_components/vue/dist/vue.min.js"></script>
+<script src="/bower_components/lodash/dist/lodash.min.js"></script>
+<script src="{{ elixir("js/dist/dashboard.js") }}"></script>
+
 <script>
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip()
     });
 </script>
 
-@yield('scripts')
+@stack('js')
+
+{{-- For non-PJAX type requests --}}
+@if (!request()->header('X-PJAX'))
+    @stack('scripts')
+@endif
 
 </body>
 </html>

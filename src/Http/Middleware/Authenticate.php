@@ -50,7 +50,7 @@ class Authenticate {
 			$user = $this->auth->user();
 
 			// login to a default account for testing
-			if (!$user && App::environment() == 'local') {
+			if (!$user && App::environment() === 'local') {
 				try {
 					$user = $this->auth->loginUsingId(1);
 				} catch (Exception $e) {

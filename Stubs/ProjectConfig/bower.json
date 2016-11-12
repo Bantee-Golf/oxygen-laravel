@@ -1,6 +1,6 @@
 {
   "name": "Oxygen Panel",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "authors": [
     "Shane Perera <shane@shaneperera.com>"
   ],
@@ -17,10 +17,13 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.6",
-    "typeahead.js": "~0.11.1",
+    "jquery-validation": "~1.14.0",
     "select2": "~4.0.0",
     "select2-bootstrap-css": "~1.4.6",
-    "jquery-validation": "~1.14.0",
-    "font-awesome": "fontawesome#~4.5.0"
+    "typeahead.js": "~0.11.1",
+    "vue": "^2.0.5",
+    "lodash": "^4.16.6",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.1.1"
   }
 }

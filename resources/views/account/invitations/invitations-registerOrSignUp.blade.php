@@ -27,7 +27,7 @@
 
                                     <div class="form-group">
                                         <div class="col-md-6 col-md-offset-4">
-                                            <h2>You've been invited to join a team.</h2>
+                                            <h3>You've been invited to join a team.</h3>
 
                                             <div class="copy">
                                                 <p>Enter a password for your account, and see what's inside.</p>

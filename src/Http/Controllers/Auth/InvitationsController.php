@@ -22,12 +22,11 @@ class InvitationsController extends Controller
     public function __construct(InvitationRepository $invitationsRepo)
     {
         $this->invitationsRepo = $invitationsRepo;
-        $this->roleRepository  = app('RoleRepository');
+        $this->roleRepository  = app(config('auth.roleRepository'));
 
-        // only account owners and admins can send invitations
-        $this->middleware('auth.acl:roles[owner|admin]', ['except' => [
-            'showJoin', 'acceptInvite'
-        ]]);
+		$this->middleware('auth.acl:permissions[invite-group-users]', ['except' => [
+			'showJoin', 'acceptInvite'
+		]]);
 
     }
     /**
