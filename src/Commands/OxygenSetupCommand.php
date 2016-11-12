@@ -304,8 +304,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'search'	=> "'from' => [
         'address' => 'hello@example.com',
         'name' => 'Example',
-    ],",
-				'replace'	=> "'from' => ['address' => '$fromEmail', 'name' => '$projectName (Dev)'],"
+    ]",
+				'replace'	=> "'from' => ['address' => '$fromEmail', 'name' => '$projectName (Dev)']"
 			],
 			[
 				'path'		=> config_path('app.php'),
