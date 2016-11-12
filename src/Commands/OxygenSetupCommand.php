@@ -59,6 +59,12 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// we don't ask for confirmation on this
 		$this->replaceKnownStrings();
 
+		$this->progressLog['info'][] = 'Run the following to complete installation';
+		$this->progressLog['info'][] = 'yarn add laravel-elixir-browsersync-official --save-dev';
+		$this->progressLog['info'][] = 'yarn install';
+		$this->progressLog['info'][] = 'gulp';
+		$this->progressLog['info'][] = 'php artisan serve';
+
 		// Setup Completed! Show any info to the user.
 		$this->showProgressLog();
 
@@ -298,7 +304,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'search'	=> "'from' => [
         'address' => 'hello@example.com',
         'name' => 'Example',
-    ]",
+    ],",
 				'replace'	=> "'from' => ['address' => '$fromEmail', 'name' => '$projectName (Dev)'],"
 			],
 			[
@@ -312,6 +318,24 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'replace'	=> $this->projectConfig['seedAdminEmail']
 			]
 		];
+
+		if ($this->projectConfig['multiTenant']) {
+			$stringsToReplace[] = [
+				'path'		=> config_path('oxygen.php'),
+				'search'	=> "'multiTenantActive' => false,",
+				'replace'	=> "'multiTenantActive' => true,"
+			];
+			$stringsToReplace[] = [
+				'path'		=> app_path('Entities/Auth/Ability.php'),
+				'search'	=> "use EMedia\Oxygen\Entities\Auth\SingleTenant\Ability as AbilityBase;",
+				'replace'	=> "use EMedia\Oxygen\Entities\Auth\MultiTenant\Ability as AbilityBase;"
+			];
+			$stringsToReplace[] = [
+				'path'		=> app_path('Entities/Auth/Ability.php'),
+				'search'	=> "use EMedia\Oxygen\Entities\Auth\SingleTenant\Role as BaseRole;",
+				'replace'	=> "use EMedia\Oxygen\Entities\Auth\MultiTenant\Role as BaseRole;"
+			];
+		}
 
 		foreach ($stringsToReplace as $stringData)
 		{
@@ -364,7 +388,24 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+					'--tag'			=> ['web-components'],
+					'--force'		=> true,
+				],
+				'desc'			=> 'Web components'
+			],
+			[
+				'command'		=> 'vendor:publish',
+				'arguments'		=> [
+					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['database-seeds'],
+					'--force'		=> true,
+				]
+			],
+			[
+				'command'		=> 'vendor:publish',
+				'arguments'		=> [
+					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+					'--tag'			=> ['entities'],
 					'--force'		=> true,
 				]
 			],
@@ -388,7 +429,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['config'],
+					'--tag'			=> ['oxygen-config'],
 					'--force'		=> true,
 				]
 			]

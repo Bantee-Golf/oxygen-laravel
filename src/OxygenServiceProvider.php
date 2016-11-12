@@ -37,6 +37,11 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__ . '/../resources/assets/components' => base_path('resources/assets/components'),
 		], 'web-components');
 
+		// publish common entities
+		$this->publishes([
+			__DIR__ . '/../Stubs/Entities' => app_path('Entities'),
+		], 'entities');
+
 		// publish common controllers
 		$this->publishes([
 			__DIR__ . '/../Stubs/Http/Controllers/Common' => app_path('Http/Controllers'),
