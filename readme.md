@@ -115,6 +115,8 @@ After the installation is complete, see if it gives you any errors or other info
 Install required CSS, JS for the project.
 ```
 bower install
+yarn add laravel-elixir-browsersync-official --save-dev
+yarn install
 ```
 
 Compile the views
