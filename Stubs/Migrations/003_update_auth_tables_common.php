@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateBouncerTablesCommon extends Migration
+class UpdateAuthTablesCommon extends Migration
 {
 	/**
 	 * Run the migrations.

@@ -154,8 +154,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'name'	=> 'Invitations Migration'
 			],
 			[
-				'stub'	=> __DIR__ . '/../../Stubs/Migrations/003_update_bouncer_tables_common.php',
-				'path'  => database_path('migrations/' . $this->getTimestamp() . '_update_bouncer_tables_common.php'),
+				'stub'	=> __DIR__ . '/../../Stubs/Migrations/003_update_auth_tables_common.php',
+				'path'  => database_path('migrations/' . $this->getTimestamp() . '_update_auth_tables_common.php'),
 				'name'	=> 'Add new columns to Bouncer tables'
 			]
 		];
@@ -164,8 +164,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		if ($this->projectConfig['multiTenant'])
 		{
 			$this->compileStubs([[
-				'stub' => __DIR__ . '/../../Stubs/Migrations/004_update_bouncer_tables_multi_tenant.php',
-				'path' => database_path('migrations/' . $this->getTimestamp() . '_update_bouncer_tables_multi_tenant.php'),
+				'stub' => __DIR__ . '/../../Stubs/Migrations/004_update_auth_tables_multi_tenant.php',
+				'path' => database_path('migrations/' . $this->getTimestamp() . '_update_auth_tables_multi_tenant.php'),
 				'name' => 'Update bouncer tables to support multi-tenancy'
 			]]);
 		}
