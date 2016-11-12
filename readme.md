@@ -29,14 +29,12 @@ The following are required for a successful installation.
 
 To install CSS JS for the dashboard, the following are required.
 
-- [NodeJS with NPM](https://docs.npmjs.com/getting-started/installing-node)
+- [NodeJS with NPM or yarn](https://docs.npmjs.com/getting-started/installing-node)
 - [Bower](http://bower.io/#install-bower)
 
 ## Installation
 
 This package is intended to be installed on a **new Laravel project**. You'll be able to install it on an existing project, but might need to change some configuration.
-
-
 
 
 1) Create a new Laravel project and go to the directory
@@ -71,7 +69,11 @@ This package and some dependent packages are available in private repositories. 
         {
             "type":"vcs",
             "url":"git@bitbucket.org:elegantmedia/multitenant-laravel.git"
-        }
+        },
+        {
+	        "type":"vcs",
+	        "url":"git@bitbucket.org:elegantmedia/render-laravel.git"
+	    }
     ],
 ```
 
@@ -85,15 +87,6 @@ composer require emedia/oxygen
 At the end of `providers` add:
 ```
     EMedia\Oxygen\OxygenServiceProvider::class,
-    EMedia\MultiTenant\MultiTenantServiceProvider::class,
-    EMedia\Generators\GeneratorServiceProvider::class,
-    Silber\Bouncer\BouncerServiceProvider::class,
-```
-
-At the end of `aliases` add:
-```
-	'TenantManager' => EMedia\MultiTenant\Facades\TenantManager::class,
-	'Bouncer' => Silber\Bouncer\BouncerFacade::class,
 ```
 
 5) **(Optional Step)** It's suggested at this point you'll change the `public` dir to `public_html` as it's the convention used in most cPanel based servers.
@@ -124,6 +117,11 @@ Install required CSS, JS for the project.
 bower install
 ```
 
+Compile the views
+```
+gulp
+```
+
 Migrate and seed the database
 ```
 composer dump-autoload
@@ -131,7 +129,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
-10) Open the home page in a browser. Your default user login password is listed in the `database/seeds/UsersTableSeeder.php` file.
+10) Open the home page in a browser. Your default user login password is listed in the `database/seeds/Auth/UsersTableSeeder.php` file.
 
 ### Tips
 

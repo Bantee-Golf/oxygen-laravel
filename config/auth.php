@@ -9,6 +9,7 @@ return [
 	'dashboardAuthentication' => env('DASHBOARD_AUTHENTICATION', true),
 
 	'abilityModel'		=> config('oxygen.abilityModel'),
+	'abilityRepository' => config('oxygen.abilityRepository'),
 	'roleModel'			=> config('oxygen.roleModel'),
 	'roleRepository'	=> config('oxygen.roleRepository'),
 
@@ -17,5 +18,7 @@ return [
 	'multiTenantActive' => config('oxygen.multiTenantActive'),
 
 	'model'	=> config('auth.providers.users.model'),
+
+	'invitationRepository' => config('oxygen.invitationRepository'),
 
 ];
