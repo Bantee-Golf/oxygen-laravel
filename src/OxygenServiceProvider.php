@@ -68,7 +68,9 @@ class OxygenServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->mergeConfigFrom( __DIR__ . '/../config/auth.php', 'auth');
-		$this->mergeConfigFrom( __DIR__ . '/../config/app.php',  'app');
+
+		$this->registerDependentServiceProviders();
+		$this->registerAliases();
 
 		if ($this->app->environment() === 'local')
 		{
@@ -81,6 +83,26 @@ class OxygenServiceProvider extends ServiceProvider
 		Models::setAbilitiesModel(config('auth.abilityModel'));
 		Models::setRolesModel(config('auth.roleModel'));
 		Models::setUsersModel(config('auth.model'));
+	}
+
+	private function registerDependentServiceProviders()
+	{
+		$this->app->register(\EMedia\MultiTenant\MultiTenantServiceProvider::class);
+		$this->app->register(\EMedia\Generators\GeneratorServiceProvider::class);
+		$this->app->register(\Silber\Bouncer\BouncerServiceProvider::class);
+		$this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
+		$this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
+		$this->app->register(\EMedia\Render\RenderServiceProvider::class);
+		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
+	}
+
+	private function registerAliases()
+	{
+		$this->app->alias('TenantManager', EMedia\MultiTenant\Facades\TenantManager::class);
+		$this->app->alias('Bouncer', Silber\Bouncer\BouncerFacade::class);
+		$this->app->alias('Debugbar', Barryvdh\Debugbar\Facade::class);
+		$this->app->alias('Form', Collective\Html\FormFacade::class);
+		$this->app->alias('Render', EMedia\Render\Facades\RenderFacade::class);
 	}
 
 	private function registerCustomValidators()
