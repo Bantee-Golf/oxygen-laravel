@@ -90,6 +90,11 @@ class OxygenServiceProvider extends ServiceProvider
 		Models::setUsersModel(config('auth.model'));
 	}
 
+	/**
+	 *
+	 * Register dependant service providers for the package
+	 *
+	 */
 	private function registerDependentServiceProviders()
 	{
 		$this->app->register(\EMedia\MultiTenant\MultiTenantServiceProvider::class);
@@ -101,13 +106,20 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
 	}
 
+	/**
+	 *
+	 * Register aliases for the package
+	 *
+	 */
 	private function registerAliases()
 	{
-		$this->app->alias('TenantManager', EMedia\MultiTenant\Facades\TenantManager::class);
-		$this->app->alias('Bouncer', Silber\Bouncer\BouncerFacade::class);
-		$this->app->alias('Debugbar', Barryvdh\Debugbar\Facade::class);
-		$this->app->alias('Form', Collective\Html\FormFacade::class);
-		$this->app->alias('Render', EMedia\Render\Facades\RenderFacade::class);
+		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+
+		$loader->alias('TenantManager', \EMedia\MultiTenant\Facades\TenantManager::class);
+		$loader->alias('Bouncer', \Silber\Bouncer\BouncerFacade::class);
+		$loader->alias('Debugbar', \Barryvdh\Debugbar\Facade::class);
+		$loader->alias('Form', \Collective\Html\FormFacade::class);
+		$loader->alias('Render', \EMedia\Render\Facades\RenderFacade::class);
 	}
 
 	private function registerCustomValidators()

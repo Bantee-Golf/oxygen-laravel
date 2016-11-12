@@ -34,7 +34,7 @@
         "emedia/multi-tenant": "0.0.x",
         "cviebrock/eloquent-sluggable": "^4.1",
         "laravelcollective/html": "^5.3",
-        "emedia/render": "^0.0.4",
+        "emedia/render": "0.0.x",
         "barryvdh/laravel-debugbar": "^2.3"
     },
     "require-dev": {
