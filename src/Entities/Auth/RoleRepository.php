@@ -29,6 +29,11 @@ class RoleRepository extends BaseRepository
 		return $this->model->where('name', $roleName)->first();
 	}
 
+	public function getAssignByDefaultRoles()
+	{
+		return $this->model->where('assign_by_default', true)->get();
+	}
+
 	public function exists($roleName)
 	{
 		$role = $this->model->where('name', $roleName)->first();

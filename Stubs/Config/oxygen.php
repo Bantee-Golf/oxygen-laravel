@@ -9,7 +9,7 @@ return [
 	'abilityModel'		=> \App\Entities\Auth\Ability::class,
 	'abilityRepository' => \App\Entities\Auth\AbilityRepository::class,
 	'roleModel'			=> \App\Entities\Auth\Role::class,
-	'roleRepository'	=> \EMedia\Oxygen\Entities\Auth\RoleRepository::class,
+	'roleRepository'	=> \App\Entities\Auth\RolesRepository::class,
 
 	'tenantModel'		=> \EMedia\Oxygen\Entities\Auth\MultiTenant\Tenant::class,
 	'tenantRepository'  => \EMedia\Oxygen\Entities\Auth\MultiTenant\TenantRepository::class,
