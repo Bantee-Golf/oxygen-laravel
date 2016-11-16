@@ -1,6 +1,6 @@
 @extends('oxygen::layouts.master-backend')
 
-@section ('title', (empty($pageTitle))? 'Admin Dashboard': $pageTitle)
+@section ('pageTitle', (empty($pageTitle))? 'Admin Dashboard': $pageTitle)
 
 @section('page-container')
     <div id="page-container" class="admin-page-container">

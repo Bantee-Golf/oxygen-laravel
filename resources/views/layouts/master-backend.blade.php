@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW" />
 
-    <title>@yield('title', $title)</title>
+    <title>@yield('pageTitle', $pageTitle)</title>
 
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
     {{--<link rel="stylesheet" href="/bower_components/bootstrap-additions/dist/bootstrap-additions.min.css" />--}}

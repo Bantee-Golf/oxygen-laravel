@@ -37,10 +37,10 @@ class LoadViewSettings
 	public function handle($request, Closure $next)
 	{
 		$appName 	= config('app.name');
-		$title		= 'My Account';
+		$pageTitle	= 'My Account';
 
 		View::share('appName', $appName);
-		View::share('title', $title);
+		View::share('pageTitle', $pageTitle);
 
 		if ($user = $this->auth->user()) {
 			View::share('user', $user);

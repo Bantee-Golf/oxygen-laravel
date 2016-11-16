@@ -1,6 +1,6 @@
 @extends('oxygen::layouts.master-frontend')
 
-@section('title', $title)
+@section('pageTitle', $pageTitle)
 
 @section('contents')
     <header>

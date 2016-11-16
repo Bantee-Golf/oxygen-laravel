@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="@yield('description', 'Sign up for your free trial now!')">
 
-    <title>@yield('title', 'EM Project')</title>
+    <title>@yield('pageTitle', 'EM Project')</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//oss.maxcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />

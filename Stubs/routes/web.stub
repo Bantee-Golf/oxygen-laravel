@@ -3,7 +3,7 @@
 // Start Oxygen routes
 // Home
 Route::get('/', function () {
-	return view('oxygen::pages.home', ['title' => 'The Awesomeness Starts Here...']);
+	return view('oxygen::pages.home', ['pageTitle' => 'The Awesomeness Starts Here...']);
 })->name('home');
 
 // User login
