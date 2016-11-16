@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="//oss.maxcdn.com/animatecss/3.5.0/animate.min.css" type="text/css">
     <link rel="stylesheet" href="/css/theme/creative.css" type="text/css">
 
+    <link rel="stylesheet" href="{{ elixir("css/dist/public.css") }}" />
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

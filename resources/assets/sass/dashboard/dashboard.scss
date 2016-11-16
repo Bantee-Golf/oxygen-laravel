@@ -128,7 +128,7 @@ body {
 }
 .navbar-nav {
   .user-greeting {
-	padding: 15px;
+	padding: 0 15px;
 	font-weight: bold;
 	color: #fff;
   }
@@ -142,12 +142,15 @@ body {
   transition: 1s;
 }
 .navbar-oxygen {
-	.navbar-toggle {
-		border-color: rgba(255, 255, 255, 0.75);
-		.icon-bar {
-			background-color: rgba(255, 255, 255, 0.75);
-		}
+  .navbar-toggle {
+	border-color: rgba(255, 255, 255, 0.75);
+	.icon-bar {
+	  background-color: rgba(255, 255, 255, 0.75);
 	}
+  }
+}
+nav {
+  line-height: 51px;
 }
 
 .btn-s-depth {
@@ -308,7 +311,7 @@ body {
 .title-container {
   margin-bottom: 20px;
   &.no-bottom-margin {
-  	margin-bottom: 0;
+	margin-bottom: 0;
   }
   .title-options {
 	display: inline-block;
@@ -452,24 +455,24 @@ footer {
 }
 
 @media screen and (max-width: 900px) {
-	#sidebar {
-		.nav {
-			> li > a {
-				text-align: center;
-				font-size: 12px;
-			}
-			.fa {
-			  font-size: 30px;
-			  display: block;
-			  //border: 1px solid red;
-			  margin-right: 0;
-			}
-		}
-		.nav-headline {
-			font-size: 12px;
-			text-align: center;
-		}
+  #sidebar {
+	.nav {
+	  > li > a {
+		text-align: center;
+		font-size: 12px;
+	  }
+	  .fa {
+		font-size: 30px;
+		display: block;
+		//border: 1px solid red;
+		margin-right: 0;
+	  }
 	}
+	.nav-headline {
+	  font-size: 12px;
+	  text-align: center;
+	}
+  }
 }
 
 

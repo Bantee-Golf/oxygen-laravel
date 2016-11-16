@@ -26,15 +26,7 @@
 
     @stack('meta')
 
-    <style>
-        table form.form-inline {
-            display: inline-block;
-        }
-
-        .new-line-element {
-            margin-bottom: 10px;
-        }
-    </style>
+    @include('oxygen::partials.tracking')
 
     <head>
 <body>
@@ -92,23 +84,7 @@
 
         @yield('page-container')
 
-        <footer>
-            <div id="footer" class="small-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 text-center links">
-                            <a href="http://www.elegantmedia.com.au/contact-us">Contact Us</a>
-                            <br/><br />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            &nbsp;
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        @include('oxygen::partials.footer')
 
     </div>
 

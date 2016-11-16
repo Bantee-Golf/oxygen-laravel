@@ -4,7 +4,7 @@ require('laravel-elixir-vue-2');
 
 var publicSass = [
 	// use a wildcard or a file name, but not a directory
-	'./resources/assets/sass/*.scss'
+	'./resources/assets/sass/home.scss'
 ];
 
 var dashboardJs = [
