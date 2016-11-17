@@ -1,8 +1,7 @@
 <?php
 
 use App\Entities\Auth\AbilityCategory;
-use Cocur\Slugify\Slugify;
-use Faker\Factory as Faker;
+use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Database\Seeder;
 
 class AbilitiesTableSeeder extends Seeder
@@ -17,12 +16,16 @@ class AbilitiesTableSeeder extends Seeder
 	{
 		$categories = AbilityCategory::all();
 
+		if (TenantManager::multiTenancyIsActive())
+		{
+			$tenant = app(config('auth.tenantModel'))->find(1);
+			TenantManager::setTenant($tenant);
+		}
+
 		foreach ($categories as $category) {
 			$abilities = json_decode($category->default_abilities);
 
 			foreach ($abilities as $abilityName) {
-				// $slug = (new Slugify())->slugify($abilityName);
-
 				$ability = app(config('auth.abilityModel'));
 				$ability->title = $abilityName;
 				$ability->ability_category_id = $category->id;
@@ -35,12 +38,15 @@ class AbilitiesTableSeeder extends Seeder
 				if ($existingAbility) {
 					// leave it alone
 				} else {
+					if (TenantManager::multiTenancyIsActive())
+					{
+						$tenant = TenantManager::getTenant();
+						$ability->tenant()->associate($tenant);
+					}
 					$ability->save();
 				}
 			}
 		}
 	}
-
-
 
 }

@@ -15,8 +15,8 @@ class UpdateAuthTablesMultiTenant extends Migration
 			$table->integer('tenant_id')->unsigned();
 			$table->foreign('tenant_id')->references('id')->on('tenants');
 
-			$table->dropUnique('abilities_name_entity_id_entity_type_unique');
-			$table->unique(['name', 'entity_id', 'entity_type', 'tenant_id']);
+			$table->dropUnique('abilities_unique_index');
+			$table->unique(['name', 'entity_id', 'entity_type', 'only_owned', 'tenant_id'], 'abilities_unique_index');
 		});
 
 		Schema::table('roles', function ($table) {
@@ -32,10 +32,12 @@ class UpdateAuthTablesMultiTenant extends Migration
 			$table->foreign('tenant_id')->references('id')->on('tenants');
 		});
 
+		/*
 		Schema::table('permissions', function ($table) {
 			$table->integer('tenant_id')->unsigned();
 			$table->foreign('tenant_id')->references('id')->on('tenants');
 		});
+		*/
 
 	}
 
@@ -46,9 +48,11 @@ class UpdateAuthTablesMultiTenant extends Migration
 	 */
 	public function down()
 	{
+		/*
 		Schema::table('permissions', function ($table) {
 			$table->dropColumn('tenant_id');
 		});
+		*/
 
 		Schema::table('invitations', function ($table) {
 			$table->dropForeign('invitations_tenant_id_foreign');
@@ -56,7 +60,7 @@ class UpdateAuthTablesMultiTenant extends Migration
 		});
 
 		Schema::table('abilities', function ($table) {
-			$table->dropUnique('abilities_name_entity_id_entity_type_tenant_id_unique');
+			$table->dropUnique('abilities_unique_index');
 
 			// the following may not be enforceable because of duplicate data
 			// $table->unique(['name', 'entity_id', 'entity_type']);

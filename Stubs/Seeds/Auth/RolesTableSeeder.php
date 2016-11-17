@@ -1,5 +1,6 @@
 <?php
 
+use EMedia\MultiTenant\Facades\TenantManager;
 use EMedia\QuickData\Database\Seeds\Traits\SeedsWithoutDuplicates;
 use Illuminate\Database\Seeder;
 
@@ -37,6 +38,11 @@ class RolesTableSeeder extends Seeder
 		];
 
 		$roleModel = config('auth.roleModel');
+		if (TenantManager::multiTenancyIsActive())
+		{
+			$tenant = app(config('auth.tenantModel'))->find(1);
+			TenantManager::setTenant($tenant);
+		}
 		$this->seedButDontCreateDuplicates($defaultRoles, $roleModel, 'title', 'name');
 
 	}

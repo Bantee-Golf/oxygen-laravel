@@ -31,7 +31,7 @@
         "silber/bouncer": "v1.0.0-alpha.3",
         "emedia/quick-data-laravel": "0.0.x",
         "emedia/generators": "0.2.x",
-        "emedia/multi-tenant": "0.0.x",
+        "emedia/multi-tenant": "0.1.x",
         "cviebrock/eloquent-sluggable": "^4.1",
         "laravelcollective/html": "^5.3",
         "emedia/render": "0.0.x",

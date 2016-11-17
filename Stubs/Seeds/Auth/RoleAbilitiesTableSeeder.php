@@ -1,5 +1,6 @@
 <?php
 
+use EMedia\MultiTenant\Facades\TenantManager;
 use EMedia\QuickData\Database\Seeds\Traits\SeedsPermissions;
 use Illuminate\Database\Seeder;
 
@@ -25,6 +26,11 @@ class RoleAbilitiesTableSeeder extends Seeder
 	 */
 	public function run()
 	{
+		if (TenantManager::multiTenancyIsActive())
+		{
+			$tenant = app(config('auth.tenantModel'))->find(1);
+			TenantManager::setTenant($tenant);
+		}
 		$this->assignSuperAdminPermissions();
 		$this->assignAdminPermissions();
 	}
