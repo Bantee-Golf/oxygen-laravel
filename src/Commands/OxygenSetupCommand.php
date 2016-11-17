@@ -331,7 +331,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'replace'	=> "use EMedia\Oxygen\Entities\Auth\MultiTenant\Ability as AbilityBase;"
 			];
 			$stringsToReplace[] = [
-				'path'		=> app_path('Entities/Auth/Ability.php'),
+				'path'		=> app_path('Entities/Auth/Role.php'),
 				'search'	=> "use EMedia\Oxygen\Entities\Auth\SingleTenant\Role as BaseRole;",
 				'replace'	=> "use EMedia\Oxygen\Entities\Auth\MultiTenant\Role as BaseRole;"
 			];
