@@ -25,21 +25,20 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "laravel/framework": "5.3.*",
-        "emedia/helpers": "0.0.x",
-        "silber/bouncer": "v1.0.0-alpha.3",
-        "emedia/quick-data-laravel": "0.0.x",
+        "php": ">=5.6.4",
+        "laravel/framework": "5.4.*",
+        "silber/bouncer": "v1.0.0-beta.2",
+        "emedia/helpers": "1.0.*",
+        "emedia/quick-data-laravel": "1.0.*",
         "emedia/generators": "0.2.x",
-        "emedia/multi-tenant": "0.1.x",
-        "cviebrock/eloquent-sluggable": "^4.1",
-        "laravelcollective/html": "^5.3",
         "emedia/render": "0.0.x",
+        "emedia/multi-tenant": "0.1.x",
+        "cviebrock/eloquent-sluggable": "^4.2",
+        "laravelcollective/html": "^5.3",
         "barryvdh/laravel-debugbar": "^2.3"
     },
     "require-dev": {
-        "laracasts/generators": "^1.1",
-        "phpunit/phpunit": "^5.6"
+        "phpunit/phpunit": "^6.0"
     },
     "license": "proprietary",
     "authors": [

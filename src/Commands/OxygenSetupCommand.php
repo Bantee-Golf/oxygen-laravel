@@ -309,8 +309,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			],
 			[
 				'path'		=> config_path('app.php'),
-				'search'	=> "Laravel",
-				'replace'	=> "$projectName"
+				'search'	=> "'name' => 'Laravel',",
+				'replace'	=> "'name' => '{$projectName}',"
 			],
 			[
 				'path'		=> database_path('seeds/Auth/UsersTableSeeder.php'),
