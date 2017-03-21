@@ -4,7 +4,7 @@ namespace App\Entities\Auth;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
-use EMedia\QuickData\Entities\Traits\SearchableTrait;
+use EMedia\QuickData\Entities\Search\SearchableTrait;
 
 class AbilityCategory extends Model
 {

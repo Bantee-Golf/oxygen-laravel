@@ -1,14 +1,12 @@
 const elixir = require('laravel-elixir');
 
-require('laravel-elixir-vue-2');
-
 var publicSass = [
 	// use a wildcard or a file name, but not a directory
 	'./resources/assets/sass/home.scss'
 ];
 
 var dashboardJs = [
-	'./resources/assets/components/jsonEditor/jsonListEditor.js',
+	'./resources/assets/js/dashboard.js',
 ];
 
 var dashboardCss = [
@@ -46,11 +44,6 @@ elixir(function (mix) {
 	// js
 	mix.scripts(dashboardJs, './public_html/js/dist/dashboard.js');
 
-	// user js
-	// mix.scripts([
-	//     './resources/assets/js/angular_app/user/**/*.js'
-	// ], './public_html/js/angular_app/user/dist/app.js');
-
 	// version
 	mix.version([
 		'css/dist/public.css',
@@ -59,6 +52,6 @@ elixir(function (mix) {
 		'js/dist/dashboard.js'
 	]);
 
-	mix.browserSync({proxy: 'localhost.devv'});
+	mix.browserSync({proxy: 'localhost.dev'});
 
 });

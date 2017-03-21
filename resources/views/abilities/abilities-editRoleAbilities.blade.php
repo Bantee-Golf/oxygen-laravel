@@ -42,8 +42,4 @@
         </form>
 
     </div>
-
-    {{--@include('oxygen::groups.add-users-to-group')--}}
-
-
 @endsection

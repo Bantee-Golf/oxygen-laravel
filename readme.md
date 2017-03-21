@@ -93,7 +93,7 @@ At the end of `providers` add:
 
 To do this, run the following command.
 ```
-php artisan scaffold:move:public
+php artisan setup:move-public
 ```
 
 6) Edit `.env` file and add the database and other details.
@@ -103,7 +103,7 @@ php artisan scaffold:move:public
 8) After everything is done, run the following in the command line.
 
 ```
-php artisan oxygen:setup
+php artisan setup:oxygen-project
 ```
 
 When you run the setup, it will ask ask a series of questions. Unless you want to change the default behaviour, you can accept the default answer for all of them and proceed. Whenever it asks to overwrite a file, say 'yes'.

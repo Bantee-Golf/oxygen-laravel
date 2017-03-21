@@ -56,9 +56,9 @@ class PagesController extends Controller
 		$data['userIp']    = request()->ip();
 		$data['sender_email'] = $request->get('email');
 
-		Mail::queue(['text' => 'emails.contact_us'], $data, function($mailMessage) use ($data)
+		Mail::queue(['text' => 'emails..text.contact_us'], $data, function($mailMessage) use ($data)
 		{
-			$mailMessage->to(env('WEBMASTER_EMAIL'))
+			$mailMessage->to(config('WEBMASTER_EMAIL'))
 						->replyTo($data['sender_email'])
 						->subject(config('app.name') . ' - Contact Us - Message Received');
 		});

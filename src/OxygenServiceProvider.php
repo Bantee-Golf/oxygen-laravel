@@ -2,6 +2,7 @@
 
 namespace EMedia\Oxygen;
 
+use Illuminate\Support\Facades\Schema;
 use EMedia\Oxygen\Commands\OxygenSetupCommand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -12,6 +13,9 @@ class OxygenServiceProvider extends ServiceProvider
 
 	public function boot()
 	{
+		// Add support for earlier versions before MySQL 5.7.7
+		Schema::defaultStringLength(191);
+
 		// load default views
 		$this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen');
 
@@ -25,17 +29,17 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__ . '/../resources/assets/sass' => base_path('resources/assets/sass'),
 		], 'source-sass');
 
+		// JS source
+		$this->publishes([
+			__DIR__ . '/../resources/assets/js' => base_path('resources/assets/js'),
+		], 'source-js');
+
 		// public static assets (JS, CSS etc)
 		$this->publishes([
 			__DIR__ . '/../public_html/js/theme'  => public_path('/js/theme'),
 			__DIR__ . '/../public_html/css' => public_path('/css'),
 			__DIR__ . '/../public_html/favicon.ico' => public_path('/favicon.ico'),
 		], 'public-assets');
-
-		// web components
-		$this->publishes([
-			__DIR__ . '/../resources/assets/components' => base_path('resources/assets/components'),
-		], 'web-components');
 
 		// publish common entities
 		$this->publishes([
@@ -77,7 +81,7 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->registerDependentServiceProviders();
 		$this->registerAliases();
 
-		if ($this->app->environment() === 'local')
+		if ($this->app->environment('local'))
 		{
 			$this->app->singleton("emedia.oxygen.setup", function () {
 				return app(OxygenSetupCommand::class);
@@ -99,6 +103,7 @@ class OxygenServiceProvider extends ServiceProvider
 	{
 		$this->app->register(\EMedia\MultiTenant\MultiTenantServiceProvider::class);
 		$this->app->register(\EMedia\Generators\GeneratorServiceProvider::class);
+		$this->app->register(\EMedia\Helpers\HelpersServiceProvider::class);
 		$this->app->register(\Silber\Bouncer\BouncerServiceProvider::class);
 		$this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
 		$this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);

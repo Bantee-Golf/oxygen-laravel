@@ -9,13 +9,14 @@ use Illuminate\Filesystem\Filesystem;
 class OxygenSetupCommand extends BaseGeneratorCommand
 {
 
-	protected $signature   = 'oxygen:setup';
+	protected $signature   = 'setup:oxygen-project';
 	protected $description = 'Generate common files for the Oxygen project';
 	protected $projectConfig = [];
 
 	protected $progressLog = [
 		'info' 		=> [],
 		'errors' 	=> [],
+		'comments'	=> [],
 	];
 
 	protected $configFile;
@@ -59,9 +60,12 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// we don't ask for confirmation on this
 		$this->replaceKnownStrings();
 
+		$this->progressLog['info'][] = PHP_EOL;
 		$this->progressLog['info'][] = 'Run the following to complete installation';
-		$this->progressLog['info'][] = 'yarn add laravel-elixir-browsersync-official --save-dev';
-		$this->progressLog['info'][] = 'yarn install';
+		$this->progressLog['info'][] = 'npm install laravel-elixir laravel-elixir-browsersync-official gulp --save-dev';
+		$this->progressLog['info'][] = 'npm install';
+		$this->progressLog['info'][] = PHP_EOL;
+		$this->progressLog['info'][] = 'Build and the application';
 		$this->progressLog['info'][] = 'gulp';
 		$this->progressLog['info'][] = 'php artisan serve';
 
@@ -83,6 +87,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$userInput['projectName'] 	 = $this->ask('What is the project name?');
 		$userInput['fromEmail']   	 = $this->ask('What is the `from` email address for system emails?');
 		$userInput['seedAdminEmail'] = $this->anticipate('What is your email to seed the database?', [], $userInput['fromEmail']);
+		$userInput['devMachineUrl'] = $this->anticipate('What is the local development URL?', [], 'localhost.dev');
 		// $userInput['dashboardType']  = $this->choice('What should be the type of the dashboard?', ['HTML/CSS (Default)', 'Angular'], 0);
 
 		if ($this->confirm('Should the project have Multi-Tenant support?', false))
@@ -140,30 +145,17 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			]);
 		}
 
-		// bouncer migration (for roles and ACL)
-		if ($this->confirm('Create bouncer migrations?', true))
-		{
-			$bouncerPublishCommand = [
-				'command' => 'vendor:publish',
-				'arguments' => [
-					'--provider' => 'Silber\Bouncer\BouncerServiceProvider',
-					'--tag' => ['migrations'],
-				]
-			];
-			$this->call($bouncerPublishCommand['command'], $bouncerPublishCommand['arguments']);
-		}
-
 		$stubMap = [
 			[
-				'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_invitations_table.php',
+				'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_role_permission_tables.php',
+				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_role_permission_tables.php'),
+				'name'	=> 'Add new columns to Bouncer tables'
+			],
+			[
+				'stub'	=> __DIR__ . '/../../Stubs/Migrations/003_create_invitations_table.php',
 				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_invitations_table.php'),
 				'name'	=> 'Invitations Migration'
 			],
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Migrations/003_update_auth_tables_common.php',
-				'path'  => database_path('migrations/' . $this->getTimestamp() . '_update_auth_tables_common.php'),
-				'name'	=> 'Add new columns to Bouncer tables'
-			]
 		];
 		$this->compileStubs($stubMap);
 
@@ -319,6 +311,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			]
 		];
 
+		if (!empty($this->projectConfig['devMachineUrl'])) {
+			$stringsToReplace[] = [
+				'path' => base_path('gulpfile.js'),
+				'search' => 'localhost.dev',
+				'replace' => $this->projectConfig['devMachineUrl'],
+			];
+		};
+
 		if ($this->projectConfig['multiTenant']) {
 			$stringsToReplace[] = [
 				'path'		=> config_path('oxygen.php'),
@@ -388,10 +388,10 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['web-components'],
+					'--tag'			=> ['source-js'],
 					'--force'		=> true,
 				],
-				'desc'			=> 'Web components'
+				'desc'			=> 'JS Source Files'
 			],
 			[
 				'command'		=> 'vendor:publish',

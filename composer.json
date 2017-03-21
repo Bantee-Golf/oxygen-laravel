@@ -26,13 +26,13 @@
     ],
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.4.*",
+        "laravel/framework": "~5.4.0",
         "silber/bouncer": "v1.0.0-beta.2",
         "emedia/helpers": "1.0.*",
-        "emedia/quick-data-laravel": "1.0.*",
-        "emedia/generators": "0.2.x",
-        "emedia/render": "0.0.x",
-        "emedia/multi-tenant": "0.1.x",
+        "emedia/quick-data-laravel": "~1.0.0",
+        "emedia/generators": "~1.0.0",
+        "emedia/render": "0.0.*",
+        "emedia/multi-tenant": "0.1.*",
         "cviebrock/eloquent-sluggable": "^4.2",
         "laravelcollective/html": "^5.3",
         "barryvdh/laravel-debugbar": "^2.3"

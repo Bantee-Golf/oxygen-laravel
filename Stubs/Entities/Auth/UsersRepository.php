@@ -105,31 +105,6 @@ class UsersRepository extends BaseRepository
 		return $instance;
 	}
 
-	public function search($searchQuery = null, $perPage = null, $orderBy = [], $relationships = [])
-	{
-		$searchQuery = ($searchQuery)?: request()->get('q');
-
-		$query = $this->model->query();
-
-		if ($searchQuery) $query->search($searchQuery);
-
-		$query->orderBy('id', 'desc');
-
-		if (!empty($orderBy)) {
-			foreach ($orderBy as $orderCol => $orderDirection) {
-				$query->orderBy($orderCol, $orderDirection);
-			}
-		}
-		
-		if (!empty($relationships)) {
-			$query->with($relationships);
-		}
-
-		$perPage = ($perPage)?: config('oxygen.dashboard.perPage', 20);
-
-		return $query->paginate($perPage);
-	}
-
 	public function getUserByEmail($email, $onlyActiveUsers = true)
 	{
 		$query = User::where('email', $email);

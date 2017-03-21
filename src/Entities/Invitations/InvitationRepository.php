@@ -5,7 +5,7 @@ namespace EMedia\Oxygen\Entities\Invitations;
 
 use Carbon\Carbon;
 use EMedia\MultiTenant\Facades\TenantManager;
-use EMedia\QuickData\Entities\BaseRepository;
+use EMedia\QuickData\Entities\Repositories\BaseRepository;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 
