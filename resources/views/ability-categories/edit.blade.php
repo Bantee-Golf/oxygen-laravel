@@ -62,7 +62,7 @@
                     	</div>
                     </div>
 
-                    @include('oxygen::partials.js_mvc_loading_container')
+                    @include('oxygen::partials.loading.angular-loading')
 
                     @push('scripts')
                         <script>

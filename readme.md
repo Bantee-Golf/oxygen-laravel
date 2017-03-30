@@ -1,4 +1,4 @@
-# Oxygen - Admin Dashboard for Laravel 5.3+
+# Oxygen - Admin Dashboard for Laravel 5.4+
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
 

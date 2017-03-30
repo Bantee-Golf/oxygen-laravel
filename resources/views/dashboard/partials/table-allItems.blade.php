@@ -18,5 +18,12 @@
         @endif
 
         {!! Render::paginationLinks($allItems) !!}
+
+        {{-- Display a page summary --}}
+        @if (!empty($__env->yieldContent('pageSummary')))
+            <div>
+                @yield('pageSummary')
+            </div>
+        @endif
     </div>
 @stop

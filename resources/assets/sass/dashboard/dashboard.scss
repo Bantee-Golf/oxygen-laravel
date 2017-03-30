@@ -118,6 +118,13 @@ body {
 //  }
 //}
 
+.page-main-actions {
+  margin-bottom: 20px;
+  .breadcrumb {
+	margin-top: 20px;
+  }
+}
+
 .page-title {
   @extend .smooth-font, .narrow-font;
   font-family: $dashboard-font;
@@ -286,7 +293,7 @@ nav {
 
 .main-page-contents {
   h1 {
-	margin: 0;
+	margin: 0 0 20px;
   }
   .action-buttons {
 	margin: 20px 0;
