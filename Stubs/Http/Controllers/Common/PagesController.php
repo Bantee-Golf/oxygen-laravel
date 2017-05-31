@@ -32,7 +32,7 @@ class PagesController extends Controller
 	 */
 	public function contactUs()
 	{
-		return view('pages.contact-us', ['title' => 'Contact Us']);
+		return view('oxygen::pages.contact-us', ['title' => 'Contact Us']);
 	}
 
 	/**
