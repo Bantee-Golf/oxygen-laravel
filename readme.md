@@ -112,11 +112,16 @@ After the installation is complete, see if it gives you any errors or other info
 
 9) The setup is now complete. Run the following to complete the installation.
 
-Install required CSS, JS for the project.
+Install required CSS, JS for the project with Bower.
 ```
 bower install
-yarn add laravel-elixir-browsersync-official --save-dev
-yarn install
+```
+
+Install the required NPM packages
+```
+npm install gulp --save-dev
+npm install laravel-elixir --save-dev
+npm install laravel-elixir-browsersync-official --save-dev
 ```
 
 Compile the views
