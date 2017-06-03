@@ -140,7 +140,15 @@ php artisan db:seed
 
 ### Tips
 
-On `.env` file, by adding `DASHBOARD_AUTHENTICATION=false`, it will skip the login process. This is helpful for development.
+Add the following optional parameters in `.env` file
+```
+# skip the login process - useful for testing. Don't do this on a production
+DASHBOARD_AUTHENTICATION=false
+
+# disable registrations
+REGISTRATIONS_ENABLED=false
+
+```
 
 ## After Installation
 

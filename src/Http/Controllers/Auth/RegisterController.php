@@ -4,6 +4,7 @@ namespace EMedia\Oxygen\Http\Controllers\Auth;
 
 use App\User;
 use EMedia\MultiTenant\Facades\TenantManager;
+use EMedia\Oxygen\Exceptions\RegistrationsDisabledException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -45,6 +46,10 @@ class RegisterController extends Controller
 
 	public function showRegistrationForm()
 	{
+		if (!config('oxygen.registrationsEnabled', true)) {
+			throw new RegistrationsDisabledException("Registrations are not allowed");
+		}
+
 		if (view()->exists('auth.register')) {
 			return view('auth.register');
 		}
@@ -91,6 +96,10 @@ class RegisterController extends Controller
 	 */
 	public function register(Request $request)
 	{
+		if (!config('oxygen.registrationsEnabled', true)) {
+			throw new RegistrationsDisabledException("Registrations are not allowed");
+		}
+
 		$this->validator($request->all())->validate();
 		$invitation_code = null;
 

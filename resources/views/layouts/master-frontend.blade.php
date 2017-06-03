@@ -74,9 +74,11 @@
                     <li>
                         <a class="page-scroll" href="/login">Login</a>
                     </li>
-                    <li>
-                        <a class="page-scroll" href="/register">Register</a>
-                    </li>
+                    @if (config('oxygen.registrationsEnabled'))
+                        <li>
+                            <a class="page-scroll" href="/register">Register</a>
+                        </li>
+                    @endif
                 @endif
             </ul>
         </div>

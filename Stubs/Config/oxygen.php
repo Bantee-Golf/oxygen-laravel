@@ -17,4 +17,6 @@ return [
 
 	'invitationRepository'	=> \EMedia\Oxygen\Entities\Invitations\InvitationRepository::class,
 
+	'registrationsEnabled' => env('REGISTRATIONS_ENABLED', true),
+
 ];

@@ -46,14 +46,16 @@
 							</div>
 						</div>
 
-						<hr/>
+						@if (config('oxygen.registrationsEnabled'))
+							<hr/>
 
-						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								Don't have an account?
-								<a href="/register">Signup for a New Account</a>
+							<div class="form-group">
+								<div class="col-md-6 col-md-offset-4">
+									Don't have an account?
+									<a href="/register">Signup for a New Account</a>
+								</div>
 							</div>
-						</div>
+						@endif
 					</form>
 				</div>
 			</div>
