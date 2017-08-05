@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace EMedia\Oxygen\Commands;
 
 use Illuminate\Console\Command;
 
