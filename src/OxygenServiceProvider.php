@@ -2,6 +2,7 @@
 
 namespace EMedia\Oxygen;
 
+use EMedia\Oxygen\Commands\CreateNewUserCommand;
 use Illuminate\Support\Facades\Schema;
 use EMedia\Oxygen\Commands\OxygenSetupCommand;
 use Illuminate\Support\Facades\Validator;
@@ -88,6 +89,8 @@ class OxygenServiceProvider extends ServiceProvider
 			});
 			$this->commands("emedia.oxygen.setup");
 		}
+
+		$this->commands(CreateNewUserCommand::class);
 
 		Models::setAbilitiesModel(config('auth.abilityModel'));
 		Models::setRolesModel(config('auth.roleModel'));

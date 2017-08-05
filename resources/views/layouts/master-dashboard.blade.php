@@ -106,6 +106,10 @@
 //            $(element).datetimepicker(options);
 //        });
 
+		// confirmation
+		$('.js-confirm').on('submit', function (e) {
+			return confirm('Are you sure?');
+		});
 
 		// trigger tooltips
 		$('.js-tooltip').tooltip();
