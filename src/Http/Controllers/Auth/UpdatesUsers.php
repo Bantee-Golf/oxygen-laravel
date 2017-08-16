@@ -45,6 +45,39 @@ trait UpdatesUsers
 		]);
 	}
 
+	public function getEmail()
+	{
+		$user = Auth::user();
 
+		if ($user) return view('oxygen::auth.email', compact('user'));
+
+		return Redirect::to('dashboard');
+	}
+
+	public function updateEmail(Request $request)
+	{
+		$validator = $this->emailValidator($request->all());
+
+		if ($validator->fails()) {
+			$this->throwValidationException(
+				$request, $validator
+			);
+		}
+
+		$user = Auth::user();
+		$user->fill($request->all());
+		$result = $user->save();
+
+		if ($result) return redirect()->back()->with('success', 'Your email has been updated.');
+
+		return redirect()->back()->withErrors();
+	}
+
+	protected function emailValidator(array $data)
+	{
+		return Validator::make($data, [
+			'email' => 'required|email|max:255|unique:users',
+		]);
+	}
 
 }

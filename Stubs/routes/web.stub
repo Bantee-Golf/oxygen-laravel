@@ -42,6 +42,8 @@ Route::group(['middleware' => 'auth'], function()
 		// auth
 		Route::get('/profile', 	'Auth\ProfileController@getProfile')->name('account');
 		Route::put('/profile', 	'Auth\ProfileController@updateProfile');
+		Route::get('/email/update', 	'Auth\ProfileController@getEmail');
+		Route::put('/email/update', 	'Auth\ProfileController@updateEmail');
 		Route::get('/password/update',	'Auth\ResetPasswordController@getUpdate');
 		Route::post('/password/update',	'Auth\ResetPasswordController@postUpdate');
 

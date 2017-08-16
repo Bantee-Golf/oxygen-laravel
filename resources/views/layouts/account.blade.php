@@ -24,6 +24,7 @@
                 <ul class="nav nav-stacked nav-wide">
                     <li><a href="/account/profile"><em class="fa fa-user"></em> My Profile</a></li>
                     <li><a href="/account/password/update"><em class="fa fa-lock"></em> Change Password</a></li>
+                    <li><a href="/account/email/update"><em class="fa fa-envelope"></em> Change Email</a></li>
                     <li><a href="/logout"><em class="fa fa-sign-out"></em> Logout</a></li>
                 </ul>
             </div>
