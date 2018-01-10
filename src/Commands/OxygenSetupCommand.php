@@ -188,6 +188,13 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/gulpfile.js';
 		$stubMap[] = $stub;
 
+		$stub = [
+			'path'	=> base_path('webpack.mix.js'),
+			'name'	=> 'webpack.mix.js',
+		];
+		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/webpack.mix.js';
+		$stubMap[] = $stub;
+
 		$stubMap[] = [
 			'stub'	=> __DIR__ . '/../../Stubs/config/oxygen.php',
 			'path'  => config_path('oxygen.php'),
