@@ -84,7 +84,7 @@ This package and some dependent packages are available in private repositories. 
 3) Require the package into composer through the command line.
 ```
 composer require silber/bouncer v1.0.0-rc.1
-composer require emedia/oxygen
+composer require emedia/oxygen:1.1.2
 ```
 
 4) Open `config/app.php` and add the following,
