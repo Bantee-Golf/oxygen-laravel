@@ -26,8 +26,8 @@
     ],
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "~5.4.0",
-        "silber/bouncer": "v1.0.0-beta.3",
+        "laravel/framework": "^5.4.0",
+        "silber/bouncer": "v1.0.0-beta.3|v1.0.0-rc.1",
         "emedia/helpers": "1.0.*",
         "emedia/quick-data-laravel": "~1.0.0",
         "emedia/generators": "~1.0.0",

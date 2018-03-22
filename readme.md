@@ -1,8 +1,10 @@
-# Oxygen - Admin Dashboard for Laravel 5.4+
+# Oxygen - Admin Dashboard for Laravel 5.6+
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
 
 ### [For Laravel 5.2, use version `0.1.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/4f121b0574945a6278979f696b59f0c20637735c/?at=0.1.4).
+### For Laravel 5.4, use version `1.0.8`
+
 
 ## Summary
 
@@ -25,7 +27,9 @@ This package has the built-in support for the following.
 
 The following are required for a successful installation.
 
-- [Laravel 5.3+](https://laravel.com/docs/5.3#installing-laravel)
+- [Laravel 5.6+](https://laravel.com/docs/5.6)
+
+- See above for older version support
 
 To install CSS JS for the dashboard, the following are required.
 
@@ -79,7 +83,7 @@ This package and some dependent packages are available in private repositories. 
 
 3) Require the package into composer through the command line.
 ```
-composer require silber/bouncer:v1.0.0-beta.3
+composer require silber/bouncer v1.0.0-rc.1
 composer require emedia/oxygen
 ```
 
@@ -89,7 +93,7 @@ At the end of `providers` add:
     EMedia\Oxygen\OxygenServiceProvider::class,
 ```
 
-5) **(Optional Step)** It's suggested at this point you'll change the `public` dir to `public_html` as it's the convention used in most cPanel based servers.
+5) It's suggested at this point you'll change the `public` dir to `public_html` as it's the convention used in most cPanel based servers.
 
 To do this, run the following command.
 ```
@@ -167,4 +171,4 @@ php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --ta
 
 ## Issues/Bugs?
 - Submit a pull request (on a new branch) or [submit an issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues).
-- **Do not** commit new changes directly to the `master` branch.
+- **DO NOT** commit new changes directly to the `master` branch. Create a development branch, and then send a pull-request to master, and get someone else to review the code before merging.
