@@ -450,6 +450,41 @@ nav {
   }
 }
 
+.box-info {
+  position: relative;
+  padding: 15px;
+  background: #fff;
+  color: #5b5b5b;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  margin-bottom: 20px;
+  border: 1px solid #cccccc;
+  .icon-box {
+	width: 65px;
+	font-size: 30px;
+	display: block;
+	float: left;
+  }
+  .text-box h3 {
+	padding: 0;
+	margin: 5px 0;
+	font-weight: 600;
+	font-size: 20px;
+	display: block;
+	color: #4C5264;
+  }
+  .text-box p {
+	font-size: 14px;
+  }
+  .progress.progress-xs {
+	height: 5px;
+	margin-top: 30px;
+	margin-bottom: 20px;
+	border-radius: 0px;
+	box-shadow: none;
+  }
+}
+
 footer {
   background: #2e3137;
   box-shadow: inset rgba(255, 255, 255, 0.1) 0 4px 0;
