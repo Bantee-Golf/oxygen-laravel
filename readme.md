@@ -123,14 +123,26 @@ bower install
 
 Install the required NPM packages
 ```
-npm install gulp --save-dev
-npm install laravel-elixir --save-dev
-npm install laravel-elixir-browsersync-official --save-dev
+npm install
+```
+
+Your `webpack.mix.js` file should look similar to this
+```
+let mix = require('laravel-mix');
+
+mix.setPublicPath('public_html/');
+
+mix.sass('resources/assets/sass/dashboard/dashboard.scss', 'public_html/css/dist')
+	.sass('resources/assets/sass/auth.scss', 'public_html/css/dist')
+	.sass('resources/assets/sass/public.scss', 'public_html/css/dist')
+	.sourceMaps();
+
+mix.browserSync({proxy: 'localhost.dev'});
 ```
 
 Compile the views
 ```
-gulp
+npm run watch
 ```
 
 Migrate and seed the database
