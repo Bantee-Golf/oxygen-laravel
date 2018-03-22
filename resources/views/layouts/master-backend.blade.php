@@ -98,7 +98,7 @@
 
 <script src="/bower_components/vue/dist/vue.min.js"></script>
 <script src="/bower_components/lodash/dist/lodash.min.js"></script>
-<script src="{{ elixir("js/dist/dashboard.js") }}"></script>
+{{--<script src="{{ elixir("js/dist/dashboard.js") }}"></script>--}}
 
 <script>
     $(document).ready(function() {
