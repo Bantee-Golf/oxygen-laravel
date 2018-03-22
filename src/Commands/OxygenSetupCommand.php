@@ -29,6 +29,15 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$this->configFile = base_path('oxygen.json');
 	}
 
+	/**
+	 *
+	 * Laravel 5.6 support
+	 *
+	 */
+	public function handle()
+	{
+		return $this->fire();
+	}
 
 	public function fire()
 	{
