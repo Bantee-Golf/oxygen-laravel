@@ -25,7 +25,7 @@ class UserRolesTableSeeder extends Seeder
 
 	protected function seedUserRoles()
 	{
-		$this->assignRoleToEmail('shane@elegantmedia.com.au', 'super-admin');
+		$this->assignRoleToEmail('info@elegantmedia.com.au', 'super-admin');
 		$this->assignRoleToEmail('shane.emedia+kent@gmail.com', 'admin');
 	}
 
