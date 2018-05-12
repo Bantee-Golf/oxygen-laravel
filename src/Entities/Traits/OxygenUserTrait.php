@@ -12,7 +12,7 @@ trait OxygenUserTrait
 {
 
 	use HasRolesAndAbilities {
-		HasRolesAndAbilities::isA as bouncerIs;
+		HasRolesAndAbilities::isA as bouncerIsA;
 	}
 
 	public function getFullNameAttribute()
