@@ -17,38 +17,29 @@ class UsersTableSeeder extends Seeder
 
 	public function seedTestUsers()
 	{
-		$user = User::create([
-			'name'	 => 'Peter Parker',
-			'email'	 => 'info@elegantmedia.com.au',
-			'password' => bcrypt('123456')
-		]);
+		$users = [
+			[
+				'name'	 => 'Peter Parker',
+				'email'	 => 'info@elegantmedia.com.au',
+				'password' => bcrypt('123456')
+			],
+			[
+				'name'	 => 'Clarke Kent',
+				'email'	 => 'shane.emedia+kent@gmail.com',
+				'password' => bcrypt('123456')
+			],
+		];
 
-		if (TenantManager::multiTenancyIsActive())
-		{
-			$tenant = app(config('auth.tenantModel'))->find(1);
-			TenantManager::setTenant($tenant);
-			$user->tenants()->save($tenant);
-		}
+		foreach ($users as $key => $data) {
+			if (!$user = User::where('email', $data['email'])->first()) {
+				$user = User::create($data);
 
-		// new user
-		$user = User::create([
-			'name'	 => 'Clarke Kent',
-			'email'	 => 'shane.emedia+kent@gmail.com',
-			'password' => bcrypt('123456')
-		]);
-
-		if (TenantManager::multiTenancyIsActive())
-		{
-			$tenant = app(config('auth.tenantModel'))->find(2);
-			TenantManager::setTenant($tenant);
-			$user->tenants()->save($tenant);
-
-//			$adminRole = app($roleModel)->create([
-//					'name'			=> 'admin',
-//					'display_name'	=> 'Admin',
-//					'description'	=> 'Admin project'
-//			]);
+				if (TenantManager::multiTenancyIsActive()) {
+					$tenant = app(config('auth.tenantModel'))->find($i + 1);
+					TenantManager::setTenant($tenant);
+					$user->tenants()->save($tenant);
+				}
+			}
 		}
 	}
-
 }
