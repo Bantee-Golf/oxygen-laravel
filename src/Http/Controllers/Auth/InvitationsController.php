@@ -121,7 +121,7 @@ class InvitationsController extends Controller
             'subject'=> $subject
         ];
 
-        Mail::queue('oxygen::emails.invitations.invitation_group', $data, function($message) use ($invite, $subject)
+        Mail::send('oxygen::emails.invitations.invitation_group', $data, function($message) use ($invite, $subject)
         {
             $message->to($invite->email)
                 ->subject($subject);
