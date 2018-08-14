@@ -185,7 +185,7 @@ php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --ta
 
 1 . On `config/auth.php`, change `providers.users.model` OR add a new line,
 ```
-	'model'	=> \Auth\NewUserClass,
+	'model'	=> '\Auth\NewUserClass',
 ```
 
 2 . On `AppServiceProvider.php` and `boot` method, change as below,
