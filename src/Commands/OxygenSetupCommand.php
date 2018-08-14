@@ -75,7 +75,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$this->progressLog['info'][] = 'npm install';
 		$this->progressLog['info'][] = PHP_EOL;
 		$this->progressLog['info'][] = 'Build and the application';
-		$this->progressLog['info'][] = 'gulp';
+		$this->progressLog['info'][] = 'npm run dev';
 		$this->progressLog['info'][] = 'php artisan serve';
 
 		// Setup Completed! Show any info to the user.
@@ -190,12 +190,12 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower.json';
 		$stubMap[] = $stub;
 
-		$stub = [
-			'path'	=> base_path('gulpfile.js'),
-			'name'	=> 'gulpfile.js',
-		];
-		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/gulpfile.js';
-		$stubMap[] = $stub;
+//		$stub = [
+//			'path'	=> base_path('gulpfile.js'),
+//			'name'	=> 'gulpfile.js',
+//		];
+//		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/gulpfile.js';
+//		$stubMap[] = $stub;
 
 		$stub = [
 			'path'	=> base_path('webpack.mix.js'),
