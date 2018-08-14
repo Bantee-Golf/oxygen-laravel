@@ -173,12 +173,28 @@ REGISTRATIONS_ENABLED=false
 - Roles and Permissions are implemented with [Bouncer. Read the docs.](https://github.com/JosephSilber/bouncer)
 - If you're going to use auto-syncing relationships (with `HandlesEntityCRUD` trait), **do not** use `Route::resource` for that controller. It will expose a security vulnerability.
 
-## Additional Details
+## Customisations
 
+#### How to Overwrite Views After Installation
 If you want to publish the views after the installation, run
 ```
 php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --tag=views --force
 ```
+
+#### How to Change the User model
+
+1 . On `config/auth.php`, change `providers.users.model` OR add a new line,
+```
+	'model'	=> \Auth\NewUserClass,
+```
+
+2 . On `AppServiceProvider.php` and `boot` method, change as below,
+```
+public function boot()
+{
+    \Silber\Bouncer\Database\Models::setUsersModel(NewUserClass::class);
+}
+``` 
 
 
 ## Issues/Bugs?

@@ -94,7 +94,7 @@ class OxygenServiceProvider extends ServiceProvider
 
 		Models::setAbilitiesModel(config('auth.abilityModel'));
 		Models::setRolesModel(config('auth.roleModel'));
-		Models::setUsersModel(config('auth.model'));
+		// Models::setUsersModel(config('auth.model'));
 	}
 
 	/**
