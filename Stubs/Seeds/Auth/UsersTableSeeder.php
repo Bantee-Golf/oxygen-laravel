@@ -20,12 +20,12 @@ class UsersTableSeeder extends Seeder
 		$users = [
 			[
 				'name'	 => 'Peter Parker',
-				'email'	 => 'info@elegantmedia.com.au',
+				'email'	 => 'app@elegantmedia.com.au',
 				'password' => bcrypt('123456')
 			],
 			[
 				'name'	 => 'Clarke Kent',
-				'email'	 => 'shane.emedia+kent@gmail.com',
+				'email'	 => 'app+user@elegantmedia.com.au',
 				'password' => bcrypt('123456')
 			],
 		];

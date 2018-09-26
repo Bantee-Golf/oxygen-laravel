@@ -16,8 +16,8 @@ class ApiAuthenticate {
 	public function handle($request, Closure $next)
 	{
 		// check if the X-API-KEY is not found in the header or if the token is invalid
-		$apiToken 		= Request::header('X-Api-Key');
-		$validApiToken 	= Config::get('app.apiKey');
+		$apiToken 		= request()->header('X-Api-Key');
+		$validApiToken 	= config('app.apiKey');
 
 		if (empty($apiToken))
 		{
