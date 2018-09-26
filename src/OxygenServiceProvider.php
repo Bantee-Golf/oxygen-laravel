@@ -107,11 +107,7 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->app->register(\EMedia\MultiTenant\MultiTenantServiceProvider::class);
 		$this->app->register(\EMedia\Generators\GeneratorServiceProvider::class);
 		$this->app->register(\EMedia\Helpers\HelpersServiceProvider::class);
-		$this->app->register(\Silber\Bouncer\BouncerServiceProvider::class);
-		$this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
-		$this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
 		$this->app->register(\EMedia\Render\RenderServiceProvider::class);
-		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
 	}
 
 	/**
@@ -124,9 +120,6 @@ class OxygenServiceProvider extends ServiceProvider
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 
 		$loader->alias('TenantManager', \EMedia\MultiTenant\Facades\TenantManager::class);
-		$loader->alias('Bouncer', \Silber\Bouncer\BouncerFacade::class);
-		$loader->alias('Debugbar', \Barryvdh\Debugbar\Facade::class);
-		$loader->alias('Form', \Collective\Html\FormFacade::class);
 		$loader->alias('Render', \EMedia\Render\Facades\RenderFacade::class);
 	}
 

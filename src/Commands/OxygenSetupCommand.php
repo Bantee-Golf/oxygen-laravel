@@ -4,6 +4,7 @@ namespace EMedia\Oxygen\Commands;
 
 use EMedia\Generators\Commands\BaseGeneratorCommand;
 use EMedia\Generators\Parsers\FileEditor;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 
 class OxygenSetupCommand extends BaseGeneratorCommand
@@ -17,6 +18,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		'info' 		=> [],
 		'errors' 	=> [],
 		'comments'	=> [],
+		'instructions' => [],
+		'files' => [],
 	];
 
 	protected $configFile;
@@ -31,7 +34,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	/**
 	 *
-	 * Laravel 5.6 support
+	 * Laravel 5.6+ support
 	 *
 	 */
 	public function handle()
@@ -46,8 +49,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// get developer input
 		$this->getDeveloperInput();
 
-		$this->generateGeneratorPackageFiles();
-
 		// generate the migrations
 		$this->generateMigrations();
 
@@ -60,26 +61,21 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// update middleware
 		$this->updateMiddleware();
 
-		// update app service providers
-		// $this->updateServiceProviders();
-
 		// publish assets and other files
 		$this->publishFiles();
 
 		// we don't ask for confirmation on this
 		$this->replaceKnownStrings();
 
-		$this->progressLog['info'][] = PHP_EOL;
-		$this->progressLog['info'][] = 'Run the following to complete installation';
-		$this->progressLog['info'][] = 'npm install laravel-elixir laravel-elixir-browsersync-official gulp --save-dev';
-		$this->progressLog['info'][] = 'npm install';
-		$this->progressLog['info'][] = PHP_EOL;
-		$this->progressLog['info'][] = 'Build and the application';
-		$this->progressLog['info'][] = 'npm run dev';
-		$this->progressLog['info'][] = 'php artisan serve';
+		$this->progressLog['instructions'][] = ['npm install', 'Install NPM packages. Node.js must be installed on your machine. Check if installed with `npm -v`'];
+		$this->progressLog['instructions'][] = ['npm run dev', 'Compile webpack and build the application.'];
+		$this->progressLog['instructions'][] = ['npm run watch', 'Run and watch the application on browser (Does NOT work with Homestead)'];
+		$this->progressLog['instructions'][] = ['php artisan serve', 'Run the local test server'];
 
 		// Setup Completed! Show any info to the user.
 		$this->showProgressLog();
+
+		$this->updateReadMeFile();
 
 		// $this->saveSetupConfig();
 	}
@@ -94,7 +90,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$userInput = [];
 
 		$userInput['projectName'] 	 = $this->ask('What is the project name?');
-		$userInput['fromEmail']   	 = $this->ask('What is the `from` email address for system emails?');
+		$userInput['fromEmail']   	 = $this->ask('What is the `from` email address for system emails?', 'info@elegantmedia.com.au');
 		$userInput['seedAdminEmail'] = $this->anticipate('What is your email to seed the database?', [], $userInput['fromEmail']);
 		$userInput['devMachineUrl'] = $this->anticipate('What is the local development URL?', [], 'localhost.dev');
 		// $userInput['dashboardType']  = $this->choice('What should be the type of the dashboard?', ['HTML/CSS (Default)', 'Angular'], 0);
@@ -125,13 +121,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	protected function saveSetupConfig()
 	{
 		file_put_contents($this->configFile, json_encode($this->projectConfig, JSON_PRETTY_PRINT));
-	}
-
-
-	protected function generateGeneratorPackageFiles()
-	{
-		$this->call('scaffold:common:config');
-		$this->call('scaffold:common');
 	}
 
 	protected function generateMigrations()
@@ -185,23 +174,30 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 		$stub = [
 			'path'	=> base_path('bower.json'),
-			'name'	=> 'Bower config',
+			'name'	=> 'bower.json',
 		];
 		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower.json';
 		$stubMap[] = $stub;
 
-//		$stub = [
-//			'path'	=> base_path('gulpfile.js'),
-//			'name'	=> 'gulpfile.js',
-//		];
-//		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/gulpfile.js';
-//		$stubMap[] = $stub;
+		$stub = [
+			'path'	=> base_path('.bowerrc'),
+			'name'	=> 'Bower config (.bowerrc)',
+		];
+		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bowerrc.stub';
+		$stubMap[] = $stub;
 
 		$stub = [
 			'path'	=> base_path('webpack.mix.js'),
 			'name'	=> 'webpack.mix.js',
 		];
 		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/webpack.mix.js';
+		$stubMap[] = $stub;
+
+		$stub = [
+			'path'	=> base_path('apidoc.json'),
+			'name'	=> 'APIDoc Configuration (apidoc.json)',
+		];
+		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/apidoc.json';
 		$stubMap[] = $stub;
 
 		$stubMap[] = [
@@ -235,7 +231,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			];*/
 		}
 
-		$this->progressLog['info'][] = 'Bower installation should be completed. Run `bower install`.';
+		$this->progressLog['instructions'][] = ['bower install', 'Install bower dependencies. Check if Bower is installed with `bower -v`'];
 
 		return $stubMap;
 	}
@@ -263,7 +259,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			if ($editor->addPropertyValuesToFile($inputFile, $fields))
 			{
 				$this->info('Middleware updated.');
-				$this->progressLog['info'][] = 'Middleware updated. Check `Http\Kernel.php` for duplicate entries.';
+				$this->progressLog['files'][] = ['Http\Kernel.php', 'Check for duplicate entries.'];
 			}
 
 			$fields = [
@@ -280,18 +276,41 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	}
 
 
+	/**
+	 *
+	 * Update the Routes file
+	 *
+	 * @return bool
+	 * @throws FileNotFoundException
+	 */
 	protected function addGenericRoutes()
 	{
+		$routesFilePath = base_path('routes/web.php');
+		$addAgain = false;
+
+		try {
+			// check if the routes file mentions anything about the 'oxygen routes'
+			// if so, it might already be there. Ask the user to confirm.
+			if ($this->isTextInFile($routesFilePath, 'Oxygen Routes', false)) {
+				if (!$this->confirm("Oxygen routes are already in routes file. Add again?", false)) {
+					return false;
+				}
+				$addAgain = true;
+			}
+		} catch (FileNotFoundException $ex) {
+			$this->error("Routes file not found at `{$routesFilePath}`. Skipping adding routes...");
+		}
+
 		// ask the user and update the routes file if required
-		if ($this->confirm("Update routes file with routes for auth, invitations, roles?", true))
+		if ($addAgain || $this->confirm("Update routes file with routes for auth, invitations, roles?", true))
 		{
 			$routesStub = $this->files->get(__DIR__ . '/../../Stubs/routes/web.stub');
-			$routesFilePath = base_path('routes/web.php');
+
 			$result = $this->files->append($routesFilePath, $routesStub);
 			if ($result)
 			{
 				$this->info('Routes file updated.');
-				$this->progressLog['info'][] = 'Routes updated. Check `routes\web.php` for duplicate entries.';
+				$this->progressLog['files'][] = ['routes\web.php', 'Check for duplicate entries.'];
 			}
 		}
 	}
@@ -322,18 +341,15 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			],
 			[
 				'path'		=> database_path('seeds/Auth/UsersTableSeeder.php'),
-				'search'	=> "info@elegantmedia.com.au",
+				'search'	=> "app@elegantmedia.com.au",
 				'replace'	=> $this->projectConfig['seedAdminEmail']
-			]
+			],
+			[
+				'path'		=> base_path('webpack.mix.js'),
+				'search'	=> "localhost.dev",
+				'replace'	=> $this->projectConfig['devMachineUrl'],
+			],
 		];
-
-		if (!empty($this->projectConfig['devMachineUrl'])) {
-			$stringsToReplace[] = [
-				'path' => base_path('gulpfile.js'),
-				'search' => 'localhost.dev',
-				'replace' => $this->projectConfig['devMachineUrl'],
-			];
-		};
 
 		if ($this->projectConfig['multiTenant']) {
 			$stringsToReplace[] = [
@@ -478,8 +494,30 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	protected function showProgressLog()
 	{
-		$this->info('*** SETUP COMPLETED! ***');
 		$this->info('');
+		$this->info('***** OXYGEN SETUP COMPLETED! *****');
+		$this->info('');
+
+		if (count($this->progressLog['instructions'])) {
+			$this->info('Run these commands in order to complete the build process.');
+
+			$headers = ['ID', 'CLI Command', 'What it does'];
+
+			$rows = [];
+			for ($i = 0, $iMax = count($this->progressLog['instructions']); $i < $iMax; $i++) {
+				$rows[] = array_merge([$i + 1], $this->progressLog['instructions'][$i]);
+			}
+
+			$this->table($headers, $rows);
+			$this->info('');
+		}
+
+		if (count($this->progressLog['files'])) {
+			$this->info('Check these files for accuracy.');
+
+			$headers = ['File', 'What you should check'];
+			$this->table($headers, $this->progressLog['files']);
+		}
 
 		foreach ($this->progressLog['info'] as $message)
 			$this->info($message);
@@ -488,6 +526,41 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$this->error('ERROR SUMMARY:');
 			foreach ($this->progressLog['errors'] as $message)
 				$this->error($message);
+		}
+	}
+
+	protected function updateReadMeFile()
+	{
+		if (count($this->progressLog['instructions'])) {
+			$title = '## Local Development Setup Instructions';
+			$filePath = base_path('readme.md');
+
+			try {
+				if ($this->isTextInFile($filePath, $title)) return false;
+			} catch (FileNotFoundException $ex) {
+				$this->error('Readme.md file not found at ' . $filePath);
+				return false;
+			}
+
+			$lines = [];
+			$lines[] = "\r";
+			$lines[] = $title;
+			$lines[] = " ";
+
+			for ($i = 0, $iMax = count($this->progressLog['instructions']); $i < $iMax; $i++) {
+				$instruction = $this->progressLog['instructions'][$i];
+				if (count($instruction) === 2) {
+					$lines[] = "- `{$instruction[0]}` - {$instruction[1]}";
+				} else {
+					$lines[] = "- " . $instruction[0];
+				}
+			}
+
+			$content = implode("\r\n", $lines);
+
+			$result = $this->files->append($filePath, $content);
+
+			$this->info("Readme.md file updated with build instructions.");
 		}
 	}
 
@@ -511,59 +584,25 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		return '';
 	}
 
-	// DEPRECATED
-	private function updateServiceProviders()
+
+	/**
+	 *
+	 * Check if a string exists in a file. (Don't use to check on large files)
+	 *
+	 * @param      $filePath
+	 * @param      $string
+	 * @param bool $caseSensitive
+	 *
+	 * @return bool
+	 * @throws FileNotFoundException
+	 */
+	protected function isTextInFile($filePath, $string, $caseSensitive = true)
 	{
-		if ($this->confirm('Update service providers in app.php?', true))
-		{
-			$editor = new FileEditor();
-			$inputFile = config_path('app.php');
+		if (!file_exists($filePath)) throw new FileNotFoundException("File $filePath not found");
 
-			$fields = [
-				[
-					'name'	=> 'providers',
-					'value' => '// Oxygen Support Providers '
-				],
-				[
-					'name'	=> 'providers',
-					'value' => "EMedia\MultiTenant\MultiTenantServiceProvider::class"
-				],
-				[
-					'name'	=> 'providers',
-					'value' => "EMedia\Generators\GeneratorServiceProvider::class"
-				],
-				[
-					'name'	=> 'providers',
-					'value' => "EMedia\MediaManager\MediaManagerServiceProvider::class"
-				],
-				[
-					'name'	=> 'providers',
-					'value' => "EMedia\Oxygen\OxygenServiceProvider::class"
-				],
-				[
-					'name'	=> 'aliases',
-					'value' => '// Oxygen Aliases '
-				],
-				[
-					'name'	=> 'aliases',
-					'value' => "'TenantManager' => EMedia\MultiTenant\Facades\TenantManager::class"
-				],
-				[
-					'name'	=> 'aliases',
-					'value' => "'FileHandler'   => EMedia\MediaManager\Facades\FileHandler::class"
-				],
-				[
-					'name'	=> 'aliases',
-					'value' => "'ImageHandler'  => EMedia\MediaManager\Facades\ImageHandler::class"
-				]
-			];
+		$command = ($caseSensitive)? 'strpos': 'stripos';
 
-			if ($editor->addPropertyValuesToFile($inputFile, $fields, config_path('appnew.php')))
-			{
-				$this->info('Service Providers updated.');
-			}
-		}
+		return $command(file_get_contents($filePath), $string) !== false;
 	}
-
 
 }
