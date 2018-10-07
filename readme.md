@@ -116,11 +116,22 @@ php artisan setup:oxygen-project
 
 8) Go and make something amazing!
 
+## Read More
+
+Oxygen by default has a lot of built-in functions. Please read all the docs to understand all features. Otherwise you'll be spending a lot of time re-doing existing features.
+
+- [Resource, Model, Repository, Controller Generation](https://bitbucket.org/elegantmedia/laravel-generators/src/master/README.md)
+- [Roles and Permissions - Bouncer](https://github.com/JosephSilber/bouncer)
+- [Database Reset Commands](https://bitbucket.org/elegantmedia/laravel-helpers/src/master/README.md)
+- [PHP Helper Functions](https://bitbucket.org/elegantmedia/php-helpers/src/master/README.md)
+- [App Settings Handling](https://bitbucket.org/elegantmedia/laravel-app-settings/src/master/README.md)
+- [Breadcrumbs, Page Titles, Tables, Pagination, Empty State and other Html Elements](https://bitbucket.org/elegantmedia/lotus/src/master/README.md)
+
 ## After Installation
 
 - You can add new features to existing controllers as needed. 
 - If you need to change the default behaviour, you can create new classes or extend from the classes in the `Oxygen` package.
-- Roles and Permissions are implemented with [Bouncer. Read the docs.](https://github.com/JosephSilber/bouncer)
+
 
 ### Customisations
 
@@ -162,5 +173,8 @@ Your default user login password is listed in the `database/seeds/Auth/UsersTabl
 
 ## Found an Issue or a Bug?
 
+Don't stay quiet and ignore any issues or improvement suggestions.
+
+- [Create an Issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues?status=new&status=open)
 - Submit a pull request (on a new branch) or [submit an issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues).
 - **DO NOT** commit new changes directly to the `master` branch. Create a development branch, and then send a pull-request to master, and get someone else to review the code before merging.
