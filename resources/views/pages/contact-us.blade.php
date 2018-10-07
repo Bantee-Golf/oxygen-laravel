@@ -2,6 +2,10 @@
 
 @push('meta')
     <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW" />
+
+    @if (config('features.security.recaptcha_enabled'))
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+    @endif
 @endpush
 
 @section('internal-page-contents')
@@ -46,6 +50,14 @@
                         {{ Form::textarea('userMessage', '', ['class' => 'form-control']) }}
                     </div>
                 </div>
+
+                @if (config('features.security.recaptcha_enabled'))
+                    <div class="form-group">
+                        <div class="control-group col-md-9 col-md-offset-3">
+                            <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+                        </div>
+                    </div>
+                @endif
 
                 <div class="form-group">
                     <div class="control-group col-md-9 col-md-offset-3">

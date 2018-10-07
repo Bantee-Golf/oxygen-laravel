@@ -26,11 +26,11 @@ class AbilitiesTableSeeder extends Seeder
 			$abilities = json_decode($category->default_abilities);
 
 			foreach ($abilities as $abilityName) {
-				$ability = app(config('auth.abilityModel'));
+				$ability = app(config('oxygen.abilityModel'));
 				$ability->title = $abilityName;
 				$ability->ability_category_id = $category->id;
 
-				$existingAbility = app(config('auth.abilityModel'))
+				$existingAbility = app(config('oxygen.abilityModel'))
 					->where('title', $abilityName)
 					->where('ability_category_id', $category->id)
 					->first();

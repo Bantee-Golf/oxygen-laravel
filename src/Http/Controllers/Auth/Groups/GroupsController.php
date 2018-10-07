@@ -22,7 +22,7 @@ class GroupsController extends Controller
 	public function __construct(Guard $auth)
 	{
 		$this->auth = $auth;
-		$this->roleRepository = app(config('auth.roleRepository'));
+		$this->roleRepository = app(config('oxygen.roleRepository'));
 		if (TenantManager::multiTenancyIsActive()) $this->tenantRepository = app(config('auth.tenantRepository'));
 
 		$this->middleware('auth.acl:permissions[view-groups]', ['only' => [
@@ -79,7 +79,9 @@ class GroupsController extends Controller
 			}
 		}
 
-		return view('oxygen::groups.groups-all', compact('rolesData', 'availableRoles', 'user', 'users'));
+		$pageTitle = 'Manage Groups';
+
+		return view('oxygen::groups.groups-all', compact('rolesData', 'availableRoles', 'user', 'users', 'pageTitle'));
 	}
 
 	/**
@@ -197,7 +199,10 @@ class GroupsController extends Controller
 		} else {
 			$users = User::all();
 		}
-		return view('oxygen::groups.group-users-all', compact('role', 'users', 'availableRoles'));
+
+		$pageTitle = "Users in '{$role->title}' Group";
+
+		return view('oxygen::groups.group-users-all', compact('role', 'users', 'availableRoles', 'pageTitle'));
 	}
 
 	/**

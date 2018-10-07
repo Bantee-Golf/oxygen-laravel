@@ -3,16 +3,20 @@
         <div class="modal-content">
             <form id="usersForm">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="userControlModalLabel">Headline</h4>
+                    <h5 class="modal-title" id="userControlModalLabel">Headline</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+
                 <div class="modal-body">
 
-                    <p>Assign users to a single or multiple roles.</p>
+                    <p>Assign users to one or many groups.</p>
 
                     <div class="form-group multi-select-wrapper">
-                        <label for="recipient-name" class="control-label">Select Roles</label>
+                        <label for="recipient-name" class="control-label">Select Groups</label>
                         <select class="form-control select2" id="selectRoles" name="selectRoles[]" multiple="multiple" style="width: 100%">
                             @foreach ($availableRoles as $availableRole)
                                 <option value="{{ $availableRole['id'] }}">{{ $availableRole['title'] }}</option>

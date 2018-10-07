@@ -2,6 +2,7 @@
 
 use App\Entities\Auth\RolesRepository;
 use App\Entities\Auth\UsersRepository;
+use EMedia\Helpers\Exceptions\Auth\UserNotFoundException;
 use Illuminate\Database\Seeder;
 
 class UserRolesTableSeeder extends Seeder
@@ -18,15 +19,20 @@ class UserRolesTableSeeder extends Seeder
 
 	public function run()
 	{
-		if (app()->environment() !== 'production') {
+		if (!app()->environment('production')) {
 			$this->seedUserRoles();
 		}
 	}
 
 	protected function seedUserRoles()
 	{
-		$this->assignRoleToEmail('app@elegantmedia.com.au', 'super-admin');
-		$this->assignRoleToEmail('app+user@elegantmedia.com.au', 'admin');
+		$user = $this->usersRepo->find(1);
+		if (!$user) throw new UserNotFoundException("A user with an ID of 1 not found.");
+		$this->assignRoleToEmail($user->email, 'super-admin');
+
+		$user = $this->usersRepo->find(2);
+		if (!$user) throw new UserNotFoundException("A user with an ID of 2 not found.");
+		$this->assignRoleToEmail($user->email, 'admin');
 	}
 
 	/**

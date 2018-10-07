@@ -1,15 +1,13 @@
-@extends('oxygen::layouts.account')
+@extends('oxygen::layouts.master-dashboard')
+
+<?php $pageTitle = "User Permissions for '{$role->title}'" ?>
 
 @section('content')
+        {{ lotus()->pageHeadline($pageTitle) }}
 
-    @include('oxygen::partials.flash')
-
-    <div class="container-fluid">
-        <div class="title-container">
-            <div class="page-title">
-                <h1>User Permissions for {{ $role->title }}</h1>
-            </div>
-        </div>
+        @include('oxygen::account.access-permissions-breadcrumbs', ['breadcrumbs' =>
+            ['User Groups', '/account/groups']
+        ])
 
         <form action="{{ request()->url('') }}" method="POST" class="form">
             {{ method_field('put') }}
@@ -19,9 +17,9 @@
                 <div class="col-md-12">
 
                     @foreach ($abilityCategories as $category)
-                        <div class="panel panel-default">
-                            <div class="panel-heading">{{ $category->name }}</div>
-                            <div class="panel-body">
+                        <div class="card mb-3">
+                            <div class="card-header">{{ $category->name }}</div>
+                            <div class="card-body">
                                 @foreach($category->abilities as $ability)
                                     <div class="checkbox">
                                         <label>
@@ -41,5 +39,4 @@
 
         </form>
 
-    </div>
 @endsection

@@ -52,13 +52,36 @@ class PagesController extends Controller
 		]);
 		$data = $request->only('name', 'email', 'phone', 'userMessage');
 
+		// recaptcha validation
+		if (config('features.security.recaptcha_enabled')) {
+			$secret = env('RECAPTCHA_SECRET_KEY');
+			$recaptcha = new \ReCaptcha\ReCaptcha($secret);
+			$response = $recaptcha->verify($request->input('g-recaptcha-response'), $request->ip());
+			if ($response->isSuccess()) {
+				// Verified!
+				// do nothing, proceed forward
+			} else {
+				$errors = $response->getErrorCodes();
+
+				if (count($errors)) {
+					return redirect()->route('contact-us')
+									 ->with('error', 'Captcha validation failed. Try again or email us for support.')
+									 ->withInput($data);
+				}
+			}
+		}
+
 		$data['timestamp'] = Carbon::now()->format('d/m/Y h:i:sA');
 		$data['userIp']    = request()->ip();
 		$data['sender_email'] = $request->get('email');
 
-		Mail::send(['text' => 'emails..text.contact_us'], $data, function($mailMessage) use ($data)
+		$webmaster = env('WEBMASTER_EMAIL');
+		if (empty($webmaster)) throw new \InvalidArgumentException("Email receiver email has not been set.");
+		$receiverEmails = [$webmaster];
+
+		Mail::send(['text' => 'oxygen::emails.text.contact-us'], $data, function($mailMessage) use ($data, $receiverEmails)
 		{
-			$mailMessage->to(config('WEBMASTER_EMAIL'))
+			$mailMessage->to($receiverEmails)
 						->replyTo($data['sender_email'])
 						->subject(config('app.name') . ' - Contact Us - Message Received');
 		});

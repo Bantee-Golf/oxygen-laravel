@@ -13,10 +13,11 @@ let mix = require('laravel-mix');
 
 mix.setPublicPath('public_html/');
 
-mix.js('resources/assets/js/dashboard.js', 'public_html/js/dist')
-	.sass('resources/assets/sass/home.scss', 'public_html/css/dist/public.css')
-	.sass('resources/assets/sass/dashboard/dashboard.scss', 'public_html/css/dist/dashboard.css')
-	.sass('resources/assets/sass/auth.scss', 'public_html/css/dist/auth.css')
+mix.js('resources/js/app.js', 'public_html/js/dist')
+	.js('resources/js/dashboard.js', 'public_html/js/dist')
+	.sass('resources/sass/home.scss', 'public_html/css/dist/public.css')
+	.sass('resources/sass/dashboard.scss', 'public_html/css/dist/dashboard.css')
+	.sass('resources/sass/auth.scss', 'public_html/css/dist/auth.css')
 	.version()
 	.sourceMaps();
 

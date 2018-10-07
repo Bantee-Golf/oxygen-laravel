@@ -8,16 +8,16 @@
 
         @if(count($allItems))
             <table class="table table-hover">
-                {!! Render::tableHeader($tableHeader) !!}
+                {{ lotus()->tableHeader($tableHeader) }}
                 <tbody>
                 @parent
                 </tbody>
             </table>
         @else
-            {!! Render::emptyStatePanel() !!}
+            {{ lotus()->emptyStatePanel() }}
         @endif
 
-        {!! Render::paginationLinks($allItems) !!}
+        {{ lotus()->pageNumbers($allItems) }}
 
         {{-- Display a page summary --}}
         @if (!empty($__env->yieldContent('pageSummary')))

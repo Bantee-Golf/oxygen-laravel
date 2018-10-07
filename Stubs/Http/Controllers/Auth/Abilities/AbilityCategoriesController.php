@@ -23,8 +23,8 @@ class AbilityCategoriesController extends Controller
 	public function __construct(Guard $auth)
 	{
 		$this->auth = $auth;
-		$this->abilityRepository = app(config('auth.abilityRepository'));
-		$this->roleRepository = app(config('auth.roleRepository'));
+		$this->abilityRepository = app(config('oxygen.abilityRepository'));
+		$this->roleRepository = app(config('oxygen.roleRepository'));
 		$this->abilityCategoryRepository = new AbilityCategoryRepository();
 
 		if (TenantManager::multiTenancyIsActive()) $this->tenantRepository = app(config('auth.tenantRepository'));

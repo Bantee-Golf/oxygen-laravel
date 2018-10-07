@@ -3,15 +3,21 @@
 namespace EMedia\Oxygen\Commands;
 
 use EMedia\Generators\Commands\BaseGeneratorCommand;
-use EMedia\Generators\Parsers\FileEditor;
+use EMedia\PHPHelpers\Files\FileEditor;
+use EMedia\PHPHelpers\Files\FileManager;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 
 class OxygenSetupCommand extends BaseGeneratorCommand
 {
 
-	protected $signature   = 'setup:oxygen-project';
+	protected $signature   = 'setup:oxygen-project 
+								{--confirm : Confirm with the user if there are potential issues}';
+
 	protected $description = 'Generate common files for the Oxygen project';
+
+	protected $dontAsk = true;
+
 	protected $projectConfig = [];
 
 	protected $progressLog = [
@@ -32,19 +38,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$this->configFile = base_path('oxygen.json');
 	}
 
-	/**
-	 *
-	 * Laravel 5.6+ support
-	 *
-	 */
 	public function handle()
 	{
-		return $this->fire();
-	}
+		$this->dontAsk = !$this->option('confirm');
 
-	public function fire()
-	{
 		// $this->readSetupConfig();
+
+		// move public folder to public_html
+		$this->movePublicFolder();
 
 		// get developer input
 		$this->getDeveloperInput();
@@ -61,14 +62,26 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// update middleware
 		$this->updateMiddleware();
 
+		// create oxygen class files
+		$this->createOxygenClassFiles();
+
 		// publish assets and other files
 		$this->publishFiles();
+
+		// add child packages
+		$this->setupChildPackages();
+
+		// add environment variables
+		$this->addEnvironmentVariables();
 
 		// we don't ask for confirmation on this
 		$this->replaceKnownStrings();
 
-		$this->progressLog['instructions'][] = ['npm install', 'Install NPM packages. Node.js must be installed on your machine. Check if installed with `npm -v`'];
-		$this->progressLog['instructions'][] = ['npm run dev', 'Compile webpack and build the application.'];
+		// add user display messages
+		$this->progressLog['instructions'][] = ['composer dump-autoload', 'Generate the classmap, so the new files are recognized'];
+		$this->progressLog['instructions'][] = ['php artisan db:refresh', 'Migrate and seed the database'];
+		$this->progressLog['instructions'][] = ['npm install', 'Install NPM packages. Check if Node.js is installed with `npm -v`'];
+		$this->progressLog['instructions'][] = ['npm run dev', 'Compile and build. If you get first time error, run it again.'];
 		$this->progressLog['instructions'][] = ['npm run watch', 'Run and watch the application on browser (Does NOT work with Homestead)'];
 		$this->progressLog['instructions'][] = ['php artisan serve', 'Run the local test server'];
 
@@ -80,6 +93,24 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// $this->saveSetupConfig();
 	}
 
+	public function setupChildPackages()
+	{
+		$this->call('setup:package:app-settings');
+	}
+
+
+	/**
+	 *
+	 * Move public folder to public_html
+	 *
+	 */
+	protected function movePublicFolder()
+	{
+		$this->call('setup:move-public', [
+			'--y' => true,		// don't ask for confirmation
+		]);
+	}
+
 
 	/**
 	 *	Get user input to customise setup
@@ -89,14 +120,19 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	{
 		$userInput = [];
 
-		$userInput['projectName'] 	 = $this->ask('What is the project name?');
-		$userInput['fromEmail']   	 = $this->ask('What is the `from` email address for system emails?', 'info@elegantmedia.com.au');
-		$userInput['seedAdminEmail'] = $this->anticipate('What is your email to seed the database?', [], $userInput['fromEmail']);
-		$userInput['devMachineUrl'] = $this->anticipate('What is the local development URL?', [], 'localhost.dev');
+		$userInput['projectName'] 	 = $this->ask('What is the project name?', 'ADMIN PANEL');
+		$userInput['fromEmail']   	 = $this->ask('What is the `from` email address for system emails? (Press ENTER key for default)', 'apps@elegantmedia.com.au');
+		$userInput['seedAdminEmail'] = $this->anticipate('What is your email to seed the database? (Press ENTER key for default)', [], $userInput['fromEmail']);
+
+		$defaultDomain = 'localhost.dev';
+		if (!empty($userInput['projectName'])) {
+			$defaultDomain = str_slug($userInput['projectName']) . '.devv';
+		}
+		$userInput['devMachineUrl'] = $this->anticipate('What is the local development URL? (Press ENTER key for default)', [], $defaultDomain);
 		// $userInput['dashboardType']  = $this->choice('What should be the type of the dashboard?', ['HTML/CSS (Default)', 'Angular'], 0);
 
-		if ($this->confirm('Should the project have Multi-Tenant support?', false))
-			$userInput['multiTenant'] = true;
+		// if ($this->confirm('Should the project have Multi-Tenant support?', false))
+			$userInput['multiTenant'] = false;
 
 		$this->projectConfig = array_merge($this->projectConfig, $userInput);
 	}
@@ -125,47 +161,55 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	protected function generateMigrations()
 	{
-		// migration order
+		// Migration Order
 		// tenants
 		// bouncer
 		// bouncer updates
 		// invitations
 
+		$fileData = [];
+
 		if ($this->projectConfig['multiTenant'])
 		{
 			// publish tenants
-			$this->compileStubs([
-				[
-					'stub' => __DIR__ . '/../../Stubs/Migrations/001_create_tenants_tables.php',
-					'path' => database_path('migrations/' . $this->getTimestamp() . '_create_tenants_tables.php'),
-					'name' => 'Tenants Migration',
-				]
-			]);
+			$fileData[] = [
+				'stub' => __DIR__ . '/../../Stubs/Migrations/001_create_tenants_tables.php',
+				'destination_path' => database_path("migrations"),
+				'destination_filename' => "{$this->getTimestamp()}_create_tenants_tables.php",
+				'unique_file_id' => 'create_tenants_tables.php',
+			];
 		}
 
-		$stubMap = [
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Migrations/002_create_role_permission_tables.php',
-				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_role_permission_tables.php'),
-				'name'	=> 'Add new columns to Bouncer tables'
-			],
-			[
-				'stub'	=> __DIR__ . '/../../Stubs/Migrations/003_create_invitations_table.php',
-				'path'  => database_path('migrations/' . $this->getTimestamp() . '_create_invitations_table.php'),
-				'name'	=> 'Invitations Migration'
-			],
+		$fileData[] = [
+			'stub' => __DIR__ . '/../../Stubs/Migrations/002_create_role_permission_tables.php',
+			'destination_path' => database_path("migrations"),
+			'destination_filename' => "{$this->getTimestamp()}_create_role_permission_tables.php",
+			'unique_file_id' => 'create_role_permission_tables.php',
 		];
-		$this->compileStubs($stubMap);
+
+		$fileData[] = [
+			'stub' => __DIR__ . '/../../Stubs/Migrations/003_create_invitations_table.php',
+			'destination_path' => database_path("migrations"),
+			'destination_filename' => "{$this->getTimestamp()}_create_invitations_table.php",
+			'unique_file_id' => 'create_invitations_table.php',
+		];
 
 		if ($this->projectConfig['multiTenant'])
 		{
-			$this->compileStubs([[
+			$fileData[] = [
 				'stub' => __DIR__ . '/../../Stubs/Migrations/004_update_auth_tables_multi_tenant.php',
-				'path' => database_path('migrations/' . $this->getTimestamp() . '_update_auth_tables_multi_tenant.php'),
-				'name' => 'Update bouncer tables to support multi-tenancy'
-			]]);
+				'destination_path' => database_path("migrations"),
+				'destination_filename' => "{$this->getTimestamp()}_update_auth_tables_multi_tenant.php",
+				'unique_file_id' => 'update_auth_tables_multi_tenant.php',
+			];
+//			$this->compileStubs([[
+//				'stub' => __DIR__ . '/../../Stubs/Migrations/004_update_auth_tables_multi_tenant.php',
+//				'path' => database_path('migrations/' . $this->getTimestamp() . '_update_auth_tables_multi_tenant.php'),
+//				'name' => 'Update bouncer tables to support multi-tenancy'
+//			]]);
 		}
 
+		$this->createFilesFromStubs($fileData);
 	}
 
 	protected function getStubMap()
@@ -189,8 +233,17 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stub = [
 			'path'	=> base_path('webpack.mix.js'),
 			'name'	=> 'webpack.mix.js',
+			'stub'  =>  __DIR__ . '/../../Stubs/ProjectConfig/webpack.mix.js',
+			'default' => __DIR__ . '/../../LaravelDefaultFiles/webpack.mix.js',
 		];
-		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/webpack.mix.js';
+		$stubMap[] = $stub;
+
+		$stub = [
+			'path'	=> base_path('resources/lang/en/auth.php'),
+			'name'	=> 'English (auth) Language File',
+			'stub'  =>  __DIR__ . '/../../resources/lang/en/auth.php',
+			'default' => __DIR__ . '/../../LaravelDefaultFiles/resources/lang/en/auth.php',
+		];
 		$stubMap[] = $stub;
 
 		$stub = [
@@ -200,17 +253,18 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/apidoc.json';
 		$stubMap[] = $stub;
 
-		$stubMap[] = [
-			'stub'	=> __DIR__ . '/../../Stubs/config/oxygen.php',
-			'path'  => config_path('oxygen.php'),
-			'name'	=> 'Oxygen Configuration'
-		];
+//		$stubMap[] = [
+//			'stub'	=> __DIR__ . '/../../Stubs/config/oxygen.php',
+//			'path'  => config_path('oxygen.php'),
+//			'name'	=> 'Oxygen Configuration'
+//		];
 
 		if ($this->projectConfig['multiTenant']) {
 			$stubMap[] = [
 				'stub'	=> __DIR__ . '/../../Stubs/Common/User.MultiTenant.php',
 				'path'  => app_path('User.php'),
-				'name'	=> 'User.php'
+				'name'	=> 'User.php',
+				'default' => __DIR__ . '/../../LaravelDefaultFiles/app/User.php',
 			];
 			/*$stubMap[] = [
 				'stub'	=> __DIR__ . '/../../Stubs/config/acl-multiTenant.php',
@@ -221,7 +275,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$stubMap[] = [
 				'stub'	=> __DIR__ . '/../../Stubs/Common/User.SingleTenant.php',
 				'path'  => app_path('User.php'),
-				'name'	=> 'User.php'
+				'name'	=> 'User.php',
+				'default' => __DIR__ . '/../../LaravelDefaultFiles/app/User.php',
 			];
 			/*
 			$stubMap[] = [
@@ -240,41 +295,89 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	protected function updateMiddleware()
 	{
-		if ($this->confirm('Update Kernel.php with new middleware?', true))
-		{
-			$editor = new FileEditor();
-			$inputFile = app_path('Http/Kernel.php');
-
-			$fields = [
-				[
-					'name'	=> 'routeMiddleware',
-					'value' => "'auth.acl' => \EMedia\Oxygen\Http\Middleware\AuthorizeAcl::class"
-				],
-				[
-					'name'	=> 'routeMiddleware',
-					'value' => "'auth.api' => \EMedia\Oxygen\Http\Middleware\ApiAuthenticate::class"
-				]
-			];
-
-			if ($editor->addPropertyValuesToFile($inputFile, $fields))
-			{
-				$this->info('Middleware updated.');
-				$this->progressLog['files'][] = ['Http\Kernel.php', 'Check for duplicate entries.'];
-			}
-
-			$fields = [
-				[
-					'name'	=> 'web',
-					'value' => "\EMedia\Oxygen\Http\Middleware\LoadViewSettings::class"
-				],
-			];
-			$editor->addArrayValuesToFile($inputFile, $fields);
-			$this->replaceIn($inputFile,
-				"'auth' => \App\Http\Middleware\Authenticate::class",
-				"'auth' => \EMedia\Oxygen\Http\Middleware\Authenticate::class");
+		if (!$this->dontAsk) {
+			if (!$this->confirm('Update Http/Kernel.php with new middleware?', true)) return false;
 		}
+
+		$editor = new FileEditor();
+		$inputFile = app_path('Http/Kernel.php');
+
+		$defaultFile = __DIR__ . '/../../LaravelDefaultFiles/app/Http/Kernel.php';
+
+		// ask the user if the existing middleware file is not identical to Laravel's default
+		if (!FileManager::areFilesSimilar($inputFile, $defaultFile)) {
+			if (!$this->confirm('Update Http/Kernel.php with new middleware?', true)) return false;
+		}
+
+		$fields = [
+			[
+				'name'	=> 'routeMiddleware',
+				'value' => "'auth.acl' => \EMedia\Oxygen\Http\Middleware\AuthorizeAcl::class"
+			],
+			[
+				'name'	=> 'routeMiddleware',
+				'value' => "'auth.api' => \EMedia\Oxygen\Http\Middleware\ApiAuthenticate::class"
+			]
+		];
+
+		// only update the file, if the values are not already in the files
+		$fieldsToAdd = array_filter($fields, function ($item) use ($inputFile) {
+			return !FileManager::isTextInFile($inputFile, $item['value'], true);
+		});
+
+		if ($editor->addPropertyValuesToFile($inputFile, $fieldsToAdd))
+		{
+			$this->info('Http/Kernel.php updated.');
+			$this->progressLog['files'][] = ['Http\Kernel.php', 'Check for duplicate entries.'];
+		}
+
+		$fields = [
+			[
+				'name'	=> 'web',
+				'value' => "\EMedia\Oxygen\Http\Middleware\LoadViewSettings::class"
+			],
+		];
+
+		$fieldsToAdd = array_filter($fields, function ($item) use ($inputFile) {
+			return !FileManager::isTextInFile($inputFile, $item['value'], true);
+		});
+
+		$editor->addArrayValuesToFile($inputFile, $fieldsToAdd);
+
+		$this->replaceIn($inputFile,
+			"'auth' => \App\Http\Middleware\Authenticate::class",
+			"'auth' => \EMedia\Oxygen\Http\Middleware\Authenticate::class");
 	}
 
+
+	protected function addGenericRoutes()
+	{
+		$routesFilePath = base_path('routes/web.php');
+		$stubPath = __DIR__ . '/../../Stubs/routes/web.stub';
+
+		try {
+			$bytes = FileEditor::appendStubIfSectionNotFound($routesFilePath, $stubPath, null, null, true);
+		} catch (\EMedia\PHPHelpers\Exceptions\FileSystem\SectionAlreadyExistsException $ex) {
+			if (!$this->confirm("Oxygen routes are already in routes file. Add again?", false)) {
+				return false;
+			}
+		}
+
+		// ask the user and update the routes file if required
+		if (!$this->dontAsk) {
+			if (!$this->confirm("Update routes file with routes for auth, invitations, roles?", true)) {
+				return false;
+			}
+		}
+
+		$bytes = FileEditor::appendStub($routesFilePath, $stubPath);
+
+		if ($bytes !== false)
+		{
+			$this->info('routes\web.php file updated.');
+			$this->progressLog['files'][] = ['routes\web.php', 'Check for duplicate entries.'];
+		}
+	}
 
 	/**
 	 *
@@ -283,34 +386,73 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	 * @return bool
 	 * @throws FileNotFoundException
 	 */
-	protected function addGenericRoutes()
-	{
-		$routesFilePath = base_path('routes/web.php');
-		$addAgain = false;
+//	protected function DEPRECATED_addGenericRoutes()
+//	{
+//		$routesFilePath = base_path('routes/web.php');
+//
+//		try {
+//			// check if the routes file mentions anything about the 'oxygen routes'
+//			// if so, it might already be there. Ask the user to confirm.
+//			if ($this->isTextInFile($routesFilePath, 'Oxygen Routes', false)) {
+//				if (!$this->confirm("Oxygen routes are already in routes file. Add again?", false)) {
+//					return false;
+//				}
+//			}
+//		} catch (FileNotFoundException $ex) {
+//			$this->error("Routes file not found at `{$routesFilePath}`. Skipping adding routes...");
+//		}
+//
+//		// ask the user and update the routes file if required
+//		if (!$this->dontAsk) {
+//			if (!$this->confirm("Update routes file with routes for auth, invitations, roles?", true)) {
+//				return false;
+//			}
+//		}
+//
+//		// udpate the file
+//		$routesStub = $this->files->get(__DIR__ . '/../../Stubs/routes/web.stub');
+//
+//		$result = $this->files->append($routesFilePath, $routesStub);
+//		if ($result)
+//		{
+//			$this->info('routes\web.php file updated.');
+//			$this->progressLog['files'][] = ['routes\web.php', 'Check for duplicate entries.'];
+//		}
+//	}
 
-		try {
-			// check if the routes file mentions anything about the 'oxygen routes'
-			// if so, it might already be there. Ask the user to confirm.
-			if ($this->isTextInFile($routesFilePath, 'Oxygen Routes', false)) {
-				if (!$this->confirm("Oxygen routes are already in routes file. Add again?", false)) {
+	protected function addEnvironmentVariables()
+	{
+		$filePaths = [
+			base_path('.env'),
+			base_path('.env.example'),
+		];
+		$stubPath = $this->files->get(__DIR__ . '/../../Stubs/ProjectConfig/env.stub');
+
+		foreach ($filePaths as $filePath) {
+
+			try {
+				// check if the routes file mentions anything about the 'oxygen routes'
+				// if so, it might already be there. Ask the user to confirm.
+				if (FileManager::isTextInFile($filePath, 'Oxygen Settings', false)) {
+					if (!$this->confirm("Oxygen ENV values are already in {$filePath}. Add again?", false)) {
+						return false;
+					}
+				}
+			} catch (FileNotFoundException $ex) {
+				$this->error("Environment file not found at `{$filePath}`. Skipping...");
+			}
+
+			// ask the user and update the routes file if required
+			if (!$this->dontAsk) {
+				if (!$this->confirm("Update environment variable files?", true)) {
 					return false;
 				}
-				$addAgain = true;
 			}
-		} catch (FileNotFoundException $ex) {
-			$this->error("Routes file not found at `{$routesFilePath}`. Skipping adding routes...");
-		}
 
-		// ask the user and update the routes file if required
-		if ($addAgain || $this->confirm("Update routes file with routes for auth, invitations, roles?", true))
-		{
-			$routesStub = $this->files->get(__DIR__ . '/../../Stubs/routes/web.stub');
-
-			$result = $this->files->append($routesFilePath, $routesStub);
-			if ($result)
-			{
-				$this->info('Routes file updated.');
-				$this->progressLog['files'][] = ['routes\web.php', 'Check for duplicate entries.'];
+			$result = $this->files->append($filePath, $stubPath);
+			if ($result) {
+				$this->info("{$filePath} file updated.");
+				$this->progressLog['files'][] = [$filePath, 'Check for duplicate entries.'];
 			}
 		}
 	}
@@ -319,6 +461,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	{
 		$fromEmail   = $this->projectConfig['fromEmail'];
 		$projectName = $this->projectConfig['projectName'];
+		$devMachineUrl = $this->projectConfig['devMachineUrl'];
 
 		$stringsToReplace = [
 			[
@@ -326,28 +469,45 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'search'	=> "return redirect('/home');",
 				'replace'	=> "return redirect('/dashboard');"
 			],
+
+			// .env file
 			[
-				'path'		=> config_path('mail.php'),
-				'search'	=> "'from' => [
-        'address' => 'hello@example.com',
-        'name' => 'Example',
-    ]",
-				'replace'	=> "'from' => ['address' => '$fromEmail', 'name' => '$projectName (Dev)']"
+				'path'		=> base_path('.env'),
+				'search'	=> "APP_NAME=Laravel",
+				'replace'	=> "APP_NAME=\"{$projectName}\"",
 			],
 			[
-				'path'		=> config_path('app.php'),
-				'search'	=> "'name' => 'Laravel',",
-				'replace'	=> "'name' => '{$projectName}',"
+				'path'		=> base_path('.env'),
+				'search'	=> "MAIL_FROM_NAME=ExampleSender",
+				'replace'	=> "MAIL_FROM_NAME=\"{$projectName} (DEV)\"",
+			],
+
+			// .env.example file
+			[
+				'path'		=> base_path('.env.example'),
+				'search'	=> "APP_NAME=Laravel",
+				'replace'	=> "APP_NAME=\"{$projectName}\"",
+			],
+			[
+				'path'		=> base_path('.env.example'),
+				'search'	=> "MAIL_FROM_NAME=ExampleSender",
+				'replace'	=> "MAIL_FROM_NAME=\"{$projectName} (DEV)\"",
+			],
+
+			[
+				'path'		=> base_path('.env'),
+				'search'	=> "APP_URL=http://localhost",
+				'replace'	=> "APP_URL=http://{$devMachineUrl}",
 			],
 			[
 				'path'		=> database_path('seeds/Auth/UsersTableSeeder.php'),
-				'search'	=> "app@elegantmedia.com.au",
+				'search'	=> "apps@elegantmedia.com.au",
 				'replace'	=> $this->projectConfig['seedAdminEmail']
 			],
 			[
 				'path'		=> base_path('webpack.mix.js'),
 				'search'	=> "localhost.dev",
-				'replace'	=> $this->projectConfig['devMachineUrl'],
+				'replace'	=> $devMachineUrl,
 			],
 		];
 
@@ -385,6 +545,31 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		parent::replaceIn($path, $search, $replace);
 	}
 
+	/**
+	 *
+	 * Create the class files 
+	 * 
+	 */
+	protected function createOxygenClassFiles()
+	{
+		// 'stub' must be a path ending with a file
+		// 'destination_path' must not end with a slash
+		$fileData = [
+			[
+				'stub' => __DIR__ . '/../../Stubs/Http/Controllers/Common/DashboardController.php',
+				'class' => 'App\Http\Controllers\DashboardController',
+				'destination_path' => app_path('Http/Controllers'),
+			],
+			[
+				'stub' => __DIR__ . '/../../Stubs/Http/Controllers/Common/PagesController.php',
+				'class' => 'App\Http\Controllers\PagesController',
+				'destination_path' => app_path('Http/Controllers'),
+			],
+		];
+
+		$this->createFilesFromStubs($fileData);
+	}
+
 	protected function publishFiles()
 	{
 		$assetInfo = [
@@ -405,17 +590,17 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 					'--tag'			=> ['source-sass'],
 					'--force'		=> false,
 				],
-				'desc' 			=> 'uncompiled SASS files'
+				'desc' 			=> 'Uncompiled SASS files'
 			],
-			[
-				'command'		=> 'vendor:publish',
-				'arguments'		=> [
-					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['public-assets'],
-					'--force'		=> true,
-				],
-				'desc'			=> 'JS, CSS and other assets in public folder'
-			],
+//			[
+//				'command'		=> 'vendor:publish',
+//				'arguments'		=> [
+//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+//					'--tag'			=> ['public-assets'],
+//					'--force'		=> true,
+//				],
+//				'desc'			=> 'JS, CSS and other assets in public folder'
+//			],
 			[
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
@@ -441,14 +626,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 					'--force'		=> true,
 				]
 			],
-			[
-				'command'		=> 'vendor:publish',
-				'arguments'		=> [
-					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['common-controllers'],
-					'--force'		=> true,
-				]
-			],
+//			[
+//				'command'		=> 'vendor:publish',
+//				'arguments'		=> [
+//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+//					'--tag'			=> ['common-controllers'],
+//					'--force'		=> true,
+//				]
+//			],
 			[
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
@@ -467,29 +652,45 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			]
 		];
 
-		/*if ($this->projectConfig['dashboardType'] == 'Angular') {
-			$assetInfo[] = [
-				'command'		=> 'vendor:publish',
-				'arguments'		=> [
-					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['angular-source'],
-				]
-			];
-		}*/
+		if (!$this->dontAsk) {
+			if (!$this->confirm('Publish project assets?', true)) return false;
+		}
 
-		if ($this->confirm('Publish project assets?', true))
+		foreach ($assetInfo as $asset)
 		{
-			foreach ($assetInfo as $asset)
-			{
-				$default = (empty($asset['default']))? true: $asset['default'];
-				$desc    = (empty($asset['desc']))? $asset['arguments']['--tag'][0]: $asset['desc'];
+			$default = (empty($asset['default']))? true: $asset['default'];
+			$desc    = (empty($asset['desc']))? $asset['arguments']['--tag'][0]: $asset['desc'];
 
-				if ($this->confirm("Publish $desc ?", $default))
-					$this->call($asset['command'], $asset['arguments']);
+			if (!$this->dontAsk) {
+				if (!$this->confirm("Publish $desc ?", $default)) continue;
+			}
+
+			$this->call($asset['command'], $asset['arguments']);
+		}
+
+		if (!$this->dontAsk) {
+			if (!$this->confirm('Publish `public` folder assets?', true)) return false;
+		}
+
+		// publish the public folder
+		// we need to check if this is `public_html` or something else
+		$sourceDir = __DIR__ . '/../../public_html';
+
+		$publicPath = public_path();
+		$basename = basename($publicPath);
+		if ($basename === 'public') {
+			if (!file_exists($publicPath)) {
+				$tempPublicPath = str_replace('public', 'public_html', $publicPath);
+				if (file_exists($tempPublicPath)) {
+					$publicPath = $tempPublicPath;
+				} else {
+					$this->error("The public path {$publicPath} does not exist. Cannot copy files. Skipping...");
+					return false;
+				}
 			}
 		}
 
-
+		$result = $this->files->copyDirectory($sourceDir, $publicPath);
 	}
 
 	protected function showProgressLog()
@@ -497,6 +698,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$this->info('');
 		$this->info('***** OXYGEN SETUP COMPLETED! *****');
 		$this->info('');
+
+
+		if (count($this->progressLog['files'])) {
+			$this->info('Check these files for accuracy.');
+
+			$headers = ['File', 'What you should check'];
+			$this->table($headers, $this->progressLog['files']);
+		}
 
 		if (count($this->progressLog['instructions'])) {
 			$this->info('Run these commands in order to complete the build process.');
@@ -512,20 +721,54 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$this->info('');
 		}
 
-		if (count($this->progressLog['files'])) {
-			$this->info('Check these files for accuracy.');
-
-			$headers = ['File', 'What you should check'];
-			$this->table($headers, $this->progressLog['files']);
-		}
-
 		foreach ($this->progressLog['info'] as $message)
 			$this->info($message);
 
 		if (count($this->progressLog['errors'])) {
-			$this->error('ERROR SUMMARY:');
+			$this->error('THESE ERRORS WERE DETECTED:');
 			foreach ($this->progressLog['errors'] as $message)
 				$this->error($message);
+		}
+	}
+
+	/**
+	 *
+	 * Check if a given files and classes exist, otherwise copy the stubs
+	 *
+	 * @param $fileData
+	 */
+	protected function createFilesFromStubs($fileData)
+	{
+		foreach ($fileData as $file) {
+
+			if (!empty($file['unique_file_id'])) {
+				// match if a file already exists by the file name match
+				$existingFiles = glob($file['destination_path'] . DIRECTORY_SEPARATOR . "*{$file['unique_file_id']}*");
+				if (count($existingFiles)) {
+					if (!$this->confirm("{$file['unique_file_id']} file already exists. Create another?", false)) {
+						continue;
+					}
+				}
+			} else {
+				// if the class doesn't exist, we'll create it without confirming, otherwise ask the user
+				if (class_exists($file['class'], false)) {
+					if (!$this->confirm("{$file['class']} class already exists. Overwrite?", false)) {
+						continue;
+					}
+				}
+			}
+
+			// if the destination path is a directory, copy the original file name
+			if (empty($file['destination_filename'])) {
+				$pathinfo = pathinfo($file['stub']);
+				$fileName = $pathinfo['basename'];
+			} else {
+				$fileName = $file['destination_filename'];
+			}
+
+			$filePath = $file['destination_path'] . DIRECTORY_SEPARATOR . $fileName;
+
+			$this->files->copy($file['stub'], $filePath);
 		}
 	}
 
@@ -536,7 +779,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$filePath = base_path('readme.md');
 
 			try {
-				if ($this->isTextInFile($filePath, $title)) return false;
+				if (FileManager::isTextInFile($filePath, $title)) return false;
 			} catch (FileNotFoundException $ex) {
 				$this->error('Readme.md file not found at ' . $filePath);
 				return false;
@@ -582,27 +825,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	protected function getStub()
 	{
 		return '';
-	}
-
-
-	/**
-	 *
-	 * Check if a string exists in a file. (Don't use to check on large files)
-	 *
-	 * @param      $filePath
-	 * @param      $string
-	 * @param bool $caseSensitive
-	 *
-	 * @return bool
-	 * @throws FileNotFoundException
-	 */
-	protected function isTextInFile($filePath, $string, $caseSensitive = true)
-	{
-		if (!file_exists($filePath)) throw new FileNotFoundException("File $filePath not found");
-
-		$command = ($caseSensitive)? 'strpos': 'stripos';
-
-		return $command(file_get_contents($filePath), $string) !== false;
 	}
 
 }

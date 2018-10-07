@@ -1,65 +1,22 @@
 @extends('oxygen::layouts.master-auth')
 
 @section('content')
-<div class="container-fluid">
-	@include('oxygen::partials.flash')
-	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Login</div>
-				<div class="panel-body">
+	<div class="container">
+		@include('oxygen::partials.flash')
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">{{ __('Login') }}</div>
 
-					<form class="form-horizontal" role="form" method="POST" action="/login">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<div class="card-body">
+						<form method="POST" action="{{ route('login') }}">
+							@csrf
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">E-Mail Address</label>
-							<div class="col-md-6">
-								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="remember" checked="checked"> Remember Me
-									</label>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary" style="margin-right: 15px;">
-									Login
-								</button>
-
-								<a href="/password/reset">Forgot Your Password?</a>
-							</div>
-						</div>
-
-						@if (config('oxygen.registrationsEnabled'))
-							<hr/>
-
-							<div class="form-group">
-								<div class="col-md-6 col-md-offset-4">
-									Don't have an account?
-									<a href="/register">Signup for a New Account</a>
-								</div>
-							</div>
-						@endif
-					</form>
+							@include('oxygen::auth.login_form_fields')
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 @endsection

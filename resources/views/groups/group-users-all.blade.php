@@ -1,19 +1,11 @@
-@extends('oxygen::layouts.account')
+@extends('oxygen::layouts.master-dashboard')
 
 @section('content')
-    <ol class="breadcrumb">
-        <li><a href="/account/groups">User Groups</a></li>
-        <li class="active">{{ $role->title }}</li>
-    </ol>
+        {{ lotus()->pageHeadline($pageTitle) }}
 
-    <div class="container-fluid">
-        <div class="title-container">
-            <div class="page-title">
-                <h1>Users in {{ $role->title }} Group</h1>
-            </div>
-        </div>
-
-        @include('oxygen::partials.flash')
+        @include('oxygen::account.access-permissions-breadcrumbs', ['breadcrumbs' =>
+            ['User Groups', '/account/groups']
+        ])
 
         @if ($user->can('add-group-users'))
             <button type="button"
@@ -31,9 +23,13 @@
         <div class="row">
             <div class="col-md-12">
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">Users in this Group</div>
-                    <div class="panel-body">
+                <div class="card">
+                    <div class="card-header">Users in this Group</div>
+                    <div class="card-body">
+
+                        @if($role->users->isEmpty())
+                            {{ lotus()->emptyStatePanel() }}
+                        @else
 
                         <table class="table table-hover">
                             <thead>
@@ -49,7 +45,7 @@
                                         <td>
                                             <strong>{{ $currentUser->name }}</strong>
                                             @if ($user->email == $currentUser->email)
-                                                <span class="label label-success">You</span>
+                                                <span class="badge badge-success">You</span>
                                             @endif
                                         </td>
                                         <td>{{ $currentUser->email }}</td>
@@ -79,11 +75,13 @@
                             </tbody>
                         </table>
 
+                        @endif
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
 
     @include('oxygen::groups.add-users-to-group')
 

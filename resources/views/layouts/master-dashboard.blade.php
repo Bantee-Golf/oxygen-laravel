@@ -11,7 +11,9 @@
             <div id="page-contents" class="col-sm-10 main-page-contents">
                 @include('oxygen::partials.flash')
 
-                @yield('content')
+                <div class="container-content">
+                    @yield('content')
+                </div>
 
                 {{-- Load the page level scripts here if this is a PJAX type request, otherwise load these in the footer --}}
                 @if (request()->header('X-PJAX'))
@@ -106,13 +108,7 @@
 //            $(element).datetimepicker(options);
 //        });
 
-		// confirmation
-		$('.js-confirm').on('submit', function (e) {
-			return confirm('Are you sure?');
-		});
 
-		// trigger tooltips
-		$('.js-tooltip').tooltip();
 	});
 </script>
 @endpush

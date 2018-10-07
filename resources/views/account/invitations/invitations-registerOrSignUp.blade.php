@@ -1,80 +1,52 @@
 @extends('oxygen::layouts.master-auth')
 
 @section('content')
-
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container">
+        <div class="row justify-content-center">
 
             @include('oxygen::partials.flash')
 
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8">
 
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div id="accordion">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <div role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingOne">
+                            <h5 class="mb-0">
+                                <div class="btn btn-light" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     Register and Join the Team
                                 </div>
-                            </h4>
+                            </h5>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse @if (!$plausibleUser) in @endif" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                <form class="form-horizontal" role="form" method="POST" action="/register">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div id="collapseOne" class="collapse @if (!$plausibleUser) show @endif" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">
+                                <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
+                                    @csrf
                                     <input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
 
-                                    <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-4">
+                                    <div class="form-group row text-center">
+                                        <div class="col-md-12">
                                             <h3>You've been invited to join a team.</h3>
 
                                             <div class="copy">
-                                                <p>Enter a password for your account, and see what's inside.</p>
+                                                <p>Complete registration and see what's inside.</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Your First Name</label>
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-                                        </div>
-                                    </div>
+                                    @include('oxygen::auth.register_form_fields')
 
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">E-Mail Address</label>
-                                        <div class="col-md-6">
-                                            <input type="email" class="form-control" name="email" value="{{ $invite->email }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Enter a Password</label>
-                                        <div class="col-md-6">
-                                            <input type="password" class="form-control" name="password">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Confirm Password</label>
-                                        <div class="col-md-6">
-                                            <input type="password" class="form-control" name="password_confirmation">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-4">
-                                            <button type="submit" class="btn btn-lg btn-wide btn-success">
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-6 offset-md-4">
+                                            <button type="submit" class="btn btn-primary">
                                                 Accept the Invitation
                                             </button>
                                         </div>
                                     </div>
 
                                     <hr/>
-
                                     <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-4">
+                                        <div class="col-md-8 offset-md-4">
                                             Already have an account?
                                             <a href="#collapseTwo" data-parent="#accordion" data-toggle="collapse" data-target="#collapseTwo">Login</a>
                                         </div>
@@ -84,58 +56,26 @@
                         </div>
                     </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <div class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <div class="btn btn-light collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     Already have an account? Login Here
                                 </div>
-                            </h4>
+                            </h5>
                         </div>
-                        <div id="collapseTwo" class="panel-collapse collapse @if ($plausibleUser) in @endif" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
+                        <div id="collapseTwo" class="collapse @if ($plausibleUser) show @endif" data-parent="#accordion" aria-labelledby="headingTwo">
+                            <div class="card-body">
                                 <form class="form-horizontal" role="form" method="POST" action="/login">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    @csrf
                                     <input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
 
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">E-Mail Address</label>
-                                        <div class="col-md-6">
-                                            <input type="email" class="form-control" name="email" value="{{ $invite->email }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Password</label>
-                                        <div class="col-md-6">
-                                            <input type="password" class="form-control" name="password">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-4">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="remember" checked="checked"> Remember Me
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-4">
-                                            <button type="submit" class="btn btn-lg btn-wide btn-success" style="margin-right: 15px;">
-                                                Login
-                                            </button>
-
-                                            <a href="/password/email">Forgot Your Password?</a>
-                                        </div>
-                                    </div>
+                                    @include('oxygen::auth.login_form_fields')
 
                                     <hr/>
 
                                     <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-4">
+                                        <div class="col-md-8 offset-md-4">
                                             Don't have an account?
                                             <a href="#collapseOne" data-parent="#accordion" data-toggle="collapse" data-target="#collapseOne">Signup for a New Account</a>
                                         </div>
@@ -144,10 +84,7 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
             </div>
         </div>
     </div>

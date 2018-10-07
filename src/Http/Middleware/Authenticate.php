@@ -38,15 +38,13 @@ class Authenticate {
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (config('auth.dashboardAuthentication'))
+		if (config('oxygen.dashboardAuthentication'))
 		{
 			if ($this->auth->guest())
 			{
 				return $this->rejectRequest($request);
 			}
-		}
-		else
-		{
+		} else {
 			$user = $this->auth->user();
 
 			// login to a default account for testing

@@ -1,13 +1,15 @@
 @extends('oxygen::layouts.master-dashboard')
 
 @section('content')
-    <div class="title-container">
-        <div class="page-title">
-            <h1>Dashboard</h1>
-        </div>
-    </div>
+    {{ lotus()->pageHeadline('Dashboard') }}
 
-    <div>
-        <p>Welcome to Oxygen. Let's build something new!</p>
-    </div>
+    {{-- Example Breadcrumb. Remove this... --}}
+    {{ lotus()->breadcrumbs([
+        ['Dashboard', route('dashboard')],
+        ['Google', 'http://www.google.com'],
+        ['Microsoft', 'http://www.microsoft.com'],
+        ['Tesla', null, true]
+    ]) }}
+
+    {{ lotus()->emptyStatePanel('Welcome to Oxygen', "Let's Build Something New!") }}
 @stop

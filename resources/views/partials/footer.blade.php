@@ -21,8 +21,11 @@
                 <div class="col col-md-3">
                     <div class="headline">Account</div>
                     <ul>
-                        <li><a href="/login">Login</a></li>
-                        <li><a href="/register">Register</a></li>
+                        @guest
+                            <li><a href="{{ route('login') }}">Login</a></li>
+                        @else
+                            <li><a href="{{ route('logout') }}">Logout</a></li>
+                        @endguest
                     </ul>
                 </div>
 

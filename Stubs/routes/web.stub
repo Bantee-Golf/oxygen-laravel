@@ -1,55 +1,75 @@
-
-
 // Start Oxygen routes
 // Home
 Route::get('/', function () {
 	return view('oxygen::pages.home', ['pageTitle' => 'The Awesomeness Starts Here...']);
 })->name('home');
 
-// User login
+// TODO: Add Custom Pages Here...
+
+// Filler Pages...
+Route::get('/privacy-policy', 	'PagesController@privacyPolicy')->name('pages.privacy-policy');
+Route::get('/terms-conditions', 'PagesController@termsConditions')->name('pages.terms-conditions');
+Route::get('/faqs', 			'PagesController@faqs')->name('pages.faqs');
+
+// Contact Us...
+Route::get( '/contact-us', 'PagesController@contactUs')->name('contact-us');
+Route::post('/contact-us', 'PagesController@postContactUs');
+
+// Authentication Routes...
 Route::get ('login',	'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login',	'Auth\LoginController@login');
 Route::get ('logout',   'Auth\LoginController@logout')->name('logout');
 Route::post('logout',   'Auth\LoginController@logout');
 
-// Registration
-Route::get( 'register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('register', 'Auth\RegisterController@register');
+// Registration Routes...
+if (has_feature('auth.public-users-can-register')) {
+	Route::get( 'register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+	Route::post('register', 'Auth\RegisterController@register');
+}
 
-// Password Reset
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+// Password Reset Routes...
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 
-// Pages
-Route::get( '/contact-us', 'PagesController@contactUs')->name('contact-us');
-Route::post('/contact-us', 'PagesController@postContactUs');
+// Email Verification Routes...
+if (has_feature('auth.email-verification-required')) {
+	Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
+	Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+	Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+}
 
-Route::get('/privacy-policy', 'PagesController@privacyPolicy');
-Route::get('/terms-conditions', 'PagesController@termsConditions');
-Route::get('/faqs', 'PagesController@faqs');
+// Register by Invitation...
+Route::get('invitations/join/{code}', [
+	'as'	=> 'invitations.join',
+	'uses'	=> 'Auth\InvitationsController@showJoin'
+]);
 
-// Dashboard
+// Authenticated Users...
 Route::group(['middleware' => 'auth'], function()
 {
-	// dashboard
-	Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@dashboard']);
+	// Dashboard
+	Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard');
 
-	// my account
+	// User's Profile...
+	Route::group(['prefix' => 'account'], function () {
+		Route::get('/profile', 			'Auth\ProfileController@getProfile')->name('account.profile');
+		Route::put('/profile', 			'Auth\ProfileController@updateProfile');
+		Route::get('/email/edit', 		'Auth\ProfileController@getEmail')->name('account.email');
+		Route::put('/email/edit', 		'Auth\ProfileController@updateEmail');
+		Route::get('/password/edit',	'Auth\ResetPasswordController@editPassword')->name('account.password');
+		Route::put('/password/edit',	'Auth\ResetPasswordController@updatePassword');
+	});
+
+	// Manage (Super Admin)...
 	Route::group(['prefix' => 'account'], function ()
 	{
-		// auth
-		Route::get('/profile', 	'Auth\ProfileController@getProfile')->name('account');
-		Route::put('/profile', 	'Auth\ProfileController@updateProfile');
-		Route::get('/email/update', 	'Auth\ProfileController@getEmail');
-		Route::put('/email/update', 	'Auth\ProfileController@updateEmail');
-		Route::get('/password/update',	'Auth\ResetPasswordController@getUpdate');
-		Route::post('/password/update',	'Auth\ResetPasswordController@postUpdate');
+		Route::get('/access', 'Auth\Admin\AccessController@index')->name('access.index');
 
-		// groups (roles)
+		// Groups (Roles)
 		Route::group(['prefix' => 'groups'], function () {
-			Route::get (  '/',			'Auth\Groups\GroupsController@index');
+			Route::get (  '/',			'Auth\Groups\GroupsController@index')->name('access.groups.index');
 			Route::get (  '/new',		'Auth\Groups\GroupsController@create');
 			Route::post(  '/',			'Auth\Groups\GroupsController@store');
 			Route::post(  '/users',		'Auth\Groups\GroupsController@storeUsers');
@@ -59,36 +79,37 @@ Route::group(['middleware' => 'auth'], function()
 			Route::put (  '/{id}',		'Auth\Groups\GroupsController@update');
 			Route::delete('/{id}',	'Auth\Groups\GroupsController@destroy');
 
-			// permissions for role
+			// Permissions for Role
             Route::group(['prefix' => '{roleId}/permissions'], function () {
                 Route::get ('/', 'Auth\Abilities\AbilitiesController@editRoleAbilities');
                 Route::put ('/', 'Auth\Abilities\AbilitiesController@updateRoleAbilities');
             });
 		});
 
-		// abilities (permissions)
+		// Abilities (Permissions)
 		Route::group(['prefix' => 'permission-categories'], function () {
+			Route::get ('/', 			'Auth\Abilities\AbilityCategoriesController@index')->name('access.abilities.index');
+			/*
 			Route::get ('/new', 		'Auth\Abilities\AbilityCategoriesController@create');
-			Route::get ('/', 			'Auth\Abilities\AbilityCategoriesController@index');
 			Route::get ('/{id}/edit',	'Auth\Abilities\AbilityCategoriesController@edit');
 			Route::post('/', 			'Auth\Abilities\AbilityCategoriesController@store');
 			Route::put ('/{id}', 		'Auth\Abilities\AbilityCategoriesController@update');
 			Route::delete('/{id}',		'Auth\Abilities\AbilityCategoriesController@destroy');
+			*/
 		});
 
-		Route::get('invitations',			'Auth\InvitationsController@index');
-		Route::post('invitations',			'Auth\InvitationsController@send');
-		Route::get('invitations/{id}/edit',	'Auth\InvitationsController@edit');
-		Route::put('invitations/{id}',		'Auth\InvitationsController@update');
-		Route::delete('invitations/{id}',	'Auth\InvitationsController@destroy');
+		// Invitations
+		Route::group(['prefix' => 'invitations'], function () {
+			Route::get('/',			 'Auth\InvitationsController@index')->name('access.invitations.index');
+			Route::get('/create',	 'Auth\InvitationsController@create')->name('access.invitations.create');
+			Route::post('/',		 'Auth\InvitationsController@send');
+			Route::get('/{id}/edit', 'Auth\InvitationsController@edit');
+			Route::put('/{id}',		 'Auth\InvitationsController@update');
+			Route::delete('/{id}',	 'Auth\InvitationsController@destroy');
+		});
 
 		// switch tenants (teams) - only for Multi-tenants
-		Route::get('teams/switch/{id}', 'Auth\TeamController@switchTeam');
+		// Route::get('teams/switch/{id}', 'Auth\TeamController@switchTeam');
 	});
 });
-
-Route::get('invitations/join/{code}', [
-	'as'	=> 'invitations.join',
-	'uses'	=> 'Auth\InvitationsController@showJoin'
-]);
 // End Oxygen routes

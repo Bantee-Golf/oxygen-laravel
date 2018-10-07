@@ -1,4 +1,4 @@
-@extends('oxygen::layouts.account')
+@extends('oxygen::layouts.master-dashboard')
 
 @section('content')
     <div class="container-fluid">
@@ -7,50 +7,63 @@
 
                 <div class="title-container">
                     <div class="page-title">
-                        <h1>Change Password</h1>
+                        <h1>Edit Password</h1>
                     </div>
                 </div>
 
-                @include('oxygen::partials.flash')
+                <div class="card">
+                    <div class="card-header">
+                        <span class="text-strong">Edit Password</span>
+                    </div>
+                    <div class="card-body">
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">Change Password</div>
-                    <div class="panel-body">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ route('account.password') }}">
+                            {{ method_field('put') }}
+                            @csrf
 
-                        <form class="form-horizontal" role="form" method="POST" action="/account/password/update">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Current Password</label>
-                                <div class="col-md-6">
-                                    <input type="password" class="form-control" name="current_password" value="">
+                            <div class="form-group row">
+                                <label for="inputEmail3" class="col-sm-2 col-form-label">New Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="password" name="password">
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">New Password</label>
-                                <div class="col-md-6">
-                                    <input type="password" class="form-control" name="password">
+                            <div class="form-group row">
+                                <label for="inputEmail3" class="col-sm-2 col-form-label">Confirm Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                                    <small id="confirmPasswordHelpBlock" class="form-text text-muted">
+                                        Enter the new password again to confirm.
+                                    </small>
+                                </div>
+                            </div>
+                            <hr>
+
+
+                            <div class="form-group row">
+                                <label for="inputEmail3" class="col-sm-2 col-form-label">Current Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="current_password" name="current_password">
+                                    <small id="currentPasswordHelpBlock" class="form-text text-muted">
+                                        For account security, you need to enter your current password to update data on this page.
+                                    </small>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Confirm New Password</label>
-                                <div class="col-md-6">
-                                    <input type="password" class="form-control" name="password_confirmation">
-                                </div>
-                            </div>
 
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
+                            <hr>
+                            <div class="form-group row">
+                                <div class="col-sm-10 offset-2">
                                     <button type="submit" class="btn btn btn-success btn-lg btn-wide ">
-                                        Reset Password
+                                        Update Password
                                     </button>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

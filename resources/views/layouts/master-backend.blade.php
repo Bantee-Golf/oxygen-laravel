@@ -16,9 +16,9 @@
     <link rel="stylesheet" href="/css/theme/select2.custom.css" />
     {{--<link rel="stylesheet" href="/bower_components/select2-bootstrap-css/select2-bootstrap.min.css" />--}}
 
-    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" />
 
-    <link rel="stylesheet" href="{{ elixir("css/dist/dashboard.css") }}" />
+    <link rel="stylesheet" href="{{ mix("css/dist/dashboard.css") }}" />
 
     @stack('stylesheets')
 
@@ -36,50 +36,63 @@
     <div id="dashboard-home">
 
         <div class="account-header">
-            <div class="container-fluid">
-                <nav class="navbar navbar-oxygen" role="navigation" style="margin-bottom: 0">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="logo navbar-brand" href="/" target="_blank">{{ (empty($appName))? config('app.name'): $appName }}</a>
-                        </div>
+            {{--<div class="container">--}}
 
-                        <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
-                            <ul class="nav navbar-nav navbar-top-links navbar-right">
-                                @if (isset($tenant))
-                                    <li class="user-greeting">{{ $tenant->company_name }}</li>
-                                @endif
+                <nav class="navbar navbar-expand-md navbar-dark navbar-app">
+                    {{--<div class="container-fluid">--}}
+                        <span class="btn btn-header-menu js-toggle-right-sidebar">
+                            <i class="fas fa-bars"></i>
+                        </span>
 
-                                <li class="user-greeting">{{ $user->full_name }}</li>
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                            {{ config('app.name', 'Laravel') }}
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-                                @if (isset($tenants))
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle"
-                                           data-toggle="dropdown" role="button"
-                                           aria-haspopup="true" aria-expanded="false">Team <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            @foreach ($tenants as $tenant)
-                                                <li><a href="/account/teams/switch/{{ $tenant->id }}">{{ $tenant->company_name }}</a></li>
-                                            @endforeach
-                                            {{--<li role="separator" class="divider"></li>--}}
-                                            {{--<li><a href="#">Add New Team</a></li>--}}
-                                        </ul>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <!-- Left Side Of Navbar -->
+                            <ul class="navbar-nav mr-auto">
+
+                            </ul>
+
+                            <!-- Right Side Of Navbar -->
+                            <ul class="navbar-nav ml-auto">
+                                <!-- Authentication Links -->
+                                @guest
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                     </li>
-                                @endif
+                                    <li class="nav-item">
+                                        @if (Route::has('register'))
+                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                        @endif
+                                    </li>
+                                @else
+                                    <li class="nav-item dropdown">
+                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                            {{ Auth::user()->name }} <span class="caret"></span>
+                                        </a>
 
-                                <li class="active"><a href="/account/profile">Account</a></li>
-                                <li><a href="/logout">Logout</a></li>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{ route('account.profile') }}">
+                                                {{ __('My Profile') }}
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="{{ route('account.email') }}">Edit Email</a>
+                                            <a class="dropdown-item" href="{{ route('account.password') }}">Edit Password</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="{{ route('logout') }}">
+                                                {{ __('Logout') }}
+                                            </a>
+                                        </div>
+                                    </li>
+                                @endguest
                             </ul>
                         </div>
-                    </div>
-
+                    {{--</div>--}}
                 </nav>
-            </div>
         </div>
 
         @yield('page-container')
@@ -91,18 +104,26 @@
 </div>
 
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/popper.js/dist/umd/popper.min.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
 <script src="/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script src="/bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
 
-<script src="/bower_components/vue/dist/vue.min.js"></script>
-<script src="/bower_components/lodash/dist/lodash.min.js"></script>
-{{--<script src="{{ elixir("js/dist/dashboard.js") }}"></script>--}}
-
 <script>
     $(document).ready(function() {
-        $('[data-toggle="tooltip"]').tooltip()
+	    // confirmation
+	    $('.js-confirm').on('submit', function (e) {
+		    return confirm('Are you sure?');
+	    });
+
+	    // trigger tooltips
+        $('.js-tooltip, [data-toggle="tooltip"]').tooltip();
+
+	    // collapse sidebar
+	    $('.js-toggle-right-sidebar').on('click', function () {
+		    $('#sidebar').toggle('collapsed');
+	    });
     });
 </script>
 

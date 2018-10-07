@@ -1,9 +1,6 @@
-@extends('oxygen::layouts.account')
+@extends('oxygen::layouts.master-dashboard')
 
 @section('content')
-
-    @include('oxygen::partials.flash')
-
     <div class="container-fluid">
         <div class="title-container">
             <div class="page-title">

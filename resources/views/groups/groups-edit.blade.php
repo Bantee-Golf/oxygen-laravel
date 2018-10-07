@@ -1,25 +1,21 @@
-@extends('oxygen::layouts.account')
+@extends('oxygen::layouts.master-dashboard')
+
+<?php $pageTitle = "Edit Group" ?>
 
 @section('content')
-    <div class="container-fluid">
-        <div class="title-container">
-            <div class="page-title">
-                <h1>User Groups</h1>
-            </div>
-        </div>
+    {{ lotus()->pageHeadline($pageTitle) }}
 
-        @include('oxygen::partials.flash')
+    @include('oxygen::account.access-permissions-breadcrumbs', ['breadcrumbs' =>
+        ['User Groups', '/account/groups']
+    ])
 
-        <div class="row">
-            <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">Edit Group</div>
-                    <div class="panel-body">
-
-                        @include('oxygen::groups.groups-form')
-
-                    </div>
+            <div class="card">
+                <div class="card-header">Edit Group</div>
+                <div class="card-body">
+                    @include('oxygen::groups.groups-form')
                 </div>
             </div>
         </div>

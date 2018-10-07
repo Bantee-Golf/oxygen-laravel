@@ -30,7 +30,7 @@ trait ModelHasAbilitiesTrait
 	 */
 	public function abilities()
 	{
-		$abilityModel = config('auth.abilityModel', '\App\Entities\Auth\Ability');
+		$abilityModel = config('oxygen.abilityModel', '\App\Entities\Auth\Ability');
 
 		return $this->morphMany($abilityModel, 'entity');
 	}

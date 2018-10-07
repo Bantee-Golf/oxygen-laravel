@@ -15,6 +15,13 @@ trait OxygenUserTrait
 		HasRolesAndAbilities::isA as bouncerIsA;
 	}
 
+	public function getProfileUpdatableFields()
+	{
+		return [
+			'name',
+		];
+	}
+
 	public function getFullNameAttribute()
 	{
 		return implode_not_empty(' ', [$this->name, $this->last_name]);

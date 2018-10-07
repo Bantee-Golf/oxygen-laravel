@@ -1,29 +1,31 @@
-@extends('oxygen::layouts.account')
+@extends('oxygen::layouts.master-dashboard')
+
+<?php $pageTitle = 'Permission Groups' ?>
 
 @section('content')
 
-    @include('oxygen::partials.flash')
+        {{ lotus()->pageHeadline($pageTitle) }}
 
-    <div class="container-fluid">
-        <div class="title-container">
-            <div class="page-title">
-                <h1>Permission Groups</h1>
-            </div>
+        {{ lotus()->breadcrumbs([
+            ['Dashboard', route('dashboard')],
+            ['Access Permissions', route('access.index')],
+            [$pageTitle, null, true]
+        ]) }}
+
+        <div class="alert alert-danger">
+            <div class="font-weight-bold">Notice</div>
+            <div>This section is only for knowledge of system administrators. Don't edit the values here if you don't know what they do.</div>
         </div>
 
-        <a href="/account/permission-categories/new"
-           class="btn btn-wide btn-success"><i class="fa fa-user-plus"></i> Add New Group</a>
+        {{--<a href="/account/permission-categories/new"--}}
+           {{--class="btn btn-wide btn-success"><i class="fa fa-user-plus"></i> Add New Group</a>--}}
 
-        <br/><br />
+        {{--<br/><br />--}}
 
         @if (count($allItems))
             <table class="table table-hover">
 
-                {!! Render::tableHeader(
-                    'Category Name',
-                    'Permissions',
-                    'Actions'
-                ) !!}
+                {{ lotus()->tableHeader('Permission Category', 'Permissions') }}
 
                 <tbody>
                 @foreach($allItems as $item)
@@ -31,19 +33,20 @@
                         <td>{{ $item->name }}</td>
                         <td>
                             @foreach($item->abilities as $ability)
-                                <span class="label label-primary">{{ $ability->title }}</span>
+                                <span class="badge badge-success">{{ $ability->title }}</span>
                             @endforeach
                         </td>
                         <td>
+                            {{--
+                            <div class="btn-spaced">
                             @if ($user->can('edit-permissions'))
                                 <a href="/account/permission-categories/{{ $item['id'] }}/edit"
                                    class="btn btn-info inline"
                                    data-toggle="tooltip"
                                    title="Edit">
-                                    <i class="fa fa-pencil-square-o"></i> Edit
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
                                 @if (true)
-                                    {{-- // TODO: EFF: fix action URL --}}
                                     <form class="form-inline" role="form" method="POST" action="/account/permission-categories/{{ $item['id'] }}"
                                           data-toggle="tooltip" title="Delete">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -54,16 +57,17 @@
                                     </form>
                                 @endif
                             @endif
+                            </div>
+                            --}}
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         @else
-            {!! Render::emptyStatePanel() !!}
+            {{ lotus()->emptyStatePanel() }}
         @endif
 
-        {!! Render::paginationLinks($allItems) !!}
+        {{ lotus()->pageNumbers($allItems) }}
 
-    </div>
 @endsection

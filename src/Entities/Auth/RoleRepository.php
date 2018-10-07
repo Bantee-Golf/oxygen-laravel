@@ -10,15 +10,20 @@ class RoleRepository extends BaseRepository
 
 	public function __construct()
 	{
-		$model = app(config('auth.roleModel'));
+		$model = app(config('oxygen.roleModel'));
 		parent::__construct($model);
 	}
 
-	public function allExcept(array $exceptRoles)
+	public function allExcept(array $exceptRoles, $reverse = false)
 	{
 		$query = $this->model->select();
+
 		foreach ($exceptRoles as $role) {
 			$query->where('name', '<>', $role);
+		}
+
+		if ($reverse) {
+			$query->orderBy('id', 'desc');
 		}
 
 		return $query->get();

@@ -27,7 +27,7 @@ class AbilityCategory extends Model
 
 	public function abilities()
 	{
-		return $this->hasMany(app(config('auth.abilityModel')));
+		return $this->hasMany(app(config('oxygen.abilityModel')));
 	}
 
 }

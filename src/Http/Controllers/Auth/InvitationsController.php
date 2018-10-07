@@ -22,7 +22,7 @@ class InvitationsController extends Controller
     public function __construct(InvitationRepository $invitationsRepo)
     {
         $this->invitationsRepo = $invitationsRepo;
-        $this->roleRepository  = app(config('auth.roleRepository'));
+        $this->roleRepository  = app(config('oxygen.roleRepository'));
 
 		$this->middleware('auth.acl:permissions[invite-group-users]', ['except' => [
 			'showJoin', 'acceptInvite'
@@ -36,11 +36,20 @@ class InvitationsController extends Controller
      */
     public function index()
     {
-        $invitations = Invitation::orderBy('sent_at', 'desc')->orderBy('claimed_at', 'desc')->get();
+        $invitations = Invitation::orderBy('sent_at', 'desc')
+        						 ->orderBy('claimed_at', 'desc')
+        						 ->paginate(config('oxygen.dashboard.perPage', 50));
         $roles       = $this->roleRepository->allExcept(['owner']);
         return view('oxygen::account.invitations.invitations-all', compact('invitations', 'roles'));
     }
 
+	public function create()
+	{
+		// reverse the order, so the default role to invite is (most likely) not the sys-admin.
+		$roles = $this->roleRepository->allExcept(['owner'], true);
+
+		return view('oxygen::account.invitations.invitations-create', compact('roles'));
+	}
 
     /**
      * Store a newly created resource in storage.
@@ -144,6 +153,8 @@ class InvitationsController extends Controller
             // Auth::logout();
             // $data['invite'] = $invite;
 
+            $prefilledEmail = $invite->email;
+
             // if user is logged-in, prompt to join team
             if ($user = Auth::user()) {
                 if ($invite->email == $user->email) {
@@ -162,13 +173,13 @@ class InvitationsController extends Controller
                 $plausibleUser = $userModel::where('email', $invite->email)->first();
                 if ($plausibleUser) {
                     // if user has an account, prompt to login
-                    return view('oxygen::account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser'));
+                    return view('oxygen::account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser', 'prefilledEmail'));
                 }
             }
 
             // this is a new user, let her register
             // consider everything else as a new user (you should not get here)
-            return view('oxygen::account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser'));
+            return view('oxygen::account.invitations.invitations-registerOrSignUp', compact('invite', 'plausibleUser', 'prefilledEmail'));
         }
         else
         {

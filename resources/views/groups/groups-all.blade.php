@@ -1,18 +1,19 @@
-@extends('oxygen::layouts.account')
+@extends('oxygen::layouts.master-dashboard')
 
 @section('content')
-
-    @include('oxygen::partials.flash')
-
     <div class="container-fluid">
-        <div class="title-container">
-            <div class="page-title">
-                <h1>User Groups</h1>
-            </div>
-        </div>
+        {{ lotus()->pageHeadline($pageTitle) }}
+
+        {{ lotus()->breadcrumbs([
+            ['Dashboard', route('dashboard')],
+            ['Access Permissions', route('access.index')],
+            [$pageTitle, null, true]
+        ]) }}
+
 
         @if ($user->can('add-groups'))
-            <a href="/account/groups/new" class="btn btn-wide btn-success"><i class="fa fa-plus-circle"></i> Add a New Group</a>
+            <a href="/account/groups/new" class="btn btn-wide btn-success"><i class="fa fa-plus-circle"></i> Add a New
+                Group</a>
             <br/><br/>
         @else
             <br/>
@@ -23,15 +24,15 @@
         <div class="row">
             <div class="col-md-12">
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">Current User Groups</div>
-                    <div class="panel-body">
-
+                <div class="card">
+                    <div class="card-header">
+                        Current User Groups
+                    </div>
+                    <div class="card-body">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>Role</th>
-                                <th>Description</th>
+                                <th>Group</th>
                                 <th>View Users</th>
                                 <th>Add Users</th>
                                 <th>Edit Permissions</th>
@@ -42,25 +43,26 @@
                             @foreach ($rolesData as $role)
                                 <tr>
                                     <td>
-                                        <strong>{{ $role['title'] }}</strong>
+                                        <div class="row-title">{{ $role['title'] }}</div>
+                                        {{ $role['description'] }}
                                     </td>
-                                    <td>{{ $role['description'] }}</td>
                                     <td>
                                         <a href="/account/groups/{{ $role['id'] }}/users"
                                            class="btn btn-info"
                                            data-toggle="tooltip"
                                            title="View Users">
-                                            <i class="fa fa-eye"></i> Users
+                                            <i class="fas fa-eye"></i> View Users
                                         </a>
                                     </td>
                                     <td>
                                         @if ($user->can('edit-group-users'))
-                                            <span data-toggle="modal" data-target="#userControlModal" data-role_id="{{ $role['id'] }}">
+                                            <span data-toggle="modal" data-target="#userControlModal"
+                                                  data-role_id="{{ $role['id'] }}">
                                                 <button
                                                         class="btn btn-warning"
                                                         data-toggle="tooltip"
                                                         title="Add a User to {{ $role['title'] }}">
-                                                    <i class="fa fa-user-plus"></i> Users
+                                                    <i class="fas fa-user-plus"></i> Add Users
                                                 </button>
                                             </span>
                                         @endif
@@ -76,31 +78,35 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($user->can('edit-groups'))
-                                            <a href="/account/groups/{{ $role['id'] }}/edit"
-                                               class="btn btn-info"
-                                               data-toggle="tooltip"
-                                               title="Edit">
-                                                <i class="fa fa-pencil-square-o"></i> Edit Role
-                                            </a>
-                                        @endif
+                                        <div class="btn-spaced">
+                                            @if ($user->can('edit-groups'))
+                                                <a href="/account/groups/{{ $role['id'] }}/edit"
+                                                   class="btn btn-info"
+                                                   data-toggle="tooltip"
+                                                   title="Edit">
+                                                    <i class="fas fa-edit"></i> Edit Role
+                                                </a>
+                                            @endif
 
-                                        @if ($user->can('delete-groups') && $role['allow_to_be_deleted'])
-                                            <form class="form-inline" role="form" method="POST" action="/account/groups/{{ $role['id'] }}"
-                                                  data-toggle="tooltip" title="Delete">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                                <input type="hidden" name="_method" value="delete" />
-                                                <button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                                            </form>
-                                        @endif
+                                            @if ($user->can('delete-groups') && $role['allow_to_be_deleted'])
+                                                <form class="form-inline" role="form" method="POST"
+                                                      action="/account/groups/{{ $role['id'] }}"
+                                                      data-toggle="tooltip" title="Delete">
+                                                    {{ csrf_field() }}
+                                                    {{ method_field('delete') }}
+                                                    <button class="btn btn-danger"><i class="fas fa-times"></i> Delete
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

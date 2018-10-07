@@ -17,7 +17,7 @@ class ApiAuthenticate {
 	{
 		// check if the X-API-KEY is not found in the header or if the token is invalid
 		$apiToken 		= request()->header('X-Api-Key');
-		$validApiToken 	= config('app.apiKey');
+		$validApiToken 	= config('oxygen.apiKey');
 
 		if (empty($apiToken))
 		{

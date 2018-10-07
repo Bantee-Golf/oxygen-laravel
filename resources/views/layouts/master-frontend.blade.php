@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="//oss.maxcdn.com/animatecss/3.5.0/animate.min.css" type="text/css">
     <link rel="stylesheet" href="/css/theme/creative.css" type="text/css">
 
-    <link rel="stylesheet" href="{{ elixir("css/dist/public.css") }}" />
+    <link rel="stylesheet" href="{{ mix("css/dist/public.css") }}" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,7 +28,7 @@
     <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    @yield ('meta')
+    @stack('meta')
 
     @include('oxygen::partials.tracking')
 </head>
@@ -63,23 +63,26 @@
                 <li>
                     <a class="page-scroll" href="#contact">Contact</a>
                 </li>
-                @if (Auth::user())
-                    <li>
-                        <a class="page-scroll" href="/dashboard">Dashboard</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="/logout">Logout</a>
-                    </li>
-                @else
-                    <li>
-                        <a class="page-scroll" href="/login">Login</a>
-                    </li>
-                    @if (config('oxygen.registrationsEnabled'))
+
+                @guest
+                    @if (Route::has('login'))
                         <li>
-                            <a class="page-scroll" href="/register">Register</a>
+                            <a class="page-scroll" href="{{ route('login') }}">Login</a>
                         </li>
                     @endif
-                @endif
+                    @if (Route::has('register'))
+                        <li>
+                            <a class="page-scroll" href="{{ route('register') }}">Register</a>
+                        </li>
+                    @endif
+                @else
+                    <li>
+                        <a class="page-scroll" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="{{ route('logout') }}">Logout</a>
+                    </li>
+                @endguest
             </ul>
         </div>
     </div>

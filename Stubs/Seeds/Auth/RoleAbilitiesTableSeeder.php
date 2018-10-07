@@ -1,7 +1,7 @@
 <?php
 
 use EMedia\MultiTenant\Facades\TenantManager;
-use EMedia\QuickData\Database\Seeds\Traits\SeedsPermissions;
+use EMedia\Oxygen\Database\Seeds\Traits\SeedsPermissions;
 use Illuminate\Database\Seeder;
 
 class RoleAbilitiesTableSeeder extends Seeder
@@ -14,8 +14,8 @@ class RoleAbilitiesTableSeeder extends Seeder
 
 	public function __construct()
 	{
-		$this->abilityModel = app(config('auth.abilityModel'));
-		$this->roleModel    = app(config('auth.roleModel'));
+		$this->abilityModel = app(config('oxygen.abilityModel'));
+		$this->roleModel    = app(config('oxygen.roleModel'));
 	}
 
 

@@ -20,7 +20,7 @@ class AbilityCategoryRepository extends BaseRepository
 			foreach ($abilities as $abilityName) {
 				$abilityName = trim($abilityName);
 				if (!empty($abilityName)) {
-					$ability = app(config('auth.abilityModel'));
+					$ability = app(config('oxygen.abilityModel'));
 					$ability->title = trim($abilityName);
 					$ability->ability_category_id = $category->id;
 					$ability->save();

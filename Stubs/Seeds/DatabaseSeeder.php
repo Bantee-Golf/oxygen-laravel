@@ -19,11 +19,19 @@ class DatabaseSeeder extends Seeder
 		$this->call(RolesTableSeeder::class);
 		$this->call(RoleAbilitiesTableSeeder::class);
 
-		// seed users & roles
-		if (app()->environment() !== 'production') {
+		// Add development, testing, staging seeders here.
+		if (!app()->environment('production')) {
 			$this->call(UsersTableSeeder::class);
 			$this->call(UserRolesTableSeeder::class);
+
+
 		}
+
+		/*
+		|-------------------------------------------------------------------------------
+		| Add production-safe seeders here. DO NOT ADD HERE IF IT ALTERS EXISTING DATA
+		|-------------------------------------------------------------------------------
+		*/
 
 		Model::reguard();
 	}

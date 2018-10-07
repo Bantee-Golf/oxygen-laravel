@@ -1,118 +1,79 @@
-@extends('oxygen::layouts.account')
+@extends('oxygen::layouts.master-dashboard')
+
+<?php $pageTitle = 'User Invitations' ?>
 
 @section('content')
-    <div class="container-fluid">
+        {{ lotus()->pageHeadline($pageTitle) }}
 
-        <div class="title-container">
-            <div class="page-title">
-                <h1>Invite New Users</h1>
-            </div>
-        </div>
+        {{ lotus()->breadcrumbs([
+            ['Dashboard', route('dashboard')],
+            ['Access Permissions', route('access.index')],
+            [$pageTitle, null, true]
+        ]) }}
 
-        @include('oxygen::partials.flash')
+        <a href="{{ route('access.invitations.create') }}" class="btn btn-wide btn-success mb-3"><i class="fa fa-plus-circle"></i> Invite New Users</a>
 
-        <div class="row">
-            <div class="col-md-12">
-
-                <form class="form-horizontal" role="form" method="POST" action="/account/invitations">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-
-                    <p>Invite your team members to join. Select a <a href="/account/groups">User Group</a> and add email addresses below.</p>
-
-                    <div class="form-group col-md-12">
-                        <label for="exampleInputEmail1">Invite to Group</label>
-                        <select class="form-control" name="role_id">
-                            @foreach ($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->title }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-12">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <p>Add email addresses below. Separated by commas, or add one per each line.</p>
-
-                        @if (strlen(old('success_emails')) > 0)
-                            <div class="alert alert-success">
-                                <strong>Emails will be sent to these emails shortly.</strong>
-                                {{ old('success_emails') }}
-                            </div>
-                        @endif
-
-                        @if (strlen(old('invitation_emails')) > 0)
-                            <div class="alert alert-danger">
-                                <strong>Couldn't send the invites to following addresses. Please check the email addresses and try to send again.</strong>
-                            </div>
-                        @endif
-
-                        <textarea class="form-control" name="invitation_emails" rows="10">{{ old('invitation_emails') }}</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn btn-success btn-lg btn-wide ">
-                                <i class="fa fa-envelope-o"></i> Send Invitations
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-
-        @if (count($invitations))
+        @if ($invitations->isEmpty())
+            {{ lotus()->emptyStatePanel() }}
+        @else
             <div class="row">
                 <div class="col-md-12">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Current Invitations</div>
-                        <div class="panel-body">
+                    <div class="card">
+                        <div class="card-header">Sent Invitations</div>
+                        <div class="card-body">
 
                             <table class="table table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>Email</th>
-                                        <th>Sent</th>
-                                        <th>Status</th>
-                                        <th>Link</th>
-                                        <th>Actions</th>
-                                    </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Invited Role</th>
+                                    <th>Sent</th>
+                                    <th>Status</th>
+                                    <th>Invite Link</th>
+                                    <th>Actions</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($invitations as $invitation)
-                                        <tr>
-                                            <td>{{ $invitation->email }}</td>
-                                            <td>{{ $invitation->sent_at->diffForHumans() }}</td>
-                                            <td>
-                                                @if (empty($invitation->claimed_at))
-                                                    <span class="label label-primary">Pending to Accept</span>
-                                                @else
-                                                    Accepted {{ $invitation->claimed_at->diffForHumans() }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if (empty($invitation->claimed_at))
-                                                    <a href="{{ $invitation->invitation_code_permalink }}"
-                                                       class="btn btn-warning"
-                                                       data-toggle="tooltip"
-                                                       target="_blank"
-                                                       title="Visit link">
-                                                        <i class="fa fa-external-link-square"></i>
-                                                    </a>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if (empty($invitation->claimed_at))
-                                                    <form class="form-inline" role="form" method="POST" action="/account/invitations/{{ $invitation->id }}"
-                                                          data-toggle="tooltip" title="Delete Invite">
-                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                                        <input type="hidden" name="_method" value="delete" />
-                                                        <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                    </form>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                @foreach ($invitations as $invitation)
+                                    <tr>
+                                        <td>{{ $invitation->email }}</td>
+                                        <td>
+                                            @if ($invitation->role)
+                                                {{ $invitation->role->title }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $invitation->sent_at->diffForHumans() }}</td>
+                                        <td>
+                                            @if (empty($invitation->claimed_at))
+                                                <span class="label label-primary">Pending to Accept</span>
+                                            @else
+                                                Accepted {{ $invitation->claimed_at->diffForHumans() }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (empty($invitation->claimed_at))
+                                                <a href="{{ $invitation->invitation_code_permalink }}"
+                                                   class="btn btn-warning"
+                                                   data-toggle="tooltip"
+                                                   target="_blank"
+                                                   title="Visit link">
+                                                    <i class="fas fa-external-link-alt"></i> Link
+                                                </a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (empty($invitation->claimed_at))
+                                                <form class="form-inline" role="form" method="POST" action="/account/invitations/{{ $invitation->id }}"
+                                                      data-toggle="tooltip" title="Delete Invite">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                                    <input type="hidden" name="_method" value="delete" />
+                                                    <button class="btn btn-danger"><i class="fas fa-times"></i> Delete</button>
+                                                </form>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
 
@@ -120,6 +81,8 @@
                     </div>
                 </div>
             </div>
+
+            {{ lotus()->pageNumbers($invitations) }}
         @endif
-    </div>
+
 @endsection

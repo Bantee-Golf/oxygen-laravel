@@ -23,6 +23,7 @@ class ResetPasswordController extends Controller
 	*/
 
 	use ResetsPasswords;
+	
 	protected $redirectTo = '/dashboard';
 
 	/**
@@ -37,7 +38,7 @@ class ResetPasswordController extends Controller
 
 		$this->middleware('guest', ['except' =>
 			[
-				'getUpdate', 'postUpdate'
+				'editPassword', 'updatePassword'
 			]
 		]);
 	}
@@ -59,7 +60,7 @@ class ResetPasswordController extends Controller
 	}
 
 
-	public function getUpdate()
+	public function editPassword()
 	{
 		$user = Auth::user();
 		return view('oxygen::account.password-edit', compact('user'));
@@ -71,10 +72,16 @@ class ResetPasswordController extends Controller
 	 * @param Request $request
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function postUpdate(Request $request)
+	public function updatePassword(Request $request)
 	{
 		$user = $this->auth->user();
 
+		$this->validate($request, [
+			'password'	=> 'required|confirmed|min:6',
+			'current_password' => 'required',
+		], [
+			'password.required' => 'New password field is required.'
+		]);
 
 		// validate current password
 		$isPasswordValid = $this->auth->attempt([
@@ -85,14 +92,12 @@ class ResetPasswordController extends Controller
 		if ( ! $isPasswordValid)
 			return redirect()->back()->withErrors(['Current password is incorrect.']);
 
-		$this->validate($request, [
-			'password'	=> 'required|confirmed|min:6'
-		]);
-
 		// set the new password
 		$user->password = bcrypt($request->get('password'));
 		if ( ! $user->save())
 			return redirect()->back()->withErrors(['Failed to save the new password. Try with another password.']);
+
+		// TODO: inform the user their password has been changed
 
 		return redirect()->back()->with('success', 'Password successfully updated.');
 	}

@@ -1,10 +1,10 @@
-# Oxygen - Admin Dashboard for Laravel 5.6+
+# Oxygen - Admin Dashboard for Laravel 5.7+
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
 
-### [For Laravel 5.2, use version `0.1.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/4f121b0574945a6278979f696b59f0c20637735c/?at=0.1.4).
+### [For Laravel 5.2, use version `0.1.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/4f121b0574945a6278979f696b59f0c20637735c/?at=0.1.4)
 ### [For Laravel 5.4, use version `1.0.8`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/9124e7b33c645709867634134121fd9c407ffb73/?at=1.0.8)
-
+### For Laravel 5.6, use version `1.1`
 
 ## Summary
 
@@ -14,12 +14,10 @@ This package has the built-in support for the following.
 - Auto-generated frontend template (based on Bootstrap).
 - User registrations, logins, roles, permissions and object level permission control.
 - User invitations, invitation control, and user management.
-- Single-tenant and Multi-tenant configuration.
-- ApiDoc.js Template
+- apidoc.js Template
 - Auto-sync nested relationships when creating/updating objects (Use this with care!!!).
-- Auto-handles CRUD requests in Controllers based on extended repositories.
 - Scaffolding to generate Entities, Repositories and Controllers.
-- Seeding for Tenants (for Multi-Tenants) and Users, Roles.
+- Seeding for Users, Roles.
 - Middleware for API Key validation, Role Based Access Control, Share view settings.
 - Extensible Authentication controllers to add your own features.
 
@@ -27,9 +25,7 @@ This package has the built-in support for the following.
 
 The following are required for a successful installation.
 
-- [Laravel 5.6+](https://laravel.com/docs/5.6)
-
-- See above for older version support
+- [Laravel 5.7+](https://laravel.com/docs/5.7)
 
 To install CSS JS for the dashboard, the following are required.
 
@@ -38,7 +34,7 @@ To install CSS JS for the dashboard, the following are required.
 
 ## Installation
 
-This package is intended to be installed on a **new Laravel project**. You'll be able to install it on an existing project, but might need to change some configuration.
+This package is intended to be installed on a **new Laravel project**. You'll be able to install it on an existing project, but might need to change some configuration settings.
 
 
 1) Create a new Laravel project and go to the directory
@@ -56,7 +52,19 @@ This package and some dependent packages are available in private repositories. 
     "repositories": [
         {
             "type":"vcs",
-            "url":"git@bitbucket.org:elegantmedia/oxygen-laravel.git"
+            "url":"git@bitbucket.org:elegantmedia/multitenant-laravel.git"
+        },
+        {
+            "type":"vcs",
+            "url":"git@bitbucket.org:elegantmedia/lotus.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:elegantmedia/formation.git"
+        },
+        {
+            "type":"vcs",
+            "url":"git@bitbucket.org:elegantmedia/laravel-app-settings.git"
         },
         {
             "type":"vcs",
@@ -64,121 +72,64 @@ This package and some dependent packages are available in private repositories. 
         },
         {
             "type":"vcs",
-            "url":"git@bitbucket.org:elegantmedia/laravel-helpers.git"
-        },
-        {
-            "type":"vcs",
             "url":"git@bitbucket.org:elegantmedia/quickdata-laravel.git"
         },
         {
-            "type":"vcs",
-            "url":"git@bitbucket.org:elegantmedia/multitenant-laravel.git"
+            "type": "vcs",
+            "url": "git@bitbucket.org:elegantmedia/laravel-helpers.git"
         },
         {
-	        "type":"vcs",
-	        "url":"git@bitbucket.org:elegantmedia/render-laravel.git"
-	    }
+            "type": "vcs",
+            "url": "git@bitbucket.org:elegantmedia/php-helpers.git"
+        }
     ],
 ```
 
 3) Require the package into composer through the command line.
 ```
-composer require silber/bouncer v1.0.0-rc.1
+composer require silber/bouncer v1.0.0-rc.3
 composer require emedia/oxygen
 ```
 
-4) Open `config/app.php` and add the following,
-At the end of `providers` add:
-```
-    EMedia\Oxygen\OxygenServiceProvider::class,
-```
+4) Edit `.env` file and add the database and other details.
 
-5) It's suggested at this point you'll change the `public` dir to `public_html` as it's the convention used in most cPanel based servers.
+5) Commit your current state to Git, because next step will change some of the default files.
 
-To do this, run the following command.
-```
-php artisan setup:move-public
-```
-
-6) Edit `.env` file and add the database and other details.
-
-7) Commit your changes to Git, because next step will change some of the default files.
-
-8) After everything is done, run the following in the command line.
+6) Run the following command. This will do the default installation, if any questions are asked, you can just press ENTER to confirm the default choice, or change it.
 
 ```
 php artisan setup:oxygen-project
 ```
 
-When you run the setup, it will ask ask a series of questions. Unless you want to change the default behaviour, you can accept the default answer for all of them and proceed. Whenever it asks to overwrite a file, say 'yes'.
+(OPTIONAL) The default setup will install with default options. If you want to have manual control over installation run the command `php artisan setup:oxygen-project --confirm` and it will confirm before every step.
 
-After the installation is complete, see if it gives you any errors or other information. You might have to manually fix them.
+7) After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
 
-9) The setup is now complete. Run the following to complete the installation.
-
-Install required CSS, JS for the project with Bower.
-```
-bower install
-```
-
-Install the required NPM packages
-```
-npm install
-```
-
-Your `webpack.mix.js` file should look similar to this
-```
-let mix = require('laravel-mix');
-
-mix.setPublicPath('public_html/');
-
-mix.sass('resources/assets/sass/dashboard/dashboard.scss', 'public_html/css/dist')
-	.sass('resources/assets/sass/auth.scss', 'public_html/css/dist')
-	.sass('resources/assets/sass/public.scss', 'public_html/css/dist')
-	.sourceMaps();
-
-mix.browserSync({proxy: 'localhost.dev'});
-```
-
-Compile the views
-```
-npm run watch
-```
-
-Migrate and seed the database
-```
-composer dump-autoload
-php artisan migrate
-php artisan db:seed
-```
-
-10) Open the home page in a browser. Your default user login password is listed in the `database/seeds/Auth/UsersTableSeeder.php` file.
-
-### Tips
-
-Add the following optional parameters in `.env` file
-```
-# skip the login process - useful for testing. Don't do this on a production
-DASHBOARD_AUTHENTICATION=false
-
-# disable registrations
-REGISTRATIONS_ENABLED=false
-
-```
+8) Go and make something amazing!
 
 ## After Installation
 
 - You can add new features to existing controllers as needed. 
 - If you need to change the default behaviour, you can create new classes or extend from the classes in the `Oxygen` package.
 - Roles and Permissions are implemented with [Bouncer. Read the docs.](https://github.com/JosephSilber/bouncer)
-- If you're going to use auto-syncing relationships (with `HandlesEntityCRUD` trait), **do not** use `Route::resource` for that controller. It will expose a security vulnerability.
 
-## Customisations
+### Customisations
 
 #### How to Overwrite Views After Installation
 If you want to publish the views after the installation, run
 ```
 php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --tag=views --force
+```
+
+## FAQs
+
+#### I got an error while installing, what do to?
+
+Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit at Step #5, and try the steps from there again.
+
+```
+// use this command to hard reset all files and remove any new files
+git reset --hard && git clean -fd
 ```
 
 #### How to Change the User model
@@ -196,7 +147,11 @@ public function boot()
 }
 ``` 
 
+#### What are the logins?
 
-## Issues/Bugs?
+Your default user login password is listed in the `database/seeds/Auth/UsersTableSeeder.php` file.
+
+## Found an Issue or a Bug?
+
 - Submit a pull request (on a new branch) or [submit an issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues).
 - **DO NOT** commit new changes directly to the `master` branch. Create a development branch, and then send a pull-request to master, and get someone else to review the code before merging.

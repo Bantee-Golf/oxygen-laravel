@@ -19,25 +19,31 @@ class RolesTableSeeder extends Seeder
 		$defaultRoles = [
 			[
 				'title' 		=> 'Super Admin',
-				'description' 	=> 'Super Admin of the system',
+				'description' 	=> 'Super Admins of the system (For Developer/SysAdmin Use)',
 				'allow_to_be_deleted' => false,
 			],
 			[
 				'title' 		=> 'Admin',
-				'description' 	=> 'Admin of the system',
+				'description' 	=> 'Admins of the system (For Clients)',
+				'allow_to_be_deleted' => false,
+			],
+			[
+				'title' 		=> 'User',
+				'description' 	=> 'Regular Users of the System',
+				'assign_by_default'   => true,
 				'allow_to_be_deleted' => false,
 			],
 			/*
 			[
-				'title' 		=> 'User',
-				'description' 	=> 'Regular User of the System',
-				'assign_by_default'   => true,
-				'allow_to_be_deleted' => true,
+				'title' 		=> 'Business',
+				'description' 	=> 'Business User of the System',
+				'assign_by_default'   => false,
+				'allow_to_be_deleted' => false,
 			],
 			*/
 		];
 
-		$roleModel = config('auth.roleModel');
+		$roleModel = config('oxygen.roleModel');
 		if (TenantManager::multiTenancyIsActive())
 		{
 			$tenant = app(config('auth.tenantModel'))->find(1);

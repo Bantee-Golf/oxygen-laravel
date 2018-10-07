@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Entities;
+namespace App\Entities;
 
 use EMedia\QuickData\Entities\Repositories\BaseRepository as QuickDataBaseRepository;
 

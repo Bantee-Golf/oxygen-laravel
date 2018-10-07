@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 trait UpdatesUsers
 {
@@ -24,13 +25,11 @@ trait UpdatesUsers
 		$validator = $this->updateValidator($request->all());
 
 		if ($validator->fails()) {
-			$this->throwValidationException(
-				$request, $validator
-			);
+			throw new ValidationException($validator);
 		}
 
 		$user = Auth::user();
-		$user->fill($request->all());
+		$user->fill($request->only($user->getProfileUpdatableFields()));
 		$result = $user->save();
 
 		if ($result) return redirect()->back()->with('success', 'Your profile has been updated.');
@@ -56,27 +55,36 @@ trait UpdatesUsers
 
 	public function updateEmail(Request $request)
 	{
-		$validator = $this->emailValidator($request->all());
+		$user = Auth::user();
+
+		$validator = $this->emailUpdateValidator($request->all(), $user);
 
 		if ($validator->fails()) {
-			$this->throwValidationException(
-				$request, $validator
-			);
+			throw new ValidationException($validator);
 		}
 
-		$user = Auth::user();
-		$user->fill($request->all());
+		// validate the password
+		if (!password_verify($request->input('password'), $user->password)) {
+			return back()->with('error', "The current password is invalid.");
+		}
+
+		$user->fill($request->only([
+			'email'
+		]));
 		$result = $user->save();
+
+		// TODO: notify the user, their password has been updated
 
 		if ($result) return redirect()->back()->with('success', 'Your email has been updated.');
 
 		return redirect()->back()->withErrors();
 	}
 
-	protected function emailValidator(array $data)
+	protected function emailUpdateValidator(array $data, $user)
 	{
 		return Validator::make($data, [
-			'email' => 'required|email|max:255|unique:users',
+			'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+			'password' => 'required'
 		]);
 	}
 

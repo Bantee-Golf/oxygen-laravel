@@ -2,6 +2,7 @@
 
 namespace EMedia\Oxygen\Entities\Invitations;
 
+use App\Entities\Auth\Role;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,5 +29,10 @@ class Invitation extends Model
 			return true;
 		}
 		return false;
+	}
+
+	public function role()
+	{
+		return $this->belongsTo(Role::class);
 	}
 }

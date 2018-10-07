@@ -27,30 +27,30 @@ class OxygenServiceProvider extends ServiceProvider
 
 		// SASS files
 		$this->publishes([
-			__DIR__ . '/../resources/assets/sass' => base_path('resources/assets/sass'),
+			__DIR__ . '/../resources/sass' => base_path('resources/sass'),
 		], 'source-sass');
 
 		// JS source
 		$this->publishes([
-			__DIR__ . '/../resources/assets/js' => base_path('resources/assets/js'),
+			__DIR__ . '/../resources/js' => base_path('resources/js'),
 		], 'source-js');
 
 		// public static assets (JS, CSS etc)
-		$this->publishes([
-			__DIR__ . '/../public_html/js/theme'  => public_path('/js/theme'),
-			__DIR__ . '/../public_html/css' => public_path('/css'),
-			__DIR__ . '/../public_html/favicon.ico' => public_path('/favicon.ico'),
-		], 'public-assets');
+//		$this->publishes([
+//			__DIR__ . '/../public_html/js/theme'  => public_path('/js/theme'),
+//			__DIR__ . '/../public_html/css' => public_path('/css'),
+//			__DIR__ . '/../public_html/favicon.ico' => public_path('/favicon.ico'),
+//		], 'public-assets');
 
 		// publish common entities
 		$this->publishes([
 			__DIR__ . '/../Stubs/Entities' => app_path('Entities'),
 		], 'entities');
 
-		// publish common controllers
-		$this->publishes([
-			__DIR__ . '/../Stubs/Http/Controllers/Common' => app_path('Http/Controllers'),
-		], 'common-controllers');
+//		// publish common controllers
+//		$this->publishes([
+//			__DIR__ . '/../Stubs/Http/Controllers/Common' => app_path('Http/Controllers'),
+//		], 'common-controllers');
 
 		// publish Auth controllers
 		$this->publishes([
@@ -63,7 +63,8 @@ class OxygenServiceProvider extends ServiceProvider
 
 		// publish config
 		$this->publishes([
-			__DIR__.'/../Stubs/config/oxygen.php' => config_path('oxygen.php')
+			__DIR__.'/../Stubs/config/oxygen.php' => config_path('oxygen.php'),
+			__DIR__.'/../Stubs/config/features.php' => config_path('features.php')
 		], 'oxygen-config');
 
 		$this->registerCustomValidators();
@@ -92,9 +93,9 @@ class OxygenServiceProvider extends ServiceProvider
 
 		$this->commands(CreateNewUserCommand::class);
 
-		Models::setAbilitiesModel(config('auth.abilityModel'));
-		Models::setRolesModel(config('auth.roleModel'));
-		// Models::setUsersModel(config('auth.model'));
+		Models::setAbilitiesModel(config('oxygen.abilityModel'));
+		Models::setRolesModel(config('oxygen.roleModel'));
+		// Models::setUsersModel(config('oxygen.model'));
 	}
 
 	/**
@@ -105,9 +106,9 @@ class OxygenServiceProvider extends ServiceProvider
 	private function registerDependentServiceProviders()
 	{
 		$this->app->register(\EMedia\MultiTenant\MultiTenantServiceProvider::class);
-		$this->app->register(\EMedia\Generators\GeneratorServiceProvider::class);
-		$this->app->register(\EMedia\Helpers\HelpersServiceProvider::class);
-		$this->app->register(\EMedia\Render\RenderServiceProvider::class);
+		// $this->app->register(\EMedia\Generators\GeneratorServiceProvider::class);
+		// $this->app->register(\EMedia\Helpers\HelpersServiceProvider::class);
+		// $this->app->register(\EMedia\Render\RenderServiceProvider::class);
 	}
 
 	/**
@@ -120,7 +121,7 @@ class OxygenServiceProvider extends ServiceProvider
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 
 		$loader->alias('TenantManager', \EMedia\MultiTenant\Facades\TenantManager::class);
-		$loader->alias('Render', \EMedia\Render\Facades\RenderFacade::class);
+		// $loader->alias('Render', \EMedia\Render\Facades\RenderFacade::class);
 	}
 
 	private function registerCustomValidators()

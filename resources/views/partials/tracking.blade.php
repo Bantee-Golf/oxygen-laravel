@@ -1,4 +1,6 @@
-@if (strpos(request()->server('HTTP_HOST'), 'live-domain.com'))
+@if (strpos(request()->server('HTTP_HOST'), 'live-domain.com') !== false)
+    {{-- Add GA and other tracking codes here. These will get inserted to the header --}}
+
     {{--<script>--}}
         {{--(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){--}}
             {{--(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),--}}

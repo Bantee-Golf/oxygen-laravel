@@ -20,16 +20,17 @@ class UsersTableSeeder extends Seeder
 		$users = [
 			[
 				'name'	 => 'Peter Parker',
-				'email'	 => 'app@elegantmedia.com.au',
+				'email'	 => 'apps@elegantmedia.com.au',
 				'password' => bcrypt('123456')
 			],
 			[
 				'name'	 => 'Clarke Kent',
-				'email'	 => 'app+user@elegantmedia.com.au',
+				'email'	 => 'apps+user@elegantmedia.com.au',
 				'password' => bcrypt('123456')
 			],
 		];
 
+		$i = 0;
 		foreach ($users as $key => $data) {
 			if (!$user = User::where('email', $data['email'])->first()) {
 				$user = User::create($data);
@@ -40,6 +41,7 @@ class UsersTableSeeder extends Seeder
 					$user->tenants()->save($tenant);
 				}
 			}
+			$i++;
 		}
 	}
 }
