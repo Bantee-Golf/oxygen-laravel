@@ -354,6 +354,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	{
 		$routesFilePath = base_path('routes/web.php');
 		$stubPath = __DIR__ . '/../../Stubs/routes/web.stub';
+		$bytes = false;
 
 		try {
 			$bytes = FileEditor::appendStubIfSectionNotFound($routesFilePath, $stubPath, null, null, true);
@@ -370,7 +371,9 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			}
 		}
 
-		$bytes = FileEditor::appendStub($routesFilePath, $stubPath);
+		if ($bytes === false) {
+			$bytes = FileEditor::appendStub($routesFilePath, $stubPath);
+		}
 
 		if ($bytes !== false)
 		{

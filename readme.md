@@ -51,6 +51,10 @@ This package and some dependent packages are available in private repositories. 
 ```
     "repositories": [
         {
+            "type": "vcs",
+            "url": "git@bitbucket.org:elegantmedia/oxygen-laravel.git"
+        },
+        {
             "type":"vcs",
             "url":"git@bitbucket.org:elegantmedia/multitenant-laravel.git"
         },
@@ -91,9 +95,14 @@ composer require silber/bouncer v1.0.0-rc.3
 composer require emedia/oxygen
 ```
 
-4) Edit `.env` file and add the database and other details.
+4) Edit `.env` file and update the database settings.
 
 5) Commit your current state to Git, because next step will change some of the default files.
+
+```
+git init
+git add -A && git commit -m "Initial commit."
+```
 
 6) Run the following command. This will do the default installation, if any questions are asked, you can just press ENTER to confirm the default choice, or change it.
 
