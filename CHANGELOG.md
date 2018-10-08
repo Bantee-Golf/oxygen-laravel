@@ -4,7 +4,7 @@
 
 - Laravel 5.7 Support
 - Admin panel Upgraded to Bootstrap 4
-- Simplified setup command with `--quick` flag
+- Simplified setup command with `--confirm` flag
 - Authentication routes changed
 - All dependent packages refactored
 - Added feature flags
