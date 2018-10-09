@@ -85,13 +85,6 @@ class CreateRolePermissionTables extends Migration
 			$table->foreign('ability_id')->references('id')->on(Models::table('abilities'))
 				  ->onUpdate('cascade')->onDelete('cascade');
 		});
-
-
-		Schema::table('users', function($table) {
-			$table->string('last_name')->nullable();
-			$table->dateTime('disabled_at')->nullable();
-			$table->integer('disabled_by_user_id')->nullable()->references('id')->on('users');
-		});
 	}
 
 	/**
@@ -101,13 +94,6 @@ class CreateRolePermissionTables extends Migration
 	 */
 	public function down()
 	{
-
-		Schema::table('users', function($table) {
-			$table->dropColumn('disabled_at');
-			$table->dropColumn('disabled_by_user_id');
-			$table->dropColumn('last_name');
-		});
-
 		Schema::drop(Models::table('permissions'));
 		Schema::drop(Models::table('assigned_roles'));
 		Schema::drop(Models::table('roles'));

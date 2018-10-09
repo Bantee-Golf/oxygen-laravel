@@ -3,6 +3,7 @@
         <h1 class="page-title">{{ $pageTitle }}</h1>
 
         <div class="page-main-actions">
+            @yield('breadcrumbs')
             @yield('pageMainActions')
         </div>
 

@@ -116,6 +116,46 @@ php artisan setup:oxygen-project
 
 8) Go and make something amazing!
 
+## Developer Commands
+
+These commands are available from the CLI.
+
+#### Create a new user
+
+Create a new user and assign a role.
+```
+php artisan setup:create-user
+```
+
+#### Scaffold Views
+
+Create the default views for a given resource.
+
+```
+php artisan scaffold:views
+OR
+php artisan scaffold:views --path=<resource.path>
+
+Example:
+php artisan scaffold:views --path=manage.users
+```
+
+This will create the default views within `resources/views/manage/users`, or in the path that you specify.
+
+
+## Helper Functions
+
+```
+// 08/Oct/2018 10:27 PM
+{{ standard_datetime($item->created_at) }}
+
+// 08/Oct/2018
+{{ standard_date($item->created_at) }}
+
+// 10:27 PM
+{{ standard_time($item->created_at) }}
+```
+
 ## Read More
 
 Oxygen by default has a lot of built-in functions. Please read all the docs to understand all features. Otherwise you'll be spending a lot of time re-doing existing features.

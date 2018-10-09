@@ -3,6 +3,7 @@
 namespace EMedia\Oxygen;
 
 use EMedia\Oxygen\Commands\CreateNewUserCommand;
+use EMedia\Oxygen\Commands\Scaffolding\ScaffoldViewsCommand;
 use Illuminate\Support\Facades\Schema;
 use EMedia\Oxygen\Commands\OxygenSetupCommand;
 use Illuminate\Support\Facades\Validator;
@@ -89,6 +90,8 @@ class OxygenServiceProvider extends ServiceProvider
 				return app(OxygenSetupCommand::class);
 			});
 			$this->commands("emedia.oxygen.setup");
+
+			$this->commands(ScaffoldViewsCommand::class);
 		}
 
 		$this->commands(CreateNewUserCommand::class);

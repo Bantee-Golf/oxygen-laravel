@@ -188,7 +188,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		];
 
 		$fileData[] = [
-			'stub' => __DIR__ . '/../../Stubs/Migrations/003_create_invitations_table.php',
+			'stub' => __DIR__ . '/../../Stubs/Migrations/003_alter_users_table.php',
+			'destination_path' => database_path("migrations"),
+			'destination_filename' => "{$this->getTimestamp()}_alter_users_table.php",
+			'unique_file_id' => 'alter_users_table.php',
+		];
+
+		$fileData[] = [
+			'stub' => __DIR__ . '/../../Stubs/Migrations/004_create_invitations_table.php',
 			'destination_path' => database_path("migrations"),
 			'destination_filename' => "{$this->getTimestamp()}_create_invitations_table.php",
 			'unique_file_id' => 'create_invitations_table.php',
@@ -197,13 +204,13 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		if ($this->projectConfig['multiTenant'])
 		{
 			$fileData[] = [
-				'stub' => __DIR__ . '/../../Stubs/Migrations/004_update_auth_tables_multi_tenant.php',
+				'stub' => __DIR__ . '/../../Stubs/Migrations/005_update_auth_tables_multi_tenant.php',
 				'destination_path' => database_path("migrations"),
 				'destination_filename' => "{$this->getTimestamp()}_update_auth_tables_multi_tenant.php",
 				'unique_file_id' => 'update_auth_tables_multi_tenant.php',
 			];
 //			$this->compileStubs([[
-//				'stub' => __DIR__ . '/../../Stubs/Migrations/004_update_auth_tables_multi_tenant.php',
+//				'stub' => __DIR__ . '/../../Stubs/Migrations/005_update_auth_tables_multi_tenant.php',
 //				'path' => database_path('migrations/' . $this->getTimestamp() . '_update_auth_tables_multi_tenant.php'),
 //				'name' => 'Update bouncer tables to support multi-tenancy'
 //			]]);
