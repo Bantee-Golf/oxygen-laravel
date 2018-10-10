@@ -22,6 +22,10 @@ class AlterUsersTable extends Migration
 
 			$table->text('avatar_url')->nullable();
 			$table->text('avatar_path')->nullable();
+			$table->string('avatar_disk')->nullable();
+
+			$table->softDeletes();
+			$table->integer('deleted_by_user_id')->nullable()->references('id')->on('users');
 		});
 	}
 
@@ -35,14 +39,18 @@ class AlterUsersTable extends Migration
 
 		Schema::table('users', function($table) {
 			$table->dropColumn([
+				'uuid',
+				'last_name',
 				'disabled_at',
 				'disabled_by_user_id',
-				'last_name',
 				'email_confirmation_sent_at',
 				'email_confirmed_at',
 				'confirmation_code',
 				'avatar_url',
 				'avatar_path',
+				'avatar_disk',
+				'deleted_at',
+				'deleted_by_user_id'
 			]);
 		});
 	}

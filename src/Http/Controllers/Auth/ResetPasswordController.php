@@ -62,8 +62,10 @@ class ResetPasswordController extends Controller
 
 	public function editPassword()
 	{
-		$user = Auth::user();
-		return view('oxygen::account.password-edit', compact('user'));
+		return view('oxygen::account.password-edit', [
+			'user' => Auth::user(),
+			'actionUrl' => route('account.password'),
+		]);
 	}
 
 	/**

@@ -110,6 +110,18 @@ Route::group(['middleware' => 'auth'], function()
 
 		// switch tenants (teams) - only for Multi-tenants
 		// Route::get('teams/switch/{id}', 'Auth\TeamController@switchTeam');
+
+		// Users
+		Route::group([
+        		'as' => 'manage.',
+        		'namespace' => '\EMedia\Oxygen\Http\Controllers\Auth',
+        	], function () {
+
+			Route::resource('users', 'UsersController')->only('index', 'edit', 'update', 'destroy');
+			Route::get('users/{user}/edit-password',  'UsersController@editPassword')->name('users.edit-password');
+			Route::put('users/{user}/edit-password',  'UsersController@updatePassword');
+			Route::put('users/{user}/update-disabled','UsersController@updateDisabled')->name('users.update-disabled');
+        });
 	});
 });
 // End Oxygen routes
