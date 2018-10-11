@@ -91,7 +91,6 @@ This package and some dependent packages are available in private repositories. 
 
 3) Require the package into composer through the command line.
 ```
-composer require silber/bouncer v1.0.0-rc.3
 composer require emedia/oxygen
 ```
 

@@ -179,7 +179,7 @@ trait OxygenUserTrait
 			throw new \InvalidArgumentException("Cannot remove PII data without a URL. Have you set the APP_URL in the environment?");
 		}
 
-		$this->email = time() . str_random(25) . '_deleted@' . $url['host'];
+		$this->attributes['email'] = time() . str_random(25) . '_deleted@' . $url['host'];
 		$this->password = bcrypt(str_random(35));
 		$this->name = 'DELETED_' . str_random(10);
 

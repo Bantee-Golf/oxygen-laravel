@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AlterUsersTable extends Migration
 {
@@ -10,7 +12,7 @@ class AlterUsersTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::table('users', function($table) {
+		Schema::table('users', function(Blueprint $table) {
 			$table->string('uuid')->after('id');
 			$table->string('last_name')->nullable()->after('name');
 			$table->dateTime('disabled_at')->nullable();
@@ -37,7 +39,7 @@ class AlterUsersTable extends Migration
 	public function down()
 	{
 
-		Schema::table('users', function($table) {
+		Schema::table('users', function(Blueprint $table) {
 			$table->dropColumn([
 				'uuid',
 				'last_name',

@@ -1,5 +1,14 @@
 # Change Log
 
+## Version 2.1.0
+
+- Auto-generate UUID for Users
+- Added Users to Dashboard
+- Added User disabling, safe deletes with PII removal
+- Added Scaffolding for default views with `scaffold:views` command
+- Added standard date/time formats
+- Separated Users migration file
+
 ## Version 2.0
 
 - Laravel 5.7 Support
