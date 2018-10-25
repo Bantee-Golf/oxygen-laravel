@@ -19,8 +19,9 @@ class ApiAuthenticate {
 		$apiToken 		= request()->header('X-Api-Key');
 		$validApiToken 	= config('oxygen.apiKey');
 
-		if (empty($apiToken))
-		{
+		$validApiTokens = explode(',', $validApiToken);
+
+		if (empty($apiToken)) {
 			$response = [
 				'result'	=> false,
 				'message'	=> 'An API Key is required',
@@ -28,8 +29,8 @@ class ApiAuthenticate {
 			];
 			return response($response, 401);
 		}
-		elseif ($apiToken !== $validApiToken)
-		{
+
+		if (!in_array($apiToken, $validApiTokens)) {
 			$response = [
 				'result'	=> false,
 				'message'	=> 'A valid API Key is required',

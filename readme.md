@@ -155,7 +155,64 @@ This will create the default views within `resources/views/manage/users`, or in 
 {{ standard_time($item->created_at) }}
 ```
 
-## Read More
+## Middleware
+
+### Access Control Lists (ACL) Middleware
+
+Oxygen comes with an access control middleware based on roles and/or permissions. You can use the middleware for advanced permission based access control for routes, controllers or functions.
+
+To use the middleware, use `auth.acl`.
+
+```
+Usage:
+
+// User must have at least `owner` OR `admin` AND the permission `do-something`
+auth.acl:roles[owner|admin],permissions[do-something]
+
+// User must have at least `owner` OR `admin`
+auth.acl:roles[owner|admin]
+
+// User must have the permission `do-something`
+auth.acl:permissions[do-something]
+
+// User must have both permissions. `do-something` AND `do-another-thing`
+auth.acl:permissions[do-something|do-another-thing]	
+
+// User must have at least one permission `do-something` OR `do-something-else`
+auth.acl:permissions[do-something OR do-something-else]
+```
+
+### API Key Check Middleware
+
+Call the `auth.api` middleware to verify API keys before hitting specific routes. The middleware will look for `X-Api-Key` field in HTTP header. 
+
+You should provide the valid API Keys in the `.env` file.
+
+```
+Example in .env file:
+API_KEY="123123123"
+OR
+API_KEY="123123123,APIKEY2"
+```
+
+
+### Reserved Variables in Blade Templates
+
+These are the reserved variables in Blade templates. These variables should not be used to assign other data.
+
+Blade Variables
+```
+{{-- Current logged in User is available with $user by default --}}
+{{ $user->name }}
+
+{{-- Current page title. `My Account` by default --}}
+{{ $pageTitle }}
+
+{{-- Current app name --}}
+{{ $appName }}
+```
+
+## Must Read Instructions
 
 Oxygen by default has a lot of built-in functions. Please read all the docs to understand all features. Otherwise you'll be spending a lot of time re-doing existing features.
 

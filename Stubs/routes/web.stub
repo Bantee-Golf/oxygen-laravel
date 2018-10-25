@@ -103,8 +103,8 @@ Route::group(['middleware' => 'auth'], function()
 			Route::get('/',			 'Auth\InvitationsController@index')->name('access.invitations.index');
 			Route::get('/create',	 'Auth\InvitationsController@create')->name('access.invitations.create');
 			Route::post('/',		 'Auth\InvitationsController@send');
-			Route::get('/{id}/edit', 'Auth\InvitationsController@edit');
-			Route::put('/{id}',		 'Auth\InvitationsController@update');
+			// Route::get('/{id}/edit', 'Auth\InvitationsController@edit');
+			// Route::put('/{id}',		 'Auth\InvitationsController@update');
 			Route::delete('/{id}',	 'Auth\InvitationsController@destroy');
 		});
 
