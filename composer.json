@@ -45,6 +45,7 @@
         "emedia/lotus": "~1.0",
         "emedia/app-settings": "~1.0",
         "emedia/multi-tenant": "0.1.*",
+        "doctrine/dbal": "^2.8",
         "cviebrock/eloquent-sluggable": "^4.6",
         "laravelcollective/html": "^5.4",
         "barryvdh/laravel-debugbar": "^3.2",

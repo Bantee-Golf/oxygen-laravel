@@ -14,6 +14,7 @@ class AlterUsersTable extends Migration
 	{
 		Schema::table('users', function(Blueprint $table) {
 			$table->string('uuid')->after('id');
+			$table->string('name')->nullable()->change();
 			$table->string('last_name')->nullable()->after('name');
 			$table->dateTime('disabled_at')->nullable();
 			$table->integer('disabled_by_user_id')->nullable()->references('id')->on('users');
