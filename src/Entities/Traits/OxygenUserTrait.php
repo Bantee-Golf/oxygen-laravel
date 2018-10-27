@@ -73,6 +73,28 @@ trait OxygenUserTrait
 
 	/**
 	 *
+	 * Proxy the name field as the first name
+	 *
+	 * @param $value
+	 */
+	public function setFirstNameAttribute($value)
+	{
+		$this->attributes['name'] = $value;
+	}
+
+	/**
+	 *
+	 * Return the name field as the first name
+	 *
+	 * @return mixed
+	 */
+	public function getFirstNameAttribute()
+	{
+		return $this->name;
+	}
+
+	/**
+	 *
 	 * Check if the user is not disabled
 	 *
 	 * @return bool

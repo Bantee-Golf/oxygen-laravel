@@ -14,10 +14,10 @@ class User extends Authenticatable
 
 	protected $searchable = ['name', 'last_name', 'email'];
 
-	protected $fillable = ['name', 'last_name', 'email', 'password'];
-	protected $visible  = ['uuid', 'name', 'last_name', 'email', 'full_name'];
+	protected $fillable = ['name', 'first_name', 'last_name', 'email', 'password'];
 	protected $hidden   = ['password', 'remember_token'];
-	protected $appends  = ['full_name'];
+	protected $visible  = ['id', 'uuid', 'name', 'first_name', 'last_name', 'full_name', 'email', 'avatar_url'];
+	protected $appends  = ['first_name', 'full_name'];
 
 
 }
