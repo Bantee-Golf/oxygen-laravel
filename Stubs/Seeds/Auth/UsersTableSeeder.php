@@ -4,6 +4,7 @@ use App\User;
 use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 
 class UsersTableSeeder extends Seeder
 {
@@ -12,6 +13,27 @@ class UsersTableSeeder extends Seeder
 	{
 		if (app()->environment() !== 'production') {
 			$this->seedTestUsers();
+			$this->seedRegularUsers();
+		}
+	}
+
+	public function seedRegularUsers()
+	{
+		$faker = Faker::create('en_AU');
+
+		User::create([
+			'name'	 => 'Bruce Wayne (REGULAR USER)',
+			'email'	 => 'apps+user@elegantmedia.com.au',
+			'password' => bcrypt('123456')
+		]);
+
+		foreach(range(1, 10) as $index)
+		{
+			User::create([
+				'name'		    => $faker->title . ' ' . $faker->firstName,
+				'email' => $faker->email,
+				'password' => bcrypt('123456'),
+			]);
 		}
 	}
 
@@ -19,13 +41,13 @@ class UsersTableSeeder extends Seeder
 	{
 		$users = [
 			[
-				'name'	 => 'Peter Parker',
+				'name'	 => 'Peter Parker (SUPER ADMIN)',
 				'email'	 => 'apps@elegantmedia.com.au',
 				'password' => bcrypt('123456')
 			],
 			[
-				'name'	 => 'Clarke Kent',
-				'email'	 => 'apps+user@elegantmedia.com.au',
+				'name'	 => 'Tony Stark (ADMIN)',
+				'email'	 => 'apps+admin@elegantmedia.com.au',
 				'password' => bcrypt('123456')
 			],
 		];

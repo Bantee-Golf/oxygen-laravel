@@ -47,7 +47,7 @@ Route::get('invitations/join/{code}', [
 ]);
 
 // Authenticated Users...
-Route::group(['middleware' => 'auth'], function()
+Route::group(['middleware' => ['auth', 'auth.acl:roles[super-admin|admin]']], function()
 {
 	// Dashboard
 	Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard');
