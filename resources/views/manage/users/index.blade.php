@@ -50,23 +50,25 @@
                 @if ($item->isMySelf())
                     <span class="badge badge-success js-tooltip" title="Go to Your Profile to Edit Your Password">You</span>
                 @else
-                    <a href="{{ entity_resource_path() . '/' . $item->id . '/edit-password' }}"
-                       class="btn btn-warning"><em class="fa fa-edit"></em> Edit Password</a>
+                    <div class="btn-spaced">
+                        <a href="{{ entity_resource_path() . '/' . $item->id . '/edit-password' }}"
+                           class="btn btn-warning"><em class="fa fa-edit"></em> Edit Password</a>
 
-                    <form action="{{ entity_resource_path() . '/' . $item->id . '/update-disabled' }}"
-                          method="POST" class="form form-inline">
-                        @csrf
-                        {{ method_field('put') }}
-                        @if ($item->isEnabled())
-                            <button class="btn btn-warning js-tooltip"
-                                    name="action" value="disable"
-                                    title="Click to Disable"><em class="fa fa-ban"></em> Disable</button>
-                        @else
-                            <button class="btn btn-warning js-tooltip"
-                                    name="action" value="enable"
-                                    title="Account Disabled. Click to Enable."><em class="fa fa-check"></em> Enable</button>
-                        @endif
-                    </form>
+                        <form action="{{ entity_resource_path() . '/' . $item->id . '/update-disabled' }}"
+                              method="POST" class="form form-inline">
+                            @csrf
+                            {{ method_field('put') }}
+                            @if ($item->isEnabled())
+                                <button class="btn btn-warning js-tooltip"
+                                        name="action" value="disable"
+                                        title="Click to Disable"><em class="fa fa-ban"></em> Disable</button>
+                            @else
+                                <button class="btn btn-warning js-tooltip"
+                                        name="action" value="enable"
+                                        title="Account Disabled. Click to Enable."><em class="fa fa-check"></em> Enable</button>
+                            @endif
+                        </form>
+                    </div>
                 @endif
             </td>
             <td>

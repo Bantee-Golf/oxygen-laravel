@@ -8,7 +8,9 @@
     <ul class="nav nav-pills nav-wide flex-column">
         @include('oxygen::dashboard.partials.menuBar', ['menuBarType' => 'sidebar.manage'])
         <li><a href="{{ route('manage.users.index') }}"><i class="fas fa-users"></i> Users</a></li>
-        <li><a href="{{ route('access.index') }}"><i class="fas fa-user-shield"></i> Access Permissions</a></li>
+        <li><a href="{{ route('manage.documentation.index') }}"><i class="fas fa-plug"></i> API</a></li>
+        <li><a href="{{ route('manage.files.index') }}"><i class="fas fa-file-upload"></i> Files</a></li>
+        <li><a href="{{ route('manage.access.index') }}"><i class="fas fa-user-shield"></i> Access Permissions</a></li>
     </ul>
 {{--@endif--}}
 

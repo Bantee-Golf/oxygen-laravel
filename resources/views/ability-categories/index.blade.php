@@ -8,7 +8,7 @@
 
         {{ lotus()->breadcrumbs([
             ['Dashboard', route('dashboard')],
-            ['Access Permissions', route('access.index')],
+            ['Access Permissions', route('manage.access.index')],
             [$pageTitle, null, true]
         ]) }}
 

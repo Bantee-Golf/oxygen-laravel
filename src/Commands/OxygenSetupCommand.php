@@ -3,6 +3,7 @@
 namespace EMedia\Oxygen\Commands;
 
 use EMedia\Generators\Commands\BaseGeneratorCommand;
+use EMedia\PHPHelpers\Files\DirManager;
 use EMedia\PHPHelpers\Files\FileEditor;
 use EMedia\PHPHelpers\Files\FileManager;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -57,7 +58,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$this->compileStubs($this->getStubMap());
 
 		// update routes
-		$this->addGenericRoutes();
+		$this->addWebRoutes();
+		$this->addAPIRoutes();
 
 		// update middleware
 		$this->updateMiddleware();
@@ -96,6 +98,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	public function setupChildPackages()
 	{
 		$this->call('setup:package:app-settings');
+		$this->call('setup:package:devices');
 	}
 
 
@@ -166,6 +169,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// bouncer
 		// bouncer updates
 		// invitations
+		// files
 
 		$fileData = [];
 
@@ -199,6 +203,13 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			'destination_path' => database_path("migrations"),
 			'destination_filename' => "{$this->getTimestamp()}_create_invitations_table.php",
 			'unique_file_id' => 'create_invitations_table.php',
+		];
+
+		$fileData[] = [
+			'stub' => __DIR__ . '/../../Stubs/Migrations/006_create_files_table.php',
+			'destination_path' => database_path("migrations"),
+			'destination_filename' => "{$this->getTimestamp()}_create_files_table.php",
+			'unique_file_id' => 'create_files_table.php',
 		];
 
 		if ($this->projectConfig['multiTenant'])
@@ -242,6 +253,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			'name'	=> 'webpack.mix.js',
 			'stub'  =>  __DIR__ . '/../../Stubs/ProjectConfig/webpack.mix.js',
 			'default' => __DIR__ . '/../../LaravelDefaultFiles/webpack.mix.js',
+		];
+		$stubMap[] = $stub;
+
+		$stub = [
+			'path'	=> base_path('readme.md'),
+			'name'	=> 'readme.md',
+			'stub'  =>  __DIR__ . '/../../Stubs/ProjectConfig/readme.md',
+			'default' => __DIR__ . '/../../LaravelDefaultFiles/readme.md',
 		];
 		$stubMap[] = $stub;
 
@@ -324,7 +343,11 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			[
 				'name'	=> 'routeMiddleware',
 				'value' => "'auth.api' => \EMedia\Oxygen\Http\Middleware\ApiAuthenticate::class"
-			]
+			],
+			[
+				'name'	=> 'routeMiddleware',
+				'value' => "'auth.api.logged-in' => \EMedia\Oxygen\Http\Middleware\ApiUserAccessTokenVerification::class"
+			],
 		];
 
 		// only update the file, if the values are not already in the files
@@ -357,7 +380,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	}
 
 
-	protected function addGenericRoutes()
+	protected function addWebRoutes()
 	{
 		$routesFilePath = base_path('routes/web.php');
 		$stubPath = __DIR__ . '/../../Stubs/routes/web.stub';
@@ -389,46 +412,38 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		}
 	}
 
-	/**
-	 *
-	 * Update the Routes file
-	 *
-	 * @return bool
-	 * @throws FileNotFoundException
-	 */
-//	protected function DEPRECATED_addGenericRoutes()
-//	{
-//		$routesFilePath = base_path('routes/web.php');
-//
-//		try {
-//			// check if the routes file mentions anything about the 'oxygen routes'
-//			// if so, it might already be there. Ask the user to confirm.
-//			if ($this->isTextInFile($routesFilePath, 'Oxygen Routes', false)) {
-//				if (!$this->confirm("Oxygen routes are already in routes file. Add again?", false)) {
-//					return false;
-//				}
-//			}
-//		} catch (FileNotFoundException $ex) {
-//			$this->error("Routes file not found at `{$routesFilePath}`. Skipping adding routes...");
-//		}
-//
-//		// ask the user and update the routes file if required
-//		if (!$this->dontAsk) {
-//			if (!$this->confirm("Update routes file with routes for auth, invitations, roles?", true)) {
-//				return false;
-//			}
-//		}
-//
-//		// udpate the file
-//		$routesStub = $this->files->get(__DIR__ . '/../../Stubs/routes/web.stub');
-//
-//		$result = $this->files->append($routesFilePath, $routesStub);
-//		if ($result)
-//		{
-//			$this->info('routes\web.php file updated.');
-//			$this->progressLog['files'][] = ['routes\web.php', 'Check for duplicate entries.'];
-//		}
-//	}
+	protected function addAPIRoutes()
+	{
+		$routesFilePath = base_path('routes/api.php');
+		$stubPath = __DIR__ . '/../../Stubs/routes/api.stub';
+		$bytes = false;
+
+		try {
+			$bytes = FileEditor::appendStubIfSectionNotFound($routesFilePath, $stubPath, null, null, true);
+		} catch (\EMedia\PHPHelpers\Exceptions\FileSystem\SectionAlreadyExistsException $ex) {
+			if (!$this->confirm("Oxygen API routes are already in routes file. Add again?", false)) {
+				return false;
+			}
+		}
+
+		// ask the user and update the routes file if required
+		if (!$this->dontAsk) {
+			if (!$this->confirm("Update routes file with routes for registration and login routes?", true)) {
+				return false;
+			}
+		}
+
+		if ($bytes === false) {
+			$bytes = FileEditor::appendStub($routesFilePath, $stubPath);
+		}
+
+		if ($bytes !== false)
+		{
+			$this->info('routes\api.php file updated.');
+			$this->progressLog['files'][] = ['routes\api.php', 'Check for duplicate entries.'];
+		}
+	}
+
 
 	protected function addEnvironmentVariables()
 	{
@@ -518,6 +533,20 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'path'		=> base_path('webpack.mix.js'),
 				'search'	=> "localhost.dev",
 				'replace'	=> $devMachineUrl,
+			],
+
+			// Change project name in readme.md
+			[
+				'path'		=> base_path('readme.md'),
+				'search'	=> "OxygenProject",
+				'replace'	=> $projectName,
+			],
+
+			// database settings
+			[
+				'path'		=> config_path('database.php'),
+				'search'	=> "'engine' => null,",
+				'replace'	=> "'engine' => 'InnoDB ROW_FORMAT=DYNAMIC',",
 			],
 		];
 
@@ -656,6 +685,22 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+					'--tag'			=> ['api-controllers'],
+					'--force'		=> true,
+				]
+			],
+			[
+				'command'		=> 'vendor:publish',
+				'arguments'		=> [
+					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+					'--tag'			=> ['default-controllers'],
+					'--force'		=> true,
+				]
+			],
+			[
+				'command'		=> 'vendor:publish',
+				'arguments'		=> [
+					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['oxygen-config'],
 					'--force'		=> true,
 				]
@@ -775,6 +820,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			} else {
 				$fileName = $file['destination_filename'];
 			}
+
+			DirManager::makeDirectoryIfNotExists($file['destination_path']);
 
 			$filePath = $file['destination_path'] . DIRECTORY_SEPARATOR . $fileName;
 

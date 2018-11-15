@@ -1,7 +1,7 @@
 // Start Oxygen routes
 // Home
 Route::get('/', function () {
-	return view('oxygen::pages.home', ['pageTitle' => 'The Awesomeness Starts Here...']);
+	return view('oxygen::pages.welcome', ['pageTitle' => 'The Awesomeness Starts Here...']);
 })->name('home');
 
 // TODO: Add Custom Pages Here...
@@ -46,11 +46,28 @@ Route::get('invitations/join/{code}', [
 	'uses'	=> 'Auth\InvitationsController@showJoin'
 ]);
 
+// Route for File Access
+Route::group(['middleware' => 'web'], function () {
+	Route::get('files/{uuid}/{fileName?}', 'Manage\ManageFilesController@show')->name('files.show');
+});
+
 // Authenticated Users...
 Route::group(['middleware' => ['auth', 'auth.acl:roles[super-admin|admin]']], function()
 {
 	// Dashboard
 	Route::get('/dashboard', 'DashboardController@dashboard')->name('dashboard');
+
+
+	Route::group(['prefix' => 'manage', 'as' => 'manage.'], function()
+    {
+        // Manage Files
+        Route::get('files/download/{uuid}', 'Manage\ManageFilesController@download')->name('files.download');
+        Route::resource('files', 'Manage\ManageFilesController')->only('index', 'create', 'store', 'edit', 'update', 'destroy');
+
+        // Manage Documentation
+        Route::get('/docs/api', 'Manage\ManageDocumentationController@index')->name('documentation.index');
+    });
+
 
 	// User's Profile...
 	Route::group(['prefix' => 'account'], function () {
@@ -65,7 +82,7 @@ Route::group(['middleware' => ['auth', 'auth.acl:roles[super-admin|admin]']], fu
 	// Manage (Super Admin)...
 	Route::group(['prefix' => 'account'], function ()
 	{
-		Route::get('/access', 'Auth\Admin\AccessController@index')->name('access.index');
+		Route::get('/access', 'Auth\Admin\AccessController@index')->name('manage.access.index');
 
 		// Groups (Roles)
 		Route::group(['prefix' => 'groups'], function () {

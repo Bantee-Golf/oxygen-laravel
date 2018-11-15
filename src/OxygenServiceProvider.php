@@ -59,6 +59,15 @@ class OxygenServiceProvider extends ServiceProvider
 		], 'auth-controllers');
 
 		$this->publishes([
+			__DIR__ . '/../Stubs/Http/Controllers/API' => app_path('Http/Controllers/API'),
+		], 'api-controllers');
+
+		$this->publishes([
+			__DIR__ . '/../LaravelDefaultFiles/app/Http/Controllers/API' => app_path('Http/Controllers/API'),
+			__DIR__ . '/../LaravelDefaultFiles/app/Http/Controllers/Manage' => app_path('Http/Controllers/Manage'),
+		], 'default-controllers');
+
+		$this->publishes([
 			__DIR__ . '/../Stubs/Seeds' => database_path('seeds'),
 		], 'database-seeds');
 
@@ -109,9 +118,6 @@ class OxygenServiceProvider extends ServiceProvider
 	private function registerDependentServiceProviders()
 	{
 		$this->app->register(\EMedia\MultiTenant\MultiTenantServiceProvider::class);
-		// $this->app->register(\EMedia\Generators\GeneratorServiceProvider::class);
-		// $this->app->register(\EMedia\Helpers\HelpersServiceProvider::class);
-		// $this->app->register(\EMedia\Render\RenderServiceProvider::class);
 	}
 
 	/**
@@ -124,7 +130,6 @@ class OxygenServiceProvider extends ServiceProvider
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 
 		$loader->alias('TenantManager', \EMedia\MultiTenant\Facades\TenantManager::class);
-		// $loader->alias('Render', \EMedia\Render\Facades\RenderFacade::class);
 	}
 
 	private function registerCustomValidators()
