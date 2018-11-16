@@ -52,11 +52,23 @@ This package and some dependent packages are available in private repositories. 
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:elegantmedia/oxygen-laravel.git"
+            "url": "git@bitbucket.org:elegantmedia/devices-laravel.git"
         },
         {
             "type":"vcs",
             "url":"git@bitbucket.org:elegantmedia/multitenant-laravel.git"
+        },
+        {
+          "type": "vcs",
+          "url": "git@bitbucket.org:elegantmedia/file-control-laravel.git"
+        },
+        {
+          "type":"vcs",
+          "url":"git@bitbucket.org:elegantmedia/mediamanager-laravel.git"
+        },
+        {
+            "type":"vcs",
+            "url":"git@bitbucket.org:elegantmedia/laravel-api-helpers.git",
         },
         {
             "type":"vcs",
@@ -222,6 +234,9 @@ Oxygen by default has a lot of built-in functions. Please read all the docs to u
 - [PHP Helper Functions](https://bitbucket.org/elegantmedia/php-helpers/src/master/README.md)
 - [App Settings Handling](https://bitbucket.org/elegantmedia/laravel-app-settings/src/master/README.md)
 - [Breadcrumbs, Page Titles, Tables, Pagination, Empty State and other Html Elements](https://bitbucket.org/elegantmedia/lotus/src/master/README.md)
+- [API Builder and Documentation Generator](https://bitbucket.org/elegantmedia/laravel-api-helpers/src/master/README.md)
+- [File Uploader](https://bitbucket.org/elegantmedia/file-control-laravel/src/master/README.md)
+- [Device Authenticator for API Requests](https://bitbucket.org/elegantmedia/devices-laravel/src/master/README.md)
 
 ## After Installation
 

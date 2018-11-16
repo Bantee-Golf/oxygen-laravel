@@ -1,5 +1,13 @@
 # Change Log
 
+## Version 2.2.0
+- Added API builder to dashboard
+- Added files section to dashboard
+- Added default API login controllers
+- Added device management section to dashboard
+- Changed default readme.md file
+
+
 ## Version 2.1.0
 
 - Auto-generate UUID for Users
