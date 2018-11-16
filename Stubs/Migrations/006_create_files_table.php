@@ -19,6 +19,7 @@ class CreateFilesTable extends Migration
 			$table->string('key')->unique()->nullable();
 			$table->string('name')->nullable();
 			$table->text('description')->nullable();
+			$table->boolean('allow_public_access')->default(false);
 			$table->string('original_filename')->nullable();
 			$table->string('file_path')->nullable();
 			$table->string('file_disk')->nullable();

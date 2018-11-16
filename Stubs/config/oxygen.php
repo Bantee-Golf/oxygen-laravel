@@ -35,4 +35,15 @@ return [
 
 	'invitationRepository'	=> \EMedia\Oxygen\Entities\Invitations\InvitationRepository::class,
 
+	'api' => [
+		// include the model definitions on the API output. (You may disable this for security)
+		'includeModelDefinitions' => true,
+
+		// hide these models from API definition for security
+		'hiddenModelDefinitionClasses' => [
+			'Role',
+			'Ability',
+			'AbilityCategory',
+		]
+	],
 ];

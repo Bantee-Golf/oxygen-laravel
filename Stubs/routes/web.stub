@@ -48,7 +48,7 @@ Route::get('invitations/join/{code}', [
 
 // Route for File Access
 Route::group(['middleware' => 'web'], function () {
-	Route::get('files/{uuid}/{fileName?}', 'Manage\ManageFilesController@show')->name('files.show');
+	Route::get('files/{uuid}/{fileName?}', 'Manage\ManageFilesController@publicView')->name('files.show');
 });
 
 // Authenticated Users...
@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth', 'auth.acl:roles[super-admin|admin]']], fu
 	Route::group(['prefix' => 'manage', 'as' => 'manage.'], function()
     {
         // Manage Files
+        Route::get('files/{uuid}', 'Manage\ManageFilesController@show')->name('files.show');
         Route::get('files/download/{uuid}', 'Manage\ManageFilesController@download')->name('files.download');
         Route::resource('files', 'Manage\ManageFilesController')->only('index', 'create', 'store', 'edit', 'update', 'destroy');
 

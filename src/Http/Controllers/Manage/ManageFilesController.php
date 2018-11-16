@@ -18,6 +18,8 @@ class ManageFilesController extends Controller
 
 	protected $dataRepo;
 
+	protected $uploadDisk;
+
 	public function __construct(FilesRepository $dataRepo, File $model)
 	{
 		$this->model        = $model;
@@ -88,7 +90,7 @@ class ManageFilesController extends Controller
 		$originalFilePath = $this->resolvePathFromFile($file);
 
 		$fh = new FileUploader($request);
-		$fh->toDisk('public_content')
+		$fh->toDisk($this->uploadDisk)
 		   ->saveToDir('files');
 
 		$result = $fh->upload();
@@ -107,6 +109,7 @@ class ManageFilesController extends Controller
 				'file_path' => $result->filePath(),
 				'file_disk' => $result->diskName(),
 				'file_url'  => $result->publicUrl(),
+				'allow_public_access' => empty($request->allow_public_access)? false: true,
 				'file_size_bytes' => $result->getFileSize(),
 				'uploaded_by_user_id' => (auth()->id()) ?? auth()->id()
 			]);
@@ -116,7 +119,7 @@ class ManageFilesController extends Controller
 				unlink($originalFilePath);
 			}
 
-			return redirect()->route('oxygen::manage.files.index')->with('success', 'File uploaded.');
+			return redirect()->route('manage.files.index')->with('success', 'File uploaded.');
 		}
 
 		return back()->with('error', 'Failed to upload file')->withInput(request()->only('key'));
@@ -139,7 +142,7 @@ class ManageFilesController extends Controller
 		]);
 
 		$fh = new FileUploader($request);
-		$fh->toDisk('public_content')
+		$fh->toDisk($this->uploadDisk)
 		   ->saveToDir('files');
 
 		$result = $fh->upload();
@@ -155,6 +158,7 @@ class ManageFilesController extends Controller
 			$file = new File([
 				'name' => File::fileKeys($request->key),
 				'key' => $fileKey,
+				'allow_public_access' => empty($request->allow_public_access)? false: true,
 				'original_filename' => $result->getOriginalFilename(),
 				'file_path' => $result->filePath(),
 				'file_disk' => $result->diskName(),
@@ -164,7 +168,7 @@ class ManageFilesController extends Controller
 			]);
 			$file->save();
 
-			return redirect()->route('oxygen::manage.files.index')->with('success', 'File uploaded.');
+			return redirect()->route('manage.files.index')->with('success', 'File uploaded.');
 		}
 
 		return back()->with('error', 'Failed to upload file')->withInput(request()->only('key'));
@@ -199,11 +203,9 @@ class ManageFilesController extends Controller
 	 */
 	public function show($uuid)
 	{
-//		$int = (int) $uuid;
-//
-//		if ($int !== 0) return redirect()->route('manage.files.index');
-
 		$file = $this->dataRepo->findByUuid($uuid);
+
+		if (!$file) return back()->with('error', 'Invalid file request.');
 
 		$filePath = $this->resolvePathFromFile($file);
 
@@ -232,7 +234,7 @@ class ManageFilesController extends Controller
 
 		File::destroy($file->id);
 
-		return redirect()->route('oxygen::manage.files.index')->with('success', 'File deleted.');
+		return redirect()->route('manage.files.index')->with('success', 'File deleted.');
 	}
 
 	/**
