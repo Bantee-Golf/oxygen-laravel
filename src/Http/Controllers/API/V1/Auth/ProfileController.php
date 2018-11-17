@@ -118,6 +118,7 @@ class ProfileController extends APIBaseController
 		document(function () {
 			return (new APICall)
 			->setName('Update My Avatar')
+			->setConsumes([APICall::CONSUME_MULTIPART_FORM])
 			->setParams([
 				(new Param('image'))->dataType('File'),
 			])
