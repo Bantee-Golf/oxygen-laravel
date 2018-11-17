@@ -52,6 +52,16 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label for="allow_public_access" class="col-sm-2 col-form-label text-right">Public Access</label>
+                    <div class="col-sm-10">
+                        {{ Form::checkbox('allow_public_access', 'true', $entity->allow_public_access) }}
+                        <small id="allow_public_access" class="form-text text-muted">
+                            Should this file have public access?
+                        </small>
+                    </div>
+                </div>
+
                 <hr>
                 <div class="form-group row">
                     <div class="col-sm-10 offset-2">

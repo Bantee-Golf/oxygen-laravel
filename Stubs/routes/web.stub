@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth', 'auth.acl:roles[super-admin|admin]']], fu
 	Route::group(['prefix' => 'manage', 'as' => 'manage.'], function()
     {
         // Manage Files
-        Route::get('files/{uuid}', 'Manage\ManageFilesController@show')->name('files.show');
+        Route::get('files/view/{uuid}', 'Manage\ManageFilesController@show')->name('files.show');
         Route::get('files/download/{uuid}', 'Manage\ManageFilesController@download')->name('files.download');
         Route::resource('files', 'Manage\ManageFilesController')->only('index', 'create', 'store', 'edit', 'update', 'destroy');
 

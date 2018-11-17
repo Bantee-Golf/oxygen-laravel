@@ -18,6 +18,7 @@ class File extends Model
 		'uuid',
 		'description',
 		'original_filename',
+		'allow_public_access',
 		'file_path',
 		'file_disk',
 		'file_url',

@@ -30,6 +30,9 @@
                     <br>
                     <span class="badge badge-primary">{{ $item->key }}</span>
                 @endif
+                @if ($item->allow_public_access)
+                    <span class="badge badge-success">Public</span>
+                @endif
             </td>
             <td>
                 {{ $item->original_filename }}
@@ -47,28 +50,28 @@
             <td>
                 <span class="btn-spaced">
                 @if ($item->file_url)
-                    <a href="{{ $item->permalink }}" target="_blank" class="btn btn-success"><i class="fas fa-eye"></i> View</a>
-                @endif
+                        <a href="{{ $item->permalink }}" target="_blank" class="btn btn-success"><i class="fas fa-eye"></i> View</a>
+                    @endif
 
-                @if ($item->file_url)
-                    <a href="{{ route('manage.files.download', $item->uuid) }}" target="_blank" class="btn btn-success"><i class="fas fa-download"></i> Download</a>
-                @endif
+                    @if ($item->file_url)
+                        <a href="{{ route('manage.files.download', $item->uuid) }}" target="_blank" class="btn btn-success"><i class="fas fa-download"></i> Download</a>
+                    @endif
 
-                <a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
-                   class="btn btn-warning js-tooltip"
-                   title="Edit"><em class="fa fa-edit"></em> Edit</a>
+                    <a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
+                       class="btn btn-warning js-tooltip"
+                       title="Edit"><em class="fa fa-edit"></em> Edit</a>
                 </span>
             </td>
             <td class="text-right">
 
                 @if ($item->isDeleteAllowed())
-                <form action="{{ entity_resource_path() . '/' . $item->id }}"
-                      method="POST" class="form form-inline js-confirm">
-                    {{ method_field('delete') }}
-                    {{ csrf_field() }}
-                    <button class="btn btn-danger js-tooltip"
-                            title="Delete"><em class="fa fa-times"></em> Delete</button>
-                </form>
+                    <form action="{{ entity_resource_path() . '/' . $item->id }}"
+                          method="POST" class="form form-inline js-confirm">
+                        {{ method_field('delete') }}
+                        {{ csrf_field() }}
+                        <button class="btn btn-danger js-tooltip"
+                                title="Delete"><em class="fa fa-times"></em> Delete</button>
+                    </form>
                 @endif
 
             </td>

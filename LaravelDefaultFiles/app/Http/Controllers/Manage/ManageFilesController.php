@@ -28,7 +28,10 @@ class ManageFilesController extends \EMedia\Oxygen\Http\Controllers\Manage\Manag
 		if (!$file->allow_public_access) {
 			$user = auth()->user();
 			if (!$user) {
-				$user = \EMedia\Devices\Auth\DeviceAuthenticator::getUserByAccessToken();
+				// handle api requests
+				if (request()->header('x-api-key')) {
+					$user = \EMedia\Devices\Auth\DeviceAuthenticator::getUserByAccessToken();
+				}
 			}
 			if (!$user) abort(401);
 		}
