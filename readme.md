@@ -52,6 +52,10 @@ This package and some dependent packages are available in private repositories. 
     "repositories": [
         {
             "type": "vcs",
+            "url": "git@bitbucket.org:elegantmedia/oxygen-laravel.git"
+        },
+        {
+            "type": "vcs",
             "url": "git@bitbucket.org:elegantmedia/devices-laravel.git"
         },
         {
@@ -68,7 +72,7 @@ This package and some dependent packages are available in private repositories. 
         },
         {
             "type":"vcs",
-            "url":"git@bitbucket.org:elegantmedia/laravel-api-helpers.git",
+            "url":"git@bitbucket.org:elegantmedia/laravel-api-helpers.git"
         },
         {
             "type":"vcs",
