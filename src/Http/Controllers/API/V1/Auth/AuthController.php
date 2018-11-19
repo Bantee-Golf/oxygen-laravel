@@ -18,11 +18,11 @@ class AuthController extends APIBaseController
 	/**
 	 * @var UsersRepository
 	 */
-	private $usersRepository;
+	protected $usersRepository;
 	/**
 	 * @var DevicesRepository
 	 */
-	private $devicesRepo;
+	protected $devicesRepo;
 
 	public function __construct(UsersRepository $usersRepository, DevicesRepository $devicesRepo)
 	{

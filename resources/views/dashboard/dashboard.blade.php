@@ -11,5 +11,5 @@
         ['Tesla', null, true]
     ]) }}
 
-    {{ lotus()->emptyStatePanel('Welcome to Oxygen', "Let's Build Something New!") }}
+    {{ lotus()->emptyStatePanel('Welcome to ' . config('app.name'), "Let's Build Something New!") }}
 @stop

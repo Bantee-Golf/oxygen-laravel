@@ -13,6 +13,18 @@ alias php=/opt/cpanel/ea-php71/root/usr/bin/php
 /opt/cpanel/ea-php71/root/usr/bin/php /opt/cpanel/composer/bin/composer install --no-dev
 ```
 
+## Deployment Server Initial Setup Instructions
+
+```
+// copy the .env file
+cp .env.example .env
+
+// edit the .env file with the server settings
+
+// link the storage folder
+php artisan storage:link
+```
+
 ### Development Instructions
 
 Migrate and seed the database
