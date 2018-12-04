@@ -44,6 +44,11 @@ return [
 			'Role',
 			'Ability',
 			'AbilityCategory',
-		]
+		],
+
+		// add additional directories to look for models,
+		'modelDirectories' => [
+			// app_path('Models'),
+		],
 	],
 ];

@@ -23,6 +23,9 @@ cp .env.example .env
 
 // link the storage folder
 php artisan storage:link
+
+// generate app key
+php artisan key:generate
 ```
 
 ### Development Instructions

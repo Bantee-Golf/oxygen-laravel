@@ -18,7 +18,7 @@
 	window.onload = function() {
 		// Build a system
 		const ui = SwaggerUIBundle({
-			url: "swagger.json",
+			url: "swagger.json?rev=" + Math.floor((Math.random() * 10000)),
 			dom_id: '#swagger-ui',
 			deepLinking: true,
 			presets: [
