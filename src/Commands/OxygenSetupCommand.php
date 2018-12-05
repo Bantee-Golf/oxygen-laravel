@@ -12,7 +12,7 @@ use Illuminate\Filesystem\Filesystem;
 class OxygenSetupCommand extends BaseGeneratorCommand
 {
 
-	protected $signature   = 'setup:oxygen-project 
+	protected $signature   = 'setup:oxygen-project
 								{--confirm : Confirm with the user if there are potential issues}';
 
 	protected $description = 'Generate common files for the Oxygen project';
@@ -366,6 +366,10 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'name'	=> 'web',
 				'value' => "\EMedia\Oxygen\Http\Middleware\LoadViewSettings::class"
 			],
+			[
+				'name'	=> 'api',
+				'value' => "\EMedia\Oxygen\Http\Middleware\ParseNonPostFormData::class"
+			],
 		];
 
 		$fieldsToAdd = array_filter($fields, function ($item) use ($inputFile) {
@@ -586,8 +590,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	/**
 	 *
-	 * Create the class files 
-	 * 
+	 * Create the class files
+	 *
 	 */
 	protected function createOxygenClassFiles()
 	{
