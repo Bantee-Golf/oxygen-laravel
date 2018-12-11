@@ -74,7 +74,7 @@ class ProfileController extends APIBaseController
 				(new Param('last_name'))->optional(),
 				(new Param('email')),
 				(new Param('phone'))->optional(),
-				(new Param('_method'))->description("Must be set to `PUT`")->setDefaultValue('put'),
+				// (new Param('_method'))->description("Must be set to `PUT`")->setDefaultValue('put'),
 			])
 			->setSuccessExample('{
 				"payload": {

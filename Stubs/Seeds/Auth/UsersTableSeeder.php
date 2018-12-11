@@ -27,10 +27,10 @@ class UsersTableSeeder extends Seeder
 			'password' => bcrypt('123456')
 		]);
 
-		foreach(range(1, 10) as $index)
+		foreach(range(1, 50) as $index)
 		{
 			User::create([
-				'name'		    => $faker->title . ' ' . $faker->firstName,
+				'name' => $faker->firstName,
 				'email' => $faker->email,
 				'password' => bcrypt('123456'),
 			]);

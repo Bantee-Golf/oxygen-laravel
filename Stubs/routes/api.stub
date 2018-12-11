@@ -17,7 +17,7 @@ Route::group([
 		Route::group(['middleware' => ['auth.api.logged-in']], function() {
 			Route::get('/logout', 'Auth\AuthController@logout');
 			Route::get ('/profile', 'Auth\ProfileController@index');
-			Route::post('/profile', 'Auth\ProfileController@update');
+			Route::put ('/profile', 'Auth\ProfileController@update');
 			Route::post('/avatar', 'Auth\ProfileController@updateAvatar');
 			Route::post('/password/edit', 'Auth\ResetPasswordController@updatePassword');
 
