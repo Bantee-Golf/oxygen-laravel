@@ -9,6 +9,7 @@ use EMedia\Oxygen\Commands\OxygenSetupCommand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Silber\Bouncer\Database\Models;
+use Illuminate\Database\Schema\Blueprint;
 
 class OxygenServiceProvider extends ServiceProvider
 {
@@ -108,6 +109,8 @@ class OxygenServiceProvider extends ServiceProvider
 		Models::setAbilitiesModel(config('oxygen.abilityModel'));
 		Models::setRolesModel(config('oxygen.roleModel'));
 		// Models::setUsersModel(config('oxygen.model'));
+
+		$this->registereDatabaseMacros();
 	}
 
 	/**
@@ -148,6 +151,38 @@ class OxygenServiceProvider extends ServiceProvider
 		// custom message
 		Validator::replacer('match_count_with', function ($message, $attribute, $rule, $parameters) {
 			return "The values given in two array fields don't match.";
+		});
+	}
+
+	protected function registereDatabaseMacros()
+	{
+		Blueprint::macro('location', function () {
+			// location
+			/** @var Blueprint $this */
+			$this->string('venue')->nullable();
+			$this->string('address')->nullable();
+			$this->string('street')->nullable();
+			$this->string('street_2')->nullable();
+			$this->string('city')->nullable();
+			$this->string('state')->nullable();
+			$this->string('zip')->nullable();
+			$this->string('country')->nullable();
+			$this->float('latitude', 10, 6)->nullable()->index();
+			$this->float('longitude', 10, 6)->nullable()->index();
+		});
+
+		Blueprint::macro('dropLocation', function () {
+			// drop location
+			$this->dropColumn('venue');
+			$this->dropColumn('address');
+			$this->dropColumn('street');
+			$this->dropColumn('street_2');
+			$this->dropColumn('city');
+			$this->dropColumn('state');
+			$this->dropColumn('zip');
+			$this->dropColumn('country');
+			$this->dropColumn('latitude');
+			$this->dropColumn('longitude');
 		});
 	}
 
