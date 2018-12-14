@@ -77,8 +77,8 @@ class AuthController extends APIBaseController
 		});
 
 		$this->validate($request, [
-			'first_name' => 'required',
-			'last_name'  => 'required',
+			// 'first_name' => 'required',
+			// 'last_name'  => 'required',
 			'email'      => 'required|email|unique:users,email',
 			'password'   => 'required|confirmed',
 
