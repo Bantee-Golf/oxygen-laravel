@@ -2,7 +2,6 @@
 
 namespace EMedia\Oxygen\Http\Middleware;
 
-namespace EMedia\Oxygen\Helpers\ParseInputStream;
 use Closure;
 
 class ParseNonPostFormData
