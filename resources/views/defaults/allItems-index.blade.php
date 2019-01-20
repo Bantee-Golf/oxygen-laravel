@@ -60,7 +60,7 @@
                     </form>
                     --}}
 
-                    @if (isset($allowDestroyingEntity) && $allowDestroyingEntity === true)
+                    @if (isset($isDestroyingEntityAllowed) && $isDestroyingEntityAllowed === true)
                         <form action="{{ entity_resource_path() . '/' . $item->id }}"
                               method="POST" class="form form-inline js-confirm">
                             {{ method_field('delete') }}

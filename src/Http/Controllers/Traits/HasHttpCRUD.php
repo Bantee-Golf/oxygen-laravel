@@ -12,7 +12,7 @@ trait HasHttpCRUD
 	protected $model;
 	protected $entityPlural;
 	protected $entitySingular;
-	protected $allowDestroyingEntity = false;
+	protected $isDestroyingEntityAllowed = false;
 
 	/**
 	 *
@@ -86,7 +86,7 @@ trait HasHttpCRUD
 		$data = [
 			'pageTitle' => $this->entityPlural,
 			'allItems' => $this->dataRepo->search(),
-			'allowDestroyingEntity' => $this->allowDestroyingEntity,
+			'isDestroyingEntityAllowed' => $this->isDestroyingEntityAllowed,
 		];
 
 		$viewName = $this->indexViewName();
@@ -201,10 +201,10 @@ trait HasHttpCRUD
 	 */
 	public function destroy($id)
 	{
-		// for safety, you must enable access with `$this->allowDestroyingEntity = true;` at the constructor
+		// for safety, you must enable access with `$this->isDestroyingEntityAllowed = true;` at the constructor
 		// you should also check for the user's valid permissions before doing this
 
-		if ($this->allowDestroyingEntity) {
+		if ($this->isDestroyingEntityAllowed) {
 			$this->dataRepo->delete($id);
 
 			return redirect()->route($this->indexRouteName())->with('success', 'Record deleted.');
