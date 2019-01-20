@@ -86,6 +86,7 @@ trait HasHttpCRUD
 		$data = [
 			'pageTitle' => $this->entityPlural,
 			'allItems' => $this->dataRepo->search(),
+			'allowDestroyingEntity' => $this->allowDestroyingEntity,
 		];
 
 		$viewName = $this->indexViewName();

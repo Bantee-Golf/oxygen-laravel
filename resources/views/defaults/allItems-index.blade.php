@@ -58,15 +58,18 @@
                                     title="Mark as Complete"><em class="fa fa-check"></em></button>
                         @endif
                     </form>
-
-                    <form action="{{ entity_resource_path() . '/' . $item->id }}"
-                          method="POST" class="form form-inline js-confirm">
-                        {{ method_field('delete') }}
-                        {{ csrf_field() }}
-                        <button class="btn btn-danger js-tooltip"
-                                title="Delete"><em class="fa fa-times"></em> Delete</button>
-                    </form>
                     --}}
+
+                    @if (isset($allowDestroyingEntity) && $allowDestroyingEntity === true)
+                        <form action="{{ entity_resource_path() . '/' . $item->id }}"
+                              method="POST" class="form form-inline js-confirm">
+                            {{ method_field('delete') }}
+                            {{ csrf_field() }}
+                            <button class="btn btn-danger js-tooltip"
+                                    title="Delete"><em class="fa fa-times"></em> Delete</button>
+                        </form>
+                    @endif
+
                 </div>
             </td>
         </tr>
