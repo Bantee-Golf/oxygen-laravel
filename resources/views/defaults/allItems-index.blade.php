@@ -60,11 +60,11 @@
                     </form>
 
                     <form action="{{ entity_resource_path() . '/' . $item->id }}"
-                          method="POST" class="form form-inline">
+                          method="POST" class="form form-inline js-confirm">
                         {{ method_field('delete') }}
                         {{ csrf_field() }}
                         <button class="btn btn-danger js-tooltip"
-                                title="Delete"><em class="fa fa-times"></em></button>
+                                title="Delete"><em class="fa fa-times"></em> Delete</button>
                     </form>
                     --}}
                 </div>
