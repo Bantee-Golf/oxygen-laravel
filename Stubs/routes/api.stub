@@ -11,7 +11,7 @@ Route::group([
 		Route::post('/password/email', 'Auth\ForgotPasswordController@checkRequest');
 
 		// guest (all-users) API routes
-		// Route::get('/home', 'HomeController@index');
+		Route::get('/guests', 'GuestController@index');
 
 		// logged-in users
 		Route::group(['middleware' => ['auth.api.logged-in']], function() {
