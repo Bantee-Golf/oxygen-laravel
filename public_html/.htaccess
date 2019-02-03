@@ -5,6 +5,14 @@
 
     RewriteEngine On
 
+    # Uncomment the 3 code lines before going live. Replace the `live-domain.com` with the real domain name
+    # 1. Take www and non-www urls, only for the given domain
+    # RewriteCond %{HTTP_HOST} ^(www\.)?live-domain.com$ [NC]
+    # 2. Check if https off
+    # RewriteCond %{HTTPS} off
+    # 3. Redirect to https
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [NE,L,R=301]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
