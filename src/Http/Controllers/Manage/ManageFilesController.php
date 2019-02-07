@@ -166,6 +166,7 @@ class ManageFilesController extends Controller
 				'file_size_bytes' => $result->getFileSize(),
 				'uploaded_by_user_id' => (auth()->id()) ?? auth()->id()
 			]);
+			$file->category = 'admin_uploads';
 			$file->save();
 
 			return redirect()->route('manage.files.index')->with('success', 'File uploaded.');

@@ -17,6 +17,7 @@ class CreateFilesTable extends Migration
 
 			$table->string('uuid')->unique()->nullable();
 			$table->string('key')->unique()->nullable();
+			$table->string('category')->nullable();
 			$table->string('name')->nullable();
 			$table->text('description')->nullable();
 			$table->boolean('allow_public_access')->default(false);

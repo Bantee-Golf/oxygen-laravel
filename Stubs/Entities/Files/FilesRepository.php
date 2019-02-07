@@ -22,4 +22,13 @@ class FilesRepository extends BaseRepository
 		return File::where('key', $key)->first();
 	}
 
+	public function addSearchQueryFilters($query)
+	{
+		$query->where('category', 'admin_uploads');
+	}
+
+	public function getByUuids(array $uuids)
+	{
+		return File::whereIn('uuid', $uuids)->get();
+	}
 }
