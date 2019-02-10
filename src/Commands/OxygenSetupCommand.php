@@ -13,7 +13,10 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 {
 
 	protected $signature   = 'setup:oxygen-project
-								{--confirm : Confirm with the user if there are potential issues}';
+								{--confirm : Confirm with the user if there are potential issues}
+								{--name= : Name of the project}
+								{--devurl= : Development URL alias of the local machine}
+								{--email= : Default email for system emails and seeding}';
 
 	protected $description = 'Generate common files for the Oxygen project';
 
@@ -123,19 +126,19 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	{
 		$userInput = [];
 
-		$userInput['projectName'] 	 = $this->ask('What is the project name?', 'ADMIN PANEL');
-		$userInput['fromEmail']   	 = $this->ask('What is the `from` email address for system emails? (Press ENTER key for default)', 'apps@elegantmedia.com.au');
-		$userInput['seedAdminEmail'] = $this->anticipate('What is your email to seed the database? (Press ENTER key for default)', [], $userInput['fromEmail']);
+		$userInput['projectName'] 	 = ($this->option('name')) ?? $this->ask('What is the project name?', 'ADMIN PANEL');
+		$userInput['fromEmail']   	 = ($this->option('email')) ?? $this->ask('What is the `from` email address for system emails? (Press ENTER key for default)', 'apps@elegantmedia.com.au');
+		$userInput['seedAdminEmail'] = ($this->option('email')) ?? $this->anticipate('What is your email to seed the database? (Press ENTER key for default)', [], $userInput['fromEmail']);
 
 		$defaultDomain = 'localhost.dev';
 		if (!empty($userInput['projectName'])) {
 			$defaultDomain = str_slug($userInput['projectName']) . '.devv';
 		}
-		$userInput['devMachineUrl'] = $this->anticipate('What is the local development URL? (Press ENTER key for default)', [], $defaultDomain);
+		$userInput['devMachineUrl'] = ($this->option('devurl')) ?? $this->anticipate('What is the local development URL? (Press ENTER key for default)', [], $defaultDomain);
 		// $userInput['dashboardType']  = $this->choice('What should be the type of the dashboard?', ['HTML/CSS (Default)', 'Angular'], 0);
 
 		// if ($this->confirm('Should the project have Multi-Tenant support?', false))
-			$userInput['multiTenant'] = false;
+		$userInput['multiTenant'] = false;
 
 		$this->projectConfig = array_merge($this->projectConfig, $userInput);
 	}
