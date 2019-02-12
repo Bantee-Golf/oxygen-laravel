@@ -184,7 +184,9 @@ trait HasHttpCRUD
 		if (empty($this->indexRouteName()))
 			throw new \InvalidArgumentException("'indexRouteName()' returns an empty value.");
 
-		$this->validate($request, $this->model->getRules());
+		if (method_exists($this->model, 'getRules')) {
+			$this->validate($request, $this->model->getRules());
+		}
 
 		$entity = $this->dataRepo->fillFromRequest($request, $id);
 

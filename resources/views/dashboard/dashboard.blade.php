@@ -11,7 +11,7 @@
         ['Tesla', null, true]
     ]) }}
 
-    {{ lotus()->emptyStatePanel('Welcome to ' . config('app.name'), "Let's Build Something New!") }}
+    {{ lotus()->emptyStatePanel('Welcome to ' . config('app.name'), "Development in progress...") }}
 
     @if ($metrics->count())
         <div class="row mt-4">

@@ -24,7 +24,7 @@ return [
 
 	'auth' => [
 		// allow any user to register
-		'public-users-can-register' => env('REGISTRATIONS_ENABLED', true),
+		'public-users-can-register' => env('REGISTRATIONS_ENABLED', false),
 
 		// force email verification after registration
 		'email-verification-required' => false,
