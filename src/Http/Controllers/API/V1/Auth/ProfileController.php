@@ -17,7 +17,7 @@ class ProfileController extends APIBaseController
 	/**
 	 * @var UsersRepository
 	 */
-	private $usersRepo;
+	protected $usersRepo;
 
 	public function __construct(UsersRepository $usersRepo)
 	{
