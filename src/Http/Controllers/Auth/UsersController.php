@@ -16,7 +16,7 @@ class UsersController extends Controller
 	/**
 	 * @var UsersRepository
 	 */
-	private $usersRepo;
+	protected $usersRepo;
 
 	protected $indexRoute;
 

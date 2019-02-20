@@ -11,7 +11,7 @@
         ['Tesla', null, true]
     ]) }}
 
-    {{ lotus()->emptyStatePanel('Welcome to ' . config('app.name'), "Development in progress...") }}
+    {{ lotus()->emptyStatePanel('Welcome to ' . config('app.name'), 'Today is ' . now()->format(config('oxygen.dateFormat'))) }}
 
     @if ($metrics->count())
         <div class="row mt-4">
