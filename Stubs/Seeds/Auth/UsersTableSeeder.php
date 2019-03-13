@@ -29,12 +29,14 @@ class UsersTableSeeder extends Seeder
 
 		foreach(range(1, 50) as $index)
 		{
-			User::create([
+			$user = User::create([
 				'name' => $faker->firstName,
 				'last_name' => $faker->lastName,
 				'email' => $faker->email,
 				'password' => bcrypt('123456'),
 			]);
+
+			$user->assign('user');
 		}
 	}
 
