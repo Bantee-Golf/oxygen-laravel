@@ -39,7 +39,7 @@ This package is intended to be installed on a **new Laravel project**. You'll be
 
 1) Create a new Laravel project and go to the directory
 ```
-composer create-project --prefer-dist laravel/laravel [project-name]
+composer create-project --prefer-dist laravel/laravel="5.7.*" [project-name]
 cd [project-name]
 ```
 
