@@ -81,7 +81,7 @@ class GroupsController extends Controller
 
 		$pageTitle = 'Manage Groups';
 
-		return view('oxygen::groups.groups-all', compact('rolesData', 'availableRoles', 'user', 'users', 'pageTitle'));
+		return view('oxygen::groups.groups-all', compact('rolesData', 'availableRoles', 'users', 'pageTitle'));
 	}
 
 	/**
