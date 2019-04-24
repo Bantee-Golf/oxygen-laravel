@@ -24,8 +24,9 @@ Route::post('logout',   'Auth\LoginController@logout');
 // Registration Routes...
 if (has_feature('auth.public-users-can-register')) {
 	Route::get( 'register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-	Route::post('register', 'Auth\RegisterController@register');
 }
+// The post registration route needs to be open for regular and invitations
+Route::post('register', 'Auth\RegisterController@register')->name('register.store');
 
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');

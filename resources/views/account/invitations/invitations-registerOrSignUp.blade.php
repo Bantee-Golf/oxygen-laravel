@@ -20,7 +20,7 @@
                         </div>
                         <div id="collapseOne" class="collapse @if (!$plausibleUser) show @endif" aria-labelledby="headingOne" data-parent="#accordion">
                             <div class="card-body">
-                                <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
+                                <form class="form-horizontal" role="form" method="POST" action="{{ route('register.store') }}">
                                     @csrf
                                     <input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
 
