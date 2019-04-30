@@ -36,7 +36,7 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="custom_key" name="custom_key" value="{{ $entity->custom_key }}">
                             <small id="currentPasswordHelpBlock" class="form-text text-muted">
-                                (Optional) Add a custom, unique key if not selecting a pre-defined file type.
+                                (Optional) Add a custom, unique key if not selecting a pre-defined file type. Leave empty to auto-generate.
                             </small>
                         </div>
                     </div>

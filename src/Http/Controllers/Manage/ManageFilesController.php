@@ -12,6 +12,7 @@ use EMedia\Formation\Builder\Formation;
 use EMedia\QuickData\Entities\Search\SearchFilter;
 use Illuminate\Http\Request;
 use Spatie\Html\Elements\Form;
+use Webpatser\Uuid\Uuid;
 
 class ManageFilesController extends Controller
 {
@@ -138,7 +139,8 @@ class ManageFilesController extends Controller
 	{
 		$this->validate($request, [
 			'file' => 'required|file',
-			'key' => 'required|unique:files,key',
+			// 'key' => 'required|unique:files,key',
+			'key' => 'required',
 		]);
 
 		$fh = new FileUploader($request);
@@ -151,8 +153,19 @@ class ManageFilesController extends Controller
 			$fileKey = $request->key;
 			if ($fileKey === 'other') $fileKey = null;
 
-			if (empty($fileKey) && !empty($request->custom_key)) {
-				$fileKey = snake_case($request->custom_key);
+			// make sure the key is valid
+			if (empty($fileKey)) {
+				if (empty($request->custom_key)) {
+					$fileKey = Uuid::generate(4);
+				} else {
+					$fileKey = snake_case($request->custom_key);
+				}
+			}
+
+			$file = $this->dataRepo->findByKey($fileKey);
+
+			if ($file) {
+				return back()->with('error', "A file with a key `{$fileKey}` already exists. Add a unique custom key, or leave the key field empty to auto-generate a unique key.");
 			}
 
 			$file = new File([
