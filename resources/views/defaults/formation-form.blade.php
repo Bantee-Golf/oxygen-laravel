@@ -3,7 +3,7 @@
 @section ('content')
     {{ lotus()->pageHeadline($pageTitle) }}
 
-    <form action="{{ entity_resource_path() }}" method="post" class="form-horizontal">
+    <form action="{{ entity_resource_path() }}" method="post" class="form-horizontal" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         @if ($entity->id)
