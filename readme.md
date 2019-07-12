@@ -1,10 +1,15 @@
-# Oxygen - Admin Dashboard for Laravel 5.7+
+# Oxygen - Admin Dashboard for Laravel 5.8+
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
 
-### [For Laravel 5.2, use version `0.1.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/4f121b0574945a6278979f696b59f0c20637735c/?at=0.1.4)
-### [For Laravel 5.4, use version `1.0.8`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/9124e7b33c645709867634134121fd9c407ffb73/?at=1.0.8)
-### For Laravel 5.6, use version `1.1`
+
+[For Laravel 5.7, use version `2.2.20`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.2.20/)
+
+[For Laravel 5.2, use version `0.1.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/4f121b0574945a6278979f696b59f0c20637735c/?at=0.1.4)
+
+[For Laravel 5.4, use version `1.0.8`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/9124e7b33c645709867634134121fd9c407ffb73/?at=1.0.8)
+
+For Laravel 5.6, use version `1.1`
 
 ## Summary
 
@@ -25,7 +30,7 @@ This package has the built-in support for the following.
 
 The following are required for a successful installation.
 
-- [Laravel 5.7+](https://laravel.com/docs/5.7)
+- [Laravel 5.8+](https://laravel.com/docs/5.8)
 
 To install CSS JS for the dashboard, the following are required.
 
@@ -39,7 +44,7 @@ This package is intended to be installed on a **new Laravel project**. You'll be
 
 1) Create a new Laravel project and go to the directory
 ```
-composer create-project --prefer-dist laravel/laravel="5.7.*" [project-name]
+composer create-project --prefer-dist laravel/laravel="5.8.*" [project-name]
 cd [project-name]
 ```
 
@@ -278,7 +283,7 @@ git reset --hard && git clean -fd
 ```
 public function boot()
 {
-    \Silber\Bouncer\Database\Models::setUsersModel(NewUserClass::class);
+    \Silber\Bouncer\BouncerFacade::useUserModel(\Auth\NewUserClass::class);
 }
 ``` 
 

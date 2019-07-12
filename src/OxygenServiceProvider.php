@@ -4,11 +4,10 @@ namespace EMedia\Oxygen;
 
 use EMedia\Oxygen\Commands\CreateNewUserCommand;
 use EMedia\Oxygen\Commands\Scaffolding\ScaffoldViewsCommand;
-use Illuminate\Support\Facades\Schema;
 use EMedia\Oxygen\Commands\OxygenSetupCommand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
-use Silber\Bouncer\Database\Models;
+use Silber\Bouncer\BouncerFacade;
 use Illuminate\Database\Schema\Blueprint;
 
 class OxygenServiceProvider extends ServiceProvider
@@ -16,9 +15,6 @@ class OxygenServiceProvider extends ServiceProvider
 
 	public function boot()
 	{
-		// Add support for earlier versions before MySQL 5.7.7
-		Schema::defaultStringLength(191);
-
 		// load default views
 		$this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen');
 
@@ -37,22 +33,10 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__ . '/../resources/js' => base_path('resources/js'),
 		], 'source-js');
 
-		// public static assets (JS, CSS etc)
-//		$this->publishes([
-//			__DIR__ . '/../public_html/js/theme'  => public_path('/js/theme'),
-//			__DIR__ . '/../public_html/css' => public_path('/css'),
-//			__DIR__ . '/../public_html/favicon.ico' => public_path('/favicon.ico'),
-//		], 'public-assets');
-
 		// publish common entities
 		$this->publishes([
 			__DIR__ . '/../Stubs/Entities' => app_path('Entities'),
 		], 'entities');
-
-//		// publish common controllers
-//		$this->publishes([
-//			__DIR__ . '/../Stubs/Http/Controllers/Common' => app_path('Http/Controllers'),
-//		], 'common-controllers');
 
 		// publish Auth controllers
 		$this->publishes([
@@ -77,6 +61,12 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__.'/../Stubs/config/oxygen.php' => config_path('oxygen.php'),
 			__DIR__.'/../Stubs/config/features.php' => config_path('features.php')
 		], 'oxygen-config');
+
+		// set custom models for abilities and roles
+		$abilityModel = config('oxygen.abilityModel');
+		if ($abilityModel) BouncerFacade::useAbilityModel($abilityModel);
+		$roleModel = config('oxygen.roleModel');
+		if ($roleModel) BouncerFacade::useRoleModel($roleModel);
 
 		$this->registerCustomValidators();
 
@@ -105,10 +95,6 @@ class OxygenServiceProvider extends ServiceProvider
 		}
 
 		$this->commands(CreateNewUserCommand::class);
-
-		Models::setAbilitiesModel(config('oxygen.abilityModel'));
-		Models::setRolesModel(config('oxygen.roleModel'));
-		// Models::setUsersModel(config('oxygen.model'));
 
 		$this->registereDatabaseMacros();
 	}

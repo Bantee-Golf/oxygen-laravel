@@ -47,24 +47,31 @@ trait SeedsPermissions
 	 * @param $roleName
 	 *
 	 * @return mixed
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	private function getRoleByName($roleName, $fieldName = 'name')
 	{
 		$role = $this->roleModel->where($fieldName, $roleName)->first();
 
 		if (empty($role))
-			throw new Exception("Role not found with the name {$roleName}");
+			throw new \Exception("Role not found with the name {$roleName}");
 
 		return $role;
 	}
 
+	/**
+	 * @param        $roleNames
+	 * @param string $fieldName
+	 *
+	 * @return mixed
+	 * @throws \Exception
+	 */
 	private function getRolesByName($roleNames, $fieldName = 'name')
 	{
 		$roles = $this->roleModel->whereIn($fieldName, $roleNames)->get();
 
 		if ($roles->isEmpty())
-			throw new Exception("Roles not found for the given names " . implode(', ', $roleNames));
+			throw new \Exception("Roles not found for the given names " . implode(', ', $roleNames));
 
 		return $roles;
 	}
