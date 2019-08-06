@@ -5,7 +5,7 @@ Route::group([
 	'namespace' => '\App\Http\Controllers\API\V1'
 ], function() {
 
-	if (env('API_ACTIVE', false)) {
+	if (config('features.api_active')) {
 		Route::post('/register', 'Auth\AuthController@register');
 		Route::post('/login',    'Auth\AuthController@login');
 		Route::post('/password/email', 'Auth\ForgotPasswordController@checkRequest');
