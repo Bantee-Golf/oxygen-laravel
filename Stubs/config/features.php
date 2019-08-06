@@ -39,6 +39,8 @@ return [
 	'security' => [
 		// to reduce spam contacts, enable recaptcha on .env file
 		'recaptcha_enabled' => env('RECAPTCHA_ENABLED', false),
-	]
+	],
+
+	'api_active' => env('API_ACTIVE', false),
 
 ];
