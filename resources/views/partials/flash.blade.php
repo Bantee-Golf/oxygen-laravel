@@ -16,6 +16,15 @@
     </div>
 @endif
 
+@if (Session::has('status'))
+    <div class="container alert-container">
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+            <span>{{ Session::get('status') }} </span>
+        </div>
+    </div>
+@endif
+
 @if (Session::has('error'))
     <div class="container alert-container">
         <div class="alert alert-danger">
