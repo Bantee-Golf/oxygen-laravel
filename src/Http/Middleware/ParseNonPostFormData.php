@@ -24,7 +24,7 @@ class ParseNonPostFormData
             preg_match('/multipart\/form-data/', $request->headers->get('content-type'))
         ) {
             $params = array();
-            new ParseInputStream($params);
+            new \EMedia\Oxygen\Helpers\ParseInputStream($params);
             $request->request->add($params);
 
         }
