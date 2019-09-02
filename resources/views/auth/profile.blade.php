@@ -32,6 +32,20 @@
 							</div>
 						@endif
 
+						@if(config('features.auth.timezone-enabled'))
+						<div class="form-group row">
+						    <label for="timezone" class="col-sm-2 col-form-label">{{ __('Time Zone') }}</label>
+						    <div class="col-sm-10">
+						        {!!
+						            \EMedia\PHPHelpers\DateTime\Timing::timezoneSelector(old('timezone', $user->timezone), null, [
+						                'class' => 'form-control',
+						                'required' => config('features.auth.timezone-required')
+						            ])
+						        !!}
+						    </div>
+						</div>
+						@endif
+
 						<hr>
 						<div class="form-group row">
 							<div class="col-sm-10 offset-2">

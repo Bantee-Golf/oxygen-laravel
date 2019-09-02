@@ -80,11 +80,17 @@ class RegisterController extends Controller
 	 */
 	protected function create(array $data)
 	{
-		return User::create([
+		$attributes = [
 			'name' => $data['name'],
 			'email' => $data['email'],
 			'password' => bcrypt($data['password']),
-		]);
+		];
+
+		if (config('features.auth.timezone-enabled') && !empty($data['timezone'])) {
+			$attributes['timezone'] = $data['timezone'];
+		}
+
+		return User::create();
 	}
 
 

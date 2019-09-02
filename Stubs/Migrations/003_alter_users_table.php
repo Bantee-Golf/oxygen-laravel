@@ -29,6 +29,8 @@ class AlterUsersTable extends Migration
 
 			$table->softDeletes();
 			$table->integer('deleted_by_user_id')->nullable()->references('id')->on('users');
+
+			$table->string('timezone')->default('Australia/Melbourne');
 		});
 	}
 

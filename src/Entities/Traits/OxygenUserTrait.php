@@ -55,9 +55,15 @@ trait OxygenUserTrait
 
 	public function getProfileUpdatableFields()
 	{
-		return [
+		$fields = [
 			'name',
 		];
+
+		if (config('features.auth.timezone-enabled')) {
+			$fields[] = 'timezone';
+		}
+
+		return $fields;
 	}
 
 	/**
