@@ -155,6 +155,9 @@ class RegisterController extends Controller
 				// add this role when the user registers
 				$user->roles()->attach($role->id);
 			}
+			
+			$this->redirectTo = $user->isA(['admin', 'super-admin']) ? '/dashboard' : '/';
+			
 			Session::flash('success', 'Your account has been created and you\'re now logged in.');
 		}
 
