@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5f908c70861af0deac0b9df571f5e54",
+    "content-hash": "634ca46541cfbc1130b61167f477b2cc",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1149,11 +1149,11 @@
         },
         {
             "name": "emedia/php-helpers",
-            "version": "1.0.8",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:elegantmedia/php-helpers.git",
-                "reference": "346ca6827c4287c1e100f7d83c1035f0bc33296d"
+                "reference": "59943e0d2e53bf684dbc0cce3d41b6ebd9a81552"
             },
             "require": {
                 "illuminate/support": "^5.7",
@@ -1184,7 +1184,7 @@
                 }
             ],
             "description": "PHP Helper functions and static classes",
-            "time": "2019-05-06T14:06:18+00:00"
+            "time": "2019-09-03T06:52:13+00:00"
         },
         {
             "name": "emedia/quick-data-laravel",
