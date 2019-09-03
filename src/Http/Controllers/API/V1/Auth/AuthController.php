@@ -45,18 +45,16 @@ class AuthController extends APIBaseController
 		document(function () {
 			return (new APICall)->setName('Register')
 				->setParams([
+					(new Param('email')),
+					(new Param('password', 'string', 'Password. Must be at least 6 characters.'))->setDefaultValue('123456'),
+					(new Param('password_confirmation'))->setDefaultValue('123456'),
+					(new Param('first_name'))->setDefaultValue('Joe')->optional(),
+					(new Param('last_name'))->setDefaultValue('Johnson')->optional(),
 					(new Param('device_id', 'String', 'Unique ID of the device')),
 					(new Param('device_type', 'String', 'Type of the device `APPLE` or `ANDROID`')),
 					(new Param('device_push_token', 'String', 'Unique push token for the device'))->optional(),
-
-					(new Param('first_name'))->setDefaultValue('Joe')->optional(),
-					(new Param('last_name'))->setDefaultValue('Johnson')->optional(),
 					(new Param('phone'))->optional(),
-					(new Param('email')),
-
-					(new Param('password', 'string',
-						'Password. Must be at least 6 characters.'))->setDefaultValue('123456'),
-					(new Param('password_confirmation'))->setDefaultValue('123456'),
+					(new Param('timezone'))->optional(),
 				])
 				->noDefaultHeaders()
 				->setHeaders([
@@ -86,9 +84,10 @@ class AuthController extends APIBaseController
 			'device_type' => 'required',
 		]);
 
-		$data = $request->only(['first_name', 'last_name', 'email', 'password', 'phone']);
+		$data = $request->only(['first_name', 'last_name', 'email', 'password', 'phone', 'timezone']);
 		$data['password'] = bcrypt($data['password']);
 		$user = $this->usersRepository->create($data);
+		$user->fresh();
 
 		$responseData = $user->toArray();
 		$deviceData = $request->only(['device_id', 'device_type', 'device_push_token']);
