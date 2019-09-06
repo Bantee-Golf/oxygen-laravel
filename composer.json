@@ -54,7 +54,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "laravel/framework": "6.0",
+        "laravel/framework": "^6.0",
         "silber/bouncer": "v1.0.0-rc.6",
         "emedia/quick-data-laravel": "~2.0",
         "emedia/generators": "~2.0",
