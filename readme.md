@@ -1,15 +1,19 @@
-# Oxygen - Admin Dashboard for Laravel 5.8+
+# Oxygen - Admin Dashboard for Laravel 6.0+
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
 
 
+[For Laravel 5.8, use version `2.3.1`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.3.1/)
+
 [For Laravel 5.7, use version `2.2.20`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.2.20/)
 
-[For Laravel 5.2, use version `0.1.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/4f121b0574945a6278979f696b59f0c20637735c/?at=0.1.4)
+[For Laravel 5.6, use version `1.1.6`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/1.1.6/)
 
-[For Laravel 5.4, use version `1.0.8`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/9124e7b33c645709867634134121fd9c407ffb73/?at=1.0.8)
+[For Laravel 5.4, use version `1.0.8`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/1.0.8/)
 
-For Laravel 5.6, use version `1.1`
+[For Laravel 5.3, use version `0.3.2`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/0.3.2/)
+
+[For Laravel 5.2, use version `0.1.4`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/0.1.4/)
 
 ## Summary
 
@@ -30,7 +34,7 @@ This package has the built-in support for the following.
 
 The following are required for a successful installation.
 
-- [Laravel 5.8+](https://laravel.com/docs/5.8)
+- [Laravel 6.0+](https://laravel.com/docs/6.0)
 
 To install CSS JS for the dashboard, the following are required.
 
@@ -44,12 +48,12 @@ This package is intended to be installed on a **new Laravel project**. You'll be
 
 1) Create a new Laravel project and go to the directory
 ```
-composer create-project --prefer-dist laravel/laravel="5.8.*" [project-name]
+composer create-project --prefer-dist laravel/laravel="6.0.*" [project-name]
 cd [project-name]
 ```
 
 
-2) Update `composer.json`. 
+2) Update `composer.json`.
 
 This package and some dependent packages are available in private repositories. Change the `repositories` section to add the new repository, or create a new section in the file.
 
@@ -197,7 +201,7 @@ auth.acl:roles[owner|admin]
 auth.acl:permissions[do-something]
 
 // User must have both permissions. `do-something` AND `do-another-thing`
-auth.acl:permissions[do-something|do-another-thing]	
+auth.acl:permissions[do-something|do-another-thing]
 
 // User must have at least one permission `do-something` OR `do-something-else`
 auth.acl:permissions[do-something OR do-something-else]
@@ -205,7 +209,7 @@ auth.acl:permissions[do-something OR do-something-else]
 
 ### API Key Check Middleware
 
-Call the `auth.api` middleware to verify API keys before hitting specific routes. The middleware will look for `X-Api-Key` field in HTTP header. 
+Call the `auth.api` middleware to verify API keys before hitting specific routes. The middleware will look for `X-Api-Key` field in HTTP header.
 
 You should provide the valid API Keys in the `.env` file.
 
@@ -249,7 +253,7 @@ Oxygen by default has a lot of built-in functions. Please read all the docs to u
 
 ## After Installation
 
-- You can add new features to existing controllers as needed. 
+- You can add new features to existing controllers as needed.
 - If you need to change the default behaviour, you can create new classes or extend from the classes in the `Oxygen` package.
 
 
@@ -285,7 +289,7 @@ public function boot()
 {
     \Silber\Bouncer\BouncerFacade::useUserModel(\Auth\NewUserClass::class);
 }
-``` 
+```
 
 #### What are the logins?
 
