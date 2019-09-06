@@ -64,7 +64,7 @@
         "emedia/multi-tenant": "0.1.*",
         "doctrine/dbal": "^2.9",
         "emedia/devices-laravel": "^1.0",
-        "cviebrock/eloquent-sluggable": "^4.8",
+        "cviebrock/eloquent-sluggable": "^6.0",
         "laravelcollective/html": "^6.0",
         "barryvdh/laravel-debugbar": "^3.2",
         "google/recaptcha": "^1.2",
