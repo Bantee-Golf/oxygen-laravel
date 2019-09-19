@@ -61,6 +61,22 @@ class AuthController extends APIBaseController
 					(new Param('Accept', 'String', '`application/json`'))->setDefaultValue('application/json'),
 					(new Param('x-api-key', 'String', 'API Key'))->setDefaultValue('123-123-123-123'),
 				])
+				->setSuccessExample('{
+					"payload": {
+						"id": 31,
+						"uuid": "6dfb4b23-df73-49d1-90ab-a3118cc170ed",
+						"name": "null",
+						"last_name": "null",
+						"email": "test@example.com",
+						"avatar_url": null,
+						"first_name": "null",
+						"full_name": "null null",
+						"timezone": "Australia/Melbourne",
+						"access_token": "1540054802BbiqclNMqujaIgfGzRMjsdds8a9M4HvBxPg"
+					},
+					"message": "",
+					"result": true
+				}')
 				->setErrorExample('{
 					"message": "The email must be a valid email address.",
 					"payload": {
@@ -135,6 +151,7 @@ class AuthController extends APIBaseController
 						"avatar_url": null,
 						"first_name": "null",
 						"full_name": "null null",
+						"timezone": "Australia/Melbourne",
 						"access_token": "1540054802BbiqclNMqujaIgfGzRMjsdds8a9M4HvBxPg"
 					},
 					"message": "",
