@@ -132,7 +132,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 		$defaultDomain = 'localhost.dev';
 		if (!empty($userInput['projectName'])) {
-			$defaultDomain = str_slug($userInput['projectName']) . '.devv';
+			$defaultDomain = \Illuminate\Support\Str::slug($userInput['projectName']) . '.devv';
 		}
 		$userInput['devMachineUrl'] = ($this->option('devurl')) ?? $this->anticipate('What is the local development URL? (Press ENTER key for default)', [], $defaultDomain);
 		// $userInput['dashboardType']  = $this->choice('What should be the type of the dashboard?', ['HTML/CSS (Default)', 'Angular'], 0);

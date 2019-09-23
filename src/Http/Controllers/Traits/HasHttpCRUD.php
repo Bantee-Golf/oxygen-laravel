@@ -69,7 +69,7 @@ trait HasHttpCRUD
 
 		if (!$this->entityPlural) throw new \InvalidArgumentException("`entityPlural` value must be set in the controller");
 
-		return str_singular($this->entityPlural);
+		return \Illuminate\Support\Str::singular($this->entityPlural);
 	}
 
 	/**

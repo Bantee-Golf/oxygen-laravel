@@ -6,6 +6,7 @@ use App\Entities\Auth\AbilityCategoryRepository;
 use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use App\Http\Controllers\Controller;
 use Bouncer;
 
