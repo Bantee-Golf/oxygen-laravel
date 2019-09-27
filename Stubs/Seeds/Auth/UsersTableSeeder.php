@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
 		User::create([
 			'name'	 => 'Bruce Wayne (REGULAR USER)',
 			'email'	 => 'apps+user@elegantmedia.com.au',
-			'password' => bcrypt('123456')
+			'password' => bcrypt('12345678')
 		]);
 
 		foreach(range(1, 50) as $index)
@@ -33,7 +33,7 @@ class UsersTableSeeder extends Seeder
 				'name' => $faker->firstName,
 				'last_name' => $faker->lastName,
 				'email' => $faker->email,
-				'password' => bcrypt('123456'),
+				'password' => bcrypt('12345678'),
 			]);
 
 			$user->assign('user');
@@ -46,12 +46,12 @@ class UsersTableSeeder extends Seeder
 			[
 				'name'	 => 'Peter Parker (SUPER ADMIN)',
 				'email'	 => 'apps@elegantmedia.com.au',
-				'password' => bcrypt('123456')
+				'password' => bcrypt('12345678')
 			],
 			[
 				'name'	 => 'Tony Stark (ADMIN)',
 				'email'	 => 'apps+admin@elegantmedia.com.au',
-				'password' => bcrypt('123456')
+				'password' => bcrypt('12345678')
 			],
 		];
 
