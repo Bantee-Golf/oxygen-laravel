@@ -762,14 +762,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$this->info('');
 
 
-		if (count($this->progressLog['files'])) {
+		if (is_countable($this->progressLog['files']) && count($this->progressLog['files'])) {
 			$this->info('Check these files for accuracy.');
 
 			$headers = ['File', 'What you should check'];
 			$this->table($headers, $this->progressLog['files']);
 		}
 
-		if (count($this->progressLog['instructions'])) {
+		if (is_countable($this->progressLog['instructions']) && count($this->progressLog['instructions'])) {
 			$this->info('Run these commands in order to complete the build process.');
 
 			$headers = ['ID', 'CLI Command', 'What it does'];
@@ -786,7 +786,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		foreach ($this->progressLog['info'] as $message)
 			$this->info($message);
 
-		if (count($this->progressLog['errors'])) {
+		if (is_countable($this->progressLog['errors']) && count($this->progressLog['errors'])) {
 			$this->error('THESE ERRORS WERE DETECTED:');
 			foreach ($this->progressLog['errors'] as $message)
 				$this->error($message);
@@ -806,7 +806,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			if (!empty($file['unique_file_id'])) {
 				// match if a file already exists by the file name match
 				$existingFiles = glob($file['destination_path'] . DIRECTORY_SEPARATOR . "*{$file['unique_file_id']}*");
-				if (count($existingFiles)) {
+				if (is_countable($existingFiles) && count($existingFiles)) {
 					if (!$this->confirm("{$file['unique_file_id']} file already exists. Create another?", false)) {
 						continue;
 					}
@@ -838,7 +838,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	protected function updateReadMeFile()
 	{
-		if (count($this->progressLog['instructions'])) {
+		if (is_countable($this->progressLog['instructions']) && count($this->progressLog['instructions'])) {
 			$title = '## Local Development Setup Instructions';
 			$filePath = base_path('readme.md');
 
@@ -856,7 +856,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 			for ($i = 0, $iMax = count($this->progressLog['instructions']); $i < $iMax; $i++) {
 				$instruction = $this->progressLog['instructions'][$i];
-				if (count($instruction) === 2) {
+				if (is_countable($instruction) && count($instruction) === 2) {
 					$lines[] = "- `{$instruction[0]}` - {$instruction[1]}";
 				} else {
 					$lines[] = "- " . $instruction[0];

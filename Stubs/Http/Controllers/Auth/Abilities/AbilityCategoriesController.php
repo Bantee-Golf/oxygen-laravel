@@ -110,7 +110,7 @@ class AbilityCategoriesController extends Controller
 
 		$errors = [];
 		$updatedAbilityIds = [];
-		for ($i = 0; $i < count($abilityIds); $i++) {
+		for ($i = 0; $i < (is_countable($abilityIds) ? count($abilityIds) : 0); $i++) {
 			// if there's a record, update it, else, create new
 			$abilityId = $abilityIds[$i];
 			$name = $abilityNames[$i];
