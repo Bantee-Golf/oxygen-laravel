@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "694e1afa327284c1c6cb4d84dffaab7c",
+    "content-hash": "167df2ed5566e9a1eba11b2c779e3421",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.5",
+            "version": "3.112.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5c6f05d68576f845a8391b83020b480840eca759"
+                "reference": "224955fcb7ca9edc8de3e4147c0b180aeaee5a48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5c6f05d68576f845a8391b83020b480840eca759",
-                "reference": "5c6f05d68576f845a8391b83020b480840eca759",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/224955fcb7ca9edc8de3e4147c0b180aeaee5a48",
+                "reference": "224955fcb7ca9edc8de3e4147c0b180aeaee5a48",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-20T22:08:27+00:00"
+            "time": "2019-09-26T18:13:00+00:00"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -759,17 +759,17 @@
         },
         {
             "name": "emedia/api",
-            "version": "2.2.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:elegantmedia/laravel-api-helpers.git",
-                "reference": "a8f0714b402ff738abf3cd6d87c04788fb168682"
+                "reference": "638bfd01fa70f70c5ce88248a6697c9a18e79ca8"
             },
             "require": {
-                "illuminate/database": "^5.7|^6.0",
-                "illuminate/http": "^5.7|^6.0",
-                "illuminate/support": "^5.7|^6.0",
-                "php": "^7.1"
+                "illuminate/database": "^6.0",
+                "illuminate/http": "^6.0",
+                "illuminate/support": "^6.0",
+                "php": "^7.2"
             },
             "type": "package",
             "extra": {
@@ -797,8 +797,8 @@
                     "email": "shane@elegantmedia.com.au"
                 }
             ],
-            "description": "API and custom response helpers for Laravel 5",
-            "time": "2019-09-19T09:29:34+00:00"
+            "description": "API and custom response helpers for Laravel 6",
+            "time": "2019-09-27T07:56:08+00:00"
         },
         {
             "name": "emedia/app-settings",
@@ -886,11 +886,11 @@
         },
         {
             "name": "emedia/file-control",
-            "version": "2.1.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:elegantmedia/file-control-laravel.git",
-                "reference": "8575e589c88ba4b80ce9cc2454156e30637ff21a"
+                "reference": "b630170ca6b146ecf5f3748b8469237a49082fc5"
             },
             "require": {
                 "emedia/helpers": "^2.0|^3.0",
@@ -923,21 +923,21 @@
                 }
             ],
             "description": "Upload files to local disk or AWS S3 with auto-generating image thumbnails.",
-            "time": "2019-09-20T10:58:10+00:00"
+            "time": "2019-09-27T08:14:16+00:00"
         },
         {
             "name": "emedia/formation",
-            "version": "0.2.0",
+            "version": "0.2.2",
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:elegantmedia/formation.git",
-                "reference": "ab6684f17581c44e90f7a0118e00b144b74c9a60"
+                "reference": "a71fc6f50fcecee7cc6f090980e98bc15e760dd2"
             },
             "require": {
-                "emedia/lotus": "~1.1",
-                "illuminate/session": "^5.4.0|^6.0",
-                "illuminate/support": "^5.4.0|^6.0",
-                "php": ">=5.6"
+                "emedia/lotus": "~1.2",
+                "illuminate/session": "^6.0",
+                "illuminate/support": "^6.0",
+                "php": "^7.2"
             },
             "type": "package",
             "autoload": {
@@ -954,8 +954,8 @@
                     "email": "shane@elegantmedia.com.au"
                 }
             ],
-            "description": "Form generator library for Laravel 5",
-            "time": "2019-09-23T03:42:39+00:00"
+            "description": "Form generator library for Laravel 6",
+            "time": "2019-09-27T08:31:37+00:00"
         },
         {
             "name": "emedia/generators",
@@ -963,7 +963,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:elegantmedia/laravel-generators.git",
-                "reference": "5b192b58e2486bad4711c498d88e6f81af6185c6"
+                "reference": "79f5364f3257e1ffdcc64564a95b181a582f6af0"
             },
             "require": {
                 "emedia/quick-data-laravel": "~3.0",
@@ -992,8 +992,8 @@
                     "email": "shane@elegantmedia.com.au"
                 }
             ],
-            "description": "Scaffolding Generator Package for Laravel 5",
-            "time": "2019-09-20T04:43:55+00:00"
+            "description": "Scaffolding Generator Package for Laravel 6",
+            "time": "2019-09-23T12:26:13+00:00"
         },
         {
             "name": "emedia/helpers",
@@ -1001,7 +1001,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:elegantmedia/laravel-helpers.git",
-                "reference": "485c74a830450b4a6fe816e5e826b18fc7f8ca10"
+                "reference": "2d2ec8433a093ea144b4bba6a4dca39b03fb8731"
             },
             "require": {
                 "emedia/php-helpers": "~1.1",
@@ -1035,7 +1035,7 @@
                 }
             ],
             "description": "Laravel 6 Helper functions and static classes",
-            "time": "2019-09-20T10:46:08+00:00"
+            "time": "2019-09-27T08:50:56+00:00"
         },
         {
             "name": "emedia/lotus",
@@ -1088,7 +1088,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:elegantmedia/mediamanager-laravel.git",
-                "reference": "b6508e4a2a5586096371da39544f76d8292e4aca"
+                "reference": "27012c7e751ba80fe666305cf357e7a7adb394d5"
             },
             "require": {
                 "illuminate/support": "^6.0",
@@ -1118,7 +1118,7 @@
                 }
             ],
             "description": "Media management package for Laravel 5",
-            "time": "2019-09-20T10:38:31+00:00"
+            "time": "2019-09-23T12:35:54+00:00"
         },
         {
             "name": "emedia/multi-tenant",
@@ -1191,11 +1191,11 @@
         },
         {
             "name": "emedia/quick-data-laravel",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:elegantmedia/quickdata-laravel.git",
-                "reference": "af3e387d8b394b4952cc69c2821d90c1ecb9c8b3"
+                "reference": "d1b5f371b7d75d12ea8960230a5fb2f7f79241ca"
             },
             "require": {
                 "cviebrock/eloquent-sluggable": "^6.0",
@@ -1230,7 +1230,7 @@
                 }
             ],
             "description": "Gives basic CRUD handling and automatic relationship (nested) saving.",
-            "time": "2019-09-19T10:14:16+00:00"
+            "time": "2019-09-27T10:07:52+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -1584,16 +1584,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v6.0.3",
+            "version": "v6.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "56789e9dec750e0fbe8e9e6ae90a01a4e6887902"
+                "reference": "372e0add8a58e0e3deb78f87cbb2dc40d3e0ff08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/56789e9dec750e0fbe8e9e6ae90a01a4e6887902",
-                "reference": "56789e9dec750e0fbe8e9e6ae90a01a4e6887902",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/372e0add8a58e0e3deb78f87cbb2dc40d3e0ff08",
+                "reference": "372e0add8a58e0e3deb78f87cbb2dc40d3e0ff08",
                 "shasum": ""
             },
             "require": {
@@ -1725,20 +1725,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-09-10T18:46:24+00:00"
+            "time": "2019-09-24T13:40:36+00:00"
         },
         {
             "name": "laravelcollective/html",
-            "version": "v6.0.1",
+            "version": "v6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "4aecb0bb71013d1218c70ee02b011944840dcb60"
+                "reference": "2f181aba73390eec13d398bf57877b1cc3bc2588"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/4aecb0bb71013d1218c70ee02b011944840dcb60",
-                "reference": "4aecb0bb71013d1218c70ee02b011944840dcb60",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/2f181aba73390eec13d398bf57877b1cc3bc2588",
+                "reference": "2f181aba73390eec13d398bf57877b1cc3bc2588",
                 "shasum": ""
             },
             "require": {
@@ -1793,7 +1793,7 @@
             ],
             "description": "HTML and Form Builders for the Laravel Framework",
             "homepage": "https://laravelcollective.com",
-            "time": "2019-09-05T12:33:18+00:00"
+            "time": "2019-09-23T06:16:50+00:00"
         },
         {
             "name": "league/flysystem",
@@ -2734,16 +2734,16 @@
         },
         {
             "name": "spatie/laravel-html",
-            "version": "2.23.0",
+            "version": "2.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-html.git",
-                "reference": "a07f4f90339e17a192f503020a565a22e01aa656"
+                "reference": "577ac734b4a1e8e5ab7a5a382d10b4e57f8020d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-html/zipball/a07f4f90339e17a192f503020a565a22e01aa656",
-                "reference": "a07f4f90339e17a192f503020a565a22e01aa656",
+                "url": "https://api.github.com/repos/spatie/laravel-html/zipball/577ac734b4a1e8e5ab7a5a382d10b4e57f8020d5",
+                "reference": "577ac734b4a1e8e5ab7a5a382d10b4e57f8020d5",
                 "shasum": ""
             },
             "require": {
@@ -2798,7 +2798,7 @@
                 "html",
                 "spatie"
             ],
-            "time": "2019-09-03T17:56:16+00:00"
+            "time": "2019-09-24T19:35:00+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
