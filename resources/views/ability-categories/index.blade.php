@@ -22,7 +22,7 @@
 
         {{--<br/><br />--}}
 
-        @if (count($allItems))
+        @if (is_countable($allItems) && count($allItems))
             <table class="table table-hover">
 
                 {{ lotus()->tableHeader('Permission Category', 'Permissions') }}

@@ -264,7 +264,7 @@ class ParseInputStream
             'files' => []
         ];
 
-        if (count($array['parameters']) > 0) {
+        if (is_countable($array['parameters']) && count($array['parameters']) > 0) {
             foreach($array['parameters'] as $key => $value) {
                 foreach($value as $k => $v) {
                     if (is_array($v)) {
@@ -278,7 +278,7 @@ class ParseInputStream
             }
         }
 
-        if (count($array['files']) > 0) {
+        if (is_countable($array['files']) && count($array['files']) > 0) {
             foreach($array['files'] as $key => $value) {
                 foreach($value as $k => $v) {
                     if (is_array($v)) {
