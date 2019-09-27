@@ -62,7 +62,7 @@
         "laravelcollective/html": "^6.0",
         "silber/bouncer": "v1.0.0-rc.6",
         "webpatser/laravel-uuid": "^3.0",
-        "emedia/api": "^2.2",
+        "emedia/api": "^3.0",
         "emedia/quick-data-laravel": "^3.0",
         "emedia/generators": "^3.0",
         "emedia/lotus": "^1.2",
