@@ -69,7 +69,7 @@
         "emedia/multi-tenant": "^0.2.0",
         "emedia/file-control": "^3.0",
         "emedia/devices-laravel": "^1.1",
-        "emedia/app-settings": "^1.1"
+        "emedia/app-settings": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0"

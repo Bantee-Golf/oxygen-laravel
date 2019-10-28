@@ -3,7 +3,7 @@
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
 
 
-[For Laravel 5.8, use version `2.3.1`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.3.1/)
+[For Laravel 5.8, use version `2.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.3.1/)
 
 [For Laravel 5.7, use version `2.2.20`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.2.20/)
 
@@ -34,10 +34,7 @@ This package has the built-in support for the following.
 
 The following are required for a successful installation.
 
-- [Laravel 6.0+](https://laravel.com/docs/6.0)
-
-To install CSS JS for the dashboard, the following are required.
-
+- PHP 7.2+
 - [NodeJS with NPM or yarn](https://docs.npmjs.com/getting-started/installing-node)
 - [Bower](http://bower.io/#install-bower)
 
@@ -48,7 +45,7 @@ This package is intended to be installed on a **new Laravel project**. You'll be
 
 1) Create a new Laravel project and go to the directory
 ```
-composer create-project --prefer-dist laravel/laravel="6.0.*" [project-name]
+composer create-project --prefer-dist laravel/laravel="6.*" [project-name]
 cd [project-name]
 ```
 
@@ -302,3 +299,7 @@ Don't stay quiet and ignore any issues or improvement suggestions.
 - [Create an Issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues?status=new&status=open)
 - Submit a pull request (on a new branch) or [submit an issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues).
 - **DO NOT** commit new changes directly to the `master` branch. Create a development branch, and then send a pull-request to master, and get someone else to review the code before merging.
+
+## Development Notes
+
+For development of Oxygen and local setup, see `DEVELOPMENT.md`
