@@ -66,7 +66,7 @@ class ScaffoldViewsCommand extends Command
 		$delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
 
 		$vendor = explode($delimiter, $path);
-		if (count($vendor) > 1) {
+		if (is_countable($vendor) && count($vendor) > 1) {
 			$vendorName = $vendor[0];
 			$path = $vendor[1];
 			$resourcePath = resource_path('views' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . $vendorName);

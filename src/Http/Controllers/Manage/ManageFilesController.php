@@ -11,6 +11,7 @@ use EMedia\FileControl\Uploader\FileUploader;
 use EMedia\Formation\Builder\Formation;
 use EMedia\QuickData\Entities\Search\SearchFilter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Spatie\Html\Elements\Form;
 use Webpatser\Uuid\Uuid;
 
@@ -101,7 +102,7 @@ class ManageFilesController extends Controller
 			if ($fileKey === 'other') $fileKey = null;
 
 			if (empty($fileKey) && !empty($request->custom_key)) {
-				$fileKey = snake_case($request->custom_key);
+				$fileKey = Str::snake($request->custom_key);
 			}
 
 			$file->fill([
@@ -158,7 +159,7 @@ class ManageFilesController extends Controller
 				if (empty($request->custom_key)) {
 					$fileKey = Uuid::generate(4);
 				} else {
-					$fileKey = snake_case($request->custom_key);
+					$fileKey = Str::snake($request->custom_key);
 				}
 			}
 

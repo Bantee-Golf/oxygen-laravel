@@ -47,7 +47,7 @@ class RoleRepository extends BaseRepository
 
 	public function getNextSlug($entityName)
 	{
-		$roleName = str_slug($entityName);
+		$roleName = \Illuminate\Support\Str::slug($entityName);
 
 		if ($this->exists($roleName)) {
 			// already in DB, create a new one

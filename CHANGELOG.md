@@ -1,5 +1,10 @@
 # Change Log
 
+## Version 3.0.0
+- Upgraded to support Laravel 6
+- Added Local Development Notes in `DEVELOPMENT.md`
+- Added script to sync source files from main Laravel repo
+
 ## Version 2.2.5
 - Added Input stream parser for PUT requests
 - Changed API profile `POST` to `PUT`

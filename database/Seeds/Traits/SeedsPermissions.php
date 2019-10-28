@@ -92,7 +92,7 @@ trait SeedsPermissions
 	{
 		$query = $this->abilityModel->select();
 
-		if (count($includeCategoryNames) === 0) {
+		if (!is_countable($includeCategoryNames) || count($includeCategoryNames) === 0) {
 			$includeCategoryNames = ['PLACEHOLDER_CATEGORY_NAME_FOR_EMPTY_RESULTS'];
 		}
 		$query->whereHas('category', function ($q) use ($includeCategoryNames, $slugFieldName) {
@@ -100,13 +100,13 @@ trait SeedsPermissions
 		});
 
 		// blacklist
-		if (count($blacklistedAbilityNames) > 0) {
+		if (is_countable($blacklistedAbilityNames) && count($blacklistedAbilityNames) > 0) {
 			$query->whereNotIn($slugFieldName, $blacklistedAbilityNames);
 		}
 		$includeAbilities = $query->get();
 
 		$whitelistedAbilities = new \Illuminate\Database\Eloquent\Collection();
-		if (count($whitelistedAbilityNames) > 0) {
+		if (is_countable($whitelistedAbilityNames) && count($whitelistedAbilityNames) > 0) {
 			$whitelistedAbilities = $this->abilityModel->whereIn($slugFieldName, $whitelistedAbilityNames)->get();
 		}
 
