@@ -1,6 +1,6 @@
 # Oxygen - Admin Dashboard for Laravel 6.0+
 
-![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/96070630-App%20Admin.png)
+![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/501977135-Workbench%20Dashboard%202019-10-28%2012-57-06%20copy.png)
 
 
 [For Laravel 5.8, use version `2.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.3.1/)
