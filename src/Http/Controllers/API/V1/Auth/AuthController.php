@@ -55,6 +55,10 @@ class AuthController extends APIBaseController
 					(new Param('device_push_token', 'String', 'Unique push token for the device'))->optional(),
 					(new Param('phone'))->optional(),
 					(new Param('timezone'))->optional(),
+					(new Param('email')),
+					(new Param('password', 'string',
+						'Password. Must be at least 8 characters.'))->setDefaultValue('12345678'),
+					(new Param('password_confirmation'))->setDefaultValue('12345678'),
 				])
 				->noDefaultHeaders()
 				->setHeaders([
@@ -134,7 +138,7 @@ class AuthController extends APIBaseController
 					  'Unique push token for the device'))->optional(),
 
 					(new Param('email'))->setDefaultValue('test@example.com'),
-					(new Param('password'))->setDefaultValue('123456'),
+					(new Param('password'))->setDefaultValue('12345678'),
 				])
 				->noDefaultHeaders()
 				->setHeaders([

@@ -1,3 +1,4 @@
 /vendor/
 .idea/
 README_LOCAL.md
+.DS_Store

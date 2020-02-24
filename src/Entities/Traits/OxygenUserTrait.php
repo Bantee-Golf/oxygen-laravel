@@ -8,6 +8,7 @@ use App\Entities\Auth\Role;
 use EMedia\Formation\Entities\GeneratesFields;
 use EMedia\QuickData\Entities\Search\SearchableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Silber\Bouncer\Database\Models;
 
@@ -207,15 +208,15 @@ trait OxygenUserTrait
 			throw new \InvalidArgumentException("Cannot remove PII data without a URL. Have you set the APP_URL in the environment?");
 		}
 
-		$this->attributes['email'] = time() . str_random(25) . '_deleted@' . $url['host'];
-		$this->password = bcrypt(str_random(35));
-		$this->name = 'DELETED_' . str_random(10);
+		$this->attributes['email'] = time() . Str::random(25) . '_deleted@' . $url['host'];
+		$this->password = bcrypt(Str::random(35));
+		$this->name = 'DELETED_' . Str::random(10);
 
 		$piiFieldNames = $this->getStripPIIFieldNames();
 
 		if (!empty($piiFieldNames['make_random'])) {
 			foreach ($piiFieldNames['make_random'] as $fieldName) {
-				$this->$fieldName = str_random(10);
+				$this->$fieldName = Str::random(10);
 			}
 		}
 

@@ -6,6 +6,7 @@ use App\Entities\Auth\AbilityCategoryRepository;
 use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use App\Http\Controllers\Controller;
 use Bouncer;
 
@@ -132,7 +133,7 @@ class AbilitiesController extends Controller
 		$abilityCategories  = $this->abilityCategoryRepository->all(['abilities']);
 		$role = $this->roleRepository->find($roleId);
 
-		$currentAbilities = array_pluck($role->abilities->toArray(), 'name');
+		$currentAbilities = Arr::pluck($role->abilities->toArray(), 'name');
 
 		return view('oxygen::abilities.abilities-editRoleAbilities', compact('abilityCategories', 'currentAbilities', 'role'));
 
@@ -150,7 +151,7 @@ class AbilitiesController extends Controller
 		$role = $this->roleRepository->find($roleId);
 
 		$existingAbilities = $role->abilities;
-		$existingAbilities = array_pluck($existingAbilities->toArray(), 'name');
+		$existingAbilities = Arr::pluck($existingAbilities->toArray(), 'name');
 
 		$newAbilities = request()->get('abilities');
 		if (!$newAbilities) $newAbilities = [];
