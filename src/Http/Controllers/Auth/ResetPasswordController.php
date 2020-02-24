@@ -79,7 +79,7 @@ class ResetPasswordController extends Controller
 		$user = $this->auth->user();
 
 		$this->validate($request, [
-			'password'	=> 'required|confirmed|min:6',
+			'password'	=> 'required|confirmed|min:8',
 			'current_password' => 'required',
 		], [
 			'password.required' => 'New password field is required.'
