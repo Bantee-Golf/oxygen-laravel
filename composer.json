@@ -59,6 +59,7 @@
         "doctrine/dbal": "^2.9",
         "google/recaptcha": "^1.2",
         "laravel/framework": "^7.0",
+        "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.0",
         "silber/bouncer": "v1.0.0-rc.7",
         "webpatser/laravel-uuid": "^3.0",
