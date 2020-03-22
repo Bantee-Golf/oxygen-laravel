@@ -1,7 +1,8 @@
-# Oxygen - Admin Dashboard for Laravel 6.0+
+# Oxygen - Admin Dashboard for Laravel 7.0+
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/501977135-Workbench%20Dashboard%202019-10-28%2012-57-06%20copy.png)
 
+[For Laravel 6, use version `3.0.2`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/3.0.2/)
 
 [For Laravel 5.8, use version `2.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.3.1/)
 
@@ -45,7 +46,7 @@ This package is intended to be installed on a **new Laravel project**. You'll be
 
 1) Create a new Laravel project and go to the directory
 ```
-composer create-project --prefer-dist laravel/laravel="6.*" [project-name]
+composer create-project --prefer-dist laravel/laravel="7.*" [project-name]
 cd [project-name]
 ```
 
