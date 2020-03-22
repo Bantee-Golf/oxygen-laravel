@@ -43,15 +43,27 @@ The following are required for a successful installation.
 
 This package is intended to be installed on a **new Laravel project**. You'll be able to install it on an existing project, but might need to change some configuration settings.
 
-
-1) Create a new Laravel project and go to the directory
+#### 1. Create a new Laravel project and go to the directory
 ```
 composer create-project --prefer-dist laravel/laravel="7.*" [project-name]
 cd [project-name]
 ```
 
+#### 2. Scaffold Authentication
 
-2) Update `composer.json`.
+Starting from Laravel 7, authentication routes, controllers, and views are not included so we'll need to install this manually from Laravel's `laravel/ui` package.
+
+```php
+composer require laravel/ui
+
+php artisan ui vue --auth
+```  
+
+_Can also use `react` or `bootstrap` in place of `vue`._
+
+#### 3. Install Oxygen
+
+3.1. Update `composer.json`
 
 This package and some dependent packages are available in private repositories. Change the `repositories` section to add the new repository, or create a new section in the file.
 
@@ -112,27 +124,35 @@ This package and some dependent packages are available in private repositories. 
     ],
 ```
 
-3) Require the package into composer through the command line.
+3.2. Require the package into composer through the command line
 ```
 composer require emedia/oxygen
 ```
 
-4) Edit `.env` file and update the database settings.
+3.3. Edit `.env` file and update the database settings
 
-5) Commit your current state to Git, because next step will change some of the default files.
+#### 4. Run Setup
+
+4.1. Init Git 
+
+Commit your current state to Git, because next step will change some of the default files.
 
 ```
 git init
 git add -A && git commit -m "Initial commit."
 ```
 
-6) Run the following command. This will do the default installation, if any questions are asked, you can just press ENTER to confirm the default choice, or change it.
+4.2. Execute
+
+Run the following command. This will do the default installation, if any questions are asked, you can just press ENTER to confirm the default choice, or change it.
 
 ```
 php artisan setup:oxygen-project
 ```
 
-(OPTIONAL) The default setup will install with default options. If you want to have manual control over installation run the command `php artisan setup:oxygen-project --confirm` and it will confirm before every step.
+4.a. Setup with confirm (OPTIONAL) 
+
+The default setup will install with default options. If you want to have manual control over installation run the command `php artisan setup:oxygen-project --confirm` and it will confirm before every step.
 
 7) After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
 
