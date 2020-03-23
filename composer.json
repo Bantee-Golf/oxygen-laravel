@@ -64,7 +64,7 @@
         "silber/bouncer": "v1.0.0-rc.7",
         "webpatser/laravel-uuid": "^3.0",
         "emedia/api": "^3.0",
-        "emedia/quickdata-laravel": "^3.0",
+        "emedia/quick-data-laravel": "^3.0",
         "emedia/generators": "^3.0",
         "emedia/lotus": "^1.2",
         "emedia/multi-tenant": "^0.3.0",
