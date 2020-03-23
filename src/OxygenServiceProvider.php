@@ -84,8 +84,10 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->registerDependentServiceProviders();
 		$this->registerAliases();
 
-		if ($this->app->environment('local'))
+        $dev = $this->app->environment('local') || $this->app->environment('testing');
+		if ($dev)
 		{
+
 			$this->app->singleton("emedia.oxygen.setup", function () {
 				return app(OxygenSetupCommand::class);
 			});
