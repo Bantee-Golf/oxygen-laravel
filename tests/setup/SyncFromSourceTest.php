@@ -15,17 +15,16 @@ class SyncFromSourceTest extends TestCase
      */
     public function test_SyncFromSource_execute_should_create_default_laravel_files()
     {
-        if (is_dir(static::$directory)) {
-            static::deleteDirectory(static::$directory);
+        $authDirectory = static::$directory . '/app/Http/Controllers/Auth';
+        if (is_dir($authDirectory)) {
+            static::deleteDirectory($authDirectory);
         }
-
-        $this->assertFalse(is_dir(static::$directory));
+        $this->assertFalse(is_dir($authDirectory));
 
         include('../../setup/SyncFromSource.php');
 
         $this->assertTrue(is_dir(static::$directory));
-
-        $this->assertTrue(file_exists(static::$directory . '/app/Http/Controllers/Auth/ForgotPasswordController.php'));
+        $this->assertTrue(file_exists($authDirectory . '/ForgotPasswordController.php'));
     }
 
     private static function deleteDirectory($dir) {
