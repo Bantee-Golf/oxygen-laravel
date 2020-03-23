@@ -1,7 +1,7 @@
 <?php
 
 
-class LaravelUI implements Repo
+class Auth implements Repo
 {
     protected static $baseUrl = 'https://raw.githubusercontent.com/laravel/ui/2.x/';
 

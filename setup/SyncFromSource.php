@@ -1,12 +1,12 @@
 <?php
 require('sync/Repo.php');
 require('sync/RepoCloner.php');
-require('sync/LaravelBase.php');
-require('sync/LaravelUI.php');
+require('sync/Base.php');
+require('sync/Auth.php');
 
 $repos = [
-    LaravelBase::class,
-    LaravelUI::class
+    Base::class,
+    Auth::class
 ];
 
 foreach ($repos as $repo) {

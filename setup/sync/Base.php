@@ -1,7 +1,7 @@
 <?php
 
 
-class LaravelBase implements Repo
+class Base implements Repo
 {
     protected static $url = 'https://raw.githubusercontent.com/laravel/laravel/master/';
 
