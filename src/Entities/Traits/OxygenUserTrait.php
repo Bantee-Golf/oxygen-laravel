@@ -14,6 +14,7 @@ use Silber\Bouncer\Database\Models;
 
 trait OxygenUserTrait
 {
+
     use SoftDeletes;
     use SearchableTrait;
     use GeneratesFields;
@@ -268,4 +269,5 @@ trait OxygenUserTrait
         $query->whereNull('disabled_at');
 
     }
+
 }

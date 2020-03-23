@@ -3,13 +3,14 @@
 namespace App\Entities\Files;
 
 use Illuminate\Database\Eloquent\Model;
+use EMedia\QuickData\Entities\Traits\RelationshipDataTrait;
 use EMedia\QuickData\Entities\Search\SearchableTrait;
 use Illuminate\Support\Facades\Storage;
 
 class File extends Model
 {
 
-	use SearchableTrait;
+    use SearchableTrait; //, RelationshipDataTrait;
 
 	protected $fillable = [
 		'name',

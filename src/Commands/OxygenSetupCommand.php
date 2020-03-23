@@ -746,7 +746,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				if (file_exists($tempPublicPath)) {
 					$publicPath = $tempPublicPath;
 				} else {
-					$this->error("The public path {$publicPath} does not exist. Cannot sync files. Skipping...");
+					$this->error("The public path {$publicPath} does not exist. Cannot copy files. Skipping...");
 					return false;
 				}
 			}
@@ -795,7 +795,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 	/**
 	 *
-	 * Check if a given files and classes exist, otherwise sync the stubs
+	 * Check if a given files and classes exist, otherwise copy the stubs
 	 *
 	 * @param $fileData
 	 */
@@ -820,7 +820,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				}
 			}
 
-			// if the destination path is a directory, sync the original file name
+			// if the destination path is a directory, copy the original file name
 			if (empty($file['destination_filename'])) {
 				$pathinfo = pathinfo($file['stub']);
 				$fileName = $pathinfo['basename'];

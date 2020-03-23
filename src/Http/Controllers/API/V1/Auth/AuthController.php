@@ -144,7 +144,6 @@ class AuthController extends APIBaseController
 						"avatar_url": null,
 						"first_name": "null",
 						"full_name": "null null",
-						"timezone": "Australia/Melbourne",
 						"access_token": "1540054802BbiqclNMqujaIgfGzRMjsdds8a9M4HvBxPg"
 					},
 					"message": "",

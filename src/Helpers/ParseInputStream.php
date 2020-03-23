@@ -10,7 +10,7 @@ use Illuminate\Http\UploadedFile;
  *
  * LICENSE: This source file is subject to version 3.01 of the GPL license
  * that is available through the world-wide-web at the following URI:
- * http://www.gnu.org/licenses/gpl.html. If you did not receive a sync of
+ * http://www.gnu.org/licenses/gpl.html. If you did not receive a copy of
  * the GPL License and are unable to obtain it through the web, please
  *
  * @author jason.gerfen@gmail.com

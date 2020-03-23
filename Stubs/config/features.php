@@ -29,8 +29,6 @@ return [
 		// force email verification after registration
 		'email-verification-required' => false,
 
-		'timezone-enabled' => env('TIMEZONE_ENABLED', false) || env('TIMEZONE_REQUIRED', false),
-		'timezone-required' => env('TIMEZONE_REQUIRED', false),
 	],
 
 	/*
