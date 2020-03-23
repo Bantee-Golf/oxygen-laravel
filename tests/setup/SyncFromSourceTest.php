@@ -8,22 +8,25 @@ use PHPUnit\Framework\TestCase;
 
 class SyncFromSourceTest extends TestCase
 {
-    private static $directory = '../../LaravelDefaultFiles';
+
 
     /**
      * @test
      */
     public function test_SyncFromSource_execute_should_create_default_laravel_files()
     {
-        $authDirectory = static::$directory . '/app/Http/Controllers/Auth';
+
+        $directory =  dirname(__FILE__) . '/../../LaravelDefaultFiles';
+
+        $authDirectory = $directory . '/app/Http/Controllers/Auth';
         if (is_dir($authDirectory)) {
             static::deleteDirectory($authDirectory);
         }
         $this->assertFalse(is_dir($authDirectory));
 
-        include('../../setup/SyncFromSource.php');
+        include(dirname(__FILE__) . '/../../setup/SyncFromSource.php');
 
-        $this->assertTrue(is_dir(static::$directory));
+        $this->assertTrue(is_dir($directory));
         $this->assertTrue(file_exists($authDirectory . '/ForgotPasswordController.php'));
     }
 
