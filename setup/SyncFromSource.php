@@ -1,8 +1,11 @@
 <?php
-require('clone/Repo.php');
-require('clone/RepoCloner.php');
-require('clone/Base.php');
-require('clone/UI.php');
+
+use Setup\Copy\Base;
+use Setup\Copy\RepoCopy;
+use Setup\Copy\UI;
+
+$vendorPath = dirname(__FILE__) . '/../vendor/autoload.php';
+require($vendorPath);
 
 $repos = [
     new Base([
@@ -22,8 +25,8 @@ $repos = [
     ])
 ];
 
-$cloner = new RepoCloner(__DIR__ . '/../LaravelDefaultFiles/');
+$cloner = new RepoCopy(__DIR__ . '/../LaravelDefaultFiles/');
 
 foreach ($repos as $repo) {
-    $cloner->clone($repo);
+    $cloner->copy($repo);
 }

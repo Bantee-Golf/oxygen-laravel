@@ -1,6 +1,9 @@
 <?php
 
 
+namespace Setup\Copy;
+
+
 class Base implements Repo
 {
 

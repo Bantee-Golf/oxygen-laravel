@@ -1,9 +1,11 @@
 <?php
 
 
+namespace Setup\Copy;
+
+
 class UI implements Repo
 {
-
     protected static $url = 'https://raw.githubusercontent.com/laravel/ui/2.x/';
     private $files;
 

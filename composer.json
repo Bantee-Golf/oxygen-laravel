@@ -103,7 +103,8 @@
         "psr-4": {
             "App\\": "LaravelDefaultFiles/app/",
             "Tests\\": "tests/",
-            "Illuminate\\": "vendor/laravel/framework/src/illuminate/"
+            "Illuminate\\": "vendor/laravel/framework/src/illuminate/",
+            "Setup\\": "setup/"
         }
     },
     "minimum-stability": "dev",

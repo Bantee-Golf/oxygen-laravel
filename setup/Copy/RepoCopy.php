@@ -1,6 +1,11 @@
 <?php
 
-class RepoCloner
+
+namespace Setup\Copy;
+
+
+
+class RepoCopy
 {
 
     /**
@@ -14,7 +19,7 @@ class RepoCloner
     }
 
 
-    public function clone(Repo $repo)
+    public function copy(Repo $repo)
     {
         foreach ($repo->getFiles() as $file) {
             $content = $repo->getContent($file);

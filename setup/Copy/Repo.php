@@ -1,5 +1,9 @@
 <?php
 
+
+namespace Setup\Copy;
+
+
 interface Repo
 {
     public function getFiles(): array;
