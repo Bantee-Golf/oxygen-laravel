@@ -3,10 +3,10 @@
 namespace EMedia\Oxygen\Commands;
 
 use EMedia\Generators\Commands\BaseGeneratorCommand;
+use EMedia\PHPHelpers\Exceptions\FileSystem\FileNotFoundException;
 use EMedia\PHPHelpers\Files\DirManager;
 use EMedia\PHPHelpers\Files\FileEditor;
 use EMedia\PHPHelpers\Files\FileManager;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 
 class OxygenSetupCommand extends BaseGeneratorCommand
@@ -463,6 +463,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		foreach ($filePaths as $filePath) {
 
 			try {
+
 				// check if the routes file mentions anything about the 'oxygen routes'
 				// if so, it might already be there. Ask the user to confirm.
 				if (FileManager::isTextInFile($filePath, 'Oxygen Settings', false)) {

@@ -7,6 +7,8 @@ use EMedia\Oxygen\Commands\Scaffolding\ScaffoldViewsCommand;
 use EMedia\Oxygen\Commands\OxygenSetupCommand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use mysql_xdevapi\Exception;
+use Silber\Bouncer\Bouncer;
 use Silber\Bouncer\BouncerFacade;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -64,12 +66,12 @@ class OxygenServiceProvider extends ServiceProvider
 
 		// set custom models for abilities and roles
 		$abilityModel = config('oxygen.abilityModel');
+
 		if ($abilityModel) BouncerFacade::useAbilityModel($abilityModel);
 		$roleModel = config('oxygen.roleModel');
 		if ($roleModel) BouncerFacade::useRoleModel($roleModel);
 
 		$this->registerCustomValidators();
-
 	}
 
 	/**
