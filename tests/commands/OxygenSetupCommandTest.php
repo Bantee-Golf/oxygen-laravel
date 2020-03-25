@@ -8,13 +8,10 @@ use EMedia\AppSettings\AppSettingsServiceProvider;
 use EMedia\Devices\DeviceAuthServiceProvider;
 use EMedia\Generators\GeneratorServiceProvider;
 use EMedia\Oxygen\OxygenServiceProvider;
-use Illuminate\Console\OutputStyle;
-use Illuminate\Container\Container;
-use Illuminate\Support\Facades\Artisan;
-use Mockery as m;
+use EMedia\PHPHelpers\Files\FileManager;
+use mysql_xdevapi\Exception;
 use Setup\Copy\Base;
 use Setup\Copy\RepoCopy;
-use Silber\Bouncer\Bouncer;
 use Silber\Bouncer\BouncerFacade;
 use Silber\Bouncer\BouncerServiceProvider;
 
@@ -23,6 +20,9 @@ class OxygenSetupCommandTest extends \Orchestra\Testbench\TestCase
 {
     protected $backupName = '_testbench_laravel_backup';
     protected $laravelPath;
+    protected $appName = "My Test App";
+    protected $email = "testing_super_admin@elegantmedia.com.au";
+    protected $devUrl = 'oxygen.test';
 
     /**
      * @throws \Exception
@@ -49,7 +49,9 @@ class OxygenSetupCommandTest extends \Orchestra\Testbench\TestCase
         $base = new Base([
             "routes/web.php",
             "routes/api.php",
-            'app/Http/Kernel.php'
+            'app/Http/Kernel.php',
+            'app/Providers/RouteServiceProvider.php',
+            ".env.example"
         ]);
 
         $cloner = new RepoCopy($this->laravelPath);
@@ -76,7 +78,6 @@ class OxygenSetupCommandTest extends \Orchestra\Testbench\TestCase
             GeneratorServiceProvider::class,
             AppSettingsServiceProvider::class,
             DeviceAuthServiceProvider::class,
-
         ];
     }
 
@@ -98,14 +99,26 @@ class OxygenSetupCommandTest extends \Orchestra\Testbench\TestCase
      * @test
      * @throws \Exception
      */
-    public function test_OxygenSetupCommand_handle_sets_up_project()
+    public function test_OxygenSetupCommand_handle_sets_up_project_with_defaults()
     {
         $this->artisan('setup:oxygen-project')
-             ->expectsQuestion('What is the project name?', 'Test')
-             ->expectsQuestion('What is the `from` email address for system emails? (Press ENTER key for default)', 'test@example.com')
-             ->expectsQuestion('What is your email to seed the database? (Press ENTER key for default)', 'test@example.com')
-             ->expectsQuestion('What is the local development URL? (Press ENTER key for default)', 'foo')
+             ->expectsQuestion('What is the project name?', $this->appName)
+             ->expectsQuestion('What is the `from` email address for system emails? (Press ENTER key for default)', $this->email)
+             ->expectsQuestion('What is your email to seed the database? (Press ENTER key for default)', $this->email)
+             ->expectsQuestion('What is the local development URL? (Press ENTER key for default)', $this->devUrl)
              ->assertExitCode(0);
+
+        $this->assertPublicHtmlCreated()
+             ->assertVariablesReplaced()
+             ->assertMigrationsGenerated()
+             ->assertRoutesModified()
+             ->assertMiddlewaresUpdated()
+             ->assertClassesGenerated()
+             ->assertFilesPublished()
+             ->assertSetupSettings()
+             ->assertSetupDevices()
+             ->assertEnvSet()
+        ->assertReadMeUpdated();
     }
 
     /**
@@ -119,5 +132,199 @@ class OxygenSetupCommandTest extends \Orchestra\Testbench\TestCase
         }
     }
 
+    protected function assertPublicHtmlCreated()
+    {
+        $path = $this->laravelPath . "public_html";
+        $this->assertTrue(is_dir($path));
+        return $this;
+    }
 
+    /**
+     * @throws \EMedia\PHPHelpers\Exceptions\FileSystem\FileNotFoundException
+     * @throws \Exception
+     */
+    protected function assertVariablesReplaced()
+    {
+        $variables = [
+            ['app/Providers/RouteServiceProvider.php', "public const HOME = '/dashboard'"],
+            [".env.example", "APP_NAME=" . '"' . $this->appName . '"'],
+            [".env.example", "APP_URL=http://{$this->devUrl}"],
+            ["database/seeds/Auth/UsersTableSeeder.php", $this->email],
+            ["webpack.mix.js", $this->devUrl],
+            ["config/oxygen.php", "'multiTenantActive' => false"]
+        ];
+
+        foreach ($variables as $variable) {
+            $file = $variable[0];
+            $text = $variable[1];
+            $path = $this->laravelPath . $file;
+            $replaced = FileManager::isTextInFile($path, $text);
+
+            if (!$replaced) {
+                throw new \Exception("Missing text '{$text}' in file '{$file}''");
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function assertMigrationsGenerated()
+    {
+        $files = [
+            "create_role_permission_tables.php",
+            "alter_users_table.php",
+            "create_invitations_table.php",
+            "create_files_table.php"
+        ];
+
+        foreach ($files as $file) {
+            $path = $this->laravelPath . "database/migrations/*" . $file;
+            $results = glob($path);
+
+            if (count($results) === 0) {
+                throw new \Exception("Missing migration '${file}''");
+            }
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * @throws \EMedia\PHPHelpers\Exceptions\FileSystem\FileNotFoundException
+     * @throws \Exception
+     */
+    protected function assertRoutesModified()
+    {
+        $routes = [
+            "web" => ["oxygen::pages.welcome"],
+            "api" => ["Route::get ('/profile', 'Auth\ProfileController@index')"]
+        ];
+
+        foreach ($routes as $route => $texts) {
+            foreach ($texts as $text) {
+                $path = "{$this->laravelPath}/routes/{$route}.php";
+                $replaced = FileManager::isTextInFile($path, $text);
+
+                if (!$replaced) {
+                    throw new \Exception("Missing '{$text}' in route '{$route}''");
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    protected function assertMiddlewaresUpdated()
+    {
+        $kernelFile = "{$this->laravelPath}/app/Http/Kernel.php";
+
+        $middlewares = [
+            "'auth.acl' => \EMedia\Oxygen\Http\Middleware\AuthorizeAcl::class",
+            "'auth.api' => \EMedia\Oxygen\Http\Middleware\ApiAuthenticate::class",
+            "'auth.acl' => \EMedia\Oxygen\Http\Middleware\AuthorizeAcl::class",
+            "\EMedia\Oxygen\Http\Middleware\LoadViewSettings::class",
+            '\EMedia\Oxygen\Http\Middleware\ParseNonPostFormData::class'
+        ];
+
+        foreach ($middlewares as $middleware) {
+            $inserted = FileManager::isTextInFile($kernelFile, $middleware);
+            if (!$inserted) {
+                throw new \Exception("Middleware '{$middleware}' missing from app/Http/Kernel.php");
+            }
+        }
+
+        return $this;
+    }
+
+    protected function assertClassesGenerated()
+    {
+        $class = "DashboardController";
+
+        $controller = "{$this->laravelPath}/app/Http/Controllers/{$class}.php";
+        $generated = file_exists($controller);
+        if (!$generated) {
+            throw new \Exception("Class {$class} missing; Were classes properly generated?");
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     * @throws \Exception
+     */
+    protected function assertFilesPublished()
+    {
+        $oxygenViews = "{$this->laravelPath}/resources/views/vendor/oxygen";
+        $generated = is_dir($oxygenViews);
+        if (!$generated) {
+            throw new \Exception("Oxygen views missing; Were files properly published?");
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     * @throws \Exception
+     */
+    protected function assertSetupSettings()
+    {
+        $setingsMigration = "{$this->laravelPath}/database/migrations/*_create_settings_table.php";
+        $results = glob($setingsMigration);
+
+        if (count($results) === 0) {
+            throw new \Exception("Missing settings migration file; was 'setup:package:app-settings' called?");
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     * @throws \Exception
+     */
+    protected function assertSetupDevices()
+    {
+        $setingsMigration = "{$this->laravelPath}/database/migrations/*_create_devices_table.php";
+        $results = glob($setingsMigration);
+
+        if (count($results) === 0) {
+            throw new \Exception("Missing devices migration file; was 'setup:package:devices' called?");
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     * @throws \EMedia\PHPHelpers\Exceptions\FileSystem\FileNotFoundException
+     */
+    protected function assertEnvSet()
+    {
+        $env = "{$this->laravelPath}/.env";
+        $appendedHeader = "### Oxygen Settings Start ###";
+        $appended = FileManager::isTextInFile($env, $appendedHeader);
+        if (!$appended) {
+            throw new \Exception("Missing {$appendedHeader} in .env; were .env variables properly appended?");
+        }
+
+        return $this;
+    }
+
+    protected function assertReadMeUpdated()
+    {
+        $env = "{$this->laravelPath}/readme.md";
+        $appendedHeader = "## Local Development Setup Instructions";
+        $appended = FileManager::isTextInFile($env, $appendedHeader);
+        if (!$appended) {
+            throw new \Exception("Missing {$appendedHeader} in readme.me; was the readme udpated correctly?");
+        }
+
+        return $this;
+    }
 }

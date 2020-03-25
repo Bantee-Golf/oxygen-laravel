@@ -498,9 +498,9 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 		$stringsToReplace = [
 			[
-				'path'		=> app_path('Http/Middleware/RedirectIfAuthenticated.php'),
-				'search'	=> "return redirect('/home');",
-				'replace'	=> "return redirect('/dashboard');"
+				'path'		=> app_path('Providers/RouteServiceProvider.php'),
+				'search'	=> "public const HOME = '/home'",
+				'replace'	=> "public const HOME = '/dashboard'"
 			],
 
 			// .env file
@@ -514,6 +514,11 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'search'	=> "MAIL_FROM_NAME=ExampleSender",
 				'replace'	=> "MAIL_FROM_NAME=\"{$projectName} (DEV)\"",
 			],
+            [
+                'path'		=> base_path('.env'),
+                'search'	=> "APP_URL=http://localhost",
+                'replace'	=> "APP_URL=http://{$devMachineUrl}",
+            ],
 
 			// .env.example file
 			[
@@ -526,12 +531,12 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'search'	=> "MAIL_FROM_NAME=ExampleSender",
 				'replace'	=> "MAIL_FROM_NAME=\"{$projectName} (DEV)\"",
 			],
+            [
+                'path'		=> base_path('.env.example'),
+                'search'	=> "APP_URL=http://localhost",
+                'replace'	=> "APP_URL=http://{$devMachineUrl}",
+            ],
 
-			[
-				'path'		=> base_path('.env'),
-				'search'	=> "APP_URL=http://localhost",
-				'replace'	=> "APP_URL=http://{$devMachineUrl}",
-			],
 			[
 				'path'		=> database_path('seeds/Auth/UsersTableSeeder.php'),
 				'search'	=> "apps@elegantmedia.com.au",
