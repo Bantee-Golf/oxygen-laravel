@@ -3,10 +3,10 @@
 namespace EMedia\Oxygen\Commands;
 
 use EMedia\Generators\Commands\BaseGeneratorCommand;
+use EMedia\PHPHelpers\Exceptions\FileSystem\FileNotFoundException;
 use EMedia\PHPHelpers\Files\DirManager;
 use EMedia\PHPHelpers\Files\FileEditor;
 use EMedia\PHPHelpers\Files\FileManager;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 
 class OxygenSetupCommand extends BaseGeneratorCommand
@@ -463,6 +463,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		foreach ($filePaths as $filePath) {
 
 			try {
+
 				// check if the routes file mentions anything about the 'oxygen routes'
 				// if so, it might already be there. Ask the user to confirm.
 				if (FileManager::isTextInFile($filePath, 'Oxygen Settings', false)) {
@@ -497,9 +498,9 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 		$stringsToReplace = [
 			[
-				'path'		=> app_path('Http/Middleware/RedirectIfAuthenticated.php'),
-				'search'	=> "return redirect('/home');",
-				'replace'	=> "return redirect('/dashboard');"
+				'path'		=> app_path('Providers/RouteServiceProvider.php'),
+				'search'	=> "public const HOME = '/home'",
+				'replace'	=> "public const HOME = '/dashboard'"
 			],
 
 			// .env file
@@ -513,6 +514,11 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'search'	=> "MAIL_FROM_NAME=ExampleSender",
 				'replace'	=> "MAIL_FROM_NAME=\"{$projectName} (DEV)\"",
 			],
+            [
+                'path'		=> base_path('.env'),
+                'search'	=> "APP_URL=http://localhost",
+                'replace'	=> "APP_URL=http://{$devMachineUrl}",
+            ],
 
 			// .env.example file
 			[
@@ -525,12 +531,12 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'search'	=> "MAIL_FROM_NAME=ExampleSender",
 				'replace'	=> "MAIL_FROM_NAME=\"{$projectName} (DEV)\"",
 			],
+            [
+                'path'		=> base_path('.env.example'),
+                'search'	=> "APP_URL=http://localhost",
+                'replace'	=> "APP_URL=http://{$devMachineUrl}",
+            ],
 
-			[
-				'path'		=> base_path('.env'),
-				'search'	=> "APP_URL=http://localhost",
-				'replace'	=> "APP_URL=http://{$devMachineUrl}",
-			],
 			[
 				'path'		=> database_path('seeds/Auth/UsersTableSeeder.php'),
 				'search'	=> "apps@elegantmedia.com.au",
