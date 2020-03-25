@@ -813,9 +813,10 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				// match if a file already exists by the file name match
 				$existingFiles = glob($file['destination_path'] . DIRECTORY_SEPARATOR . "*{$file['unique_file_id']}*");
 				if (is_countable($existingFiles) && count($existingFiles)) {
-					if (!$this->confirm("{$file['unique_file_id']} file already exists. Create another?", false)) {
-						continue;
-					}
+                    $uniqueId = $file['unique_file_id'];
+                    $this->info("File {$uniqueId} already exists...skipping!");
+//                    $this->progressLog['files'] = [$uniqueId, 'Skipped. Delete, and re-run setup for a fresh copy'];
+                    continue;
 				}
 			} else {
 				// if the class doesn't exist, we'll create it without confirming, otherwise ask the user
