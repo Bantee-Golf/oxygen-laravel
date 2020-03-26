@@ -120,21 +120,6 @@ class OxygenSetupCommandTest extends \Orchestra\Testbench\TestCase
              ->assertSetupDevices()
              ->assertEnvSet()
              ->assertReadMeUpdated();
-    }
-
-    /**
-     * @test
-     */
-    public function test_OxygenSetupCommand_confirms_overwriting_files()
-    {
-
-
-        $this->artisan('setup:oxygen-project')
-             ->expectsQuestion('What is the project name?', $this->appName)
-             ->expectsQuestion('What is the `from` email address for system emails? (Press ENTER key for default)', $this->email)
-             ->expectsQuestion('What is your email to seed the database? (Press ENTER key for default)', $this->email)
-             ->expectsQuestion('What is the local development URL? (Press ENTER key for default)', $this->devUrl)
-             ->assertExitCode(0);
 
         $this->artisan('setup:oxygen-project')
              ->expectsQuestion('What is the project name?', $this->appName)
