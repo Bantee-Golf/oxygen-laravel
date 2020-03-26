@@ -815,7 +815,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				if (is_countable($existingFiles) && count($existingFiles)) {
                     $uniqueId = $file['unique_file_id'];
                     $this->info("File {$uniqueId} already exists...skipping!");
-//                    $this->progressLog['files'] = [$uniqueId, 'Skipped. Delete, and re-run setup for a fresh copy'];
+                    $this->progressLog['files'][] = [$uniqueId, 'Skipped. Delete, and re-run setup for a fresh copy'];
                     continue;
 				}
 			} else {
