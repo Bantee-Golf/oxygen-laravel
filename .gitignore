@@ -3,3 +3,4 @@
 README_LOCAL.md
 .DS_Store
 composer.lock
+.phpunit.result.cache
