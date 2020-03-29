@@ -1,11 +1,9 @@
-@import "../app/brand-variables";
+@import "./brand-variables";
 
 /*
 |--------------------------------------------------------------------------
 | Define the Base CSS classes to be extended
 |--------------------------------------------------------------------------
-|
-|
 |
 */
 
@@ -16,16 +14,16 @@ $spacing: 10px;
 }
 
 .narrow-font {
-	font-weight: 300;
-	@extend .smooth-font;
+    font-weight: 300;
+    @extend .smooth-font;
 }
 
 .space-bottom {
-  margin-bottom: $spacing;
+    margin-bottom: $spacing;
 }
 
 .space-top {
-  margin-top: $spacing;
+    margin-top: $spacing;
 }
 
 

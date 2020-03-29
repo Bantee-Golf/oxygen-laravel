@@ -73,6 +73,9 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// publish assets and other files
 		$this->publishFiles();
 
+		// install presets
+		$this->installPresets();
+
 		// add child packages
 		$this->setupChildPackages();
 
@@ -88,7 +91,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$this->progressLog['instructions'][] = ['npm install', 'Install NPM packages. Check if Node.js is installed with `npm -v`'];
 		$this->progressLog['instructions'][] = ['npm run dev', 'Compile and build. If you get first time error, run it again.'];
 		$this->progressLog['instructions'][] = ['npm run watch', 'Run and watch the application on browser (Does NOT work with Homestead)'];
-		$this->progressLog['instructions'][] = ['php artisan serve', 'Run the local test server'];
+		// if running on npm watch, you don't have to run artisan serve
+		// $this->progressLog['instructions'][] = ['php artisan serve', 'Run the local test server'];
 
 		// Setup Completed! Show any info to the user.
 		$this->showProgressLog();
@@ -102,6 +106,8 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 	{
 		$this->call('setup:package:app-settings');
 		$this->call('setup:package:devices');
+
+		$this->progressLog['files'][] = ['database\seeds\DatabaseSeeder.php', 'Check for commented-out seeders.'];
 	}
 
 
@@ -238,20 +244,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stubMap = [];
 
 		$stub = [
-			'path'	=> base_path('bower.json'),
-			'name'	=> 'bower.json',
-		];
-		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bower.json';
-		$stubMap[] = $stub;
-
-		$stub = [
-			'path'	=> base_path('.bowerrc'),
-			'name'	=> 'Bower config (.bowerrc)',
-		];
-		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/bowerrc.stub';
-		$stubMap[] = $stub;
-
-		$stub = [
 			'path'	=> base_path('webpack.mix.js'),
 			'name'	=> 'webpack.mix.js',
 			'stub'  =>  __DIR__ . '/../../Stubs/ProjectConfig/webpack.mix.js',
@@ -282,12 +274,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/apidoc.json';
 		$stubMap[] = $stub;
 
-//		$stubMap[] = [
-//			'stub'	=> __DIR__ . '/../../Stubs/config/oxygen.php',
-//			'path'  => config_path('oxygen.php'),
-//			'name'	=> 'Oxygen Configuration'
-//		];
-
 		if ($this->projectConfig['multiTenant']) {
 			$stubMap[] = [
 				'stub'	=> __DIR__ . '/../../Stubs/Common/User.MultiTenant.php',
@@ -314,8 +300,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'name'	=> 'ACL for single-tenant configuration'
 			];*/
 		}
-
-		$this->progressLog['instructions'][] = ['bower install', 'Install bower dependencies. Check if Bower is installed with `bower -v`'];
 
 		return $stubMap;
 	}
@@ -639,33 +623,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['source-sass'],
-					'--force'		=> false,
-				],
-				'desc' 			=> 'Uncompiled SASS files'
-			],
-//			[
-//				'command'		=> 'vendor:publish',
-//				'arguments'		=> [
-//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-//					'--tag'			=> ['public-assets'],
-//					'--force'		=> true,
-//				],
-//				'desc'			=> 'JS, CSS and other assets in public folder'
-//			],
-			[
-				'command'		=> 'vendor:publish',
-				'arguments'		=> [
-					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['source-js'],
-					'--force'		=> true,
-				],
-				'desc'			=> 'JS Source Files'
-			],
-			[
-				'command'		=> 'vendor:publish',
-				'arguments'		=> [
-					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['database-seeds'],
 					'--force'		=> true,
 				]
@@ -875,6 +832,18 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 			$this->info("Readme.md file updated with build instructions.");
 		}
+	}
+
+	/**
+	 *
+	 * Install the UI Presets
+	 *
+	 */
+	protected function installPresets(): void
+	{
+		$this->call('ui', [
+			'type' => 'oxygen'
+		]);
 	}
 
 	protected function buildClass($name, $stubPath = null)
