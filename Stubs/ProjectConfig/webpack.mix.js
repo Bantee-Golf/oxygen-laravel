@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -14,11 +14,13 @@ let mix = require('laravel-mix');
 mix.setPublicPath('public_html/');
 
 mix.js('resources/js/app.js', 'public_html/js/dist')
-	.js('resources/js/dashboard.js', 'public_html/js/dist')
-	.sass('resources/sass/home.scss', 'public_html/css/dist/public.css')
-	.sass('resources/sass/dashboard.scss', 'public_html/css/dist/dashboard.css')
+    .js('resources/js/backend.js', 'public_html/js/dist')
+
+	.sass('resources/sass/public.scss', 'public_html/css/dist/public.css')
+    .sass('resources/sass/backend.scss', 'public_html/css/dist/backend.css')
 	.sass('resources/sass/auth.scss', 'public_html/css/dist/auth.css')
 	.version()
-	.sourceMaps();
+	.sourceMaps()
+	;
 
 mix.browserSync({proxy: 'localhost.dev'});
