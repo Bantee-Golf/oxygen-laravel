@@ -73,6 +73,9 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		// publish assets and other files
 		$this->publishFiles();
 
+		// install presets
+		$this->installPresets();
+
 		// add child packages
 		$this->setupChildPackages();
 
@@ -270,12 +273,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 		];
 		$stub['stub'] = __DIR__ . '/../../Stubs/ProjectConfig/apidoc.json';
 		$stubMap[] = $stub;
-
-//		$stubMap[] = [
-//			'stub'	=> __DIR__ . '/../../Stubs/config/oxygen.php',
-//			'path'  => config_path('oxygen.php'),
-//			'name'	=> 'Oxygen Configuration'
-//		];
 
 		if ($this->projectConfig['multiTenant']) {
 			$stubMap[] = [
@@ -626,33 +623,6 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'command'		=> 'vendor:publish',
 				'arguments'		=> [
 					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['source-sass'],
-					'--force'		=> false,
-				],
-				'desc' 			=> 'Uncompiled SASS files'
-			],
-//			[
-//				'command'		=> 'vendor:publish',
-//				'arguments'		=> [
-//					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-//					'--tag'			=> ['public-assets'],
-//					'--force'		=> true,
-//				],
-//				'desc'			=> 'JS, CSS and other assets in public folder'
-//			],
-			[
-				'command'		=> 'vendor:publish',
-				'arguments'		=> [
-					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
-					'--tag'			=> ['source-js'],
-					'--force'		=> true,
-				],
-				'desc'			=> 'JS Source Files'
-			],
-			[
-				'command'		=> 'vendor:publish',
-				'arguments'		=> [
-					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
 					'--tag'			=> ['database-seeds'],
 					'--force'		=> true,
 				]
@@ -862,6 +832,18 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 
 			$this->info("Readme.md file updated with build instructions.");
 		}
+	}
+
+	/**
+	 *
+	 * Install the UI Presets
+	 *
+	 */
+	protected function installPresets(): void
+	{
+		$this->call('ui', [
+			'type' => 'oxygen'
+		]);
 	}
 
 	protected function buildClass($name, $stubPath = null)
