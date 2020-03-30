@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class File extends Model
 {
 
-	use SearchableTrait; //, RelationshipDataTrait;
+    use SearchableTrait; //, RelationshipDataTrait;
 
 	protected $fillable = [
 		'name',

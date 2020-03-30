@@ -5,8 +5,12 @@ namespace EMedia\Oxygen;
 use EMedia\Oxygen\Commands\CreateNewUserCommand;
 use EMedia\Oxygen\Commands\Scaffolding\ScaffoldViewsCommand;
 use EMedia\Oxygen\Commands\OxygenSetupCommand;
+use EMedia\Oxygen\Presets\OxygenPreset;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Ui\UiCommand;
+use mysql_xdevapi\Exception;
+use Silber\Bouncer\Bouncer;
 use Silber\Bouncer\BouncerFacade;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -22,16 +26,6 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->publishes([
 			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen'),
 		], 'views');
-
-		// SASS files
-		$this->publishes([
-			__DIR__ . '/../resources/sass' => base_path('resources/sass'),
-		], 'source-sass');
-
-		// JS source
-		$this->publishes([
-			__DIR__ . '/../resources/js' => base_path('resources/js'),
-		], 'source-js');
 
 		// publish common entities
 		$this->publishes([
@@ -64,12 +58,19 @@ class OxygenServiceProvider extends ServiceProvider
 
 		// set custom models for abilities and roles
 		$abilityModel = config('oxygen.abilityModel');
+
 		if ($abilityModel) BouncerFacade::useAbilityModel($abilityModel);
 		$roleModel = config('oxygen.roleModel');
 		if ($roleModel) BouncerFacade::useRoleModel($roleModel);
 
 		$this->registerCustomValidators();
 
+		// setup presets
+		UiCommand::macro('oxygen', static function (UiCommand $command) {
+			OxygenPreset::install();
+
+			$command->info('Oxygen UI Preset installed successfully.');
+		});
 	}
 
 	/**
@@ -84,8 +85,10 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->registerDependentServiceProviders();
 		$this->registerAliases();
 
-		if ($this->app->environment('local'))
+        $dev = $this->app->environment('local') || $this->app->environment('testing');
+		if ($dev)
 		{
+
 			$this->app->singleton("emedia.oxygen.setup", function () {
 				return app(OxygenSetupCommand::class);
 			});

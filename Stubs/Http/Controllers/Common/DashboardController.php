@@ -33,8 +33,6 @@ class DashboardController extends Controller
 
 		$data['metrics'] = $metrics;
 
-		$data['user'] = auth()->user();
-
 		return view('oxygen::dashboard.dashboard', $data);
 	}
 

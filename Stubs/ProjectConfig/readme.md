@@ -45,6 +45,11 @@ Generate API documentation
 php artisan generate:docs && apidoc -i resources/docs -o public_html/docs/api
 ```
 
+Before releasing to production, compile the assets
+```
+npm run production
+```
+
 ## Licence
 
 Project Licenced to OxygenProject. [Copyright Elegant Media](https://www.elegantmedia.com.au)

@@ -68,6 +68,7 @@ class RegisterController extends Controller
 		return Validator::make($data, [
 			'name' => 'required|max:255',
 			'email' => 'required|email|max:255|unique:users',
+			'email' => 'required|email|max:255|unique:users,email,NULL,id,deleted_at,NULL',
 			'password' => 'required|min:8|confirmed',
 		]);
 	}
@@ -80,17 +81,11 @@ class RegisterController extends Controller
 	 */
 	protected function create(array $data)
 	{
-		$fields = [
+		return User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
 			'password' => bcrypt($data['password']),
-		];
-
-		if (config('features.auth.timezone-enabled') && !empty($data['timezone'])) {
-			$fields['timezone'] = $data['timezone'];
-		}
-
-		return User::create($fields);
+		]);
 	}
 
 
