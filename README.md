@@ -1,22 +1,8 @@
-# Oxygen - Admin Dashboard for Laravel 7.0+
+# Oxygen - Admin Dashboard for Laravel
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/501977135-Workbench%20Dashboard%202019-10-28%2012-57-06%20copy.png)
 
-[For Laravel 6, use version `3.0.2`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/3.0.2/)
-
-[For Laravel 5.8, use version `2.3`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.3.1/)
-
-[For Laravel 5.7, use version `2.2.20`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/2.2.20/)
-
-[For Laravel 5.6, use version `1.1.6`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/1.1.6/)
-
-[For Laravel 5.4, use version `1.0.8`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/1.0.8/)
-
-[For Laravel 5.3, use version `0.3.2`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/0.3.2/)
-
-[For Laravel 5.2, use version `0.1.4`](https://bitbucket.org/elegantmedia/oxygen-laravel/src/0.1.4/)
-
-## Summary
+## Summary of Features
 
 This package has the built-in support for the following.
 
@@ -25,45 +11,46 @@ This package has the built-in support for the following.
 - User registrations, logins, roles, permissions and object level permission control.
 - User invitations, invitation control, and user management.
 - apidoc.js Template
-- Auto-sync nested relationships when creating/updating objects (Use this with care!!!).
 - Scaffolding to generate Entities, Repositories and Controllers.
 - Seeding for Users, Roles.
 - Middleware for API Key validation, Role Based Access Control, Share view settings.
 - Extensible Authentication controllers to add your own features.
+
+#### Version Compatibility
+
+| Laravel   | Oxygen Version |
+| ----------|:--------------:|
+| 5.8       | 2.3.x          |
+| 6         | 3.x            |
+| 7         | 4.x            |
+
+For version compatibility of past versions, see `CHANGELOG.md`
+
+
 
 ## Requirements
 
 The following are required for a successful installation.
 
 - PHP 7.2+
-- [NodeJS with NPM or yarn](https://docs.npmjs.com/getting-started/installing-node)
-- [Bower](http://bower.io/#install-bower)
+- [NodeJS with NPM](https://docs.npmjs.com/getting-started/installing-node)
 
 ## Installation
 
 This package is intended to be installed on a **new Laravel project**. You'll be able to install it on an existing project, but might need to change some configuration settings.
 
-#### 1. Create a new Laravel project and go to the directory
+#### 1. Create a New Laravel Project
 ```
+// Create the project
 composer create-project --prefer-dist laravel/laravel="7.*" [project-name]
+
+// Go to the directory
 cd [project-name]
 ```
 
-#### 2. Scaffold Authentication
+#### 2. Install Oxygen
 
-Starting from Laravel 7, authentication routes, controllers, and views are not included so we'll need to install this manually from Laravel's `laravel/ui` package.
-
-```php
-composer require laravel/ui
-
-php artisan ui vue --auth
-```  
-
-_Can also use `react` or `bootstrap` in place of `vue`._
-
-#### 3. Install Oxygen
-
-3.1. Update `composer.json`
+2.1. Update `composer.json`
 
 This package and some dependent packages are available in private repositories. Change the `repositories` section to add the new repository, or create a new section in the file.
 
@@ -78,17 +65,16 @@ This package and some dependent packages are available in private repositories. 
             "url": "git@bitbucket.org:elegantmedia/devices-laravel.git"
         },
         {
-         
             "type":"vcs",
             "url":"git@bitbucket.org:elegantmedia/multitenant-laravel.git"
         },
         {
-          "type": "vcs",
-          "url": "git@bitbucket.org:elegantmedia/file-control-laravel.git"
+            "type": "vcs",
+            "url": "git@bitbucket.org:elegantmedia/file-control-laravel.git"
         },
         {
-          "type":"vcs",
-          "url":"git@bitbucket.org:elegantmedia/mediamanager-laravel.git"
+            "type":"vcs",
+            "url":"git@bitbucket.org:elegantmedia/mediamanager-laravel.git"
         },
         {
             "type":"vcs",
@@ -125,16 +111,16 @@ This package and some dependent packages are available in private repositories. 
     ],
 ```
 
-3.2. Require the package into composer through the command line
+2.2. Require the package into composer through the command line
 ```
 composer require emedia/oxygen
 ```
 
-3.3. Edit `.env` file and update the database settings
+2.3. Edit `.env` file and update the database settings
 
-#### 4. Run Setup
+#### 3. Run Setup
 
-4.1. Init Git 
+3.1. Initialize Git Repository 
 
 Commit your current state to Git, because next step will change some of the default files.
 
@@ -143,7 +129,7 @@ git init
 git add -A && git commit -m "Initial commit."
 ```
 
-4.2. Execute
+3.2. Run Oxygen Setup
 
 Run the following command. This will do the default installation, if any questions are asked, you can just press ENTER to confirm the default choice, or change it.
 
@@ -151,19 +137,20 @@ Run the following command. This will do the default installation, if any questio
 php artisan setup:oxygen-project
 ```
 
-4.a. Setup with confirm (OPTIONAL) 
+**Setup with confirmation (OPTIONAL)** 
 
 The default setup will install with default options. If you want to have manual control over installation run the command `php artisan setup:oxygen-project --confirm` and it will confirm before every step.
 
-7) After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
+#### 4. Done
 
-8) Go and make something amazing!
+- After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
+- Go and make something amazing!
 
 ## Developer Commands
 
 These commands are available from the CLI.
 
-#### Create a new user
+#### Create a New User
 
 Create a new user and assign a role.
 ```
