@@ -1,24 +1,32 @@
 <?php
 
-$baseUrl = 'https://raw.githubusercontent.com/laravel/laravel/master/';
-$destination = __DIR__ . '/../LaravelDefaultFiles/';
+use Setup\Copy\Base;
+use Setup\Copy\RepoCopy;
+use Setup\Copy\UI;
 
-$syncFromSource = [
-	'readme.md',
-	'webpack.mix.js',
-	'app/User.php',
-	'app/Http/Kernel.php',
-	'app/Http/Controllers/Controller.php',
-	// 'app/Http/Controllers/Auth/ConfirmPasswordController.php',
-	'app/Http/Controllers/Auth/ForgotPasswordController.php',
-	'app/Http/Controllers/Auth/LoginController.php',
-	'app/Http/Controllers/Auth/RegisterController.php',
-	'app/Http/Controllers/Auth/ResetPasswordController.php',
-	'app/Http/Controllers/Auth/VerificationController.php',
+$vendorPath = dirname(__FILE__) . '/../vendor/autoload.php';
+require($vendorPath);
+
+$repos = [
+    new Base([
+        'README.md',
+        'webpack.mix.js',
+        'app/User.php',
+        'app/Http/Kernel.php',
+        'app/Http/Controllers/Controller.php'
+    ]),
+    new UI([
+        // 'app/Http/Controllers/Auth/ConfirmPasswordController.php',
+        'app/Http/Controllers/Auth/ForgotPasswordController.php',
+        'app/Http/Controllers/Auth/LoginController.php',
+        'app/Http/Controllers/Auth/RegisterController.php',
+        'app/Http/Controllers/Auth/ResetPasswordController.php',
+        'app/Http/Controllers/Auth/VerificationController.php',
+    ])
 ];
 
-foreach ($syncFromSource as $sourceUrl) {
-	$contents = file_get_contents($baseUrl . $sourceUrl);
-	file_put_contents($destination . $sourceUrl, $contents);
-	echo "File {$sourceUrl} copied from remote to local." . PHP_EOL;
+$cloner = new RepoCopy(__DIR__ . '/../LaravelDefaultFiles/');
+
+foreach ($repos as $repo) {
+    $cloner->copy($repo);
 }

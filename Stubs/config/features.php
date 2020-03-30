@@ -28,6 +28,7 @@ return [
 
 		// force email verification after registration
 		'email-verification-required' => false,
+
 	],
 
 	/*

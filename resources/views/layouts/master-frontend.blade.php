@@ -8,25 +8,21 @@
 
     <title>@yield('pageTitle', 'EM Project')</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="//oss.maxcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    {{-- Fonts --}}
+    <link
+            href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+            rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
+          rel='stylesheet' type='text/css'>
 
-    <!-- Custom Fonts -->
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="//oss.maxcdn.com/fontawesome/4.5.0/css/font-awesome.min.css" />
+    {{-- Vendor CSS --}}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
 
-    <link rel="stylesheet" href="//oss.maxcdn.com/animatecss/3.5.0/animate.min.css" type="text/css">
+    {{-- Application CSS --}}
     <link rel="stylesheet" href="/css/theme/creative.css" type="text/css">
 
-    <link rel="stylesheet" href="{{ mix("css/dist/public.css") }}" />
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="{{ mix('css/dist/public.css') }}"/>
 
     @stack('meta')
 
@@ -35,75 +31,75 @@
 
 <body id="page-top" class="front-end">
 
-<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand page-scroll" href="#page-top">{{ (empty($appName))? config('app.name'): $appName }}</a>
-        </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar">
+        <a href="{{ route('home') }}">
+            <span class="navbar-brand mb-0 h1">{{ (empty($appName))? config('app.name'): $appName }}</span>
+        </a>
+    </nav>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a class="page-scroll" href="#about">About</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="#services">Services</a>
-                </li>
-                {{--<li>
-                    <a class="page-scroll" href="#portfolio">Portfolio</a>
-                </li>--}}
-                <li>
-                    <a class="page-scroll" href="#contact">Contact</a>
-                </li>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    More
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/privacy-policy">Privacy</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/terms-conditions">Terms & Conditions</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="/faqs">FAQs</a>
+            </li>
+        </ul>
 
-                @guest
-                    @if (Route::has('login'))
-                        <li>
-                            <a class="page-scroll" href="{{ route('login') }}">Login</a>
-                        </li>
-                    @endif
-                    @if (Route::has('register'))
-                        <li>
-                            <a class="page-scroll" href="{{ route('register') }}">Register</a>
-                        </li>
-                    @endif
-                @else
-                    <li>
-                        <a class="page-scroll" href="{{ route('dashboard') }}">Dashboard</a>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link" href="/privacy-policy">Privacy</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact-us">Contact Us</a>
+            </li>
+            @guest
+                @if (Route::has('login'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Login</a>
                     </li>
-                    <li>
-                        <a class="page-scroll" href="{{ route('logout') }}">Logout</a>
+                @endif
+                @if (Route::has('register'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">Register</a>
                     </li>
-                @endguest
-            </ul>
-        </div>
+                @endif
+            @else
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+                </li>
+            @endguest
+        </ul>
+
     </div>
 </nav>
 
-    @yield('contents')
+@yield('contents')
 
-    @if (empty($noHeaderFooter))
-        @include('oxygen::partials.footer')
-    @endif
+@if (empty($noHeaderFooter))
+    @include('oxygen::partials.footer')
+@endif
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//oss.maxcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/js/bootstrap.min.js"></script>
 
-    {{-- All files below are to support the frontend theme. --}}
-    {{-- If you're changing the frontend, remove all files below. --}}
-    <script src="js/theme/jquery.easing.min.js"></script>
-    <script src="js/theme/jquery.fittext.js"></script>
-    <script src="js/theme/wow.min.js"></script>
-    <script src="js/theme/creative.js"></script>
-
-    @yield('scripts')
+@yield('scripts')
 </body>
 </html>
