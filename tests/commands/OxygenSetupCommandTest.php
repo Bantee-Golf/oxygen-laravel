@@ -96,7 +96,28 @@ class OxygenSetupCommandTest extends FilesTestCase
              ->assertSetupDevices()
              ->assertEnvSet()
              ->assertReadMeUpdated();
+
+        $this->artisan('setup:oxygen-project')
+             ->expectsQuestion('What is the project name?', $this->appName)
+             ->expectsQuestion('What is the `from` email address for system emails? (Press ENTER key for default)',
+                 $this->email)
+             ->expectsQuestion('What is your email to seed the database? (Press ENTER key for default)', $this->email)
+             ->expectsQuestion('What is the local development URL? (Press ENTER key for default)', $this->devUrl)
+             ->expectsQuestion("{$this->laravelPath}/webpack.mix.js already exists. Overwrite?", true)
+             ->expectsQuestion("{$this->laravelPath}/readme.md already exists. Overwrite?", true)
+             ->expectsQuestion("{$this->laravelPath}/resources/lang/en/auth.php already exists. Overwrite?", true)
+             ->expectsQuestion("{$this->laravelPath}/apidoc.json already exists. Overwrite?", true)
+             ->expectsQuestion("{$this->laravelPath}/app/User.php already exists. Overwrite?", true)
+             ->expectsQuestion("Oxygen routes are already in routes file. Add again?", true)
+             ->expectsQuestion("Oxygen API routes are already in routes file. Add again?", true)
+             ->expectsQuestion("Update Http/Kernel.php with new middleware?", true)
+             ->expectsQuestion("App Settings package routes are already in routes file. Add again?", true)
+             ->expectsQuestion("Devices package routes are already in routes file. Add again?", true)
+             ->expectsQuestion("Oxygen ENV values are already in {$this->laravelPath}/.env. Add again?", true)
+             ->expectsQuestion("Oxygen ENV values are already in {$this->laravelPath}/.env.example. Add again?", true)
+             ->assertExitCode(0);
     }
+
 
     protected function assertPublicHtmlCreated()
     {
