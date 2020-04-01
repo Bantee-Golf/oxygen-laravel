@@ -13,8 +13,6 @@ use EMedia\LaravelTestbench\Repo\RepoCopy;
 use EMedia\Oxygen\OxygenServiceProvider;
 use EMedia\PHPHelpers\Files\FileManager;
 use Laravel\Ui\UiServiceProvider;
-use Silber\Bouncer\BouncerFacade;
-use Silber\Bouncer\BouncerServiceProvider;
 
 class OxygenSetupCommandTest extends FilesTestCase
 {
@@ -50,7 +48,6 @@ class OxygenSetupCommandTest extends FilesTestCase
     {
         return [
             OxygenServiceProvider::class,
-            BouncerServiceProvider::class,
             GeneratorServiceProvider::class,
             AppSettingsServiceProvider::class,
             DeviceAuthServiceProvider::class,
@@ -62,13 +59,6 @@ class OxygenSetupCommandTest extends FilesTestCase
     {
         $app['config']->set('oxygen.abilityModel', '');
         $app['config']->set('oxygen.roleModel', '');
-    }
-
-    protected function getPackageAliases($app)
-    {
-        return [
-            BouncerFacade::class,
-        ];
     }
 
     /**
