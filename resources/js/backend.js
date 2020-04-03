@@ -29,6 +29,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 require('typeahead.js');
 require('jquery-validation');
 require('select2');
+require('dropzone');
 
 /*
  |--------------------------------------------------------------------------

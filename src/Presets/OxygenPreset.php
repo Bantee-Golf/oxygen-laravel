@@ -42,6 +42,7 @@ class OxygenPreset extends Preset
 			'popper.js' => '^1.16.1',
 			'select2' => '^4.0.13',
 			'typeahead.js' => '^0.11.1',
+            "dropzone" =>  "^5.7.0"
 		], $packages);
 	}
 
