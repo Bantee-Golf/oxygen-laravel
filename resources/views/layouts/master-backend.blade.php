@@ -10,6 +10,7 @@
     <title>@yield('pageTitle', $pageTitle)</title>
 
     <link rel="stylesheet" href="/css/theme/select2.custom.css"/>
+    <link rel="stylesheet" href="{{ mix('css/dist/bootstrap.css') }}"/>
     <link rel="stylesheet" href="{{ mix('css/dist/backend.css') }}"/>
 
     @stack('stylesheets')

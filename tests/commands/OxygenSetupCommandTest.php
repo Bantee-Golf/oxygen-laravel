@@ -291,7 +291,7 @@ class OxygenSetupCommandTest extends FilesTestCase
         $appendedHeader = "### Oxygen Settings Start ###";
         $appended = FileManager::isTextInFile($env, $appendedHeader);
         if (!$appended) {
-            throw new \Exception("Missing {$appendedHeader} in .env; were .env variables properly appended?");
+            throw new \Exception("Missing {$appendedHeader} in .env, were .env variables properly appended?");
         }
 
         return $this;
@@ -307,7 +307,7 @@ class OxygenSetupCommandTest extends FilesTestCase
         $appendedHeader = "## Local Development Setup Instructions";
         $appended = FileManager::isTextInFile($env, $appendedHeader);
         if (!$appended) {
-            throw new \Exception("Missing {$appendedHeader} in readme.me; was the readme udpated correctly?");
+            throw new \Exception("Missing {$appendedHeader} in readme.md, was the readme updated correctly?");
         }
 
         return $this;

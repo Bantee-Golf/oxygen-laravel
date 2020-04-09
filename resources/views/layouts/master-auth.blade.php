@@ -4,26 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 
     <title>@yield('pageTitle', 'Register or Login')</title>
 
-    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW" />
-
-    <link rel="stylesheet" href="{{ mix("css/dist/auth.css") }}" />
-
-    <!-- Fonts -->
+    <link rel="stylesheet" href="{{ mix('css/dist/bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ mix('css/dist/auth.css') }}" />
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-
-    {{--<link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-
-    <style>
-        html, body.master-auth {
-            height: 100%;
-        }
-    </style>
 </head>
 <body class="master-auth">
 <nav class="navbar navbar-expand-md navbar-light fixed-top navbar-app">
