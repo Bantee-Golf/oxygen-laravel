@@ -24,7 +24,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",
-        "orchestra/testbench": "^5.1"
+        "orchestra/testbench": "^5.1",
+        "emedia/laravel-testbench": "^1.0"
     },
     "extra": {
         "laravel": {
@@ -105,6 +106,10 @@
         {
             "type": "vcs",
             "url": "git@bitbucket.org:elegantmedia/php-helpers.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:elegantmedia/laravel-testbench.git"
         }
     ],
     "minimum-stability": "dev",

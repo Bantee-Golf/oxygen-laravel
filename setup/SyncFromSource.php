@@ -1,8 +1,8 @@
 <?php
 
-use Setup\Copy\Base;
-use Setup\Copy\RepoCopy;
-use Setup\Copy\UI;
+use EMedia\LaravelTestbench\Repo\Laravel\Base;
+use EMedia\LaravelTestbench\Repo\Laravel\UI;
+use EMedia\LaravelTestbench\Repo\RepoCopy;
 
 $vendorPath = dirname(__FILE__) . '/../vendor/autoload.php';
 require($vendorPath);
@@ -25,8 +25,8 @@ $repos = [
     ])
 ];
 
-$cloner = new RepoCopy(__DIR__ . '/../LaravelDefaultFiles/');
+$copy = new RepoCopy(__DIR__ . '/../LaravelDefaultFiles/');
 
 foreach ($repos as $repo) {
-    $cloner->copy($repo);
+    $copy->get($repo);
 }
