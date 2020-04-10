@@ -14,8 +14,21 @@ use EMedia\Oxygen\OxygenServiceProvider;
 use EMedia\PHPHelpers\Files\FileManager;
 use Laravel\Ui\UiServiceProvider;
 
+/**
+ * Class OxygenSetupCommandTest
+ *
+ * Make sure 'php artisan setup:oxygen-project' works in a
+ * fresh laravel install.
+ *
+ * @package Tests\commands
+ */
 class OxygenSetupCommandTest extends FilesTestCase
 {
+    /**
+     * Setup required parameters. Define them here to allow
+     * the individual assertion methods to check that the
+     * correct values are used.
+     */
     protected $appName = "My Test App";
     protected $email = "testing_super_admin@elegantmedia.com.au";
     protected $devUrl = 'oxygen.test';
@@ -31,7 +44,6 @@ class OxygenSetupCommandTest extends FilesTestCase
 
     protected function copyLaravelRepoFiles()
     {
-
         $base = new Base([
             "routes/web.php",
             "routes/api.php",
@@ -51,6 +63,7 @@ class OxygenSetupCommandTest extends FilesTestCase
             GeneratorServiceProvider::class,
             AppSettingsServiceProvider::class,
             DeviceAuthServiceProvider::class,
+            // Laravel UI required for auth scaffolding
             UiServiceProvider::class
         ];
     }
@@ -67,6 +80,7 @@ class OxygenSetupCommandTest extends FilesTestCase
      */
     public function it_sets_up_a_project()
     {
+        // Initial setup command
         $this->artisan('setup:oxygen-project')
              ->expectsQuestion('What is the project name?', $this->appName)
              ->expectsQuestion('What is the `from` email address for system emails? (Press ENTER key for default)',
@@ -75,6 +89,7 @@ class OxygenSetupCommandTest extends FilesTestCase
              ->expectsQuestion('What is the local development URL? (Press ENTER key for default)', $this->devUrl)
              ->assertExitCode(0);
 
+        // Assertions
         $this->assertPublicHtmlCreated()
              ->assertVariablesReplaced()
              ->assertMigrationsGenerated()
@@ -87,6 +102,10 @@ class OxygenSetupCommandTest extends FilesTestCase
              ->assertEnvSet()
              ->assertReadMeUpdated();
 
+        /**
+         * Setup is complete, if we re-run the command it should
+         * confirm overwriting files.
+         */
         $this->artisan('setup:oxygen-project')
              ->expectsQuestion('What is the project name?', $this->appName)
              ->expectsQuestion('What is the `from` email address for system emails? (Press ENTER key for default)',
