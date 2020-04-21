@@ -154,10 +154,12 @@ class ManageFilesController extends Controller
 			$fileKey = $request->key;
 			if ($fileKey === 'other') $fileKey = null;
 
-			// make sure the key is valid
+			// if we have the key set as `other`, then give a random key,
+			// so that all files will have a unique key
+			// this is not the same as UUID, because the key can change later, but the UUID won't
 			if (empty($fileKey)) {
 				if (empty($request->custom_key)) {
-					$fileKey = Uuid::generate(4);
+					$fileKey = (string) Uuid::generate(4);
 				} else {
 					$fileKey = Str::snake($request->custom_key);
 				}

@@ -26,7 +26,24 @@ class File extends Model
 		'uploaded_by_user_id',
 	];
 
-	protected $searchable = ['name', 'description', 'original_filename'];
+	protected $appends = [
+		// uncomment permalink if you want it to be available with the response
+		// 'permalink',
+	];
+
+	protected $visible = [
+		'uuid',
+		'key',
+		'original_filename',
+		'public_url',
+		'permalink',
+	];
+
+	protected $searchable = [
+		'name',
+		'description',
+		'original_filename'
+	];
 
 	/**
 	 *
@@ -132,6 +149,17 @@ class File extends Model
 		}
 
 		return null;
+	}
+
+	/**
+	 *
+	 * A file is `attachable` to something else
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+	 */
+	public function attachable()
+	{
+		return $this->morphTo();
 	}
 
 }
