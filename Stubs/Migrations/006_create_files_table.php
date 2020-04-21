@@ -12,7 +12,7 @@ class CreateFilesTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('files', function($table) {
+		Schema::create('files', function(Blueprint $table) {
 			$table->increments('id');
 
 			$table->string('uuid')->unique()->nullable();
@@ -20,6 +20,7 @@ class CreateFilesTable extends Migration
 			$table->string('category')->nullable();
 			$table->string('name')->nullable();
 			$table->text('description')->nullable();
+			$table->nullableMorphs('attachable');
 			$table->boolean('allow_public_access')->default(false);
 			$table->string('original_filename')->nullable();
 			$table->string('file_path')->nullable();
