@@ -11,17 +11,17 @@ class PagesController extends Controller
 
 	public function privacyPolicy()
 	{
-		return view('oxygen::pages.privacy', ['title' => 'Privacy Policy']);
+		return view('oxygen::pages.privacy', ['pageTitle' => 'Privacy Policy']);
 	}
 
 	public function termsConditions()
 	{
-		return view('oxygen::pages.terms', ['title' => 'Terms & Conditions']);
+		return view('oxygen::pages.terms', ['pageTitle' => 'Terms & Conditions']);
 	}
 
 	public function faqs()
 	{
-		return view('oxygen::pages.faqs', ['title' => 'Frequently Asked Questions']);
+		return view('oxygen::pages.faqs', ['pageTitle' => 'Frequently Asked Questions']);
 	}
 
 	/**
@@ -32,7 +32,7 @@ class PagesController extends Controller
 	 */
 	public function contactUs()
 	{
-		return view('oxygen::pages.contact-us', ['title' => 'Contact Us']);
+		return view('oxygen::pages.contact-us', ['pageTitle' => 'Contact Us']);
 	}
 
 	/**
