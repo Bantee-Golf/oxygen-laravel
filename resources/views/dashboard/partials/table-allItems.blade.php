@@ -1,6 +1,6 @@
 @section('content')
     <div class="all-items">
-        <h1 class="page-title">{{ $pageTitle }}</h1>
+        {{ lotus()->pageHeadline($pageTitle) }}
 
         <div class="page-main-actions">
             @yield('breadcrumbs')

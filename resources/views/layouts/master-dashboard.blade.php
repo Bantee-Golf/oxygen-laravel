@@ -5,10 +5,10 @@
 @section('page-container')
     <div id="page-container" class="admin-page-container">
         <div id="page-container-wrapper" class="row">
-            <div id="sidebar" class="col-sm-2 dark-container">
+            <div id="sidebar" class="dark-container">
                 @include('oxygen::dashboard.sidebar')
             </div>
-            <div id="page-contents" class="col-sm-10 main-page-contents">
+            <div id="page-contents" class="main-page-contents">
                 @include('oxygen::partials.flash')
 
                 <div class="container-content">

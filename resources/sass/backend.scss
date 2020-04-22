@@ -12,13 +12,13 @@
 
 // Modules
 @import "./oxygen/_abstract-classes",
-        "./oxygen/modules/_item-listings",
-        "./oxygen/modules/_input-fields--large",
-        "./oxygen/modules/_labels",
-        "./oxygen/modules/_buttons",
-        "./oxygen/modules/_lists",
-        "./oxygen/modules/_forms",
-        "./oxygen/modules/_empty_view";
+"./oxygen/modules/_item-listings",
+"./oxygen/modules/_input-fields--large",
+"./oxygen/modules/_labels",
+"./oxygen/modules/_buttons",
+"./oxygen/modules/_lists",
+"./oxygen/modules/_forms",
+"./oxygen/modules/_empty_view";
 
 html,
 body {
@@ -75,12 +75,10 @@ body {
 }
 
 #sidebar {
-    // width: 230px;
     float: none;
     background: #003254;
     font-family: $paragraph-font;
     height: 100%;
-    padding: 0px 20px 20px;
     vertical-align: top;
 
     .nav > li > a {
@@ -136,7 +134,7 @@ body {
  |--------------------------------------------------------------------------
  */
 .nav-wide {
-    margin: 0 -20px;
+    //margin: 0 -20px;
 }
 
 .navbar-nav {
@@ -285,10 +283,6 @@ body {
 
 
 .main-page-contents {
-    h1 {
-        margin: 0 0 20px;
-    }
-
     .action-buttons {
         margin: 20px 0;
     }
@@ -538,18 +532,27 @@ footer {
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1000px) {
+    #page-container {
+        #page-container-wrapper {
+            #sidebar {
+                width: 80px;
+                min-width: 80px;
+                //padding: 0 5px 5px;
+            }
+        }
+    }
     #sidebar {
         .nav {
             > li > a {
                 text-align: center;
                 font-size: 12px;
+                padding: 10px 0;
             }
 
             .fas {
-                font-size: 30px;
+                font-size: 20px;
                 display: block;
-                //border: 1px solid red;
                 margin-right: 0;
             }
         }
