@@ -36,8 +36,8 @@ class OxygenPreset extends Preset
 	{
 		return array_merge([
 			'@fortawesome/fontawesome-free' => '^5.13.0',
-			'bootstrap' => '^4.4.1',
-			'jquery' => '^3.4.1',
+			'bootstrap' => '~4.4.1',
+			'jquery' => '~3.4.1',		// don't upgrade until a fix released for https://github.com/twbs/bootstrap/issues/30553
 			'jquery-validation' => '^1.19.1',
 			'popper.js' => '^1.16.1',
 			'select2' => '^4.0.13',
