@@ -1,4 +1,14 @@
 // Start Oxygen routes
+
+// If there's a DEV_BROWSERSYNC_URL given, use it for the URLs
+// this will help to generate consistent URLs with BrowserSync
+// Don't use this on a production environment
+// Don't uncomment unless you understand what this does
+// if (app()->environment('local')) {
+//    $domainRoot = env('DEV_BROWSERSYNC_URL', '');
+//    if ($domainRoot !== '') \Illuminate\Support\Facades\URL::forceRootUrl($domainRoot);
+//}
+
 // Home
 Route::get('/', function () {
 	return view('oxygen::pages.welcome', ['pageTitle' => 'The Awesomeness Starts Here...']);
