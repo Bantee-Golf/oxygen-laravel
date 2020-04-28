@@ -49,3 +49,13 @@
         </a>
     </div>
 </div>
+
+@if (has_feature('auth.public-users-can-register'))
+    <hr>
+    <div class="form-group row mb-0">
+        <div class="col-md-8 offset-md-4">
+            Don't have an account?
+            <a href="{{ route('register') }}">Register Now</a>
+        </div>
+    </div>
+@endif

@@ -71,6 +71,8 @@
     </div>
 </div>
 
+<script src="{{ mix('js/dist/public.js') }}"></script>
+
 @yield('scripts')
 
 </body>
