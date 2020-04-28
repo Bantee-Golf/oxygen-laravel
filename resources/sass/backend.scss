@@ -538,7 +538,6 @@ footer {
             #sidebar {
                 width: 80px;
                 min-width: 80px;
-                //padding: 0 5px 5px;
             }
         }
     }
@@ -547,7 +546,7 @@ footer {
             > li > a {
                 text-align: center;
                 font-size: 12px;
-                padding: 10px 0;
+                padding: 10px 5px;
             }
 
             .fas {
