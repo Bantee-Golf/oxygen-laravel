@@ -1,11 +1,95 @@
-image: php:7.2-fpm
+image: emediaorg/php:0.0.1
 
 pipelines:
   default:
     - step:
-        name: Build and test
+        name: Run Oxygen Package Tests
+        caches:
+          - composer
         script:
-          - apt-get update && apt-get install -y unzip git
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - composer install
           - ./vendor/bin/phpunit
+    - step:
+        name: Run Laravel + Oxygen Integration Tests
+        size: 2x
+        caches:
+          - composer
+          - node
+        script:
+          - cd /
+          - composer create-project --prefer-dist laravel/laravel="7.*" laravel_app --no-progress
+          - cd laravel_app
+          - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories
+          - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
+          - composer require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
+          - php artisan setup:oxygen-project --name Oxygen --email apps@elegantmedia.com.au --devurl localhost.devv --no-interaction
+          - composer dump-autoload
+          - npm install && npm run dev && npm run dev
+          # Install Dusk
+          - composer require laravel/dusk --dev
+          - php artisan dusk:install
+          # change the .env values - you could use a separate .env file as well
+          - sed -i 's#localhost:9515#127.0.0.1:4444/wd/hub#g' /laravel_app/tests/DuskTestCase.php
+          - sed -i 's#APP_URL=http://localhost.devv$#APP_URL=http://127.0.0.1:8000#g' .env
+          - sed -i 's/DB_USERNAME=root$/DB_USERNAME=appuser/g' .env
+          - sed -i 's/DB_PASSWORD=$/DB_PASSWORD=userpass/g' .env
+          - sed -i 's/MAIL_HOST=smtp\.mailtrap\.io/MAIL_HOST=127.0.0.1/g' .env
+          - sed -i 's/MAIL_PORT=2525/MAIL_PORT=1025/g' .env
+          - cp .env .env.dusk.local
+          # clear cache after updating .env
+          - php artisan config:cache
+          - php artisan db:refresh
+          # start the test server
+          - php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &
+          - php artisan dusk --stop-on-error --stop-on-failure
+        services:
+          - mysql
+          - mail
+          - selenium
+
+
+definitions:
+
+  # networks: services within the same network can share resources
+  # this is how the `app` service can talk to `db` service
+  networks:
+    app-network:
+      driver: bridge
+
+  services:
+    mysql:
+      image: mysql:8.0
+      container_name: dbcontainer
+      environment:
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        MYSQL_DATABASE: 'laravel'
+        MYSQL_USER: 'appuser'
+        MYSQL_PASSWORD: 'userpass'
+      networks:
+        - app-network
+
+    # mail
+    mail:
+      image: mailhog/mailhog:latest
+      container_name: mailhog
+      restart: unless-stopped
+      ports:
+        - "1025:1025"
+        - "8025:8025"
+      networks:
+        - app-network
+
+    # selenium (for dusk and testing)
+    selenium:
+      image: selenium/standalone-chrome:3.141.59
+      container_name: selenium
+      restart: unless-stopped
+      shm_size: 2G
+      volumes:
+        - /dev/shm:/dev/shm
+      ports:
+        - "4444:4444"
+      links:
+        - app:localhost.devv
+      networks:
+        - app-network

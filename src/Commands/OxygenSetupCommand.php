@@ -674,6 +674,14 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 					'--tag'			=> ['oxygen-config'],
 					'--force'		=> true,
 				]
+			],
+			[
+				'command'		=> 'vendor:publish',
+				'arguments'		=> [
+					'--provider'	=> 'EMedia\Oxygen\OxygenServiceProvider',
+					'--tag'			=> ['dusk-tests'],
+					'--force'		=> true,
+				]
 			]
 		];
 

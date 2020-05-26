@@ -1,0 +1,5 @@
+* text=auto
+
+bitbucket-pipelines.yml export-ignore
+docker-compose.yml export-ignore
+DEVELOPMENT.md export-ignore
