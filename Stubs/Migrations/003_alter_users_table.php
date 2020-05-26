@@ -29,7 +29,12 @@ class AlterUsersTable extends Migration
 
 			$table->softDeletes();
 			$table->integer('deleted_by_user_id')->nullable()->references('id')->on('users');
+		});
 
+		Schema::create('password_resets', function (Blueprint $table) {
+			$table->string('email')->index();
+			$table->string('token');
+			$table->timestamp('created_at')->nullable();
 		});
 	}
 
@@ -57,5 +62,7 @@ class AlterUsersTable extends Migration
 				'deleted_by_user_id'
 			]);
 		});
+
+		Schema::dropIfExists('password_resets');
 	}
 }
