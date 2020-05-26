@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+
+  # web app
+  app:
+    image: emediaorg/php:0.0.1
+    container_name: appcontainer
+    restart: unless-stopped
+    volumes:
+      - ./:/webapp
+      # your authorized SSH key to access bitbucket
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      # add your local cache, so this run faster
+      # - ~/.composer/cache:/composer/cache
+      # bind a local folder to see any failure logs
+      - ./test_screenshots:/test_screenshots
+    ports:
+      - "8095:8000"
+    networks:
+      - app-network
+
+  # mysql
+  db:
+    image: mysql:8.0
+    container_name: dbcontainer
+    restart: unless-stopped
+    ports:
+      # map the host port 3306 -> to your machine's port 3305
+      # so you can connect to 127.0.0.1:3305
+      - "3305:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - app-network
+
+  # mail
+  mail:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - app-network
+
+  # selenium (for dusk and testing)
+  selenium:
+    image: selenium/standalone-chrome:3.141.59
+    container_name: selenium
+    restart: unless-stopped
+    shm_size: 2G
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
+    links:
+      - app:localhost.devv
+    networks:
+      - app-network
+
+# networks: services within the same network can share resources
+# this is how the `app` service can talk to `db` service
+networks:
+  app-network:
+    driver: bridge

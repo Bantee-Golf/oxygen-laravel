@@ -56,6 +56,11 @@ class OxygenServiceProvider extends ServiceProvider
 			__DIR__.'/../Stubs/config/features.php' => config_path('features.php')
 		], 'oxygen-config');
 
+		// publish tests
+		$this->publishes([
+			__DIR__ . '/../Stubs/tests/Browser' => base_path('tests/Browser'),
+		], 'dusk-tests');
+
 		// set custom models for abilities and roles
 		$abilityModel = config('oxygen.abilityModel');
 

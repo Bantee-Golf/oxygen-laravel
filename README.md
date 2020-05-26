@@ -20,9 +20,9 @@ This package has the built-in support for the following.
 
 | Laravel   | Oxygen Version |
 | ----------|:--------------:|
-| 5.8       | 2.3.x          |
-| 6         | 3.x            |
 | 7         | 4.x            |
+| 6         | 3.x            |
+| 5.8       | 2.3.x          |
 
 For version compatibility of past versions, see `CHANGELOG.md`
 
@@ -37,7 +37,19 @@ The following are required for a successful installation.
 
 ## Installation
 
-This package is intended to be installed on a **new Laravel project**. You'll be able to install it on an existing project, but might need to change some configuration settings.
+This package is intended to be installed on a **project**. You'll be able to install it on an existing project, but might need to change some configuration settings.
+
+### Install Method 1: Use the Installer (Recommended)
+
+The easiest way to do it is by using the [Oxygen Installer](https://bitbucket.org/elegantmedia/oxygen-installer). With the installer, you can create a project with one line.
+
+```
+oxygen new myproject --name 'Oxygen' --email apps@elegantmedia.com.au --devurl 'localhost.devv'
+```
+
+### Install Method 2: Install Manually
+
+If you don't want to use the installer, you can install it manually.
 
 #### 1. Create a New Laravel Project
 ```

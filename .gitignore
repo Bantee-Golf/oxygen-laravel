@@ -1,5 +1,6 @@
 /vendor/
 .idea/
+/test_screenshots/
 README_LOCAL.md
 .DS_Store
 composer.lock
