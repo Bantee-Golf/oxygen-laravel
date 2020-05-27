@@ -580,7 +580,7 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 			$stringsToReplace[] = [
 				'path'		=> base_path('.env'),
 				'search'	=> "DB_DATABASE=laravel",
-				'replace'	=> "APP_NAME=\"{$dbname}\"",
+				'replace'	=> "DB_DATABASE=\"{$dbname}\"",
 			];
 		}
 
