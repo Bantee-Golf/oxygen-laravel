@@ -16,7 +16,19 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 								{--confirm : Confirm with the user if there are potential issues}
 								{--name= : Name of the project}
 								{--devurl= : Development URL alias of the local machine}
-								{--email= : Default email for system emails and seeding}';
+								{--email= : Default email for system emails and seeding}
+								
+								{--dbhost= : Database host}
+								{--dbport= : Database port}
+								{--dbname= : Database name}
+								{--dbuser= : Database user}
+								{--dbpass= : Database password}
+								
+								{--mailhost= : Mail host}
+								{--mailport= : Mail port}
+								{--mailuser= : Mail username}
+								{--mailpass= : Mail password}
+								';
 
 	protected $description = 'Generate common files for the Oxygen project';
 
@@ -546,6 +558,80 @@ class OxygenSetupCommand extends BaseGeneratorCommand
 				'replace'	=> "'engine' => 'InnoDB ROW_FORMAT=DYNAMIC',",
 			],
 		];
+
+		// database logins
+		if ($dbhost = $this->option('dbhost')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "DB_HOST=127.0.0.1",
+				'replace'	=> "DB_HOST=\"{$dbhost}\"",
+			];
+		}
+
+		if ($dbport = $this->option('dbport')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "DB_PORT=3306",
+				'replace'	=> "DB_PORT=\"{$dbport}\"",
+			];
+		}
+
+		if ($dbname = $this->option('dbname')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "DB_DATABASE=laravel",
+				'replace'	=> "APP_NAME=\"{$dbname}\"",
+			];
+		}
+
+		if ($dbuser = $this->option('dbuser')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "DB_USERNAME=root",
+				'replace'	=> "DB_USERNAME=\"{$dbuser}\"",
+			];
+		}
+
+		if ($dbpass = $this->option('dbpass')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "DB_PASSWORD=",
+				'replace'	=> "DB_PASSWORD=\"{$dbpass}\"",
+			];
+		}
+
+		// mail settings
+		if ($mailhost = $this->option('mailhost')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "MAIL_HOST=smtp.mailtrap.io",
+				'replace'	=> "MAIL_HOST=\"{$mailhost}\"",
+			];
+		}
+
+		if ($mailport = $this->option('mailport')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "MAIL_PORT=2525",
+				'replace'	=> "MAIL_PORT=\"{$mailport}\"",
+			];
+		}
+
+		if ($mailuser = $this->option('mailuser')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "MAIL_USERNAME=null",
+				'replace'	=> "MAIL_USERNAME=\"{$mailuser}\"",
+			];
+		}
+
+		if ($mailpass = $this->option('mailpass')) {
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "MAIL_PASSWORD=null",
+				'replace'	=> "MAIL_PASSWORD=\"{$mailpass}\"",
+			];
+		}
 
 		if ($this->projectConfig['multiTenant']) {
 			$stringsToReplace[] = [
