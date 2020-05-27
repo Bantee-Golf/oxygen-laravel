@@ -3,14 +3,7 @@ image: emediaorg/php:0.0.1
 pipelines:
   default:
     - step:
-        name: Run Oxygen Package Tests
-        caches:
-          - composer
-        script:
-          - composer install
-          - ./vendor/bin/phpunit
-    - step:
-        name: Run Laravel + Oxygen Integration Tests
+        name: Laravel + Oxygen Integration Tests
         size: 2x
         caches:
           - composer
@@ -29,7 +22,6 @@ pipelines:
           # Install Dusk
           - php -d memory_limit=2G $COMPOSER require laravel/dusk --dev
           - php artisan dusk:install
-          # change the .env values - you could use a separate .env file as well
           - sed -i 's#localhost:9515#127.0.0.1:4444/wd/hub#g' /laravel_app/tests/DuskTestCase.php
           - cp .env .env.dusk.local
           # clear cache after updating .env
@@ -42,7 +34,13 @@ pipelines:
           - mysql
           - mail
           - selenium
-
+    - step:
+        name: Oxygen Package Tests
+        caches:
+          - composer
+        script:
+          - composer install
+          - ./vendor/bin/phpunit
 
 definitions:
 
