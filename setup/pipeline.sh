@@ -17,6 +17,7 @@ alias ll='ls -la'
 BITBUCKET_CLONE_DIR=$(pwd)
 
 # step: Install a new Laravel project
+COMPOSER=$(which composer)
 cd ..
 rm -rf ./laravel_app
 composer create-project --prefer-dist laravel/laravel="7.*" laravel_app --no-progress
@@ -31,7 +32,7 @@ composer require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-pl
 # try removing composer.lock and vendor directory and installing again.
 
 # step: Install Oxygen
-php artisan setup:oxygen-project --name Oxygen --email apps@elegantmedia.com.au --devurl localhost.devv --no-interaction
+php artisan setup:oxygen-project --name Oxygen --email apps@elegantmedia.com.au --devurl localhost.devv:8000 --dbhost dbcontainer --dbuser appuser --dbpass userpass --mailhost mailhog --mailport 1025 --no-interaction
 composer dump-autoload
 npm install && npm run dev && npm run dev
 
@@ -39,23 +40,12 @@ npm install && npm run dev && npm run dev
 ./vendor/bin/phpunit
 
 # step: install dusk
-composer require laravel/dusk --dev
+php -d memory_limit=2G $COMPOSER require laravel/dusk --dev
 php artisan dusk:install
 
 # step: change chrome port to selenium container
 # this should run after `dusk:install`
 sed -i 's#localhost:9515#selenium:4444/wd/hub#g' /laravel_app/tests/DuskTestCase.php
-
-# step: set app URL, so it can be accessed from outside this container
-sed -i 's#APP_URL=http://localhost.devv$#APP_URL=http://localhost.devv:8000#g' .env
-
-# step: set db config
-sed -i 's/DB_HOST=127\.0\.0\.1/DB_HOST=dbcontainer/g' .env
-sed -i 's/DB_PASSWORD=$/DB_PASSWORD=root/g' .env
-
-# step: set mail config
-sed -i 's/MAIL_HOST=smtp\.mailtrap\.io/MAIL_HOST=mailhog/g' .env
-sed -i 's/MAIL_PORT=2525/MAIL_PORT=1025/g' .env
 
 # step: set .env for dusk
 cp .env .env.dusk.local

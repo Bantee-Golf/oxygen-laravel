@@ -3,38 +3,26 @@ image: emediaorg/php:0.0.1
 pipelines:
   default:
     - step:
-        name: Run Oxygen Package Tests
-        caches:
-          - composer
-        script:
-          - composer install
-          - ./vendor/bin/phpunit
-    - step:
-        name: Run Laravel + Oxygen Integration Tests
+        name: Laravel + Oxygen Integration Tests
         size: 2x
         caches:
           - composer
           - node
         script:
+          - COMPOSER=$(which composer)
           - cd /
           - composer create-project --prefer-dist laravel/laravel="7.*" laravel_app --no-progress
           - cd laravel_app
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
           - composer require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
-          - php artisan setup:oxygen-project --name Oxygen --email apps@elegantmedia.com.au --devurl localhost.devv --no-interaction
+          - php artisan setup:oxygen-project --name Oxygen --email apps@elegantmedia.com.au --devurl 127.0.0.1:8000 --dbhost 127.0.0.1 --dbuser appuser --dbpass userpass --mailhost 127.0.0.1 --mailport 1025 --no-interaction
           - composer dump-autoload
           - npm install && npm run dev && npm run dev
           # Install Dusk
-          - composer require laravel/dusk --dev
+          - php -d memory_limit=2G $COMPOSER require laravel/dusk --dev
           - php artisan dusk:install
-          # change the .env values - you could use a separate .env file as well
           - sed -i 's#localhost:9515#127.0.0.1:4444/wd/hub#g' /laravel_app/tests/DuskTestCase.php
-          - sed -i 's#APP_URL=http://localhost.devv$#APP_URL=http://127.0.0.1:8000#g' .env
-          - sed -i 's/DB_USERNAME=root$/DB_USERNAME=appuser/g' .env
-          - sed -i 's/DB_PASSWORD=$/DB_PASSWORD=userpass/g' .env
-          - sed -i 's/MAIL_HOST=smtp\.mailtrap\.io/MAIL_HOST=127.0.0.1/g' .env
-          - sed -i 's/MAIL_PORT=2525/MAIL_PORT=1025/g' .env
           - cp .env .env.dusk.local
           # clear cache after updating .env
           - php artisan config:cache
@@ -46,7 +34,13 @@ pipelines:
           - mysql
           - mail
           - selenium
-
+    - step:
+        name: Oxygen Package Tests
+        caches:
+          - composer
+        script:
+          - composer install
+          - ./vendor/bin/phpunit
 
 definitions:
 

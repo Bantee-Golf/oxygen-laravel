@@ -32,6 +32,8 @@ services:
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: 'appuser'
+      MYSQL_PASSWORD: 'userpass'
     networks:
       - app-network
 
