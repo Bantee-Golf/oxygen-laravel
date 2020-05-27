@@ -17,6 +17,7 @@ alias ll='ls -la'
 BITBUCKET_CLONE_DIR=$(pwd)
 
 # step: Install a new Laravel project
+COMPOSER=$(which composer)
 cd ..
 rm -rf ./laravel_app
 composer create-project --prefer-dist laravel/laravel="7.*" laravel_app --no-progress
@@ -39,7 +40,7 @@ npm install && npm run dev && npm run dev
 ./vendor/bin/phpunit
 
 # step: install dusk
-composer require laravel/dusk --dev
+php -d memory_limit=2G $COMPOSER require laravel/dusk --dev
 php artisan dusk:install
 
 # step: change chrome port to selenium container

@@ -16,6 +16,7 @@ pipelines:
           - composer
           - node
         script:
+          - COMPOSER=$(which composer)
           - cd /
           - composer create-project --prefer-dist laravel/laravel="7.*" laravel_app --no-progress
           - cd laravel_app
@@ -26,7 +27,7 @@ pipelines:
           - composer dump-autoload
           - npm install && npm run dev && npm run dev
           # Install Dusk
-          - composer require laravel/dusk --dev
+          - php -d memory_limit=2G $COMPOSER require laravel/dusk --dev
           - php artisan dusk:install
           # change the .env values - you could use a separate .env file as well
           - sed -i 's#localhost:9515#127.0.0.1:4444/wd/hub#g' /laravel_app/tests/DuskTestCase.php
