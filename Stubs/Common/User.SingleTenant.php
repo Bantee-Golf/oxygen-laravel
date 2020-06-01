@@ -14,9 +14,19 @@ class User extends Authenticatable
 
 	protected $searchable = ['name', 'last_name', 'email'];
 
-    protected $fillable = ['name', 'first_name', 'last_name', 'email', 'password'];
+    protected $fillable = ['name', 'first_name', 'last_name', 'email', 'password', 'timezone'];
 	protected $hidden   = ['name', 'password', 'remember_token', 'avatar_path', 'avatar_disk'];
-    protected $visible  = ['id', 'uuid', 'first_name', 'last_name', 'full_name', 'email', 'avatar_url', 'avatar_path', 'avatar_disk'];
+    protected $visible  = ['id', 'uuid', 'first_name', 'last_name', 'full_name', 'email', 'avatar_url', 'avatar_path', 'avatar_disk', 'timezone'];
 	protected $appends  = ['first_name', 'full_name'];
 
+    protected $casts = [
+        'id' => 'string'
+    ];
+
+    public function getExtraApiFields()
+    {
+        return [
+            'access_token',
+        ];
+    }
 }
