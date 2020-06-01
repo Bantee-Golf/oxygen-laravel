@@ -63,7 +63,8 @@ class AlterUsersTable extends Migration
 				'avatar_path',
 				'avatar_disk',
 				'deleted_at',
-				'deleted_by_user_id'
+				'deleted_by_user_id',
+                'timezone'
 			]);
 		});
 
