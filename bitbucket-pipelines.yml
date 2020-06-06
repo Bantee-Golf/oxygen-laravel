@@ -15,7 +15,7 @@ pipelines:
           - cd laravel_app
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
-          - composer require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
+          - php -d memory_limit=2G $COMPOSER emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
           - php artisan setup:oxygen-project --name Oxygen --email apps@elegantmedia.com.au --devurl 127.0.0.1:8000 --dbhost 127.0.0.1 --dbuser appuser --dbpass userpass --mailhost 127.0.0.1 --mailport 1025 --no-interaction
           - composer dump-autoload
           - npm install && npm run dev && npm run dev

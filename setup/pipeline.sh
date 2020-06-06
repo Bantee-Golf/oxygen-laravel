@@ -26,7 +26,7 @@ cd laravel_app
 # step: Update composer values
 php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories
 php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
-composer require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
+php -d memory_limit=2G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
 
 # if the symlink doesn't work, it can be because of an existing local copy
 # try removing composer.lock and vendor directory and installing again.
