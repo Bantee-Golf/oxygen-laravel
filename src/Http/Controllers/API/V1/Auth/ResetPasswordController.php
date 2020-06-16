@@ -66,7 +66,7 @@ class ResetPasswordController extends APIBaseController
 		]);
 
 		if (!$isPasswordValid) {
-			return response()->apiErrorUnauthorized('Current password is incorrect.');
+			return response()->apiErrorUnauthorized('Current password is incorrect.',422);
 		}
 
 		// set the new password
