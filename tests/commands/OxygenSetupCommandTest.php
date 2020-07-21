@@ -123,7 +123,6 @@ class OxygenSetupCommandTest extends FilesTestCase
              ->expectsQuestion("App Settings package routes are already in `api.php`. Add again?", true)
              ->expectsQuestion("App Settings package routes are already in `web.php`. Add again?", true)
              ->expectsQuestion("Devices package routes are already in `web.php`. Add again?", true)
-             ->expectsQuestion("Devices package routes are already in routes file. Add again?", true)
              ->expectsQuestion("Oxygen ENV values are already in {$this->laravelPath}/.env. Add again?", true)
              ->expectsQuestion("Oxygen ENV values are already in {$this->laravelPath}/.env.example. Add again?", true)
              ->assertExitCode(0);
