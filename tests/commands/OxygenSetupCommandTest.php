@@ -119,6 +119,7 @@ class OxygenSetupCommandTest extends FilesTestCase
              ->expectsQuestion("{$this->laravelPath}/app/User.php already exists. Overwrite?", true)
              ->expectsQuestion("Oxygen routes are already in routes file. Add again?", true)
              ->expectsQuestion("Oxygen API routes are already in routes file. Add again?", true)
+             ->expectsQuestion("Devices package routes are already in `web.php`. Add again?", true)
              ->expectsQuestion("Update Http/Kernel.php with new middleware?", true)
              ->expectsQuestion("App Settings package routes are already in `api.php`. Add again?", true)
              ->expectsQuestion("App Settings package routes are already in `web.php`. Add again?", true)
