@@ -19,18 +19,13 @@ class ForgotPasswordController extends APIBaseController
 		document(function () {
 			return (new APICall())->setName('Reset Password')
 				->setParams([
-					(new Param('email')),
+					(new Param('email'))->setVariable('{{test_user_email}}'),
 				])
 				->noDefaultHeaders()
 				->setHeaders([
 					(new Param('Accept', 'String', '`application/json`'))->setDefaultValue('application/json'),
 					(new Param('x-api-key', 'String', 'API Key'))->setDefaultValue('123-123-123-123'),
-				])
-				->setSuccessExample('{
-					"payload": "",
-					"message": "A password reset email will be sent to you in a moment.",
-					"result": true
-				}')->setErrorExample('{
+				])->setErrorExample('{
 					"message": "Failed to send password reset email. Ensure your email is correct and try again.",
 					"payload": null,
 					"result": false

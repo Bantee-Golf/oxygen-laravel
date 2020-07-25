@@ -58,6 +58,7 @@ class AuthController extends \EMedia\Oxygen\Http\Controllers\API\V1\Auth\AuthCon
 
 			'email|Email address of user|{{$randomExampleEmail}}',
 			'password|Password. Must be at least 8 characters.|{{login_user_pass}}',
+			'password_confirmation|Confirm password. Must be at least 8 characters.|{{login_user_pass}}',
 
 			// add other fields as required
 			// (new Param(

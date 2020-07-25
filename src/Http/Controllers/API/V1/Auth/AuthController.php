@@ -168,13 +168,13 @@ class AuthController extends APIBaseController
         document(function () {
             return (new APICall())->setName('Login')
                 ->setParams([
-                    (new Param('device_id', Param::TYPE_STRING, 'Unique ID of the device')),
-                    (new Param('device_type', Param::TYPE_STRING, 'Type of the device `APPLE` or `ANDROID`')),
+                    (new Param('device_id', Param::TYPE_STRING, 'Unique ID of the device'))->setVariable(PostmanVar::UUID),
+                    (new Param('device_type', Param::TYPE_STRING, 'Type of the device `APPLE` or `ANDROID`'))->setExample('apple'),
                     (new Param('device_push_token', Param::TYPE_STRING,
                         'Unique push token for the device'))->optional(),
 
-                    (new Param('email'))->setExample('test@example.com')->setDefaultValue('{{default_user_login_email}}'),
-                    (new Param('password'))->setDefaultValue('{{default_user_login_pass}}'),
+                    (new Param('email'))->setExample('test@example.com')->setVariable('{{test_user_email}}'),
+                    (new Param('password'))->setVariable('{{login_user_pass}}'),
                 ])
                 ->setApiKeyHeader()
                 ->setSuccessObject(User::class)

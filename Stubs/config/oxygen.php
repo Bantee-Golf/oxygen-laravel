@@ -50,5 +50,10 @@ return [
 		'modelDirectories' => [
 			// app_path('Models'),
 		],
+
+		// API Test User
+		// this user will be used as the test user for API Tests
+		// the user's access_token will be used as the `x-access-token` to generate test results
+		'testUserId' => 4,
 	],
 ];

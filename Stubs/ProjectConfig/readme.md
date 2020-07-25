@@ -46,7 +46,22 @@ npm run watch
 
 Generate API documentation
 ```
-php artisan generate:docs && apidoc -i resources/docs -o public_html/docs/api
+// to auto generate docs and API tests. 
+// WARNING: This will overwrite existing API Tests
+php artisan generate:docs-tests
+
+// to only generate the docs
+php artisan generate:docs
+```
+
+Run PHPUnit Tests
+```
+php artisan dusk --stop-on-error --stop-on-failure
+```
+
+Run Dusk Tests
+```
+php artisan dusk --stop-on-error --stop-on-failure
 ```
 
 Before releasing to production, compile the assets
