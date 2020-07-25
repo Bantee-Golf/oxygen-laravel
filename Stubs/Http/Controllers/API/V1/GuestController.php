@@ -21,18 +21,12 @@ class GuestController extends APIBaseController
 	{
 		document(function () {
 			return (new APICall())
+				->setName('Guest Settings')
 				->setDescription('Guest settings and parameters')
 				->noDefaultHeaders()->setHeaders([
 					(new Param('Accept', 'String', '`application/json`'))->setDefaultValue('application/json'),
 					(new Param('x-api-key', 'String', 'API Key'))->setDefaultValue('123123123123'),
-				])
-				->setSuccessExample('{
-					"payload": {
-						"Add your response here"
-					},
-					"message": "",
-					"result": true
-				}');
+				]);
 		});
 
 		$data = [];
@@ -55,11 +49,15 @@ class GuestController extends APIBaseController
 
 		// get settings
 		$settingKeys = [
-			// 'last_app_update'
+			'ABOUT_US',
+			'PRIVACY_POLICY',
+			'TERMS_AND_CONDITIONS',
+			'WEBSITE_URL',
 		];
 
 		foreach ($settingKeys as $settingKey) {
 			$value = Setting::get($settingKey);
+			$settingKey = strtolower($settingKey);
 			$data[$settingKey] = $value;
 		}
 

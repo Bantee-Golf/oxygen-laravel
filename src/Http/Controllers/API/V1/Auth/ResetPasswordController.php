@@ -44,9 +44,9 @@ class ResetPasswordController extends APIBaseController
 			return (new APICall())->setGroup('Auth')
 			->setName('Update Password')
 			->setParams([
-				(new Param('password')),
-				(new Param('current_password')),
-				(new Param('password_confirmation')),
+				(new Param('password'))->setVariable('{{login_user_pass}}'),
+				(new Param('current_password'))->setVariable('{{login_user_pass}}'),
+				(new Param('password_confirmation'))->setVariable('{{login_user_pass}}'),
 			]);
 		});
 

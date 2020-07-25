@@ -19,13 +19,13 @@ alias php=/opt/cpanel/ea-php73/root/usr/bin/php
 // copy the .env file
 cp .env.example .env
 
+// generate app key
+php artisan key:generate
+
 // edit the .env file with the server settings
 
 // link the storage folder
 php artisan storage:link
-
-// generate app key
-php artisan key:generate
 
 // install dusk (if you're going to run Browser Tests)
 composer require --dev laravel/dusk
@@ -46,7 +46,22 @@ npm run watch
 
 Generate API documentation
 ```
-php artisan generate:docs && apidoc -i resources/docs -o public_html/docs/api
+// to auto generate docs and API tests. 
+// WARNING: This will overwrite existing API Tests
+php artisan generate:docs-tests
+
+// to only generate the docs
+php artisan generate:docs
+```
+
+Run PHPUnit Tests
+```
+./vendor/bin/phpunit
+```
+
+Run Dusk Tests
+```
+php artisan dusk --stop-on-error --stop-on-failure
 ```
 
 Before releasing to production, compile the assets
