@@ -26,6 +26,10 @@ php artisan storage:link
 
 // generate app key
 php artisan key:generate
+
+// install dusk (if you're going to run Browser Tests)
+composer require --dev laravel/dusk
+php artisan dusk:install
 ```
 
 ### Development Instructions
