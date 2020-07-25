@@ -19,13 +19,13 @@ alias php=/opt/cpanel/ea-php73/root/usr/bin/php
 // copy the .env file
 cp .env.example .env
 
+// generate app key
+php artisan key:generate
+
 // edit the .env file with the server settings
 
 // link the storage folder
 php artisan storage:link
-
-// generate app key
-php artisan key:generate
 
 // install dusk (if you're going to run Browser Tests)
 composer require --dev laravel/dusk
@@ -56,7 +56,7 @@ php artisan generate:docs
 
 Run PHPUnit Tests
 ```
-php artisan dusk --stop-on-error --stop-on-failure
+./vendor/bin/phpunit
 ```
 
 Run Dusk Tests
