@@ -6,8 +6,9 @@ namespace EMedia\Oxygen\Http\Controllers\API\V1\Auth;
 
 use App\Entities\Auth\UsersRepository;
 use App\Http\Controllers\API\V1\APIBaseController;
-use EMedia\API\Docs\APICall;
-use EMedia\API\Docs\Param;
+use EMedia\Api\Docs\APICall;
+use EMedia\Api\Docs\Param;
+use EMedia\Api\Domain\Postman\PostmanVar;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 use EMedia\Devices\Entities\Devices\DevicesRepository;
 use Illuminate\Http\Request;
@@ -25,6 +26,27 @@ class AuthController extends APIBaseController
      */
     protected $devicesRepo;
 
+	/**
+	 *
+	 * Fillable parameters when registering a new user
+	 * Only add fields that must be auto-filled
+	 *
+	 */
+	protected $fillable = [
+		'first_name',
+		'last_name',
+		'email',
+	];
+
+	/**
+	 *
+	 * Fillable parameters for devices.
+	 *
+	 */
+	protected $fillableDeviceParams = [
+		'device_id', 'device_type', 'device_push_token'
+	];
+
     /**
      * AuthController constructor.
      * @param UsersRepository $usersRepository
@@ -37,40 +59,59 @@ class AuthController extends APIBaseController
     }
 
 
-    /**
-     *
-     * Sign up a user
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function register(Request $request)
-    {
-        document(function () {
-            return (new APICall)->setName('Register')
-                ->setParams([
-                    (new Param('device_id', 'String', 'Unique ID of the device')),
-                    (new Param('device_type', 'String', 'Type of the device `APPLE` or `ANDROID`')),
-                    (new Param('device_push_token', 'String', 'Unique push token for the device'))->optional(),
+	/**
+	 *
+	 * Validation rules to be enforced when registering.
+	 *
+	 * @return array
+	 */
+	protected function getRegistrationValidationRules(): array
+	{
+		return [
+			'email'      => 'required|email|unique:users,email',
+			'password'   => 'required|confirmed|min:8',
+		];
+	}
 
-                    (new Param('first_name'))->setDefaultValue('Joe')->optional(),
-                    (new Param('last_name'))->setDefaultValue('Johnson')->optional(),
-                    (new Param('phone'))->optional(),
-                    (new Param('email')),
+	/**
+	 * @return array
+	 */
+	protected function getRegistrationApiDocParams(): array
+	{
+		return [
+			(new Param('device_id', Param::TYPE_STRING, 'Unique ID of the device'))
+				->setVariable('{{$randomExampleEmail}}'),
+			(new Param('device_type', Param::TYPE_STRING, 'Type of the device `APPLE` or `ANDROID`'))
+				->setExample('apple'),
+			(new Param('device_push_token', Param::TYPE_STRING, 'Unique push token for the device'))
+				->optional(),
 
-                    (new Param('password', 'string',
-                        'Password. Must be at least 8 characters.'))->setDefaultValue('12345678'),
-                    (new Param('password_confirmation'))->setDefaultValue('12345678'),
-                ])
-                ->noDefaultHeaders()
-                ->setHeaders([
-                    (new Param('Accept', 'String', '`application/json`'))->setDefaultValue('application/json'),
-                    (new Param('x-api-key', 'String', 'API Key'))->setDefaultValue('123-123-123-123'),
-                ])
-                ->setSuccessObject(User::class)
-                ->setErrorExample('{
+			(new Param('first_name', Param::TYPE_STRING, 'First name of user'))
+				->setExample('Joe')
+				->setVariable(PostmanVar::FIRST_NAME),
+			(new Param('last_name', Param::TYPE_STRING, 'Last name of user'))
+				->setExample('Johnson')
+				->setVariable(PostmanVar::LAST_NAME),
+			(new Param('email', Param::TYPE_STRING, 'Email address of user'))
+				->setVariable(PostmanVar::EXAMPLE_EMAIL),
+			(new Param('password', 'string',
+				'Password. Must be at least 8 characters.'))
+				->setVariable(PostmanVar::REGISTERED_USER_PASS),
+		];
+	}
+
+	/**
+	 * @return \Closure
+	 */
+	protected function getApiDocumentFunction(): callable
+	{
+		return function () {
+			return (new APICall)
+				->setName('Register')
+				->setDescription('This endpoint registers a user. If you need to update a profile image, upload the profile image in the background using `/avatar` endpoint.')
+				->setParams($this->getRegistrationApiDocParams())
+				->setApiKeyHeader()
+				->setErrorExample('{
 					"message": "The email must be a valid email address.",
 					"payload": {
 						"errors": {
@@ -81,29 +122,36 @@ class AuthController extends APIBaseController
 					},
 					"result": false
 				}', 422);
-        });
+		};
+	}
 
-        $this->validate($request, [
-            // 'first_name' => 'required',
-            // 'last_name'  => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed',
+	/**
+	 *
+	 * Register a user.
+	 *
+	 * You probably don't need to duplicate this function.
+	 * See the other functions and parameters which can be extended as required.
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Illuminate\Validation\ValidationException
+	 */
+	public function register(Request $request) {
+		document($this->getApiDocumentFunction());
 
-            'device_id' => 'required',
-            'device_type' => 'required',
-        ]);
+		$this->validate($request, $this->getRegistrationValidationRules());
 
-        $data = $request->only(['first_name', 'last_name', 'email', 'password', 'phone']);
-        $data['password'] = bcrypt($data['password']);
-        $user = $this->usersRepository->create($data);
+		$data = $request->only($this->fillable);
+		$data['password'] = bcrypt($request->password);
+		$user = $this->usersRepository->create($data);
 
-        $responseData = $user->toArray();
-        $deviceData = $request->only(['device_id', 'device_type', 'device_push_token']);
-        $device = $this->devicesRepo->createOrUpdateByIDAndType($deviceData, $user->id);
-        $responseData['access_token'] = $device->access_token;
+		$responseData = $user->toArray();
+		$deviceData = $request->only($this->fillableDeviceParams);
+		$device = $this->devicesRepo->createOrUpdateByIDAndType($deviceData, $user->id);
+		$responseData['access_token'] = $device->access_token;
 
-        return response()->apiSuccess($responseData);
-    }
+		return response()->apiSuccess($responseData);
+	}
 
 
     /**
@@ -120,35 +168,17 @@ class AuthController extends APIBaseController
         document(function () {
             return (new APICall())->setName('Login')
                 ->setParams([
-                    (new Param('device_id', 'String', 'Unique ID of the device')),
-                    (new Param('device_type', 'String', 'Type of the device `APPLE` or `ANDROID`')),
-                    (new Param('device_push_token', 'String',
+                    (new Param('device_id', Param::TYPE_STRING, 'Unique ID of the device')),
+                    (new Param('device_type', Param::TYPE_STRING, 'Type of the device `APPLE` or `ANDROID`')),
+                    (new Param('device_push_token', Param::TYPE_STRING,
                         'Unique push token for the device'))->optional(),
 
-                    (new Param('email'))->setDefaultValue('test@example.com'),
-                    (new Param('password'))->setDefaultValue('12345678'),
+                    (new Param('email'))->setExample('test@example.com')->setDefaultValue('{{default_user_login_email}}'),
+                    (new Param('password'))->setDefaultValue('{{default_user_login_pass}}'),
                 ])
-                ->noDefaultHeaders()
-                ->setHeaders([
-                    (new Param('Accept', 'String', '`application/json`'))->setDefaultValue('application/json'),
-                    (new Param('x-api-key', 'String', 'API Key'))->setDefaultValue('123-123-123-123'),
-                ])
+                ->setApiKeyHeader()
                 ->setSuccessObject(User::class)
-                ->setSuccessExample('{
-					"payload": {
-						"id": 31,
-						"uuid": "6dfb4b23-df73-49d1-90ab-a3118cc170ed",
-						"name": "null",
-						"last_name": "null",
-						"email": "test@example.com",
-						"avatar_url": null,
-						"first_name": "null",
-						"full_name": "null null",
-						"access_token": "1540054802BbiqclNMqujaIgfGzRMjsdds8a9M4HvBxPg"
-					},
-					"message": "",
-					"result": true
-				}');
+                ;
         });
 
         $this->validate($request, [
@@ -159,7 +189,7 @@ class AuthController extends APIBaseController
         ]);
 
         if (!auth()->attempt($request->only('email', 'password'), true)) {
-            return response()->apiErrorUnauthorized('Invalid login credentials. Try again.');
+            return response()->apiErrorUnauthorized(trans('auth.api.login-failed'));
         }
 
         $user = auth()->user();

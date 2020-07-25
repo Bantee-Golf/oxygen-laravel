@@ -14,6 +14,7 @@
 | 5.2               | 0.1.4             |
 
 ## Version 4
+- **4.2** Added API Test Generation (via emedia/api)
 - **4.1.0** Added Dusk Tests
 - **4.0.2** Files are now attachable to other objects
 - Upgraded to support Laravel 7
