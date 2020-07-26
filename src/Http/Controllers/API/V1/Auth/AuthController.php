@@ -103,7 +103,7 @@ class AuthController extends APIBaseController
 	/**
 	 * @return \Closure
 	 */
-	protected function getApiDocumentFunction(): callable
+	protected function getRegisterApiDocumentFunction(): callable
 	{
 		return function () {
 			return (new APICall)
@@ -111,6 +111,7 @@ class AuthController extends APIBaseController
 				->setDescription('This endpoint registers a user. If you need to update a profile image, upload the profile image in the background using `/avatar` endpoint.')
 				->setParams($this->getRegistrationApiDocParams())
 				->setApiKeyHeader()
+				->setSuccessObject(User::class)
 				->setErrorExample('{
 					"message": "The email must be a valid email address.",
 					"payload": {
@@ -137,7 +138,7 @@ class AuthController extends APIBaseController
 	 * @throws \Illuminate\Validation\ValidationException
 	 */
 	public function register(Request $request) {
-		document($this->getApiDocumentFunction());
+		document($this->getRegisterApiDocumentFunction());
 
 		$this->validate($request, $this->getRegistrationValidationRules());
 
