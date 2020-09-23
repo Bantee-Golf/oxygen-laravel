@@ -97,6 +97,9 @@ class AuthController extends APIBaseController
 			(new Param('password', 'string',
 				'Password. Must be at least 8 characters.'))
 				->setVariable(PostmanVar::REGISTERED_USER_PASS),
+			(new Param('password_confirmation', 'string',
+				'Password confirmation. Repeat the password to confirm.'))
+				->setVariable(PostmanVar::REGISTERED_USER_PASS),
 		];
 	}
 
