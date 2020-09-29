@@ -15,7 +15,7 @@
     </div>
     <div class="card-body">
 
-        <form class="form-horizontal" role="form" method="POST" action="{{ $actionUrl }}">
+        <form id="accountEditPasswordForm" class="form-horizontal" role="form" method="POST" action="{{ $actionUrl }}">
             {{ method_field('put') }}
             @csrf
 

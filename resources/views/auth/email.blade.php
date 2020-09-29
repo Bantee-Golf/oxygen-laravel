@@ -17,7 +17,7 @@
 					</div>
 					<div class="card-body">
 
-						<form class="form-horizontal" role="form" method="POST" action="{{ route('account.email') }}">
+						<form id="accountEditEmailForm" class="form-horizontal" role="form" method="POST" action="{{ route('account.email') }}">
 							{{ method_field('put') }}
 							@csrf
 
