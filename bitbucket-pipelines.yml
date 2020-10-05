@@ -36,6 +36,7 @@ pipelines:
           - selenium
     - step:
         name: Oxygen Package Tests
+        size: 2x        
         caches:
           - composer
         script:
