@@ -40,6 +40,7 @@ pipelines:
         caches:
           - composer
         script:
+          - composer self-update
           - composer install
           - ./vendor/bin/phpunit
 
