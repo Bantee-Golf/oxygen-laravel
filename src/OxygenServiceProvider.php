@@ -3,52 +3,42 @@
 namespace EMedia\Oxygen;
 
 use EMedia\Oxygen\Commands\CreateNewUserCommand;
+use EMedia\Oxygen\Commands\OxygenDashboardInstallCommand;
 use EMedia\Oxygen\Commands\Scaffolding\ScaffoldViewsCommand;
-use EMedia\Oxygen\Commands\OxygenSetupCommand;
-use EMedia\Oxygen\Presets\OxygenPreset;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Ui\UiCommand;
-use mysql_xdevapi\Exception;
-use Silber\Bouncer\Bouncer;
-use Silber\Bouncer\BouncerFacade;
-use Illuminate\Database\Schema\Blueprint;
+use Laravel\Fortify\Fortify;
 
 class OxygenServiceProvider extends ServiceProvider
 {
 
+	public function register()
+	{
+		if (app()->environment(['local', 'testing'])) {
+			$this->commands(OxygenDashboardInstallCommand::class);
+			$this->commands(ScaffoldViewsCommand::class);
+		}
+
+		$this->commands(CreateNewUserCommand::class);
+
+		$this->loadRoutesFrom(__DIR__.'/../stubs/loaded-routes/web.php');
+
+		$this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'oxygen');
+	}
+
 	public function boot()
 	{
-		// load default views
-		$this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen');
+		// auto-publishing files
+		$this->publishes([
+			__DIR__ . '/../publish' => base_path(),
+			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen'),
+		], 'oxygen::auto-publish');
 
-		// allow user to publish views
+		// we're adding `views` publishing twice, because if we need to force it after installation later
+		// so having this twice is intentional
 		$this->publishes([
 			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen'),
 		], 'views');
-
-		// publish common entities
-		$this->publishes([
-			__DIR__ . '/../Stubs/Entities' => app_path('Entities'),
-		], 'entities');
-
-		// publish Auth controllers
-		$this->publishes([
-			__DIR__ . '/../Stubs/Http/Controllers/Auth' => app_path('Http/Controllers/Auth'),
-		], 'auth-controllers');
-
-		$this->publishes([
-			__DIR__ . '/../Stubs/Http/Controllers/API' => app_path('Http/Controllers/API'),
-		], 'api-controllers');
-
-		$this->publishes([
-			__DIR__ . '/../LaravelDefaultFiles/app/Http/Controllers/API' => app_path('Http/Controllers/API'),
-			__DIR__ . '/../LaravelDefaultFiles/app/Http/Controllers/Manage' => app_path('Http/Controllers/Manage'),
-		], 'default-controllers');
-
-		$this->publishes([
-			__DIR__ . '/../Stubs/Seeds' => database_path('seeds'),
-		], 'database-seeds');
 
 		// publish config
 		$this->publishes([
@@ -58,75 +48,33 @@ class OxygenServiceProvider extends ServiceProvider
 
 		// publish tests
 		$this->publishes([
-			__DIR__ . '/../Stubs/tests/Browser' => base_path('tests/Browser'),
+			__DIR__ . '/../stubs/tests/Browser' => base_path('tests/Browser'),
 		], 'dusk-tests');
 
-		// set custom models for abilities and roles
-		$abilityModel = config('oxygen.abilityModel');
+		// load default views
+		$this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen');
 
-		if ($abilityModel) BouncerFacade::useAbilityModel($abilityModel);
-		$roleModel = config('oxygen.roleModel');
-		if ($roleModel) BouncerFacade::useRoleModel($roleModel);
+		// publish translations
+		$this->publishes([
+			__DIR__.'/../resources/lang/' => resource_path('lang/vendor/oxygen'),
+		], 'oxygen-trans');
 
 		$this->registerCustomValidators();
 
-		// setup presets
-		UiCommand::macro('oxygen', static function (UiCommand $command) {
-			OxygenPreset::install();
-
-			$command->info('Oxygen UI Preset installed successfully.');
-		});
+		Fortify::viewPrefix('oxygen::auth.');
 	}
 
+
 	/**
-	 * Register the service provider.
+	 * Configure publishing for the package.
 	 *
 	 * @return void
 	 */
-	public function register()
+	protected function configurePublishing()
 	{
-		$this->mergeConfigFrom( __DIR__ . '/../config/auth.php', 'auth');
-
-		$this->registerDependentServiceProviders();
-		$this->registerAliases();
-
-        $dev = $this->app->environment('local') || $this->app->environment('testing');
-		if ($dev)
-		{
-
-			$this->app->singleton("emedia.oxygen.setup", function () {
-				return app(OxygenSetupCommand::class);
-			});
-			$this->commands("emedia.oxygen.setup");
-
-			$this->commands(ScaffoldViewsCommand::class);
+		if (! $this->app->runningInConsole()) {
+			return;
 		}
-
-		$this->commands(CreateNewUserCommand::class);
-
-		$this->registereDatabaseMacros();
-	}
-
-	/**
-	 *
-	 * Register dependant service providers for the package
-	 *
-	 */
-	private function registerDependentServiceProviders()
-	{
-		$this->app->register(\EMedia\MultiTenant\MultiTenantServiceProvider::class);
-	}
-
-	/**
-	 *
-	 * Register aliases for the package
-	 *
-	 */
-	private function registerAliases()
-	{
-		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-
-		$loader->alias('TenantManager', \EMedia\MultiTenant\Facades\TenantManager::class);
 	}
 
 	private function registerCustomValidators()
@@ -147,37 +95,4 @@ class OxygenServiceProvider extends ServiceProvider
 			return "The values given in two array fields don't match.";
 		});
 	}
-
-	protected function registereDatabaseMacros()
-	{
-		Blueprint::macro('location', function () {
-			// location
-			/** @var Blueprint $this */
-			$this->string('venue')->nullable();
-			$this->string('address')->nullable();
-			$this->string('street')->nullable();
-			$this->string('street_2')->nullable();
-			$this->string('city')->nullable();
-			$this->string('state')->nullable();
-			$this->string('zip')->nullable();
-			$this->string('country')->nullable();
-			$this->float('latitude', 10, 6)->nullable()->index();
-			$this->float('longitude', 10, 6)->nullable()->index();
-		});
-
-		Blueprint::macro('dropLocation', function () {
-			// drop location
-			$this->dropColumn('venue');
-			$this->dropColumn('address');
-			$this->dropColumn('street');
-			$this->dropColumn('street_2');
-			$this->dropColumn('city');
-			$this->dropColumn('state');
-			$this->dropColumn('zip');
-			$this->dropColumn('country');
-			$this->dropColumn('latitude');
-			$this->dropColumn('longitude');
-		});
-	}
-
 }

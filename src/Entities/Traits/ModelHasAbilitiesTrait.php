@@ -15,8 +15,7 @@ trait ModelHasAbilitiesTrait
 	{
 		$abilities = $this->abilities()->where('name', $permission)->get();
 		$permissions = [];
-		foreach ($abilities as $ability)
-		{
+		foreach ($abilities as $ability) {
 			$permissions['roles'] = $ability->roles;
 			$permissions['users'] = $ability->users;
 		}
@@ -34,5 +33,4 @@ trait ModelHasAbilitiesTrait
 
 		return $this->morphMany($abilityModel, 'entity');
 	}
-
 }

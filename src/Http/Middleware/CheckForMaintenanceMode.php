@@ -37,7 +37,7 @@ class CheckForMaintenanceMode
 	 */
 	public function handle($request, Closure $next)
 	{
-		if ($this->app->isDownForMaintenance() && !in_array($request->getClientIp(), $this->getIpExclusions()) ) {
+		if ($this->app->isDownForMaintenance() && !in_array($request->getClientIp(), $this->getIpExclusions())) {
 			$data = json_decode(file_get_contents($this->app->storagePath().'/framework/down'), true);
 
 			throw new MaintenanceModeException($data['time'], $data['retry'], $data['message']);

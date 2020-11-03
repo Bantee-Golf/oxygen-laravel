@@ -9,7 +9,7 @@
 
     <title>@yield('pageTitle', $pageTitle)</title>
 
-    <link rel="stylesheet" href="/css/theme/select2.custom.css"/>
+{{--    <link rel="stylesheet" href="/css/theme/select2.custom.css"/>--}}
     <link rel="stylesheet" href="{{ mix('css/dist/bootstrap.css') }}"/>
     <link rel="stylesheet" href="{{ mix('css/dist/backend.css') }}"/>
 
@@ -33,9 +33,16 @@
 
             <nav class="navbar navbar-expand-md navbar-dark navbar-app">
                 {{--<div class="container-fluid">--}}
-                <span class="btn btn-header-menu js-toggle-right-sidebar">
-                            <i class="fas fa-bars"></i>
-                        </span>
+
+                <div class="right">
+					<span class="btn btn-header-menu js-toggle-right-sidebar">
+                		<i class="fas fa-bars js-icon"></i>
+					</span>
+					<span class="btn btn-header-menu js-toggle-right-mini-sidebar">
+                		<i class="fas fa-arrow-left js-icon"></i>
+					</span>
+				</div>
+
 
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}

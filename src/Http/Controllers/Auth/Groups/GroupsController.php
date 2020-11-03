@@ -2,7 +2,7 @@
 
 namespace EMedia\Oxygen\Http\Controllers\Auth\Groups;
 
-use App\User;
+use ElegantMedia\OxygenFoundation\Core\OxygenCore;
 use EMedia\MultiTenant\Facades\TenantManager;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -23,7 +23,6 @@ class GroupsController extends Controller
 	{
 		$this->auth = $auth;
 		$this->roleRepository = app(config('oxygen.roleRepository'));
-		if (TenantManager::multiTenancyIsActive()) $this->tenantRepository = app(config('auth.tenantRepository'));
 
 		$this->middleware('auth.acl:permissions[view-groups]', ['only' => [
 			'index'
@@ -59,17 +58,11 @@ class GroupsController extends Controller
 	public function index()
 	{
 		$roles  = $this->roleRepository->all();
-		if (TenantManager::multiTenancyIsActive()) {
-			$tenant = TenantManager::getTenant();
-			$users  = $tenant->users;
-		} else {
-			$users = User::all();
-		}
+		$users = app('oxygen')::makeUserModel()::all();
 
 		$rolesData = [];
 		$availableRoles = [];
-		foreach ($roles as $role)
-		{
+		foreach ($roles as $role) {
 			$roleData = $role->toArray();
 			$roleData['description'] = Str::words($role->description, 50);
 			// $roleData['user_count']  = $role->users()->count;	// TODO: fix query
@@ -159,16 +152,13 @@ class GroupsController extends Controller
 			if ($role) {
 				foreach ($userIds as $userId) {
 					// the user should already be in some team for this tenant
-					if (TenantManager::multiTenancyIsActive()) {
-						$tenant  = TenantManager::getTenant();
-						$savedUser = $this->tenantRepository->getUserByTenant($userId, $tenant->id);
-					} else {
-						$savedUser = User::find($userId);
-					}
+					$savedUser = app('oxygen')::makeUserModel()::find($userId);
 
 					if ($savedUser) {
 						// if already in group, ignore the request
-						if ($savedUser->isAn($role->name)) continue;
+						if ($savedUser->isAn($role->name)) {
+							continue;
+						}
 					}
 
 					// add the user to role
@@ -189,7 +179,9 @@ class GroupsController extends Controller
 	{
 		$role = $this->roleRepository->usersInRole($groupId);
 
-		if (!$role) return redirect()->route('account')->with('error', 'Invalid group request.');
+		if (!$role) {
+			return redirect()->route('account')->with('error', 'Invalid group request.');
+		}
 
 		$availableRoles = $this->roleRepository->allExcept(['owner'])->toArray();
 
@@ -197,7 +189,7 @@ class GroupsController extends Controller
 			$tenant = TenantManager::getTenant();
 			$users = $tenant->users;
 		} else {
-			$users = User::all();
+			$users = app('oxygen')::makeUserModel()::all();
 		}
 
 		$pageTitle = "Users in '{$role->title}' Group";
@@ -232,7 +224,9 @@ class GroupsController extends Controller
 		$this->validate($request, $validationCriteria['rules'], $validationCriteria['messages']);
 
 		$role = $this->roleRepository->find($id);
-		if (!$role) return $this->redirectWithError('Invalid user group.');
+		if (!$role) {
+			return $this->redirectWithError('Invalid user group.');
+		}
 
 		$role->fill($request->all());
 		$result = $role->save();
@@ -267,14 +261,19 @@ class GroupsController extends Controller
 	{
 		$role = $this->roleRepository->find($roleId);
 
-		if (!$role) return $this->redirectWithError('Invalid user group.');
+		if (!$role) {
+			return $this->redirectWithError('Invalid user group.');
+		}
 
 		// don't delete the last super-admin or admin - because we'll lose account admin access
 		// last account owner can't leave the role
 		if (in_array($role->name, ['super-admin', 'admin'])) {
 			$users = $role->users;
-			if (count($users) <= 1)
-				return $this->redirectWithError('The last member of the group ' . $role->name . ' cannot leave the role.');
+			if (count($users) <= 1) {
+				return $this->redirectWithError(
+					'The last member of the group ' . $role->name . ' cannot leave the role.'
+				);
+			}
 		}
 
 		$result = $this->roleRepository->removeUser($role, $userId);
@@ -285,5 +284,4 @@ class GroupsController extends Controller
 
 		return $this->redirectWithError('Failed to remove user. Please try again.');
 	}
-
 }

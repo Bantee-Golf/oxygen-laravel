@@ -2,93 +2,77 @@
 
 namespace EMedia\Oxygen\Http\Middleware;
 
-use Closure;
-use EMedia\MultiTenant\Facades\TenantManager;
 use Exception;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\View;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
 
-class Authenticate {
+class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
+{
 
-	/**
-	 * The Guard implementation.
-	 *
-	 * @var Guard
-	 */
-	protected $auth;
 
 	/**
-	 * Create a new filter instance.
+	 * Determine if the user is logged in to any of the given guards.
 	 *
-	 * @param  Guard  $auth
+	 * @param Request $request
+	 * @param array $guards
+	 *
 	 * @return void
-	 */
-	public function __construct(Guard $auth)
-	{
-		$this->auth = $auth;
-	}
-
-	/**
-	 * Handle an incoming request.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \Closure  $next
-	 * @return mixed
+	 * @throws AuthenticationException
 	 */
-	public function handle($request, Closure $next)
+	protected function authenticate($request, array $guards)
 	{
-		if (config('oxygen.dashboardAuthentication'))
-		{
-			if ($this->auth->guest())
-			{
-				return $this->rejectRequest($request);
-			}
-		} else {
-			$user = $this->auth->user();
+		if (empty($guards)) {
+			$guards = [null];
+		}
 
-			// login to a default account for testing
-			if (!$user && App::environment() === 'local') {
+		foreach ($guards as $guard) {
+			if ($this->auth->guard($guard)->check()) {
+				return $this->auth->shouldUse($guard);
+			}
+		}
+
+		// if you reach here, you're still a guest
+		// so we check if the admin_security is disabled to allow auto-login
+		if (config('oxygen.disable_dashboard_security') === true) {
+			if ($this->auth->guest() && app()->environment(['local', 'testing'])) {
 				try {
-					$user = $this->auth->loginUsingId(1);
-				} catch (Exception $e) {
+					$loggedUser = $this->auth->loginUsingId(3);
+					if ($loggedUser) {
+						return;
+					}
+				} catch (Exception $ex) {
 					throw new Exception('Unable to login. Are there users in the database?');
 				}
 			}
-
-			if (!$user) return $this->rejectRequest($request);
-
-			// DONE: handle multiple tenants and save in session
-			// TODO: MUST check acceptInvite() in InvitationsController
-			if (TenantManager::multiTenancyIsActive() && TenantManager::isTenantNotSet())
-				TenantManager::setTenant($user->tenants()->first());
-
 		}
 
-		if ($user = $this->auth->user()) View::share('user', $user);
-		if (TenantManager::multiTenancyIsActive() && TenantManager::isTenantSet()) {
-			$tenant = TenantManager::getTenant();
-			View::share('tenant', $tenant);
-		}
-
-		return $next($request);
+		$this->unauthenticated($request, $guards);
 	}
 
-	protected function rejectRequest($request)
+	/**
+	 * Handle an unauthenticated user.
+	 *
+	 * @param Request $request
+	 * @param array $guards
+	 *
+	 * @return void
+	 *
+	 * @throws AuthenticationException
+	 */
+	protected function unauthenticated($request, array $guards)
 	{
-		if ($request->ajax() || $request->wantsJson())
-		{
-			$response = [
-				'result'	=> false,
-				'message'	=> 'You need to login to access this data. If you logged-in already, your session may have been expired. Please try to login again.',
-				'type'		=> 'UNAUTHORIZED_USER'
-			];
-			return response($response, 401);
-		}
-		else
-		{
-			return redirect()->guest('login');
+		if ($request->ajax() || $request->wantsJson()) {
+			return response()->apiErrorUnauthorized(
+				'You need to login to access this data.' .
+				'If you logged-in already, your session may have been expired. Please try to login again.'
+			);
+		} else {
+			throw new AuthenticationException(
+				'Unauthenticated.',
+				$guards,
+				$this->redirectTo($request)
+			);
 		}
 	}
-
 }

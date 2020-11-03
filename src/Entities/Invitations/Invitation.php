@@ -22,8 +22,7 @@ class Invitation extends Model
 
 	public function useInvite($code)
 	{
-		if ($code == $this->code)
-		{
+		if ($code == $this->code) {
 			$this->claimed_at = Carbon::now();
 			$this->save();
 			return true;

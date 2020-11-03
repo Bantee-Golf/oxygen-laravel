@@ -72,7 +72,7 @@
                 <a href="{{ route('dashboard') }}">Dashboard</a>
             @else
                 <a href="{{ route('login') }}">Login</a>
-                @if (has_feature('auth.public-users-can-register'))
+                @if (has_feature('auth.public_users_can_register'))
                     <a href="{{ route('register') }}">Register</a>
                 @endif
             @endauth
@@ -95,7 +95,7 @@
                     <a href="{{ route('logout') }}">Logout</a>
                 @else
                     <a href="{{ route('login') }}">Login</a>
-                    @if (has_feature('auth.public-users-can-register'))
+                    @if (has_feature('auth.public_users_can_register'))
                         <a href="{{ route('register') }}">Register</a>
                     @endif
                 @endauth

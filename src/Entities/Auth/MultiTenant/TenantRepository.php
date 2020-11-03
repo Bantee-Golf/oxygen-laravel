@@ -43,5 +43,4 @@ class TenantRepository extends BaseRepository
 			});
 		return $query->first();
 	}
-
 }

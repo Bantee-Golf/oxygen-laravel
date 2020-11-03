@@ -3,9 +3,14 @@
 
 namespace EMedia\Oxygen\Http\Controllers\Auth;
 
-
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
+/**
+ *
+ * This class will be removed in future. Use Fortify pattern.
+ *
+ * @deprecated
+ */
 class VerificationController
 {
 
@@ -40,5 +45,4 @@ class VerificationController
 		$this->middleware('signed')->only('verify');
 		$this->middleware('throttle:6,1')->only('verify', 'resend');
 	}
-
 }

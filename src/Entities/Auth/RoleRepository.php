@@ -3,7 +3,7 @@
 
 namespace EMedia\Oxygen\Entities\Auth;
 
-use EMedia\QuickData\Entities\Repositories\BaseRepository;
+use App\Entities\BaseRepository;
 
 class RoleRepository extends BaseRepository
 {
@@ -55,10 +55,11 @@ class RoleRepository extends BaseRepository
 
 			if ($this->exists($nextRoleName)) {
 				// TODO: remove the loop and optimise this logic
-				for ($i = 0; $i < 250; $i++)
-				{
+				for ($i = 0; $i < 250; $i++) {
 					$nextRoleName = str_slug_next($nextRoleName);
-					if (!$this->exists($nextRoleName)) return $nextRoleName;
+					if (!$this->exists($nextRoleName)) {
+						return $nextRoleName;
+					}
 				}
 			}
 		} else {
@@ -73,7 +74,9 @@ class RoleRepository extends BaseRepository
 		$query = $this->model->select()->where('id', $groupId)->with('users');
 
 		// if (count($except)) $query->whereNotIn('name', $except);
-		if ($onlyFirstResult) return $query->first();
+		if ($onlyFirstResult) {
+			return $query->first();
+		}
 
 		return $query->get();
 	}
@@ -82,5 +85,4 @@ class RoleRepository extends BaseRepository
 	{
 		return $role->users()->detach($userId);
 	}
-
 }

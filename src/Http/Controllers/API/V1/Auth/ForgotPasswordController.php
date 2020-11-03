@@ -58,5 +58,4 @@ class ForgotPasswordController extends APIBaseController
 	{
 		return response()->apiError("Failed to send password reset email. Ensure your email is correct and try again.");
 	}
-
 }

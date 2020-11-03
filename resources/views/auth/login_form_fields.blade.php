@@ -6,8 +6,8 @@
 
         @if ($errors->has('email'))
             <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+				<strong>{{ $errors->first('email') }}</strong>
+			</span>
         @endif
     </div>
 </div>
@@ -20,8 +20,8 @@
 
         @if ($errors->has('password'))
             <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+				<strong>{{ $errors->first('password') }}</strong>
+				</span>
         @endif
     </div>
 </div>
@@ -44,13 +44,15 @@
             {{ __('Login') }}
         </button>
 
-        <a class="btn btn-link" href="{{ route('password.request') }}">
-            {{ __('Forgot Your Password?') }}
-        </a>
+		@if (has_feature('auth.allow_forgot_password_resets'))
+			<a class="btn btn-link" href="{{ route('password.request') }}">
+				{{ __('Forgot Your Password?') }}
+			</a>
+        @endif
     </div>
 </div>
 
-@if (has_feature('auth.public-users-can-register'))
+@if (has_feature('auth.public_users_can_register'))
     <hr>
     <div class="form-group row mb-0">
         <div class="col-md-8 offset-md-4">

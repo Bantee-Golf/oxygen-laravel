@@ -10,5 +10,4 @@ class Ability extends BouncerAbility
 {
 
 	use TenantScopedModelTrait;
-
 }

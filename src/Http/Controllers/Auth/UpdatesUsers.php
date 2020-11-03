@@ -15,7 +15,9 @@ trait UpdatesUsers
 	{
 		$user = Auth::user();
 
-		if ($user) return view('oxygen::auth.profile', compact('user'));
+		if ($user) {
+			return view('oxygen::auth.profile', compact('user'));
+		}
 
 		return Redirect::to('dashboard');
 	}
@@ -32,7 +34,9 @@ trait UpdatesUsers
 		$user->fill($request->only($user->getProfileUpdatableFields()));
 		$result = $user->save();
 
-		if ($result) return redirect()->back()->with('success', 'Your profile has been updated.');
+		if ($result) {
+			return redirect()->back()->with('success', 'Your profile has been updated.');
+		}
 
 		return redirect()->back()->withErrors();
 	}
@@ -48,7 +52,9 @@ trait UpdatesUsers
 	{
 		$user = Auth::user();
 
-		if ($user) return view('oxygen::auth.email', compact('user'));
+		if ($user) {
+			return view('oxygen::auth.email', compact('user'));
+		}
 
 		return Redirect::to('dashboard');
 	}
@@ -75,7 +81,9 @@ trait UpdatesUsers
 
 		// TODO: notify the user, their password has been updated
 
-		if ($result) return redirect()->back()->with('success', 'Your email has been updated.');
+		if ($result) {
+			return redirect()->back()->with('success', 'Your email has been updated.');
+		}
 
 		return redirect()->back()->withErrors();
 	}
@@ -87,5 +95,4 @@ trait UpdatesUsers
 			'password' => 'required'
 		]);
 	}
-
 }
