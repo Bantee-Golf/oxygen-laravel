@@ -1,6 +1,6 @@
 # Oxygen - Admin Dashboard for Laravel
 
-![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/501977135-Workbench%20Dashboard%202019-10-28%2012-57-06%20copy.png)
+![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/570218285-Workbench%20Dashboard%202020-11-04%2015-52-49.png)
 
 ## Version Compatibility
 
