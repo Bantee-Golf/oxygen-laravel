@@ -4,7 +4,8 @@ use Closure;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 
-class ApiAuthenticate {
+class ApiAuthenticate
+{
 
 	/**
 	 * Handle an incoming request.
@@ -41,5 +42,4 @@ class ApiAuthenticate {
 
 		return $next($request);
 	}
-
 }

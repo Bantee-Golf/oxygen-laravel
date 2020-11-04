@@ -3,7 +3,6 @@
 
 namespace EMedia\Oxygen\Http\Middleware;
 
-
 use Closure;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 
@@ -31,5 +30,4 @@ class ApiUserAccessTokenVerification
 
 		return $next($request);
 	}
-
 }

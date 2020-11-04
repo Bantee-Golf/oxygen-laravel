@@ -6,13 +6,11 @@ namespace EMedia\Oxygen\Http\Controllers\Manage;
 use App\Entities\Files\File;
 use App\Entities\Files\FilesRepository;
 use App\Http\Controllers\Controller;
-use EMedia\FileControl\PathResolver\PathResolver;
-use EMedia\FileControl\Uploader\FileUploader;
 use EMedia\Formation\Builder\Formation;
-use EMedia\QuickData\Entities\Search\SearchFilter;
+use EMedia\MediaManager\Domain\PathResolver;
+use EMedia\MediaManager\Uploader\FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Spatie\Html\Elements\Form;
 use Webpatser\Uuid\Uuid;
 
 class ManageFilesController extends Controller
@@ -20,7 +18,7 @@ class ManageFilesController extends Controller
 
 	protected $dataRepo;
 
-	protected $uploadDisk;
+	protected $uploadDisk = 'local';
 
 	public function __construct(FilesRepository $dataRepo, File $model)
 	{
@@ -38,12 +36,12 @@ class ManageFilesController extends Controller
 	 */
 	public function index()
 	{
-		$filter = new SearchFilter();
-		$filter->orderBy(['created_at' => 'asc']);
+		// $filter = new SearchFilter();
+		// $filter->orderBy(['created_at' => 'asc']);
 
 		return view('oxygen::manage.files.index', [
 			'pageTitle' => 'Manage Files',
-			'allItems' => $this->dataRepo->search([], $filter),
+			'allItems' => $this->dataRepo->searchPaginate(),
 		]);
 	}
 
@@ -66,6 +64,7 @@ class ManageFilesController extends Controller
 		]);
 	}
 
+
 	public function edit(File $file)
 	{
 		return view('oxygen::manage.files.form', [
@@ -77,10 +76,85 @@ class ManageFilesController extends Controller
 		]);
 	}
 
+
+
+	/**
+	 *
+	 * Save a file
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Illuminate\Validation\ValidationException
+	 */
+	public function store(Request $request)
+	{
+		$this->validate($request, [
+			'file' => 'required|file',
+			// 'key' => 'required|unique:files,key',
+			'key' => 'required',
+		]);
+
+		$fh = new FileUploader($request);
+		$fh->toDisk($this->uploadDisk)
+			->saveToDir('files')
+			->intoSubDirectoryDateFormat('Ym');
+
+		$result = $fh->upload();
+
+		if ($result->isSuccessful()) {
+			$fileKey = $request->key;
+			if ($fileKey === 'other') {
+				$fileKey = null;
+			}
+
+			// if we have the key set as `other`, then give a random key,
+			// so that all files will have a unique key
+			// this is not the same as UUID, because the key can change later, but the UUID won't
+			if (empty($fileKey)) {
+				if (empty($request->custom_key)) {
+					$fileKey = (string) Uuid::generate(4);
+				} else {
+					$fileKey = Str::snake($request->custom_key);
+				}
+			}
+
+			$file = $this->dataRepo->findByKey($fileKey);
+
+			if ($file) {
+				return back()->with(
+					'error',
+					"A file with a key `{$fileKey}` already exists." .
+					"Add a unique custom key, or leave the key field empty to auto-generate a unique key."
+				);
+			}
+
+			$file = new File([
+				'name' => File::fileKeys($request->key),
+				'key' => $fileKey,
+				'allow_public_access' => empty($request->allow_public_access)? false: true,
+				'original_filename' => $result->getOriginalFilename(),
+				'file_path' => $result->filePath(),
+				'file_disk' => $result->diskName(),
+				'file_url'  => $result->publicUrl(),
+				'file_size_bytes' => $result->getFileSize(),
+				'uploaded_by_user_id' => (auth()->id()) ?? auth()->id()
+			]);
+			$file->category = 'admin_uploads';
+			$file->save();
+
+			return redirect()->route('manage.files.index')->with('success', 'File uploaded.');
+		}
+
+		return back()->with('error', 'Failed to upload file')->withInput(request()->only('key'));
+	}
+
 	public function update(Request $request)
 	{
 		$file = $this->dataRepo->find($request->id);
-		if (empty($file)) return back()->with('erro', 'Invalid file.');
+		if (empty($file)) {
+			return back()->with('erro', 'Invalid file.');
+		}
 
 		$this->validate($request, [
 			'file' => 'required|file',
@@ -91,15 +165,18 @@ class ManageFilesController extends Controller
 
 		$originalFilePath = $this->resolvePathFromFile($file);
 
-		$fh = new FileUploader($request);
+		$fh = new \EMedia\MediaManager\Uploader\FileUploader($request);
 		$fh->toDisk($this->uploadDisk)
-		   ->saveToDir('files');
+		   ->saveToDir('files')
+			->intoSubDirectoryDateFormat('Ym');
 
 		$result = $fh->upload();
 
 		if ($result->isSuccessful()) {
 			$fileKey = $request->key;
-			if ($fileKey === 'other') $fileKey = null;
+			if ($fileKey === 'other') {
+				$fileKey = null;
+			}
 
 			if (empty($fileKey) && !empty($request->custom_key)) {
 				$fileKey = Str::snake($request->custom_key);
@@ -127,69 +204,6 @@ class ManageFilesController extends Controller
 		return back()->with('error', 'Failed to upload file')->withInput(request()->only('key'));
 	}
 
-	/**
-	 *
-	 * Save a file
-	 *
-	 * @param Request $request
-	 *
-	 * @return \Illuminate\Http\RedirectResponse
-	 * @throws \Illuminate\Validation\ValidationException
-	 */
-	public function store(Request $request)
-	{
-		$this->validate($request, [
-			'file' => 'required|file',
-			// 'key' => 'required|unique:files,key',
-			'key' => 'required',
-		]);
-
-		$fh = new FileUploader($request);
-		$fh->toDisk($this->uploadDisk)
-		   ->saveToDir('files');
-
-		$result = $fh->upload();
-
-		if ($result->isSuccessful()) {
-			$fileKey = $request->key;
-			if ($fileKey === 'other') $fileKey = null;
-
-			// if we have the key set as `other`, then give a random key,
-			// so that all files will have a unique key
-			// this is not the same as UUID, because the key can change later, but the UUID won't
-			if (empty($fileKey)) {
-				if (empty($request->custom_key)) {
-					$fileKey = (string) Uuid::generate(4);
-				} else {
-					$fileKey = Str::snake($request->custom_key);
-				}
-			}
-
-			$file = $this->dataRepo->findByKey($fileKey);
-
-			if ($file) {
-				return back()->with('error', "A file with a key `{$fileKey}` already exists. Add a unique custom key, or leave the key field empty to auto-generate a unique key.");
-			}
-
-			$file = new File([
-				'name' => File::fileKeys($request->key),
-				'key' => $fileKey,
-				'allow_public_access' => empty($request->allow_public_access)? false: true,
-				'original_filename' => $result->getOriginalFilename(),
-				'file_path' => $result->filePath(),
-				'file_disk' => $result->diskName(),
-				'file_url'  => $result->publicUrl(),
-				'file_size_bytes' => $result->getFileSize(),
-				'uploaded_by_user_id' => (auth()->id()) ?? auth()->id()
-			]);
-			$file->category = 'admin_uploads';
-			$file->save();
-
-			return redirect()->route('manage.files.index')->with('success', 'File uploaded.');
-		}
-
-		return back()->with('error', 'Failed to upload file')->withInput(request()->only('key'));
-	}
 
 	/**
 	 *
@@ -222,7 +236,9 @@ class ManageFilesController extends Controller
 	{
 		$file = $this->dataRepo->findByUuid($uuid);
 
-		if (!$file) return back()->with('error', 'Invalid file request.');
+		if (!$file) {
+			return back()->with('error', 'Invalid file request.');
+		}
 
 		$filePath = $this->resolvePathFromFile($file);
 
@@ -240,7 +256,8 @@ class ManageFilesController extends Controller
 	public function destroy(File $file)
 	{
 		if (!$file->isDeleteAllowed()) {
-			return redirect()->route('oxygen::manage.files.index')->with('error', 'This file is locked and cannot be deleted.');
+			return redirect()->route('oxygen::manage.files.index')
+							 ->with('error', 'This file is locked and cannot be deleted.');
 		}
 
 		$filePath = $this->resolvePathFromFile($file);
@@ -264,5 +281,4 @@ class ManageFilesController extends Controller
 	{
 		return PathResolver::resolvePath($file->file_disk, $file->file_path);
 	}
-
 }

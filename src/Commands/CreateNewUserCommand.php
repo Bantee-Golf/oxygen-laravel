@@ -97,7 +97,6 @@ class CreateNewUserCommand extends Command
 			} else {
 				$this->error("No roles found. Seed some roles first");
 			}
-
 		}
 	}
 }

@@ -3,10 +3,8 @@
 
 namespace EMedia\Oxygen\Commands\Scaffolding;
 
-
-use EMedia\PHPHelpers\Exceptions\FileSystem\FileNotFoundException;
-use EMedia\PHPHelpers\Files\DirManager;
-use EMedia\PHPHelpers\Files\FileManager;
+use ElegantMedia\PHPToolkit\Dir;
+use ElegantMedia\PHPToolkit\Exceptions\FileSystem\FileNotFoundException;
 use Illuminate\Console\Command;
 use Illuminate\View\ViewFinderInterface;
 
@@ -78,7 +76,7 @@ class ScaffoldViewsCommand extends Command
 		foreach ($directories as $directory) {
 			$resourcePath .= DIRECTORY_SEPARATOR . $directory;
 		}
-		DirManager::makeDirectoryIfNotExists($resourcePath);
+		Dir::makeDirectoryIfNotExists($resourcePath);
 
 		// create the files
 		foreach ($this->getStubs() as $key => $stub) {
@@ -109,5 +107,4 @@ class ScaffoldViewsCommand extends Command
 			'form'  => __DIR__ . '/../../../resources/views/defaults/formation-form.blade.php',
 		];
 	}
-
 }

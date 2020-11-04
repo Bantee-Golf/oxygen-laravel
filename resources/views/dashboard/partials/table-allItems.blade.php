@@ -8,12 +8,12 @@
         </div>
 
         @if(is_countable($allItems) && count($allItems))
-            <table class="table table-hover">
-                {{ lotus()->tableHeader($tableHeader) }}
-                <tbody>
-                @parent
-                </tbody>
-            </table>
+			<table class="table table-hover">
+				{{ lotus()->tableHeader($tableHeader) }}
+				<tbody>
+				@parent
+				</tbody>
+			</table>
         @else
             {{ lotus()->emptyStatePanel() }}
         @endif

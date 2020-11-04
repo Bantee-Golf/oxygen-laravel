@@ -47,7 +47,9 @@ class AuthorizeAcl
 		$aclPermissionsWhitelist = null;
 
 		$user = $this->auth->user();
-		if (!$user) return $this->unauthorizedResponse($request);
+		if (!$user) {
+			return $this->unauthorizedResponse($request);
+		}
 
 		// the user can pass 2, 3 or 4 args
 		// 2 args - No check -> pass through
@@ -66,14 +68,13 @@ class AuthorizeAcl
 
 			// user must have ALL the given permissions to access the resource
 			$aclPermissions = $this->splitRules('permissions', $aclPermissions);
-
-		} else if ($argCount === 3) {
+		} elseif ($argCount === 3) {
 			// check either roles or permissions
 
 			if (strpos($aclRules, 'roles') === 0) {
 				// this is a roles check
 				$aclRoles = $this->splitRules('roles', $aclRules);
-			} else if (strpos($aclRules, 'permissions') === 0) {
+			} elseif (strpos($aclRules, 'permissions') === 0) {
 				// user must have at least ONE of the given permissions
 				$aclPermissionsWhitelist = $this->splitRulesWhitelist('permissions', $aclRules);
 				// this is a permission check
@@ -85,7 +86,9 @@ class AuthorizeAcl
 
 		// authorize roles
 		if ($aclRoles) {
-			if (!$user->isA($aclRoles)) return $this->unauthorizedResponse($request);
+			if (!$user->isA($aclRoles)) {
+				return $this->unauthorizedResponse($request);
+			}
 		}
 
 
@@ -94,7 +97,9 @@ class AuthorizeAcl
 		$isUserWhitelisted = false;
 		if ($aclPermissionsWhitelist && count($aclPermissionsWhitelist) > 0) {
 			foreach ($aclPermissionsWhitelist as $whitelistedPermission) {
-				if ($user->can($whitelistedPermission)) $isUserWhitelisted = true;
+				if ($user->can($whitelistedPermission)) {
+					$isUserWhitelisted = true;
+				}
 			}
 		}
 
@@ -127,8 +132,9 @@ class AuthorizeAcl
 	{
 		$rules = null;
 
-		if (strpos($rule, ',') !== false)
+		if (strpos($rule, ',') !== false) {
 			throw new \InvalidArgumentException("Invalid ',' character in ACL rule.");
+		}
 
 		$matchCount = preg_match_all('/^' . $group . '\[(.*)\]$/i', $rule, $matches);
 		if ($matchCount && count($matches[1])) {
@@ -142,8 +148,9 @@ class AuthorizeAcl
 	{
 		$rules = null;
 
-		if (strpos($rule, ',') !== false)
+		if (strpos($rule, ',') !== false) {
 			throw new \InvalidArgumentException("Invalid ',' character in ACL rule.");
+		}
 
 		$matchCount = preg_match_all('/^' . $group . '\[(.*)\]$/i', $rule, $matches);
 		if ($matchCount && count($matches[1])) {
@@ -158,7 +165,7 @@ class AuthorizeAcl
 		if ($request->ajax()) {
 			return response('Unauthorized.', 401);
 		} else {
-			return redirect('/')->with('error', trans('auth.invalid-permissions')) ;
+			return redirect('/')->with('error', trans('oxygen::auth.invalid-permissions')) ;
 		}
 	}
 }

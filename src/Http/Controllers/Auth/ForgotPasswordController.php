@@ -5,6 +5,12 @@ namespace EMedia\Oxygen\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
+/**
+ *
+ * This class will be removed in future. Use Fortify pattern.
+ *
+ * @deprecated
+ */
 class ForgotPasswordController extends Controller
 {
 	/*
@@ -18,7 +24,7 @@ class ForgotPasswordController extends Controller
 	|
 	*/
 
-	use SendsPasswordResetEmails;
+	// use SendsPasswordResetEmails;
 
 	/**
 	 * Create a new controller instance.

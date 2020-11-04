@@ -2,16 +2,24 @@
 
 ## Version Compatibility
 
-| Laravel Version   | Oxygen Version    |
-| ------------------|:-----------------:|
-| 7                 | 4.x               |
-| 6                 | 3.x               |
+| Laravel Version   | Oxygen Version    | Branch           |
+| -----------------:| ----------------- |------------------|
+| v8                | 5.x               | master           |
+| v7                | 4.x               | version/v4.x     |
+| v6                | 3.x               |
 | 5.8               | 2.3.x             |
 | 5.7               | 2.2.20            |
 | 5.6               | 1.1.6             |
 | 5.4               | 1.0.8             |
 | 5.3               | 0.3.2             |
 | 5.2               | 0.1.4             |
+
+## v5.0
+- Support for Laravel 8
+- Complete rewrite of the architecture. This will not work with Laravel 7 or past versions.
+- PHP v7.3+ required by Laravel 8
+- `$repository->search()` is renamed to `$respository->searchPaginate()`
+- `location` database field now only contains `latitude` and `longitude`. What used to be `location` field is now called `place`.
 
 ## Version 4
 - **4.2** Added API Test Generation (via emedia/api)

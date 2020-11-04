@@ -43,7 +43,13 @@
                                                 {{ $invitation->role->title }}
                                             @endif
                                         </td>
-                                        <td>{{ $invitation->sent_at->diffForHumans() }}</td>
+                                        <td>
+											@if ($invitation->sent_at)
+												{{ $invitation->sent_at->diffForHumans() }}
+											@else
+												Not Sent
+											@endif
+										</td>
                                         <td>
                                             @if (empty($invitation->claimed_at))
                                                 <span class="label label-primary">Pending to Accept</span>
@@ -64,9 +70,10 @@
                                         </td>
                                         <td>
                                             @if (empty($invitation->claimed_at))
-                                                <form class="form-inline" role="form" method="POST" action="/account/invitations/{{ $invitation->id }}"
+                                                <form class="form-inline" role="form" method="POST"
+                                                	  action="/account/invitations/{{ $invitation->id }}"
                                                       data-toggle="tooltip" title="Delete Invite">
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                                    @csrf
                                                     <input type="hidden" name="_method" value="delete" />
                                                     <button class="btn btn-danger"><i class="fas fa-times"></i> Delete</button>
                                                 </form>

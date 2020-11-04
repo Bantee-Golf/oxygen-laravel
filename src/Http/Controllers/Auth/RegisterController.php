@@ -2,7 +2,6 @@
 
 namespace EMedia\Oxygen\Http\Controllers\Auth;
 
-use App\User;
 use EMedia\MultiTenant\Facades\TenantManager;
 use EMedia\Oxygen\Exceptions\RegistrationsDisabledException;
 use Illuminate\Auth\Events\Registered;
@@ -25,7 +24,7 @@ class RegisterController extends Controller
 	|
 	*/
 
-	use RegistersUsers;
+	// use RegistersUsers;
 
 	/**
 	 * Where to redirect users after login / registration.
@@ -77,11 +76,11 @@ class RegisterController extends Controller
 	 * Create a new user instance after a valid registration.
 	 *
 	 * @param  array  $data
-	 * @return User
+	 * @return App\Models\User
 	 */
 	protected function create(array $data)
 	{
-		return User::create([
+		return app('oxygen')::makeUserModel()::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
 			'password' => bcrypt($data['password']),
@@ -109,17 +108,25 @@ class RegisterController extends Controller
 		$tenantRepo		 = app(config('auth.tenantRepository'));
 		$roleRepo		 = app(config('oxygen.roleRepository'));
 
-		if ( ! empty($invitation_code = Session::get('invitation_code')) ) {
+		if (! empty($invitation_code = Session::get('invitation_code'))) {
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
-			if (!$invite)
+			if (!$invite) {
 				return redirect()
 					->back()
 					->withInput($request->except('password', 'confirm_password'))
-					->with('error', 'The invitation is already used or expired. Please login or register for a new account.');
-			if (TenantManager::multiTenancyIsActive()) $tenant = $tenantRepo->find($invite->tenant_id);
+					->with(
+						'error',
+						'The invitation is already used or expired. Please login or register for a new account.'
+					);
+			}
+			if (TenantManager::multiTenancyIsActive()) {
+				$tenant = $tenantRepo->find($invite->tenant_id);
+			}
 		} else {
 			// create a tenant
-			if (TenantManager::multiTenancyIsActive()) $tenant = $tenantRepo->create($request->all());
+			if (TenantManager::multiTenancyIsActive()) {
+				$tenant = $tenantRepo->create($request->all());
+			}
 		}
 
 		if (TenantManager::multiTenancyIsActive()) {
@@ -133,7 +140,7 @@ class RegisterController extends Controller
 		}
 
 		// assign this user as the admin of the tenant
-		if ( ! empty($invite->role_id) ) {
+		if (! empty($invite->role_id)) {
 			$user->roles()->attach($invite->role_id);
 			// since the tenant is set now, we can retrieve the correct invitation as Eloquent
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code);
@@ -156,9 +163,9 @@ class RegisterController extends Controller
 				// add this role when the user registers
 				$user->roles()->attach($role->id);
 			}
-			
+
 			$this->redirectTo = $user->isA(['admin', 'super-admin']) ? '/dashboard' : '/';
-			
+
 			Session::flash('success', 'Your account has been created and you\'re now logged in.');
 		}
 

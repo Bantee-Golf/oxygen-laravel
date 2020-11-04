@@ -18,9 +18,6 @@ return [
 	 | Web Translation Lines
 	 |-----------------------------------------------------------
 	 */
-	'failed' => 'These credentials do not match our records.',
-	'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
 	'invalid-permissions' => "You don't have permissions to access that page. Please contact admin.",
 
 	/*

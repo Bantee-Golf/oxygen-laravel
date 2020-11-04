@@ -59,7 +59,7 @@ services:
     ports:
       - "4444:4444"
     links:
-      - app:localhost.devv
+      - app:localhost.test
     networks:
       - app-network
 

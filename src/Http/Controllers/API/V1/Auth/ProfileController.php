@@ -10,119 +10,117 @@ use EMedia\Api\Docs\APICall;
 use EMedia\Api\Docs\Param;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 use Illuminate\Http\Request;
-use App\User;
 
 class ProfileController extends APIBaseController
 {
 
-    /**
-     * @var UsersRepository
-     */
-    protected $usersRepo;
+	/**
+	 * @var UsersRepository
+	 */
+	protected $usersRepo;
 
-    public function __construct(UsersRepository $usersRepo)
-    {
-        $this->usersRepo = $usersRepo;
-    }
+	public function __construct(UsersRepository $usersRepo)
+	{
+		$this->usersRepo = $usersRepo;
+	}
 
-    /**
-     *
-     * Get currently logged-in user's profile
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
-    {
-        document(function () {
-            return (new APICall)->setName('My Profile')
-                ->setDescription('Get currently logged in user\'s profile')
-                ->setSuccessObject(User::class);
-        });
+	/**
+	 *
+	 * Get currently logged-in user's profile
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function index()
+	{
+		document(function () {
+			return (new APICall)->setName('My Profile')
+				->setDescription('Get currently logged in user\'s profile')
+				->setSuccessObject(app('oxygen')::getUserClass());
+		});
 
-        $user = DeviceAuthenticator::getUserByAccessToken();
+		$user = DeviceAuthenticator::getUserByAccessToken();
 
-        return response()->apiSuccess($user);
-    }
+		return response()->apiSuccess($user);
+	}
 
-    /**
-     *
-     * Update user's profile
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(Request $request)
-    {
-        document(function () {
-            return (new APICall)
-                ->setName('Update My Profile')
-                ->setParams([
+	/**
+	 *
+	 * Update user's profile
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function update(Request $request)
+	{
+		document(function () {
+			return (new APICall)
+				->setName('Update My Profile')
+				->setParams([
 					(new Param('first_name'))->setVariable(PostmanVar::FIRST_NAME),
 					(new Param('last_name'))->optional(),
 					(new Param('email'))->setVariable('{{test_user_email}}'),
 					(new Param('phone'))->optional(),
-                    // (new Param('_method'))->description("Must be set to `PUT`")->setDefaultValue('put'),
-                ])
-                ->setSuccessObject(User::class);
-        });
+					// (new Param('_method'))->description("Must be set to `PUT`")->setDefaultValue('put'),
+				])
+				->setSuccessObject(app('oxygen')::getUserClass());
+		});
 
-        $user = DeviceAuthenticator::getUserByAccessToken();
+		$user = DeviceAuthenticator::getUserByAccessToken();
 
-        $this->validate($request, [
-            'first_name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-        ]);
+		$this->validate($request, [
+			'first_name' => 'required',
+			'email' => 'required|email|unique:users,email,' . $user->id,
+		]);
 
-        $user = $this->usersRepo->update($user, $request->only('first_name', 'last_name', 'email', 'phone'));
+		$user = $this->usersRepo->update($user, $request->only('first_name', 'last_name', 'email', 'phone'));
 
-        return response()->apiSuccess($user);
-    }
+		return response()->apiSuccess($user);
+	}
 
-    /**
-     *
-     * Update user's profile picture (avatar)
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateAvatar(Request $request)
-    {
-        document(function () {
-            return (new APICall)
-                ->setName('Update My Avatar')
-                ->hasFileUploads()
-                ->setParams([
+	/**
+	 *
+	 * Update user's profile picture (avatar)
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function updateAvatar(Request $request)
+	{
+		document(function () {
+			return (new APICall)
+				->setName('Update My Avatar')
+				->hasFileUploads()
+				->setParams([
 					(new Param('image'))->dataType('File')->setVariable(PostmanVar::RANDOM_IMAGE_FILE),
-                ])
-                ->setSuccessObject(User::class);
-        });
+				])
+				->setSuccessObject(User::class);
+		});
 
-        $user = DeviceAuthenticator::getUserByAccessToken();
+		$user = DeviceAuthenticator::getUserByAccessToken();
 
-        $this->validate($request, [
-            'image' => 'file|image|mimes:jpeg,png,gif',
-        ]);
+		$this->validate($request, [
+			'image' => 'file|image|mimes:jpeg,png,gif',
+		]);
 
-        // save the file
-        if ($request->hasFile('image')) {
-            $diskName = 'public';
-            $disk = Storage::disk($diskName);
+		// save the file
+		if ($request->hasFile('image')) {
+			$diskName = 'public';
+			$disk = Storage::disk($diskName);
 
-            $path = $request->image->store('avatars/' . $user->id, $diskName);
-            $url = $disk->url($path);
+			$path = $request->image->store('avatars/' . $user->id, $diskName);
+			$url = $disk->url($path);
 
-            $user->update([
-                'avatar_path' => $path,
-                'avatar_url' => $url,
-                'avatar_disk' => $diskName,
-            ]);
+			$user->update([
+				'avatar_path' => $path,
+				'avatar_url' => $url,
+				'avatar_disk' => $diskName,
+			]);
 
-            return response()->apiSuccess($user->fresh());
-        }
+			return response()->apiSuccess($user->fresh());
+		}
 
-        return response()->apiError('Avatar could not be saved.');
-    }
-
+		return response()->apiError('Avatar could not be saved.');
+	}
 }

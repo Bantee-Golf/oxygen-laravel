@@ -11,12 +11,12 @@ pipelines:
         script:
           - COMPOSER=$(which composer)
           - cd /
-          - composer create-project --prefer-dist laravel/laravel="7.*" laravel_app --no-progress
+          - composer create-project --prefer-dist --remove-vcs laravel/laravel="8.*" laravel_app
           - cd laravel_app
-          - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories
+          - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 5
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
           - php -d memory_limit=2G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
-          - php artisan setup:oxygen-project --name Oxygen --email apps@elegantmedia.com.au --devurl 127.0.0.1:8000 --dbhost 127.0.0.1 --dbuser appuser --dbpass userpass --mailhost 127.0.0.1 --mailport 1025 --no-interaction
+          - php artisan oxygen:dashboard:install --name Oxygen --email apps@elegantmedia.com.au --dev_url 127.0.0.1:8000 --dbhost 127.0.0.1 --dbuser appuser --dbpass userpass --mailhost 127.0.0.1 --mailport 1025 --no-interaction
           - composer dump-autoload
           - npm install && npm run dev && npm run dev
           # Install Dusk
@@ -36,12 +36,12 @@ pipelines:
           - selenium
     - step:
         name: Oxygen Package Tests
-        size: 2x        
+        size: 2x
         caches:
           - composer
         script:
-          - composer self-update
-          - composer install
+          - COMPOSER=$(which composer)
+          - php -d memory_limit=2G $COMPOSER install
           - ./vendor/bin/phpunit
 
 definitions:

@@ -3,7 +3,6 @@
 
 namespace EMedia\Oxygen\Http\Controllers\API\V1\Auth;
 
-
 use App\Http\Controllers\API\V1\APIBaseController;
 use EMedia\Api\Docs\APICall;
 use EMedia\Api\Docs\Param;
@@ -66,7 +65,7 @@ class ResetPasswordController extends APIBaseController
 		]);
 
 		if (!$isPasswordValid) {
-			return response()->apiErrorUnauthorized('Current password is incorrect.',422);
+			return response()->apiErrorUnauthorized('Current password is incorrect.', 422);
 		}
 
 		// set the new password
@@ -79,5 +78,4 @@ class ResetPasswordController extends APIBaseController
 
 		return response()->apiSuccess('', 'Password successfully updated.');
 	}
-
 }

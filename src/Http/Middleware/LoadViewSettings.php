@@ -39,15 +39,28 @@ class LoadViewSettings
 		$appName 	= config('app.name');
 		$pageTitle	= 'My Account';
 
-		View::share('appName', $appName);
-		View::share('pageTitle', $pageTitle);
+		$view = view();
+
+		$view->share('appName', $appName);
+		$view->share('pageTitle', $pageTitle);
 
 		if ($user = $this->auth->user()) {
-			View::share('user', $user);
+			$view->share('user', $user);
+
+			// DONE: handle multiple tenants and save in session
+			// TODO: MUST check acceptInvite() in InvitationsController
+			// if (TenantManager::multiTenancyIsActive() && TenantManager::isTenantNotSet())
+			// 	TenantManager::setTenant($user->tenants()->first());
 
 			// Tenants
 			// $tenants = TenantManager::allTenants();
-			if (TenantManager::multiTenancyIsActive()) View::share('tenants', $user->tenants);
+			if (TenantManager::multiTenancyIsActive()) {
+				if (TenantManager::isTenantSet()) {
+					$tenant = TenantManager::getTenant();
+					$view->share('tenant', $tenant);
+				}
+				$view->share('tenants', $user->tenants);
+			}
 		}
 
 		return $next($request);

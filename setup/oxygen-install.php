@@ -2,11 +2,13 @@
 
 /**
  *
- *	Setup the engine.
+ *    Setup the engine.
  *
+ * @throws Exception
  */
-function initialize() {
-	$args = getopt(null, ["run:", 'path:']);
+function initialize()
+{
+	$args = getopt(null, ["run:", 'path:', 'o_version:']);
 
 	$allowedCommands = [
 		'add-repositories',
@@ -25,7 +27,11 @@ function initialize() {
 	// run the commands
 	switch ($command) {
 		case 'add-repositories':
-			add_repositories_to_composer_json();
+			$version = '5';
+			if (!empty($args['o_version'])) {
+				$version = $args['o_version'];
+			}
+			add_repositories_to_composer_json($version);
 			break;
 		case 'set-local-repo':
 			$path = '../../Oxygen';
@@ -49,7 +55,8 @@ function initialize() {
  *
  * @return array
  */
-function get_composer_json () {
+function get_composer_json()
+{
 
 	if (!file_exists('composer.json')) {
 		throw new \Exception("composer.json not found in path " . getcwd());
@@ -66,19 +73,34 @@ function get_composer_json () {
  *
  * @param $jsonArray
  */
-function write_composer_json($jsonArray) {
+function write_composer_json($jsonArray)
+{
 	file_put_contents('composer.json', json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
 
 /**
  *
- *	Get the list of repository locations and merge to composer.json
+ * Get the list of repository locations and merge to composer.json
  *
+ * @param string $version
+ *
+ * @throws Exception
  */
-function add_repositories_to_composer_json()
+function add_repositories_to_composer_json($version = '5')
 {
 	// merge the existing composer.json contents with a stub file
-	$remoteConfig = file_get_contents('https://bitbucket.org/elegantmedia/oxygen-installer/raw/1bc5fbcbff7f3402e54d4a419de7d2324483a2d1/src/oxygen-composer.json');
+	switch ($version) {
+		case '4':
+			$remoteConfig = file_get_contents(
+				'https://bitbucket.org/elegantmedia/oxygen-installer/raw/9d87b37d9f74c8d80afcbec451b6a4e981cc943d/src/oxygen-composer-v4.json'
+			);
+			break;
+		case '5':
+		default:
+			$remoteConfig = file_get_contents(
+				'https://bitbucket.org/elegantmedia/oxygen-installer/raw/911ff736c02a8b8c1e9f0ddc8e0c9a770ffc9e0f/src/oxygen-composer-v5.json'
+			);
+	}
 
 	$localJson  = get_composer_json();
 	$remoteJson = json_decode($remoteConfig, true);
@@ -101,12 +123,9 @@ function replace_oxygen_with_a_local_repo($localRepoPath)
 
 	$repos = [];
 
-	foreach ($json['repositories'] as $item)
-	{
-		if (isset($item['url']))
-		{
-			if ($item['url'] === 'git@bitbucket.org:elegantmedia/oxygen-laravel.git')
-			{
+	foreach ($json['repositories'] as $item) {
+		if (isset($item['url'])) {
+			if ($item['url'] === 'git@bitbucket.org:elegantmedia/oxygen-laravel.git') {
 				$item['type'] = 'path';
 				$item['url'] = $localRepoPath;
 				$item['symlink'] = true;

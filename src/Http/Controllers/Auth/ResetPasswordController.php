@@ -22,8 +22,8 @@ class ResetPasswordController extends Controller
 	|
 	*/
 
-	use ResetsPasswords;
-	
+	// use ResetsPasswords;
+
 	protected $redirectTo = '/dashboard';
 
 	/**
@@ -91,13 +91,15 @@ class ResetPasswordController extends Controller
 			'password'	=> $request->get('current_password')
 		]);
 
-		if ( ! $isPasswordValid)
+		if (! $isPasswordValid) {
 			return redirect()->back()->withErrors(['Current password is incorrect.']);
+		}
 
 		// set the new password
 		$user->password = bcrypt($request->get('password'));
-		if ( ! $user->save())
+		if (! $user->save()) {
 			return redirect()->back()->withErrors(['Failed to save the new password. Try with another password.']);
+		}
 
 		// TODO: inform the user their password has been changed
 

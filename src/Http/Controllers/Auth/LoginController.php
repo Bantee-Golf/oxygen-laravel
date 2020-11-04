@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use EMedia\MultiTenant\Facades\TenantManager;
 
+/**
+ *
+ * This class will be removed in future. Use Fortify pattern.
+ *
+ * @deprecated
+ */
 class LoginController extends Controller
 {
 	/*
@@ -21,7 +27,7 @@ class LoginController extends Controller
 	|
 	*/
 
-	use AuthenticatesUsers;
+	// use AuthenticatesUsers;
 
 	/**
 	 * Where to redirect users after login.
@@ -57,12 +63,13 @@ class LoginController extends Controller
 		$tenantRepo		 = app(config('auth.tenantRepository'));
 		$roleRepo		 = app(config('oxygen.roleRepository'));
 
-		if ( ! empty($invitation_code = Session::get('invitation_code')) ) {
+		if (! empty($invitation_code = Session::get('invitation_code'))) {
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code, true);
-			if (!$invite)
+			if (!$invite) {
 				return redirect()
 					->intended($this->redirectPath())
 					->with('error', 'The invitation is already used or expired.');
+			}
 
 			// see if you can get a valid tenant
 			// if (($tenant = $tenantRepo->find($invite->tenant_id)) && !empty($invite->role_id)) {

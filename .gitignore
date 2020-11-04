@@ -1,7 +1,8 @@
 /vendor/
 .idea/
-/test_screenshots/
-README_LOCAL.md
+node_modules/
+test_screenshots/
+LOCAL.md
 .DS_Store
 composer.lock
 .phpunit.result.cache
