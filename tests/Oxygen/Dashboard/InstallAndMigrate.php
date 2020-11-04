@@ -35,11 +35,9 @@ trait InstallAndMigrate
 
 	protected function runAdminInstallerCommand(): void
 	{
-		// $this->artisan('oxygen:ext:admin:install --teams --name Workbench
-		// --dev_url workbench.test --dbname workbench --dbpass root --mailenc tls');
 		$this->artisan(
 			'oxygen:dashboard:install --name Workbench --dev_url workbench.test --dbname workbench --dbpass root ' .
-			'--install_dependencies false'
+			'--install_dependencies false --no-interaction'
 		);
 	}
 }

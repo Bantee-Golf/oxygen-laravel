@@ -1,5 +1,6 @@
 <?php
 
+use ElegantMedia\OxygenFoundation\Support\Exceptions\FileInvalidException;
 use EMedia\LaravelTestbench\Repo\Laravel\Base;
 use EMedia\LaravelTestbench\Repo\Laravel\UI;
 use EMedia\LaravelTestbench\Repo\RepoCopy;
@@ -27,6 +28,8 @@ $repos = [
 			'public/.htaccess',
 			'resources/lang/en/auth.php',
 
+			'bootstrap/app.php',
+
 			'config/app.php',
 			'config/auth.php',
 
@@ -36,15 +39,10 @@ $repos = [
 			'.env.example',
 			'README.md',
 			'webpack.mix.js',
+
+			'server.php',
 		]
 	],
-	// [
-	// 	'branch' => 'https://raw.githubusercontent.com/laravel/jetstream/1.x/',
-	// 	'local_dir' => __DIR__.'/../laravel/jetstream/',
-	// 	'files' => [
-	// 		'stubs/app/Providers/JetstreamServiceProvider.php',
-	// 	]
-	// ],
 ];
 
 foreach ($repos as $repo) {
@@ -53,11 +51,11 @@ foreach ($repos as $repo) {
 	// easier to delete the directory, so we're not left with ghost files from the past
 	\ElegantMedia\PHPToolkit\Dir::deleteDirectory($localDir);
 
-	foreach($repo['files'] as $file) {
+	foreach ($repo['files'] as $file) {
 		$sourceUrl = $repo['branch'].$file;
 
 		if (!$content = file_get_contents($sourceUrl)) {
-			throw new \ElegantMedia\OxygenFoundation\Support\Exceptions\FileInvalidException("Failed to fetch from {$sourceUrl}");
+			throw new FileInvalidException("Failed to fetch from {$sourceUrl}");
 		}
 
 		$destination = $localDir.$file;
@@ -66,34 +64,4 @@ foreach ($repos as $repo) {
 
 		file_put_contents($destination, $content);
 	}
-
 }
-
-
-//
-//// TODO: Add these files
-//// database/seeders/DatabaseSeeder.php
-//
-//$repos2 = [
-//    new Base([
-//        'README.md',
-//        'webpack.mix.js',
-//        'app/User.php',
-//        'app/Http/Kernel.php',
-//        'app/Http/Controllers/Controller.php'
-//    ]),
-//    new UI([
-//        // 'app/Http/Controllers/Auth/ConfirmPasswordController.php',
-//        'app/Http/Controllers/Auth/ForgotPasswordController.php',
-//        'app/Http/Controllers/Auth/LoginController.php',
-//        'app/Http/Controllers/Auth/RegisteredUserController.php',
-//        'app/Http/Controllers/Auth/ResetPasswordController.php',
-//        'app/Http/Controllers/Auth/VerificationController.php',
-//    ])
-//];
-//
-//$copy = new RepoCopy(__DIR__ . '/../LaravelDefaultFiles/');
-//
-//foreach ($repos as $repo) {
-//    $copy->get($repo);
-//}

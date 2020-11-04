@@ -95,8 +95,7 @@ npm run production
 ```
 
 
-
-## How to Run Pipelines Locally for Testing
+# Test Deployment Pipeline on a Local Machine
 
 You need these before starting.
 

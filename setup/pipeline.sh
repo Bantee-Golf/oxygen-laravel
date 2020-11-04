@@ -20,11 +20,11 @@ BITBUCKET_CLONE_DIR=$(pwd)
 COMPOSER=$(which composer)
 cd ..
 rm -rf ./laravel_app
-composer create-project --prefer-dist laravel/laravel="7.*" laravel_app --no-progress
+composer create-project --prefer-dist --remove-vcs laravel/laravel="8.*" laravel_app --no-progress
 cd laravel_app
 
 # step: Update composer values
-php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories
+php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 5
 php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
 php -d memory_limit=2G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
 
@@ -32,7 +32,7 @@ php -d memory_limit=2G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no
 # try removing composer.lock and vendor directory and installing again.
 
 # step: Install Oxygen
-php artisan setup:oxygen-project --name Oxygen --email apps@elegantmedia.com.au --devurl localhost.devv:8000 --dbhost dbcontainer --dbuser appuser --dbpass userpass --mailhost mailhog --mailport 1025 --no-interaction
+php artisan oxygen:dashboard:install --name Oxygen --email apps@elegantmedia.com.au --dev_url localhost.test:8000 --dbhost dbcontainer --dbuser appuser --dbpass userpass --mailhost mailhog --mailport 1025 --no-interaction
 composer dump-autoload
 npm install && npm run dev && npm run dev
 

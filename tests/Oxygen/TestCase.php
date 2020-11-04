@@ -27,18 +27,14 @@ class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
 	{
 		parent::setUp();
 
-		// $this->withoutMockingConsoleOutput();
-
 		$this->backupApplicationRoot();
 		$this->restoreApplicationRoot();
 		$this->addLaravelFiles();
 
 		$this->mockScoutKeywordEngine();
 
-		//
-		//
 		$this->beforeApplicationDestroyed(function () {
-		// 	// $this->restoreApplicationRoot();
+			// $this->restoreApplicationRoot();
 		});
 	}
 
@@ -68,10 +64,12 @@ class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
 			'app/Providers/RouteServiceProvider.php',
 			'routes/web.php',
 			'routes/api.php',
+			'bootstrap/app.php',
 			'config/app.php',
 			'config/auth.php',
 			'.env.example' => '.env',
 			'README.md',
+			'server.php',
 		];
 
 		foreach ($files as $sourceFile => $destFile) {

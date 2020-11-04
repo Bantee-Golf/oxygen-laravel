@@ -14,6 +14,7 @@
 /phpunit.xml.dist            export-ignore
 /tests                       export-ignore
 /docs                        export-ignore
+/setup                       export-ignore
 /bitbucket-pipelines.yml     export-ignore
 /docker-compose.yml          export-ignore
 /DEVELOPMENT.md              export-ignore

@@ -95,7 +95,7 @@ git add -A && git commit -m "Initial commit."
 Run the following command. This will do the default installation, if any questions are asked, you can just press ENTER to confirm the default choice, or change it.
 
 ```
-php artisan oxygen:dashboard:install
+php artisan oxygen:dashboard:install --name Workbench --dev_url workbench.test --email apps@elegantmedia.com.au --dbname workbench --dbpass root --mailhost "0.0.0.0" --mailport 1025
 ```
 
 Then follow instructions on screen.

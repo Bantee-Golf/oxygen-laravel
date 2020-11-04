@@ -27,7 +27,6 @@
         "doctrine/dbal": "^2.11"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5",
         "emedia/laravel-test-kit": "^1.0",
         "mockery/mockery": "^1.4",
         "orchestra/testbench": "^6.2",
@@ -64,6 +63,10 @@
 		},
 		{
 			"type": "vcs",
+			"url": "git@bitbucket.org:elegantmedia/devices-laravel.git"
+		},
+		{
+			"type": "vcs",
 			"url": "git@bitbucket.org:elegantmedia/laravel-api-helpers.git"
 		},
 		{
@@ -74,10 +77,6 @@
 			"type": "vcs",
 			"url": "git@bitbucket.org:elegantmedia/laravel-test-kit.git"
 		},
-        {
-            "type":"vcs",
-            "url":"git@bitbucket.org:elegantmedia/laravel-api-helpers.git"
-        },
         {
             "type":"vcs",
             "url":"git@bitbucket.org:elegantmedia/lotus.git"
