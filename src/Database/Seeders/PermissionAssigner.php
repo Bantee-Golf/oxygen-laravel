@@ -64,7 +64,7 @@ class PermissionAssigner
 	{
 		$this->excludeAbilities[] = $name;
 
-		return this;
+		return $this;
 	}
 
 	public function includeAbility($name): self
