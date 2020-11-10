@@ -24,6 +24,8 @@ class PermissionAssigner
 
 	public function reset(): self
 	{
+		$this->roles = [];
+
 		$this->abilityCategories = [];
 
 		$this->excludeAbilities = [];

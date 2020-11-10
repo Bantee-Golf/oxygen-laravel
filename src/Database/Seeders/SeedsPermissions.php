@@ -123,8 +123,9 @@ trait SeedsPermissions
 		if (!is_countable($includeCategoryNames) || count($includeCategoryNames) === 0) {
 			$includeCategoryNames = ['PLACEHOLDER_CATEGORY_NAME_FOR_EMPTY_RESULTS'];
 		}
-		$query->whereHas('category', function ($q) use ($includeCategoryNames, $fieldName) {
-			$q->whereIn($fieldName, $includeCategoryNames);
+		$query->whereHas('category', function ($q) use ($includeCategoryNames) {
+			// this will match the `slug` in AbilityCategory Model
+			$q->whereIn('slug', $includeCategoryNames);
 		});
 
 		// blacklist
