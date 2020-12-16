@@ -57,7 +57,6 @@ window._oxygen = window._oxygen || {};
 
 // set defaults
 if (window._oxygen.sidebar_status === undefined) {
-
 	// set version - only use integers. Increase for breaking changes
 	window._oxygen.version = 1;
 
@@ -66,12 +65,10 @@ if (window._oxygen.sidebar_status === undefined) {
 
 	// type of sidebar
 	window._oxygen.sidebar_status = 'normal';
-
 }
 
 // define functions
 if (window._oxygen.fn === undefined) {
-
 	window._oxygen.fn = {
 
 		/*
@@ -80,7 +77,9 @@ if (window._oxygen.fn === undefined) {
 		 |-----------------------------------------------------------
 		 */
 		saveLocalState() {
-			if (!localStorage) return false;
+			if (!localStorage) {
+				return false;
+			}
 
 			let data = Object.assign({}, window._oxygen);
 
@@ -242,7 +241,7 @@ if (window._oxygen.fn === undefined) {
  | Start jQuery Calls
  |-----------------------------------------------------------
  */
-$(document).ready(function() {
+$(document).ready(function () {
 
 	// load state parameters
 	window._oxygen.fn.loadLocalState();
@@ -254,7 +253,28 @@ $(document).ready(function() {
 
 		Swal.fire({
 			title: 'Are you sure?',
-			text: "You won't be able to revert this!",
+			text: "You won't be able to undo this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#e74c3c',
+			cancelButtonColor: '#2ecc71',
+			confirmButtonText: 'Yes, I\'m Sure',
+			focusCancel: true,
+		}).then((result) => {
+			if (result.isConfirmed) {
+				form.submit();
+			}
+		});
+	});
+
+	// delete confirmation
+	$('.js-confirm-delete').on('submit', function (e) {
+		e.preventDefault();
+		let form = this;
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to undo this!",
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#e74c3c',
