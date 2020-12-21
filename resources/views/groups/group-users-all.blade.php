@@ -56,7 +56,7 @@
                                                     Remove User
                                                 </span>
                                             @else
-                                                <form class="form-inline" role="form" method="POST" action="/account/groups/{{ $role['id'] }}/users/{{ $currentUser->id }}"
+                                                <form class="form-inline js-confirm-delete" role="form" method="POST" action="/account/groups/{{ $role['id'] }}/users/{{ $currentUser->id }}"
                                                       data-toggle="tooltip" title="Delete">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                                                     <input type="hidden" name="_method" value="delete" />

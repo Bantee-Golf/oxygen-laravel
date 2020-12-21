@@ -89,7 +89,7 @@
                                             @endif
 
                                             @if ($user->can('delete-groups') && $role['allow_to_be_deleted'])
-                                                <form class="form-inline" role="form" method="POST"
+                                                <form class="form-inline js-confirm-delete" role="form" method="POST"
                                                       action="/account/groups/{{ $role['id'] }}"
                                                       data-toggle="tooltip" title="Delete">
                                                     {{ csrf_field() }}
