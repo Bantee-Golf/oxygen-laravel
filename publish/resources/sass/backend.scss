@@ -20,7 +20,8 @@
 "./oxygen/modules/_buttons",
 "./oxygen/modules/_lists",
 "./oxygen/modules/_forms",
-"./oxygen/modules/_empty_view";
+"./oxygen/modules/_empty_view",
+"./oxygen/modules/_footer";
 
 html,
 body {
@@ -648,42 +649,6 @@ $mini-sidebar-width: 60px;
 		margin-bottom: 20px;
 		border-radius: 0px;
 		box-shadow: none;
-	}
-}
-
-footer {
-	background: #2e3137;
-	box-shadow: inset rgba(255, 255, 255, 0.1) 0 4px 0;
-	padding: 30px 20px 20px;
-	color: #ccc;
-	font-size: small;
-
-	a {
-		color: #adadad;
-	}
-
-	.headline {
-		color: #fff;
-		font-weight: bold;
-	}
-
-	.text {
-
-	}
-
-	ul {
-		padding-left: 0px;
-		list-style: none;
-	}
-
-	.small-footer {
-		color: #ccc;
-
-		.links {
-			a {
-				text-transform: uppercase;
-			}
-		}
 	}
 }
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Browser\Auth;
 
+use App\Providers\RouteServiceProvider;
 use EMedia\TestKit\Traits\InteractsWithUsers;
 use Tests\Browser\Pages\ForgotPassword;
 use Tests\Browser\Pages\Login;
@@ -102,7 +103,7 @@ class ForgotPasswordTest extends DuskTestCase
 				->type('@email', $user->email)
 				->type('@password', $newPassword)
 				->click('@submit')
-				->assertPathIs('/')
+				->assertPathIs(RouteServiceProvider::HOME)
 				->assertSeeLink('Logout');
 
 			// restore password

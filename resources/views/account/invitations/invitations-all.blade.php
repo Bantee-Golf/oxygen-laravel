@@ -70,7 +70,7 @@
                                         </td>
                                         <td>
                                             @if (empty($invitation->claimed_at))
-                                                <form class="form-inline" role="form" method="POST"
+                                                <form class="form-inline js-confirm-delete" role="form" method="POST"
                                                 	  action="/account/invitations/{{ $invitation->id }}"
                                                       data-toggle="tooltip" title="Delete Invite">
                                                     @csrf
