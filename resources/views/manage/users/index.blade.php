@@ -72,7 +72,7 @@
                 @endif
             </td>
             <td>
-                @if (!$item->isMySelf())
+                @if ($user->can('delete-users') && !$item->isMySelf())
                     <form action="{{ entity_resource_path() . '/' . $item->id }}"
                           method="POST" class="form form-inline js-confirm-delete">
                         {{ method_field('delete') }}

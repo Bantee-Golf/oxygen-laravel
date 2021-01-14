@@ -14,7 +14,8 @@
                 {{--</div>--}}
 
                 <div class="input-group">
-                    <input type="text" class="form-control" name="q" placeholder="Search" value="{{ request('q') }}">
+                    <input type="text" class="form-control" name="q" placeholder="Search" value="{{ request('q') }}"
+                    	   autocomplete="off">
                     <span class="input-group-append">
                         <button class="btn btn-success" type="submit">Search</button>
                     </span>

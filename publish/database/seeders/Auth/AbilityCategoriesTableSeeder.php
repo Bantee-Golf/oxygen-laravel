@@ -22,6 +22,7 @@ class AbilityCategoriesTableSeeder extends Seeder
 			[
 				'name' => 'User Management',
 				'default_abilities' => [
+					'View Users',
 					'Add Users',
 					'Edit Users',
 					'Delete Users',
@@ -81,5 +82,4 @@ class AbilityCategoriesTableSeeder extends Seeder
 			$entity->save();
 		}
 	}
-
 }
