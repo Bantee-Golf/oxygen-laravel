@@ -10,6 +10,7 @@ return [
 
 	// page display settings
 	'dashboard' => [
+		'default_page_title' => 'My Account',
 		'per_page' => 50,
 	],
 

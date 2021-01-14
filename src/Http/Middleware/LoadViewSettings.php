@@ -37,7 +37,7 @@ class LoadViewSettings
 	public function handle($request, Closure $next)
 	{
 		$appName 	= config('app.name');
-		$pageTitle	= 'My Account';
+		$pageTitle	= config('oxygen.dashboard.default_page_title');
 
 		$view = view();
 
