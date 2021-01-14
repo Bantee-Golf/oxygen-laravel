@@ -5,6 +5,7 @@ namespace EMedia\Oxygen\Http\Controllers\Auth;
 
 use App\Entities\Auth\UsersRepository;
 use App\Http\Controllers\Controller;
+use App\User;
 use EMedia\Formation\Builder\Formation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -280,9 +281,14 @@ class UsersController extends Controller
 	 */
 	public function destroy($id)
 	{
+		/** @var User $user */
 		$user = $this->usersRepo->find($id);
 		if (!$user) {
 			abort(404);
+		}
+
+		if ($user->cant('delete-users')) {
+			return back()->with('error', 'You do not have permission to delete users.');
 		}
 
 		if ($user->id === auth()->id()) {
