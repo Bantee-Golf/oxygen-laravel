@@ -117,8 +117,8 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 		'vue-template-compiler' => '^2.6.10',
 		'sass-loader' => '~8.0.2',
 		'sass' => '~1.26.11',
-		'browser-sync' => '~2.26.12',
-		'browser-sync-webpack-plugin' => '~2.0.1',
+		'browser-sync' => '~2.26.13',
+		'browser-sync-webpack-plugin' => '~2.2.2',
 	];
 
 	/**
