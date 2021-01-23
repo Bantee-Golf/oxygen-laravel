@@ -103,7 +103,8 @@ class ForgotPasswordTest extends DuskTestCase
 				->type('@email', $user->email)
 				->type('@password', $newPassword)
 				->click('@submit')
-				->assertPathIs(RouteServiceProvider::HOME)
+				->assertDontSeeLink('Login')
+				->assertPathIs('/')
 				->assertSeeLink('Logout');
 
 			// restore password
