@@ -66,6 +66,9 @@ class ForgotPasswordTest extends DuskTestCase
 	{
 		$this->withoutMiddleware('throttle');
 
+		// increase throttle limit for this test
+		config(['fortify.throttle.login' => 120]);
+
 		$user = $this->findUserByEmail('apps+user@elegantmedia.com.au');
 
 		$passwordBroker = $this->app->make('auth.password.broker');
