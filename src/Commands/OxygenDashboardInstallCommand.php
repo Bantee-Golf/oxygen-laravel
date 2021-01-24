@@ -378,7 +378,7 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 			$stringsToReplace[] = [
 				'path'		=> base_path('.env'),
 				'search'	=> "MAIL_MAILER=smtp",
-				'replace'	=> "MAIL_HOST=\"{$mailer}\"",
+				'replace'	=> "MAIL_MAILER=\"{$mailer}\"",
 			];
 		}
 
@@ -388,12 +388,26 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 				'search'	=> "MAIL_HOST=smtp.mailtrap.io",
 				'replace'	=> "MAIL_HOST=\"{$mailhost}\"",
 			];
+			// From Laravel v8.5.0, the default mail host changed to 'mailhog'
+			// So we have to keep both of these hosts
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "MAIL_HOST=mailhog",
+				'replace'	=> "MAIL_HOST=\"{$mailhost}\"",
+			];
 		}
 
 		if ($mailport = $this->config->mailport) {
 			$stringsToReplace[] = [
 				'path'		=> base_path('.env'),
 				'search'	=> "MAIL_PORT=2525",
+				'replace'	=> "MAIL_PORT=\"{$mailport}\"",
+			];
+			// From Laravel v8.5.0, the default mail port changed to '1025'
+			// So we have to keep both of these hosts
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "MAIL_PORT=1025",
 				'replace'	=> "MAIL_PORT=\"{$mailport}\"",
 			];
 		}
