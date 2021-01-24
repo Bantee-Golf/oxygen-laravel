@@ -22,7 +22,7 @@ class LoginTest extends DuskTestCase
 				->type('@email', 'apps+user@elegantmedia.com.au')
 				->type('@password', '12345678')
 				->click('@submit')
-				->assertPathIs(RouteServiceProvider::HOME)
+				->assertPathIs('/')
 				->assertSeeLink('Logout')
 				->clickLink('Logout')
 				->assertPathIs('/');

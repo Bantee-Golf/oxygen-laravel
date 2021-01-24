@@ -15,12 +15,12 @@ pipelines:
           - cd laravel_app
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 5
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
-          - php -d memory_limit=2G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
+          - php -d memory_limit=8G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
           - php artisan oxygen:dashboard:install --name Oxygen --email apps@elegantmedia.com.au --dev_url 127.0.0.1:8000 --dbhost 127.0.0.1 --dbuser appuser --dbpass userpass --mailhost 127.0.0.1 --mailport 1025 --no-interaction
           - composer dump-autoload
           - npm install && npm run dev && npm run dev
           # Install Dusk
-          - php -d memory_limit=2G $COMPOSER require laravel/dusk --dev
+          - php -d memory_limit=4G $COMPOSER require laravel/dusk --dev
           - php artisan dusk:install
           - sed -i 's#localhost:9515#127.0.0.1:4444/wd/hub#g' /laravel_app/tests/DuskTestCase.php
           - cp .env .env.dusk.local
@@ -41,7 +41,7 @@ pipelines:
           - composer
         script:
           - COMPOSER=$(which composer)
-          - php -d memory_limit=2G $COMPOSER install
+          - php -d memory_limit=8G $COMPOSER install
           - ./vendor/bin/phpunit
 
 definitions:
