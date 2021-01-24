@@ -9,7 +9,7 @@ This package is intended to be installed on a **new project**. You'll be able to
 The easiest way to do it is by using the [Oxygen Installer](https://bitbucket.org/elegantmedia/oxygen-installer). With the installer, you can create a project with one line.
 
 ```
-oxygen new myproject --name 'Oxygen' --email apps@elegantmedia.com.au --devurl 'localhost.devv'
+oxygen new myproject --name 'Oxygen' --email apps@elegantmedia.com.au --devurl 'localhost.test'
 ```
 
 ### Install Method 2: Install Manually

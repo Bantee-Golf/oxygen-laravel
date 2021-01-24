@@ -29,7 +29,7 @@ pipelines:
           - php artisan db:refresh
           # start the test server
           - php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &
-          - php artisan dusk --stop-on-error --stop-on-failure
+          - php artisan dusk --stop-on-error --stop-on-failure --debug --verbose
         services:
           - mysql
           - mail

@@ -26,7 +26,7 @@ cd laravel_app
 # step: Update composer values
 php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 5
 php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
-php -d memory_limit=2G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
+php -d memory_limit=8G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
 
 # if the symlink doesn't work, it can be because of an existing local copy
 # try removing composer.lock and vendor directory and installing again.
@@ -40,7 +40,7 @@ npm install && npm run dev && npm run dev
 ./vendor/bin/phpunit
 
 # step: install dusk
-php -d memory_limit=2G $COMPOSER require laravel/dusk --dev
+php -d memory_limit=8G $COMPOSER require laravel/dusk --dev
 php artisan dusk:install
 
 # step: change chrome port to selenium container
@@ -75,7 +75,7 @@ php artisan serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &
 
 
 # step: run dusk tests
-php artisan dusk --stop-on-error --stop-on-failure
+php artisan dusk --stop-on-error --stop-on-failure --debug --verbose
 
 # end.
 
@@ -88,7 +88,7 @@ php artisan dusk --stop-on-error --stop-on-failure
 #cp /webapp/webdriver.php /laravel_app/webdriver.php && cd /laravel_app && php webdriver.php
 #rm /test_screenshots/*.png && cp /laravel_app/tests/Browser/screenshots/*.png /test_screenshots/
 
-# php -S localhost.devv:8000
+# php -S localhost.test:8000
 
 # external connections are allowed only from http://0.0.0.0:8000
 

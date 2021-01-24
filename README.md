@@ -22,7 +22,7 @@ See [change log for change history](CHANGELOG.md) and compatibility with past ve
 The easiest way to do it is by using the [Oxygen Installer](https://bitbucket.org/elegantmedia/oxygen-installer). With the installer, you can create a project with one line.
 
 ```
-oxygen new myproject --name 'Oxygen' --email apps@elegantmedia.com.au --devurl 'localhost.devv'
+oxygen new myproject --name 'Oxygen' --email apps@elegantmedia.com.au --devurl 'localhost.test'
 ```
 
 If you don't want to use the installer, you can install it with manual setup. [See Manual Setup Instructions](INSTALLATION.md). After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
