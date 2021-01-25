@@ -21,6 +21,7 @@ class ManageUsersTest extends \Tests\Oxygen\TestCase
 		$this->installAndMigrate();
 
 		$user = $this->findUserByEmail('apps@elegantmedia.com.au');
+		validate_all_present($user);
 
 		$this->actingAs($user);
 		$this->visitRoute('manage.users.index');

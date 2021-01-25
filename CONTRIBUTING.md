@@ -15,7 +15,7 @@
 
 - Step 1 - Clone the repo to your local machine and move to that folder.
 - Step 2 - Create a new branch on the cloned project. For example `feature/202003-add-settings`
-- Step 3 - The easiest way for development is to setup a second Laravel project which will act as the test project. For this example, we'll create a project called `Workbench` and it will have the local development URL `http://workbench.test`
+- Step 3 - The easiest way for development is to setup a second Laravel project which will act as the parent project. For this example, we'll create a project called `Workbench` and it will have the local development URL `http://workbench.test`
 
 ```
 composer create-project --prefer-dist laravel/laravel Workbench
@@ -35,10 +35,13 @@ cd Workbench
 
 - Step 5 - Now add this project, but use the branch created at Step 2.
 
-```
+``` shell
 composer require emedia/oxygen:"dev-feature/202003-add-settings"
-Alternatively, you can add it to `composer.json` as well. 
-"emedia/oxygen": "dev-feature/202003-add-settings"
+```
+
+OR Alternatively, you can add it to `composer.json` as well.
+``` json 
+	"emedia/oxygen": "dev-feature/202003-add-settings"
 ```
 
 - Step 7 - Create a database called `workbench`

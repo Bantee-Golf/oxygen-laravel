@@ -46,6 +46,10 @@ class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
 
 		$app->bootstrapWith([LoadEnvironmentVariables::class]);
 
+		/** @var App\Http\Kernel $kernel */
+		$kernel = $app->make('Illuminate\Contracts\Http\Kernel');
+		$kernel->appendMiddlewareToGroup('web', \EMedia\Oxygen\Http\Middleware\LoadViewSettings::class);
+
 		parent::getEnvironmentSetUp($app);
 	}
 
