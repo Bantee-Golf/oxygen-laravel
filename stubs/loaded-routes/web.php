@@ -45,7 +45,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 	}
 
 	// User's Profile...
-	Route::group(['prefix' => 'account'], function () {
+	Route::group(['prefix' => 'account', 'namespace' => '\\App\\Http\\Controllers'], function () {
 		Route::get('/profile', 'Auth\ProfileController@getProfile')->name('account.profile');
 		Route::put('/profile', 'Auth\ProfileController@updateProfile');
 		Route::get('/email/edit', 'Auth\ProfileController@getEmail')->name('account.email');
