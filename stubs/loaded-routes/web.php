@@ -44,6 +44,16 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 			->name('password.update');
 	}
 
+	// User's Profile...
+	Route::group(['prefix' => 'account', 'namespace' => '\\App\\Http\\Controllers'], function () {
+		Route::get('/profile', 'Auth\ProfileController@getProfile')->name('account.profile');
+		Route::put('/profile', 'Auth\ProfileController@updateProfile');
+		Route::get('/email/edit', 'Auth\ProfileController@getEmail')->name('account.email');
+		Route::put('/email/edit', 'Auth\ProfileController@updateEmail');
+		Route::get('/password/edit', 'Auth\ResetPasswordController@editPassword')->name('account.password');
+		Route::put('/password/edit', 'Auth\ResetPasswordController@updatePassword');
+	});
+
 	// Profile Information...
 	// if (Features::enabled(Features::updateProfileInformation())) {
 	// 	Route::put('/user/profile-information', [ProfileInformationController::class, 'update'])
@@ -134,17 +144,6 @@ Route::group(
 
 				// Manage Documentation
 				Route::get('/docs/api', 'Manage\ManageDocumentationController@index')->name('documentation.index');
-			});
-
-
-			// User's Profile...
-			Route::group(['prefix' => 'account'], function () {
-				Route::get('/profile', 'Auth\ProfileController@getProfile')->name('account.profile');
-				Route::put('/profile', 'Auth\ProfileController@updateProfile');
-				Route::get('/email/edit', 'Auth\ProfileController@getEmail')->name('account.email');
-				Route::put('/email/edit', 'Auth\ProfileController@updateEmail');
-				Route::get('/password/edit', 'Auth\ResetPasswordController@editPassword')->name('account.password');
-				Route::put('/password/edit', 'Auth\ResetPasswordController@updatePassword');
 			});
 
 			// Manage (Super Admin)...
