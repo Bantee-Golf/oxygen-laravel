@@ -27,9 +27,6 @@ class DatabaseSeeder extends Seeder
 		if (!app()->environment('production')) {
 			$this->call(UsersTableSeeder::class);
 			$this->call(UserRolesTableSeeder::class);
-
-			// $this->call(SettingsTableSeeder::class);
-			// $this->call(DevicesTableSeeder::class);
 		}
 
 		/*
