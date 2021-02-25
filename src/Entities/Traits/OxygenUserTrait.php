@@ -70,6 +70,33 @@ trait OxygenUserTrait
 
 	/**
 	 *
+	 * Returns the first initial letter of the user's name
+	 *
+	 * @return string
+	 */
+	public function getFirstInitialAttribute()
+	{
+		return strtoupper($this->first_name ? $this->first_name[0] : '');
+	}
+
+	/**
+	 *
+	 * Returns a 2 letter initial of the User's name
+	 *
+	 * @return string
+	 */
+	public function getInitialsAttribute(): string
+	{
+		$initials = [
+			empty($this->first_name) ? '' : $this->first_name[0],
+			empty($this->attributes['last_name']) ? '': $this->attributes['last_name'][0],
+		];
+
+		return strtoupper(implode('', $initials));
+	}
+
+	/**
+	 *
 	 * Get the user's full name
 	 *
 	 * @return string

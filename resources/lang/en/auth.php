@@ -19,6 +19,9 @@ return [
 	 |-----------------------------------------------------------
 	 */
 	'invalid-permissions' => "You don't have permissions to access that page. Please contact admin.",
+	'registration-completed' => "Your account has been created and you're now logged in.",
+	'invite-accepted' => "Your account has been created and you've accepted the invitation",
+
 
 	/*
 	 |-----------------------------------------------------------
