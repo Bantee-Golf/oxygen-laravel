@@ -97,7 +97,7 @@ class ProfileController extends APIBaseController
 				->setParams([
 					(new Param('image'))->dataType('File')->setVariable(PostmanVar::RANDOM_IMAGE_FILE),
 				])
-				->setSuccessObject(User::class);
+				->setSuccessObject(app('oxygen')::getUserClass());
 		});
 
 		$user = DeviceAuthenticator::getUserByAccessToken();
