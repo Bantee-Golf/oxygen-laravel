@@ -29,7 +29,13 @@ pipelines:
           - php artisan db:refresh
           # start the test server
           - php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &
+          # run dusk tests
           - php artisan dusk --stop-on-error --stop-on-failure --debug --verbose
+          # run application PHPUnit Tests
+          - sed -i 's#API_ACTIVE=false#API_ACTIVE=true#g' /laravel_app/.env
+          - sed -i 's#API_KEY=""#API_KEY="123-123-123-123"#g' /laravel_app/.env
+          - php artisan db:refresh
+          - vendor/bin/phpunit --debug
         services:
           - mysql
           - mail

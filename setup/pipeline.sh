@@ -77,6 +77,12 @@ php artisan serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &
 # step: run dusk tests
 php artisan dusk --stop-on-error --stop-on-failure --debug --verbose
 
+# run application PHPUnit Tests
+sed -i 's#API_ACTIVE=false#API_ACTIVE=true#g' /laravel_app/.env
+sed -i 's#API_KEY=""#API_KEY="123-123-123-123"#g' /laravel_app/.env
+php artisan db:refresh
+vendor/bin/phpunit --debug
+
 # end.
 
 # -----------------
