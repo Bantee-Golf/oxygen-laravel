@@ -21,13 +21,13 @@ class ForgotPasswordAPITest extends TestCase
 		// form params
 		$data['email'] = 'apps+user@elegantmedia.com.au';
 
-		$this->assertDatabaseHas('password_resets', [
-			'email' => $data['email'],
-		]);
-
 		$response = $this->post('/api/v1/password/email', $data, $headers);
 
 		$response->assertStatus(200);
+
+		$this->assertDatabaseHas('password_resets', [
+			'email' => $data['email'],
+		]);
 	}
 
 	/**
