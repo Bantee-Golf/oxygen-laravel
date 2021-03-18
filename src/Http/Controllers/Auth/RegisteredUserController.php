@@ -57,7 +57,7 @@ class RegisteredUserController extends \Laravel\Fortify\Http\Controllers\Registe
 			TenantManager::setTenant($tenant);
 
 			// create a user and attach to tenant
-			$user = $this->create($request->all());
+			$user = $creator->create($request->all());
 			$tenant->users()->attach($user->id);
 		} else {
 			$user = $creator->create($request->all());
@@ -69,7 +69,7 @@ class RegisteredUserController extends \Laravel\Fortify\Http\Controllers\Registe
 			// since the tenant is now set, we can retrieve the correct invitation as Eloquent
 			$invite = $invitationsRepo->getValidInvitationByCode($invitation_code);
 			$invitationsRepo->claim($invite);
-			Session::flash('success', 'Your account has been created and you\'ve accepted the invitation');
+			Session::flash('success', trans('oxygen::auth.invite-accepted'));
 		} else {
 			// add the default Roles
 			$defaultRoles = $roleRepo->getAssignByDefaultRoles();
@@ -90,7 +90,7 @@ class RegisteredUserController extends \Laravel\Fortify\Http\Controllers\Registe
 
 			// $this->redirectTo = $user->isA(['admin', 'super-admin']) ? '/dashboard' : '/';
 
-			Session::flash('success', 'Your account has been created and you\'re now logged in.');
+			Session::flash('success', trans('oxygen::auth.registration-completed'));
 		}
 
 		event(new Registered($user));

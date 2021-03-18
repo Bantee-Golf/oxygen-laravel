@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 class ProfileController extends APIBaseController
 {
 
+	protected $avatarDiskName = 'public';
+
 	/**
 	 * @var UsersRepository
 	 */
@@ -106,17 +108,16 @@ class ProfileController extends APIBaseController
 
 		// save the file
 		if ($request->hasFile('image')) {
-			$diskName = 'public';
+			$diskName = $this->avatarDiskName;
 			$disk = Storage::disk($diskName);
 
 			$path = $request->image->store('avatars/' . $user->id, $diskName);
 			$url = $disk->url($path);
 
-			$user->update([
-				'avatar_path' => $path,
-				'avatar_url' => $url,
-				'avatar_disk' => $diskName,
-			]);
+			$user->avatar_path = $path;
+			$user->avatar_url  = $url;
+			$user->avatar_disk = $diskName;
+			$user->save();
 
 			return response()->apiSuccess($user->fresh());
 		}
