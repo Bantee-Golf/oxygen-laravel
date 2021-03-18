@@ -37,7 +37,11 @@ composer dump-autoload
 npm install && npm run dev && npm run dev
 
 # step: test the Oxygen package setup
-./vendor/bin/phpunit
+sed -i -e 's#API_ACTIVE=false#API_ACTIVE=true#g' /laravel_app/.env
+sed -i -e 's#API_KEY=""#API_KEY="123-123-123-123"#g' /laravel_app/.env
+php artisan config:clear
+php artisan db:refresh
+./vendor/bin/phpunit --debug
 
 # step: install dusk
 php -d memory_limit=8G $COMPOSER require laravel/dusk --dev
@@ -51,7 +55,7 @@ sed -i 's#localhost:9515#selenium:4444/wd/hub#g' /laravel_app/tests/DuskTestCase
 cp .env .env.dusk.local
 
 # step: clear config cache - always do this after changing .env file
-php artisan config:cache
+php artisan config:clear
 
 # step: migrate and seed DB
 php artisan db:refresh
@@ -76,12 +80,6 @@ php artisan serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &
 
 # step: run dusk tests
 php artisan dusk --stop-on-error --stop-on-failure --debug --verbose
-
-# run application PHPUnit Tests
-sed -i 's#API_ACTIVE=false#API_ACTIVE=true#g' /laravel_app/.env
-sed -i 's#API_KEY=""#API_KEY="123-123-123-123"#g' /laravel_app/.env
-php artisan db:refresh
-vendor/bin/phpunit --debug
 
 # end.
 

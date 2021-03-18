@@ -14,8 +14,16 @@ class ForgotPasswordAPITest extends TestCase
 		$headers['Accept'] = 'application/json';
 		$headers['x-api-key'] = $this->getApiKey();
 
+		$apiKey = config('oxygen.api_key');
+
+		$this->assertEquals($headers['x-api-key'], $apiKey);
+
 		// form params
 		$data['email'] = 'apps+user@elegantmedia.com.au';
+
+		$this->assertDatabaseHas('password_resets', [
+			'email' => $data['email'],
+		]);
 
 		$response = $this->post('/api/v1/password/email', $data, $headers);
 
