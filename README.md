@@ -124,6 +124,17 @@ Blade Variables
 {{ $appName }}
 ```
 
+### Get Current User
+
+You can get the current logged-in user by using any of these methods, based on where you are. For `$request` to work, the default Request must be available within the context.
+
+| Where | Code | When |
+| --- | --- | --- |
+| Views 	  | `{{ $user->name }}` 									| Only when a user is logged in. |
+| Controllers | `{{ request()->user() }}` or `{{ auth()->user() }}` 	| Only when a user is logged in. |
+| APIs		  | `{{ request()->user() }}` or `{{ $request->user() }}` 	| Only on routes with `auth.api.logged-in` middleware | 
+| User Class Name | `app('oxygen')::getUserClass()`						| Will return the FQ class name of the User model 	  |
+
 ## Must Read Instructions
 
 Oxygen by default has a lot of built-in functions. Please read all the docs to understand all features. Otherwise you'll be spending a lot of time re-doing existing features.
@@ -158,7 +169,7 @@ php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --ta
 
 #### I got an error while installing, what do to?
 
-Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit at Step #5, and try the steps from there again.
+Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit [during installation](INSTALLATION.md), and try the steps from there again.
 
 ```
 // use this command to hard reset all files and remove any new files - NEVER DO THIS ON A LIVE SERVER!

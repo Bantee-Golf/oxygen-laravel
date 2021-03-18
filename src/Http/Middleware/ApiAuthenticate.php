@@ -18,7 +18,7 @@ class ApiAuthenticate
 	{
 		// check if the X-API-KEY is not found in the header or if the token is invalid
 		$apiToken 		= request()->header('x-api-key');
-		$validApiToken 	= config('oxygen.apiKey');
+		$validApiToken 	= config('oxygen.api_key');
 
 		$validApiTokens = explode(',', $validApiToken);
 
@@ -31,7 +31,7 @@ class ApiAuthenticate
 			return response($response, 401);
 		}
 
-		if (!in_array($apiToken, $validApiTokens)) {
+		if (!in_array($apiToken, $validApiTokens, true)) {
 			$response = [
 				'result'	=> false,
 				'message'	=> 'A valid API Key is required',

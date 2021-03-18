@@ -4,7 +4,10 @@
 namespace EMedia\Oxygen\Http\Middleware;
 
 use Closure;
+use ElegantMedia\OxygenFoundation\Exceptions\UserNotFoundException;
 use EMedia\Devices\Auth\DeviceAuthenticator;
+use EMedia\Devices\Exceptions\DeviceNotFoundException;
+use EMedia\Helpers\Exceptions\Auth\UserNotFoundException;
 
 class ApiUserAccessTokenVerification
 {
@@ -24,9 +27,26 @@ class ApiUserAccessTokenVerification
 			return response()->apiErrorAccessDenied('x-access-token missing from request');
 		}
 
-		if (!DeviceAuthenticator::validateToken($accessToken)) {
-			return response()->apiErrorUnauthorized('Invalid access token');
+		// find the user for the given `x-access-token`
+		try {
+			$user = DeviceAuthenticator::getUserByAccessToken($accessToken);
+		} catch (\InvalidArgumentException $ex) {
+			return response()->apiErrorUnauthorized('Invalid access token. Try logging in again.');
+		} catch (DeviceNotFoundException $ex) {
+			return response()->apiErrorUnauthorized('Invalid device access token. Try logging in again.');
+		} catch (UserNotFoundException $ex) {
+			return response()->apiErrorUnauthorized('Account was deleted or removed. Try logging in again.');
+		} catch (\Exception $ex) {
+			return response()
+				->apiErrorUnauthorized('Access failed due to invalid or expired token. Try logging in again.');
 		}
+
+		// At this point, an existing $user is guaranteed
+		// Otherwise, a UserNotFoundException must've been thrown.
+
+		$request->setUserResolver(function () use ($user) {
+			return $user;
+		});
 
 		return $next($request);
 	}

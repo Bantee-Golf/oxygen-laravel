@@ -6,13 +6,14 @@ namespace EMedia\Oxygen\Http\Controllers\API\V1\Auth;
 use App\Http\Controllers\API\V1\APIBaseController;
 use EMedia\Api\Docs\APICall;
 use EMedia\Api\Docs\Param;
+use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Laravel\Fortify\Fortify;
 
 class ForgotPasswordController extends APIBaseController
 {
-
-	use SendsPasswordResetEmails;
 
 	public function checkRequest(Request $request)
 	{
@@ -32,17 +33,28 @@ class ForgotPasswordController extends APIBaseController
 				}', 422);
 		});
 
-		return $this->sendResetLinkEmail($request);
+		$request->validate([Fortify::email() => 'required|email']);
+
+		// We will send the password reset link to this user. Once we have attempted
+		// to send the link, we will examine the response then see the message we
+		// need to show to the user. Finally, we'll send out a proper response.
+		$status = $this->broker()->sendResetLink(
+			$request->only(Fortify::email())
+		);
+
+		return $status === Password::RESET_LINK_SENT
+			? $this->sendResetLinkResponse($request)
+			: $this->sendResetLinkFailedResponse($request);
 	}
 
 	/**
 	 * Get the response for a successful password reset link.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  string  $response
+	 * @param \Illuminate\Http\Request $request
+	 *
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
 	 */
-	protected function sendResetLinkResponse(Request $request, $response)
+	protected function sendResetLinkResponse(Request $request)
 	{
 		return response()->apiSuccess('', "A password reset email will be sent to you in a moment.");
 	}
@@ -50,12 +62,22 @@ class ForgotPasswordController extends APIBaseController
 	/**
 	 * Get the response for a failed password reset link.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  string  $response
+	 * @param \Illuminate\Http\Request $request
+	 *
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
 	 */
-	protected function sendResetLinkFailedResponse(Request $request, $response)
+	protected function sendResetLinkFailedResponse(Request $request)
 	{
 		return response()->apiError("Failed to send password reset email. Ensure your email is correct and try again.");
+	}
+
+	/**
+	 * Get the broker to be used during password reset.
+	 *
+	 * @return \Illuminate\Contracts\Auth\PasswordBroker
+	 */
+	protected function broker(): PasswordBroker
+	{
+		return Password::broker(config('fortify.passwords'));
 	}
 }
