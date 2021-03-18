@@ -37,8 +37,11 @@ class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
 		if (config('oxygen.disable_dashboard_security') === true) {
 			if ($this->auth->guest() && app()->environment(['local', 'testing'])) {
 				try {
-					$loggedUser = $this->auth->loginUsingId(3);
+					$loggedUser = $this->auth->loginUsingId(env('DASHBOARD_TEST_LOGIN_USER_ID', 3));
 					if ($loggedUser) {
+						// you need to share the $user here, because this will be called after
+						// LoadViewSettings Middleware
+						view()->share('user', $loggedUser);
 						return;
 					}
 				} catch (Exception $ex) {
