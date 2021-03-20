@@ -7,7 +7,6 @@ use Closure;
 use ElegantMedia\OxygenFoundation\Exceptions\UserNotFoundException;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 use EMedia\Devices\Exceptions\DeviceNotFoundException;
-use EMedia\Helpers\Exceptions\Auth\UserNotFoundException;
 
 class ApiUserAccessTokenVerification
 {

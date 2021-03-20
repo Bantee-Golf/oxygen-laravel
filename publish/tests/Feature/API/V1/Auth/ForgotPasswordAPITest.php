@@ -1,10 +1,11 @@
 <?php
 
+namespace Tests\Feature\API\V1\Auth;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
+use Tests\Feature\API\V1\APIBaseTestCase;
 
-class ForgotPasswordAPITest extends TestCase
+class ForgotPasswordAPITest extends APIBaseTestCase
 {
 
 	use DatabaseTransactions;
@@ -28,20 +29,5 @@ class ForgotPasswordAPITest extends TestCase
 		$this->assertDatabaseHas('password_resets', [
 			'email' => $data['email'],
 		]);
-	}
-
-	/**
-	 * @return mixed
-	 * @throws RuntimeException
-	 */
-	protected function getApiKey()
-	{
-		$key = env('API_KEY', false);
-
-		if (!$key) {
-			throw new \RuntimeException("You don't have an active API_KEY on `.env` file.");
-		}
-
-		return $key;
 	}
 }

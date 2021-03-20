@@ -9,13 +9,10 @@ use EMedia\Api\Docs\Param;
 use EMedia\Devices\Auth\DeviceAuthenticator;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Auth\Passwords\PasswordBroker;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 
 class ResetPasswordController extends APIBaseController
 {
-
-	use ResetsPasswords;
 
 	protected $auth;
 	protected $passwords;
