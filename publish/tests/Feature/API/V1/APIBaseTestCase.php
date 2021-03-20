@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\API\V1;
 
+use EMedia\Devices\Auth\DeviceAuthenticator;
 use EMedia\TestKit\Traits\InteractsWithUsers;
 use Tests\TestCase;
 

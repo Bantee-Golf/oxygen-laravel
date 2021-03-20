@@ -3,7 +3,6 @@
 
 namespace Tests\Feature\API\V1\Auth;
 
-use EMedia\Devices\Auth\DeviceAuthenticator;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use EMedia\TestKit\Traits\InteractsWithUsers;
 use Illuminate\Support\Facades\Hash;
@@ -35,21 +34,5 @@ class ResetPasswordAPITest extends \Tests\Feature\API\V1\APIBaseTestCase
 
 		$user = $this->findUserByEmail($this->getDefaultEmail());
 		$this->assertTrue(Hash::check($newPassword, $user->password));
-	}
-
-	protected function getAccessToken($email = null)
-	{
-		$email = $email ?? $this->getDefaultEMail();
-
-		$user = $this->findUserByEmail($email);
-
-		$accessToken = DeviceAuthenticator::getAnAccessTokenForUserId($user->id);
-
-		return $accessToken;
-	}
-
-	protected function getDefaultEmail()
-	{
-		return 'apps+user@elegantmedia.com.au';
 	}
 }
