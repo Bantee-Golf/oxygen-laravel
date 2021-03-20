@@ -4,14 +4,12 @@
 namespace Tests\Feature\API\V1\Auth;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use EMedia\TestKit\Traits\InteractsWithUsers;
 use Illuminate\Support\Facades\Hash;
 
 class ResetPasswordAPITest extends \Tests\Feature\API\V1\APIBaseTestCase
 {
 
 	use DatabaseTransactions;
-	use InteractsWithUsers;
 
 	public function testResetPasswordAPIReturnSuccessd()
 	{
