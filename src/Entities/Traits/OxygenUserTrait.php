@@ -6,14 +6,14 @@ use ElegantMedia\PHPToolkit\Arr;
 use EMedia\Formation\Entities\GeneratesFields;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
+use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 
 trait OxygenUserTrait
 {
 
 	use SoftDeletes;
-	use Searchable;
+	use SearchableLike;
 	use GeneratesFields;
 
 	use HasRolesAndAbilities {
