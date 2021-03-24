@@ -16,6 +16,7 @@ class ResetPasswordController extends APIBaseController
 
 	protected $auth;
 	protected $passwords;
+	protected $apiDocGroup = 'Auth';
 
 	/**
 	 * Create a new controller instance.
@@ -37,7 +38,7 @@ class ResetPasswordController extends APIBaseController
 	public function updatePassword(Request $request)
 	{
 		document(function () {
-			return (new APICall())->setGroup('Auth')
+			return (new APICall())->setGroup($this->apiDocGroup)
 			->setName('Update Password')
 			->setParams([
 				(new Param('password'))->setVariable('{{login_user_pass}}'),
