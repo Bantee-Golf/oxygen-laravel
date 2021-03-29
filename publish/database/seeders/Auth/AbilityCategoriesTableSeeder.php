@@ -2,14 +2,11 @@
 namespace Database\Seeders\Auth;
 
 use App\Entities\Auth\AbilityCategory;
-use ElegantMedia\OxygenFoundation\Database\Seeders\SeedWithoutDuplicates;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class AbilityCategoriesTableSeeder extends Seeder
 {
-
-	use SeedWithoutDuplicates;
 
 	public function run()
 	{
@@ -62,6 +59,11 @@ class AbilityCategoriesTableSeeder extends Seeder
 			],
 		];
 
+		$this->seedAbilityCategoriesWithoutDuplicates($abilityCategories);
+	}
+
+	protected function seedAbilityCategoriesWithoutDuplicates($abilityCategories): void
+	{
 		// Seed the items without creating duplicate records
 		foreach ($abilityCategories as $entityData) {
 			$slug = Str::slug($entityData['name']);
