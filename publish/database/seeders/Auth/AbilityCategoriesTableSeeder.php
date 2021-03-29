@@ -2,13 +2,11 @@
 namespace Database\Seeders\Auth;
 
 use App\Entities\Auth\AbilityCategory;
-use ElegantMedia\OxygenFoundation\Database\Seeders\SeedWithoutDuplicates;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class AbilityCategoriesTableSeeder extends Seeder
 {
-
-	use SeedWithoutDuplicates;
 
 	public function run()
 	{
@@ -61,25 +59,27 @@ class AbilityCategoriesTableSeeder extends Seeder
 			],
 		];
 
-		// convert array to a JSON string
-		$abilityCategories = array_map(function ($abilityCategoryData) {
-			$abilityCategoryData['default_abilities'] = json_encode($abilityCategoryData['default_abilities']);
-			return $abilityCategoryData;
-		}, $abilityCategories);
-
-		$this->seedWithoutDuplicates($abilityCategories, AbilityCategory::class);
+		$this->seedAbilityCategoriesWithoutDuplicates($abilityCategories);
 	}
 
-	public function appendDataToExistingModel($entity, $entityData)
+	protected function seedAbilityCategoriesWithoutDuplicates($abilityCategories): void
 	{
-		// append new abilities if any
-		$newAbilities = json_decode($entityData['default_abilities']);
-		$existingAbilities = json_decode($entity->default_abilities);
-		$mergedAbilities = array_unique(array_merge($newAbilities, $existingAbilities));
+		// Seed the items without creating duplicate records
+		foreach ($abilityCategories as $entityData) {
+			$slug = Str::slug($entityData['name']);
+			$category = AbilityCategory::where('slug', $slug)->first();
+			if (!$category) {
+				$category = new AbilityCategory(['name' => $entityData['name']]);
+				$category->default_abilities = json_encode($entityData['default_abilities'], JSON_THROW_ON_ERROR);
+			} else {
+				$existingAbilities = json_decode($category->default_abilities, true, 512, JSON_THROW_ON_ERROR);
+				$mergedAbilities = array_unique(array_merge($entityData['default_abilities'], $existingAbilities));
+				$category->default_abilities = json_encode($mergedAbilities);
+			}
 
-		if (count($mergedAbilities) > count($existingAbilities)) {
-			$entity->default_abilities = json_encode($mergedAbilities);
-			$entity->save();
+			if ($category->isDirty()) {
+				$category->save();
+			}
 		}
 	}
 }
