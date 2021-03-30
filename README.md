@@ -38,20 +38,20 @@ Create a new user and assign a role.
 php artisan setup:create-user
 ```
 
-#### Scaffold Views
+#### Scaffolding
 
-Create the default views for a given resource.
+You can generate default models using following commands. The examples below uses an object `car` as an example.
 
-```
-php artisan scaffold:views
-OR
-php artisan scaffold:views --path=<resource.path>
+| Command | What it does |
+| --- | --- |
+| `php artisan make:oxygen:model car` 	  			| Create a new model 			|
+| `php artisan make:oxygen:repository car` 	  		| Create a new repository 		|
+| `php artisan make:oxygen:admin-controller car` 	| Create a new Admin controller |
+| `php artisan make:oxygen:api-controller car` 	  	| Create a new API controller 	|
+| `php artisan scaffold:views` 	  					| Scaffold default admin views 	|
+| `php artisan scaffold:views --path=manage.cars` 	| Scaffold example 	|
 
-Example:
-php artisan scaffold:views --path=manage.users
-```
-
-This will create the default views within `resources/views/manage/users`, or in the path that you specify.
+The last command will create the default views within `resources/views/manage/cars`, or in the path that you specify.
 
 
 ## Helper Functions
@@ -130,10 +130,10 @@ You can get the current logged-in user by using any of these methods, based on w
 
 | Where | Code | When |
 | --- | --- | --- |
-| Views 	  | `{{ $user->name }}` 									| Only when a user is logged in. |
-| Controllers | `{{ request()->user() }}` or `{{ auth()->user() }}` 	| Only when a user is logged in. |
-| APIs		  | `{{ request()->user() }}` or `{{ $request->user() }}` 	| Only on routes with `auth.api.logged-in` middleware | 
-| User Class Name | `app('oxygen')::getUserClass()`						| Will return the FQ class name of the User model 	  |
+| Views 	  		| `{{ $user->name }}` 							| Only when a user is logged in. |
+| Controllers 		| `request()->user()` or `auth()->user()`		| Only when a user is logged in. |
+| APIs		  		| `request()->user()` or `$request->user()`		| Only on routes with `auth.api.logged-in` middleware | 
+| User Class Name 	| `app('oxygen')::getUserClass()`				| Will return the FQ class name of the User model 	  |
 
 ## Must Read Instructions
 
