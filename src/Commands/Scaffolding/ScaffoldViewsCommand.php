@@ -5,10 +5,9 @@ namespace EMedia\Oxygen\Commands\Scaffolding;
 
 use ElegantMedia\PHPToolkit\Dir;
 use ElegantMedia\PHPToolkit\Exceptions\FileSystem\FileNotFoundException;
-use Illuminate\Console\Command;
 use Illuminate\View\ViewFinderInterface;
 
-class ScaffoldViewsCommand extends Command
+class ScaffoldViewsCommand extends BaseScaffoldCommand
 {
 
 	/**
@@ -25,16 +24,6 @@ class ScaffoldViewsCommand extends Command
 	 * @var string
 	 */
 	protected $description = 'Scaffold the default views for a resource';
-
-	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
 
 	/**
 	 * Execute the console command.
@@ -106,5 +95,10 @@ class ScaffoldViewsCommand extends Command
 			'index' => __DIR__ . '/../../../resources/views/defaults/allItems-index.blade.php',
 			'form'  => __DIR__ . '/../../../resources/views/defaults/formation-form.blade.php',
 		];
+	}
+
+	protected function getStub()
+	{
+		// TODO: Implement getStub() method.
 	}
 }
