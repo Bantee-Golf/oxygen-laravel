@@ -1,0 +1,35 @@
+<?php
+
+namespace {{namespace}};
+
+use App\Http\Controllers\Controller;
+use App\Entities\{{entityGroup}}\{{entityGroup}}Repository;
+use ElegantMedia\OxygenFoundation\Http\Traits\Web\CanCRUD;
+use ElegantMedia\OxygenFoundation\Http\Traits\Web\CanRead;
+use ElegantMedia\OxygenFoundation\Http\Traits\Web\FollowsConventions;
+
+class {{ class }} extends Controller
+{
+
+	use FollowsConventions;
+
+	// Uncomment this line if you're going to use Oxygen's Default Controller Methods
+	// use CanCRUD;
+	// use CanRead;
+
+	protected $repo;
+
+	public function __construct({{entityGroup}}Repository $repo)
+	{
+		$this->repo = $repo;
+
+		$this->resourceEntityName = '{{entitySingular}}';
+        $this->isDestroyAllowed = false;
+	}
+
+	protected function getIndexRouteName($suffix = 'index'): string
+	{
+		return 'manage.{{resourceName}}.index';
+	}
+
+}

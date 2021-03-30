@@ -4,6 +4,10 @@ namespace EMedia\Oxygen;
 
 use EMedia\Oxygen\Commands\CreateNewUserCommand;
 use EMedia\Oxygen\Commands\OxygenDashboardInstallCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeAdminControllerCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeAPIControllerCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenModelCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenRepositoryCommand;
 use EMedia\Oxygen\Commands\Scaffolding\ScaffoldViewsCommand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +21,10 @@ class OxygenServiceProvider extends ServiceProvider
 		if (app()->environment(['local', 'testing'])) {
 			$this->commands(OxygenDashboardInstallCommand::class);
 			$this->commands(ScaffoldViewsCommand::class);
+			$this->commands(MakeOxygenModelCommand::class);
+			$this->commands(MakeOxygenRepositoryCommand::class);
+			$this->commands(MakeAdminControllerCommand::class);
+			$this->commands(MakeAPIControllerCommand::class);
 		}
 
 		$this->commands(CreateNewUserCommand::class);

@@ -1,0 +1,51 @@
+<?php
+
+namespace {{namespace}};
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use EMedia\Formation\Entities\GeneratesFields;
+use Illuminate\Database\Eloquent\Model;
+use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
+
+class {{ class }} extends Model
+{
+
+    use HasFactory;
+	use SearchableLike;
+	use GeneratesFields;
+
+	// use \Cviebrock\EloquentSluggable\Sluggable;
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    /*
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+    */
+
+	protected $fillable = [
+		'name'
+	];
+
+	protected $searchable = [
+		'name'
+	];
+
+	protected $editable = [
+    	'name',
+    ];
+
+    protected $rules = [
+        'name' => 'required',
+    ];
+
+}
