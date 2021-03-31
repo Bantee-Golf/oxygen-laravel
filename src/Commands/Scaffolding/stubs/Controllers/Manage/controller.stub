@@ -7,6 +7,7 @@ use App\Entities\{{entityGroup}}\{{entityGroup}}Repository;
 use ElegantMedia\OxygenFoundation\Http\Traits\Web\CanCRUD;
 use ElegantMedia\OxygenFoundation\Http\Traits\Web\CanRead;
 use ElegantMedia\OxygenFoundation\Http\Traits\Web\FollowsConventions;
+use EMedia\Formation\Builder\Formation;
 
 class {{ class }} extends Controller
 {
@@ -27,9 +28,40 @@ class {{ class }} extends Controller
         $this->isDestroyAllowed = false;
 	}
 
+    protected function getResourcePrefix()
+    {
+        return 'manage.{{resourceName}}';
+    }
+
 	protected function getIndexRouteName($suffix = 'index'): string
 	{
 		return 'manage.{{resourceName}}.index';
 	}
+
+    /**
+     *
+     * This is the form shown when creating a new record.
+     *
+     * @param null $entity
+     *
+     * @return Formation
+     */
+    protected function getCreateForm($entity = null)
+    {
+        return new Formation($entity);
+    }
+
+    /**
+     *
+     * This is the form shown when editing an existing record.
+     *
+     * @param null $entity
+     *
+     * @return Formation
+     */
+    protected function getEditForm($entity = null)
+    {
+        return new Formation($entity);
+    }
 
 }
