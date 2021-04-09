@@ -2,16 +2,17 @@
 
 namespace App\Entities\Files;
 
-use ElegantMedia\OxygenFoundation\Scout\KeywordSearchable;
+use ElegantMedia\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
+use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
 
-class File extends Model implements KeywordSearchable
+class File extends Model
 {
 
-	use Searchable;
+	use SearchableLike;
+	use AssignsUuid;
 
 	protected $fillable = [
 		'name',
@@ -140,17 +141,6 @@ class File extends Model implements KeywordSearchable
 			'uuid' => $this->uuid,
 			'fileName' => $this->original_filename,
 		]);
-	}
-
-	/**
-	 *  Setup model event hooks
-	 */
-	public static function boot()
-	{
-		parent::boot();
-		self::creating(function ($model) {
-			$model->uuid = (string) Str::uuid();
-		});
 	}
 
 	public function getPublicUrlAttribute()

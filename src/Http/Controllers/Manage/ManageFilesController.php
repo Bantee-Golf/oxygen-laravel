@@ -11,7 +11,6 @@ use EMedia\MediaManager\Domain\PathResolver;
 use EMedia\MediaManager\Uploader\FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Webpatser\Uuid\Uuid;
 
 class ManageFilesController extends Controller
 {
@@ -113,7 +112,7 @@ class ManageFilesController extends Controller
 			// this is not the same as UUID, because the key can change later, but the UUID won't
 			if (empty($fileKey)) {
 				if (empty($request->custom_key)) {
-					$fileKey = (string) Uuid::generate(4);
+					$fileKey = (string) Str::uuid();
 				} else {
 					$fileKey = Str::snake($request->custom_key);
 				}
