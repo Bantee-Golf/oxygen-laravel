@@ -145,11 +145,11 @@ Oxygen by default has a lot of built-in functions. Please read all the docs to u
 | [Formation](https://bitbucket.org/elegantmedia/formation/src/master/README.md)                        | Form Builder |
 | [Fortify](https://github.com/laravel/fortify)                                                         | Laravel Authentication |
 | [Oxygen App Settings](https://bitbucket.org/elegantmedia/laravel-app-settings/src/master/README.md)   | App setting storage and retrieval |
-| [Oxygen Devices]((https://bitbucket.org/elegantmedia/devices-laravel/src/master/README.md))           | Device Authenticator for API Requests |
+| [Oxygen Devices](https://bitbucket.org/elegantmedia/devices-laravel/src/master/README.md)             | Device Authenticator for API Requests |
 | [Laravel API Helpers](https://bitbucket.org/elegantmedia/laravel-api-helpers/src/master/README.md)    | API and Documentation Generator |
-| [Laravel Media Manager](https://bitbucket.org/elegantmedia/laravel-api-helpers/src/master/README.md)  | File and Media Handling Library |
+| [Laravel Media Manager](https://bitbucket.org/elegantmedia/laravel-media-manager/src/master//README.md)  | File and Media Handling Library |
 | [Laravel Test Kit](https://bitbucket.org/elegantmedia/laravel-test-kit/src/master/README.md)          | Integration Testing Helper Library |
-| [Lotus]((https://bitbucket.org/elegantmedia/lotus/src/master/README.md))                              | Breadcrumbs, Page Titles, Tables, Pagination, Empty State and other Html Elements |
+| [Lotus](https://bitbucket.org/elegantmedia/lotus/src/master/README.md)                                | Breadcrumbs, Page Titles, Tables, Pagination, Empty State and other Html Elements |
 | [PHP Toolkit](https://github.com/elegantmedia/PHP-Toolkit)                                            | PHP Utility Library |
 
 ## After Installation
