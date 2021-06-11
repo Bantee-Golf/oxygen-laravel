@@ -17,7 +17,7 @@
 		"emedia/api": "^4.0",
 		"emedia/app-settings": "^4.0",
 		"emedia/devices-laravel": "^3.0",
-		"emedia/formation": "^0.4",
+		"emedia/formation": "^0.5",
 		"emedia/multi-tenant": "^0.4.0",
 		"emedia/laravel-media-manager": "^3.0",
         "cviebrock/eloquent-sluggable": "^8.0",
@@ -25,7 +25,7 @@
         "silber/bouncer": "v1.0.0-rc.9",
 		"laravel/fortify": "^1.0",
         "doctrine/dbal": "^2.11"
-    },
+	},
     "require-dev": {
         "emedia/laravel-test-kit": "^1.0",
         "mockery/mockery": "^1.4",
