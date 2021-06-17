@@ -191,6 +191,11 @@ public function boot()
 }
 ```
 
+#### While installing, get an error message saying `The "no-ansi" option does not exist.`
+
+This is not a bug or an error with Oxygen or the installer. See the [more about the issue and possible solutions](https://github.com/laravel/installer/issues/182#issuecomment-851654779).
+
+
 #### What are the logins?
 
 Your default user login password is listed in the `database/seeds/Auth/UsersTableSeeder.php` file.
