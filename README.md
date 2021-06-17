@@ -195,6 +195,14 @@ public function boot()
 
 This is not a bug or an error with Oxygen or the installer. See the [more about the issue and possible solutions](https://github.com/laravel/installer/issues/182#issuecomment-851654779).
 
+#### While installing NPM packages, you get an error saying `ERESOLVE unable to resolve dependency tree`
+
+You may see this error while dependencies are updated on NPM v7. A temporary workaround is to ask [NPM to ignore checking peer dependencies](https://stackoverflow.com/questions/64573177/unable-to-resolve-dependency-tree-error-when-installing-npm-packages).
+
+```
+npm install --save --legacy-peer-deps
+```
+
 
 #### What are the logins?
 
