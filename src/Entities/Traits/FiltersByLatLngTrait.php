@@ -3,7 +3,7 @@
 
 namespace EMedia\Oxygen\Entities\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
+use ElegantMedia\SimpleRepository\Search\Filterable;
 use Illuminate\Http\Request;
 
 trait FiltersByLatLngTrait
@@ -18,14 +18,14 @@ trait FiltersByLatLngTrait
 	 *
 	 *
 	 * @param Request $request
-	 * @param Builder $query
-	 * @param int     $defaultRadius
-	 * @param string  $unit
+	 * @param Filterable $query
+	 * @param int $defaultDistance
+	 * @param string $unit
 	 */
 	protected function filterByLatLng(
 		Request $request,
-		Builder $query,
-		int $defaultRadius = 10000,
+		Filterable $query,
+		int $defaultDistance = 10000,
 		string $unit = 'km'
 	) {
 		if ($unit === 'km') {
@@ -38,9 +38,9 @@ trait FiltersByLatLngTrait
 			$latitude = $request->latitude;
 			$longitude = $request->longitude;
 
-			$distance = $defaultRadius;
-			if ($request->filled('radius')) {
-				$distance = $request->radius;
+			$distance = $defaultDistance;
+			if ($request->filled('distance')) {
+				$distance = $request->distance;
 			}
 
 			$query->selectRaw('*, (? * acos(cos(radians(?)) * cos(radians(latitude)) *
@@ -58,4 +58,5 @@ trait FiltersByLatLngTrait
 			}
 		}
 	}
+
 }
