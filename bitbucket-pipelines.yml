@@ -11,7 +11,7 @@ pipelines:
         script:
           - COMPOSER=$(which composer)
           - cd /
-          - composer create-project --prefer-dist --remove-vcs laravel/laravel="8.*" laravel_app
+          - php -d memory_limit=8G $COMPOSER create-project --prefer-dist --remove-vcs laravel/laravel="8.*" laravel_app
           - cd laravel_app
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 5
           - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
