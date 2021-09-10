@@ -29,9 +29,11 @@ cd Workbench
     {
         "type": "path",
         "url": "../your-local-oxygen-cloned-path"
-    }
+    },
 ]
 ```
+
+In addition, go to [./INSTALLATION.md] and follow Step #2.1.
 
 - Step 5 - Now add this project, but use the branch created at Step 2.
 
