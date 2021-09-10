@@ -12,7 +12,7 @@ class Ability extends AbilityBase
 
 	protected $fillable = ['name', 'title'];
 
-	public function sluggable()
+	public function sluggable(): array
 	{
 		return [
 			'name' => [
