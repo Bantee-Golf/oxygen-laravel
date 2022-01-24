@@ -12,7 +12,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $repos = [
 	[
-		'branch' => 'https://raw.githubusercontent.com/laravel/laravel/8.x/',
+		'branch' => 'https://raw.githubusercontent.com/laravel/laravel/master/',
 		'local_dir' => __DIR__.'/../laravel/laravel/',
 		'files' => [
 			'app/Models/User.php',
@@ -26,7 +26,7 @@ $repos = [
 
 			'database/seeders/DatabaseSeeder.php',
 			'public/.htaccess',
-			'resources/lang/en/auth.php',
+			// 'resources/lang/en/auth.php',
 
 			'bootstrap/app.php',
 
@@ -39,8 +39,6 @@ $repos = [
 			'.env.example',
 			'README.md',
 			'webpack.mix.js',
-
-			'server.php',
 		]
 	],
 ];

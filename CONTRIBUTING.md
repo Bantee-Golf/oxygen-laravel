@@ -22,6 +22,11 @@ composer create-project --prefer-dist laravel/laravel Workbench
 cd Workbench
 ```
 
+If you'd like to fetch the project from another branch, use the syntax below, where `dev-master` is the branch name.
+```
+composer create-project --prefer-dist laravel/laravel Workbench dev-master
+```
+
 - Step 4 - Then open `composer.json` on the test project, which will be located at `Workbench/composer.json`, and add the following config. This will [create a symlink](https://getcomposer.org/doc/05-repositories.md#path) to your cloned project. The `url` will be the path created on Step 1.
 
 ```
@@ -41,7 +46,7 @@ In addition, go to [./INSTALLATION.md] and follow Step #2.1.
 composer require emedia/oxygen:"dev-feature/202003-add-settings"
 ```
 
-OR Alternatively, you can add it to `composer.json` as well.
+OR Alternatively, you can add it to `composer.json`, and run `composer update`.
 ``` json 
 	"emedia/oxygen": "dev-feature/202003-add-settings"
 ```
