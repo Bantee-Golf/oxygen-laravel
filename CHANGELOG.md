@@ -4,7 +4,8 @@
 
 | Laravel Version   | Oxygen Version    | Branch           |
 | -----------------:| ----------------- |------------------|
-| v8                | 5.x               | master           |
+| v9                | 6.x               | master           |
+| v8                | 5.x               | 5.x			   |
 | v7                | 4.x               | version/v4.x     |
 | v6                | 3.x               |
 | 5.8               | 2.3.x             |
@@ -13,6 +14,13 @@
 | 5.4               | 1.0.8             |
 | 5.3               | 0.3.2             |
 | 5.2               | 0.1.4             |
+
+## v6.0
+- Support Laravel 9
+- Dropped Php 7 Support
+- Upgraded bouncer to v1.0.0-rc.12 
+- Replaced `cviebrock/eloquent-sluggable` with  `spatie/laravel-sluggable`
+- Upgrade to Bootstrap 5
 
 ## v5.1
 - Support for PHP 8

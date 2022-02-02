@@ -18,7 +18,7 @@
         "emedia/app-settings": "^5.0",
         "emedia/devices-laravel": "dev-master as 4.0",
         "emedia/formation": "^1.0",
-        "emedia/laravel-media-manager": "^3.1",
+        "emedia/laravel-media-manager": "^4.0",
         "emedia/multi-tenant": "dev-version/v1.x as 1.0",
         "google/recaptcha": "^1.2",
         "laravel/fortify": "^1.0",

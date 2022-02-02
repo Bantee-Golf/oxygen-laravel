@@ -5,6 +5,11 @@
     &-inline {
         display: inline-block;
     }
+    &-horizontal {
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+    }
 }
 
 .js-datepicker-wrapper {
