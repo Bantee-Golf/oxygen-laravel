@@ -105,7 +105,7 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 		'jquery' => '~3.6.0',
 		'jquery-validation' => '~1.19.3',
 		'@popperjs/core' => '~2.10.2',
-		'select2' => '~4.0.13',
+		'select2' => '~4.1.0-rc.0',
 		'typeahead.js' => '~0.11.1',
 		'dropzone' => '~5.9.13',
 		'sweetalert2' => '~11.3.6',

@@ -23,7 +23,7 @@
 @section('content')
     @include('oxygen::dashboard.partials.table-allItems', [
         'tableHeader' => [
-            'ID', 'Name', 'Created', 'Actions|text-right'
+            'ID', 'Name', 'Created', 'Actions|text-end'
         ]
     ])
 
@@ -38,7 +38,7 @@
                     {{ standard_datetime($item->created_at) }}
                 @endif
             </td>
-            <td class="text-right">
+            <td class="text-end">
                 <div class="btn-spaced">
                     <a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
                        class="btn btn-warning js-tooltip"

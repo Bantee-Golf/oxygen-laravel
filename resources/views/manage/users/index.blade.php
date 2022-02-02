@@ -29,7 +29,7 @@
             <td>
                 {{ $item->email }}
                 @if ($item->isDisabled())
-                    <span class="badge badge-danger">DISABLED</span>
+                    <span class="badge bg-danger">DISABLED</span>
                 @endif
             </td>
             <td>
@@ -39,7 +39,7 @@
             </td>
             <td>
                 @if ($item->isMySelf())
-                    <span class="badge badge-success js-tooltip" title="Go to Your Profile to Edit Your Account">You</span>
+                    <span class="badge bg-success js-tooltip" title="Go to Your Profile to Edit Your Account">You</span>
                 @else
                     <a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
                        class="btn btn-info js-tooltip"
@@ -48,7 +48,7 @@
             </td>
             <td>
                 @if ($item->isMySelf())
-                    <span class="badge badge-success js-tooltip" title="Go to Your Profile to Edit Your Password">You</span>
+                    <span class="badge bg-success js-tooltip" title="Go to Your Profile to Edit Your Password">You</span>
                 @else
                     <div class="btn-spaced">
                         <a href="{{ entity_resource_path() . '/' . $item->id . '/edit-password' }}"

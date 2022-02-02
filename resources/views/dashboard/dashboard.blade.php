@@ -23,7 +23,7 @@
                             <h3>{{ number_format($metric['count']) }}</h3>
                             <p class="card-text">{{ $metric['description'] }}</p>
                             @if (!empty($metric['route']))
-                                <a href="{{ route($metric['route']) }}" class="card-link">View Details</a>
+                                <a href="{{ route($metric['route']) }}" class="btn btn-primary">View Details</a>
                             @endif
                         </div>
                     </div>

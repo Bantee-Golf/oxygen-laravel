@@ -8,8 +8,8 @@
 				<div class="card">
 					<div class="card-header">{{ __('Login') }}</div>
 
-					<div class="card-body">
-						<form method="POST" action="{{ route('login') }}">
+					<div class="card-body mb-4 mt-4">
+						<form method="POST" class="form form-horizontal" action="{{ route('login') }}">
 							@csrf
 
 							@include('oxygen::auth.login_form_fields')

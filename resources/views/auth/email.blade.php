@@ -15,9 +15,9 @@
 					<div class="card-header">
 						<span class="text-strong">Edit Email</span>
 					</div>
-					<div class="card-body">
+					<div class="card-body pb-4 pt-4">
 
-						<form id="accountEditEmailForm" class="form-horizontal" role="form" method="POST" action="{{ route('account.email') }}">
+						<form id="accountEditEmailForm" class="form form-horizontal" role="form" method="POST" action="{{ route('account.email') }}">
 							{{ method_field('put') }}
 							@csrf
 
