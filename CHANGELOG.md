@@ -4,9 +4,9 @@
 
 | Laravel Version   | Oxygen Version    | Branch           |
 | -----------------:| ----------------- |------------------|
-| v9                | 6.x               | master           |
-| v8                | 5.x               | 5.x			   |
-| v7                | 4.x               | version/v4.x     |
+| Laravel 9         | 6.x               | master           |
+| Laravel 8         | 5.x               | 5.x			   |
+| Laravel 7         | 4.x               | version/v4.x     |
 | v6                | 3.x               |
 | 5.8               | 2.3.x             |
 | 5.7               | 2.2.20            |
