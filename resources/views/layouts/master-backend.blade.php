@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<?php if (preg_match('/sandbox|preview/i', $_SERVER['HTTP_HOST'])) { ?>
+<?php if (preg_match('/sandbox|preview/i', request()->getHttpHost())) { ?>
 	<div class="site-wide-message">Sandbox Mode - For Demo Only</div>
 <?php } ?>
 
