@@ -90,8 +90,8 @@
 										</li>
 										<li><a class="dropdown-item" href="{{ route('account.email') }}">Edit Email</a>
 										</li>
-										<li><a class="dropdown-item" href="{{ route('account.password') }}">Edit
-												Password</a></li>
+										<li><a class="dropdown-item" href="{{ route('account.password') }}">
+												Edit Password</a></li>
 										<li>
 											<hr class="dropdown-divider">
 										</li>
