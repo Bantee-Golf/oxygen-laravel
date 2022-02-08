@@ -107,16 +107,16 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 		'@popperjs/core' => '~2.10.2',
 		'select2' => '~4.1.0-rc.0',
 		'typeahead.js' => '~0.11.1',
-		'dropzone' => '~5.9.13',
+		'dropzone' => '~5.9.3',
 		'sweetalert2' => '~11.3.6',
 	];
 
 	protected $requiredNpmDevPackages = [
 		'postcss-import' => '^12.0.1',
-		'vue' => '^2.5.17',
-		'vue-template-compiler' => '^2.6.10',
-		'sass-loader' => '~8.0.2',
-		'sass' => '~1.26.11',
+		'vue' => '^2.6.14',
+		'vue-template-compiler' => '^2.6.14',
+		'sass-loader' => '~12.4.0',
+		'sass' => '~1.49.7',
 		'browser-sync' => '~2.27.7',
 		'browser-sync-webpack-plugin' => '~2.3.0',
 	];
