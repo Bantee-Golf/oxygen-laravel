@@ -14,7 +14,7 @@ See [change log for change history](CHANGELOG.md) and compatibility with past ve
 
 ## System Requirements
 
-- PHP 7.3+
+- PHP 8+
 - [NodeJS with NPM](https://docs.npmjs.com/getting-started/installing-node)
 
 
