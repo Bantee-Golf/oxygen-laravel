@@ -2,7 +2,6 @@
 
 namespace Tests\Oxygen;
 
-use Cviebrock\EloquentSluggable\ServiceProvider;
 use ElegantMedia\OxygenFoundation\Facades\Navigator;
 use ElegantMedia\OxygenFoundation\OxygenFoundationServiceProvider;
 use ElegantMedia\PHPToolkit\Exceptions\FileSystem\FileNotFoundException;
@@ -73,7 +72,6 @@ class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
 			'config/auth.php',
 			'.env.example' => '.env',
 			'README.md',
-			'server.php',
 		];
 
 		foreach ($files as $sourceFile => $destFile) {
@@ -104,7 +102,6 @@ class TestCase extends \Orchestra\Testbench\BrowserKit\TestCase
 			DevicesServiceProvider::class,
 			AppSettingsServiceProvider::class,
 			MultiTenantServiceProvider::class,
-			ServiceProvider::class,
 		];
 	}
 

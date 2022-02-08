@@ -1,4 +1,4 @@
-# Oxygen - Admin Dashboard for Laravel
+# Oxygen v6 - Admin Dashboard for Laravel
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/570218285-Workbench%20Dashboard%202020-11-04%2015-52-49.png)
 
@@ -6,8 +6,9 @@
 
 | Laravel Version   | Oxygen Version    | Branch           |
 | -----------------:| ----------------- |------------------|
-| v8                | 5.x               | master           |
-| v7                | 4.x               | version/v4.x     |
+| Laravel 9         | 6.x               | master           |
+| Laravel 8         | 5.x               | 5.x			   |
+| Laravel 7         | 4.x               | version/v4.x     |
 
 See [change log for change history](CHANGELOG.md) and compatibility with past versions.
 

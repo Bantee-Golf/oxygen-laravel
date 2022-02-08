@@ -6,9 +6,7 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="userControlModalLabel">Headline</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
@@ -37,7 +35,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-lg btn-default text-right" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-lg btn-secondary text-end" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-lg btn-success" id="addUsersButton">
                         <i class="fa fa-spin fa-spinner" id="loadingIndicator"></i> Add User
                     </button>
@@ -51,6 +49,7 @@
     <script>
 
         $(document).ready(function() {
+
             var hideModalErrorMessage = function () {
                 $('#modalErrorMessage').html('').hide();
             };

@@ -56,7 +56,7 @@
                                     </td>
                                     <td>
                                         @if ($user->can('edit-group-users'))
-                                            <span data-toggle="modal" data-target="#userControlModal"
+                                            <span data-bs-toggle="modal" data-bs-target="#userControlModal"
                                                   data-role_id="{{ $role['id'] }}">
                                                 <button
                                                         class="btn btn-warning"

@@ -20,7 +20,7 @@
                     <span class="muted">Create and manage groups who can use the application.</span>
                 </td>
                 <td width="20%">
-                    <a class="btn btn-primary btn-block" href="{{ route('access.groups.index') }}">Manage Groups</a>
+                    <a class="btn btn-primary w-100" href="{{ route('access.groups.index') }}">Manage Groups</a>
                 </td>
             </tr>
         @endif
@@ -32,7 +32,7 @@
                     <span class="muted">Assign permissions to categories for more granular control.</span>
                 </td>
                 <td>
-                    <a class="btn btn-primary btn-block" href="{{ route('access.abilities.index') }}">Manage Permission Categories</a>
+                    <a class="btn btn-primary w-100" href="{{ route('access.abilities.index') }}">Manage Permission Categories</a>
                 </td>
             </tr>
         @endif
@@ -44,7 +44,7 @@
                     <span class="muted">Send invitations to users to join groups.</span>
                 </td>
                 <td>
-                    <a class="btn btn-primary btn-block" href="{{ route('access.invitations.index') }}">Invite Users</a>
+                    <a class="btn btn-primary w-100" href="{{ route('access.invitations.index') }}">Invite Users</a>
                 </td>
             </tr>
         @endif

@@ -38,9 +38,9 @@ This package and some dependent packages are available in private repositories. 
             "url": "git@bitbucket.org:elegantmedia/oxygen-laravel.git"
         },
         {
-			"type": "vcs",
-			"url": "git@bitbucket.org:elegantmedia/devices-laravel.git"
-		},
+            "type": "vcs",
+            "url": "git@bitbucket.org:elegantmedia/devices-laravel.git"
+        },
         {
             "type": "vcs",
             "url": "git@bitbucket.org:elegantmedia/laravel-app-settings.git"

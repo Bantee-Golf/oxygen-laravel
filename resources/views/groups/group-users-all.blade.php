@@ -10,8 +10,8 @@
         @if ($user->can('add-group-users'))
             <button type="button"
                     class="btn btn-wide btn-success"
-                    data-toggle="modal"
-                    data-target="#userControlModal"
+                    data-bs-toggle="modal"
+                    data-bs-target="#userControlModal"
                     data-role_id="{{ $role['id'] }}"><i class="fa fa-user-plus"></i> Add a New User</button>
             <br/><br/>
         @else
@@ -45,7 +45,7 @@
                                         <td>
                                             <strong>{{ $currentUser->name }}</strong>
                                             @if ($user->email == $currentUser->email)
-                                                <span class="badge badge-success">You</span>
+                                                <span class="bg badge-success">You</span>
                                             @endif
                                         </td>
                                         <td>{{ $currentUser->email }}</td>

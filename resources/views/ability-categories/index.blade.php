@@ -33,7 +33,7 @@
                         <td>{{ $item->name }}</td>
                         <td>
                             @foreach($item->abilities as $ability)
-                                <span class="badge badge-success">{{ $ability->title }}</span>
+                                <span class="badge bg-success">{{ $ability->title }}</span>
                             @endforeach
                         </td>
                         <td>
