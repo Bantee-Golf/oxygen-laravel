@@ -96,7 +96,7 @@
 											<hr class="dropdown-divider">
 										</li>
 										<li>
-											<a class="dropdown-item" href="{{ route('logout') }}">
+											<a class="dropdown-item" id="logout" href="{{ route('logout') }}">
 												{{ __('Logout') }}
 											</a>
 										</li>
