@@ -49,7 +49,7 @@
 						<div class="form-group">
 							<label for="userMessage" class="control-label col-md-3">Your Message</label>
 							<div class="control-group col-md-9">
-								<textarea name="userMessage" class="form-control" rows="5">{{ old('userMessage') }}</textarea>
+								<textarea name="userMessage" class="form-control" rows="5" maxlength="255">{{ old('userMessage') }}</textarea>
 							</div>
 						</div>
 
