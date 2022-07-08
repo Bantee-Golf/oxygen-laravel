@@ -14,22 +14,17 @@ class {{ class }} extends Model
 	use SearchableLike;
 	use GeneratesFields;
 
-	// use \Cviebrock\EloquentSluggable\Sluggable;
+	// Auto-generate UUIDs for new records
+	// user \ElegantMedia\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
 
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    /*
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
+	// Uncomment the following if you want to use slug generation
+	// use \Spatie\Sluggable\HasSlug;
+
+	/*
+	public function getSlugOptions(): \Spatie\Sluggable\SlugOptions
+	{
+		return \Spatie\Sluggable\SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('name');
+	}
     */
 
 	protected $fillable = [
