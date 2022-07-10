@@ -29,8 +29,6 @@ class OxygenServiceProvider extends ServiceProvider
 
 		$this->commands(CreateNewUserCommand::class);
 
-		$this->loadRoutesFrom(__DIR__.'/../stubs/loaded-routes/web.php');
-
 		$this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'oxygen');
 	}
 
