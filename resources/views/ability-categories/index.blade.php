@@ -42,13 +42,13 @@
                             @if ($user->can('edit-permissions'))
                                 <a href="/account/permission-categories/{{ $item['id'] }}/edit"
                                    class="btn btn-info inline"
-                                   data-toggle="tooltip"
+                                   data-bs-toggle="tooltip"
                                    title="Edit">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
                                 @if (true)
                                     <form class="form-inline" role="form" method="POST" action="/account/permission-categories/{{ $item['id'] }}"
-                                          data-toggle="tooltip" title="Delete">
+                                          data-bs-toggle="tooltip" title="Delete">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                                         <input type="hidden" name="_method" value="delete" />
                                         <div class="form-group">

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
 
 Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
 
@@ -21,6 +22,13 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 			'guest',
 			$limiter ? 'throttle:'.$limiter : null,
 		]));
+
+	// Email Verification Routes...
+	// if (has_feature('auth.email_verification_required')) {
+	// 	Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
+	// 	Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+	// 	Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+	// }
 
 	Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 		->name('logout');
@@ -110,18 +118,11 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 	// }
 });
 
-// Email Verification Routes...
-//if (has_feature('auth.email_verification_required')) {
-//	Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
-//	Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
-//	Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
-//}
-
 // The middleware order must be web, auth -> if you reverse this order, logins will fail
 Route::group(
 	[
-	'middleware' => ['web'],
-	'namespace' => '\\App\\Http\\Controllers'],
+		'middleware' => ['web'],
+		'namespace' => '\\App\\Http\\Controllers'],
 	function () {
 
 		/*

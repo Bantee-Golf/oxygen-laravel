@@ -4,6 +4,7 @@ namespace Tests\Browser\Auth;
 
 use App\Providers\RouteServiceProvider;
 use EMedia\TestKit\Traits\InteractsWithUsers;
+use Laravel\Fortify\Features;
 use Tests\Browser\Pages\ForgotPassword;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
@@ -66,7 +67,7 @@ class ForgotPasswordTest extends DuskTestCase
 	{
 		$this->withoutMiddleware('throttle');
 
-		$user = $this->findUserByEmail('apps+user@elegantmedia.com.au');
+		$user = $this->findUserByEmail('apps@elegantmedia.com.au');
 
 		$passwordBroker = $this->app->make('auth.password.broker');
 		$token = $passwordBroker->createToken($user);
@@ -74,20 +75,19 @@ class ForgotPasswordTest extends DuskTestCase
 		$this->assertTrue($passwordBroker->tokenExists($user, $token));
 
 		$this->browse(function (Browser $browser) use ($user, $token) {
-
 			$newPassword = '123-123-123';
 
 			$browser->visit(route('password.reset', $token))
-					->assertPathBeginsWith('/password/reset')
-					->assertSee('Reset Password')
-					->type('#email', $user->email)
-					->type('#password', $newPassword)
-					->type('#password-confirm', $newPassword)
-					->click('#reset-button')
-					->assertDontSee('token is invalid')
-					->waitForRoute('login', [], 5)
-					->assertRouteIs('login')
-					->assertSee(trans('passwords.reset'));
+				->assertPathBeginsWith('/password/reset')
+				->assertSee('Reset Password')
+				->type('#email', $user->email)
+				->type('#password', $newPassword)
+				->type('#password-confirm', $newPassword)
+				->click('#reset-button')
+				->assertDontSee('token is invalid')
+				->waitForRoute('login', [], 5)
+				->assertRouteIs('login')
+				->assertSee(trans('passwords.reset'));
 
 			// check the user can't login with old password after a change
 			$browser->visit(new Login())
@@ -103,9 +103,17 @@ class ForgotPasswordTest extends DuskTestCase
 				->type('@email', $user->email)
 				->type('@password', $newPassword)
 				->click('@submit')
-				->assertDontSeeLink('Login')
-				->assertPathIs('/')
-				->assertSeeLink('Logout');
+				->assertDontSeeLink('Login');
+
+			// if email verification is enabled, the user should get redirected to `verification.notice` link
+			if (Features::enabled(Features::emailVerification())) {
+				$browser->assertRouteIs('verification.notice');
+			} else {
+				$browser->assertPathIs(RouteServiceProvider::HOME);
+			}
+			$browser->click('#navbarDropdown')
+				->click('#logout');
+			$browser->assertSee(config('app.name'));
 
 			// restore password
 			$user->password = bcrypt('12345678');

@@ -8,23 +8,16 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 
 	<title>@yield('pageTitle', $pageTitle)</title>
-
-	<link rel="stylesheet" href="{{ mix('css/dist/bootstrap.css') }}"/>
-	<link rel="stylesheet" href="{{ mix('css/dist/backend.css') }}"/>
-
-	@stack('stylesheets')
-
+	@vite(['resources/sass/oxygen/bootstrap.scss', 'resources/sass/backend.scss'])
 	<link rel="shortcut icon" href="/favicon.ico"/>
-
+	@stack('stylesheets')
 	@stack('meta')
-
 	@include('oxygen::partials.tracking')
-
 </head>
 <body>
 
 <?php if (preg_match('/sandbox|preview/i', request()->getHttpHost())) { ?>
-	<div class="site-wide-message">Sandbox Mode - For Demo Only</div>
+<div class="site-wide-message">Sandbox Mode - For Demo Only</div>
 <?php } ?>
 
 <div id="dashboard-wrapper">
@@ -115,13 +108,9 @@
 	</div>
 </div>
 
-<script src="{{ mix('js/dist/backend.js') }}"></script>
+@vite(['resources/js/backend.js'])
 @stack('js')
-
-{{-- For non-PJAX type requests --}}
-@if (!request()->header('X-PJAX'))
-	@stack('scripts')
-@endif
+@stack('scripts')
 
 </body>
 </html>

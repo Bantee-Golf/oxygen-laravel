@@ -1,12 +1,12 @@
 // Select 2
-@import '~select2/dist/css/select2.css';
+@import 'select2/dist/css/select2.css';
 
 // Font Awesome
-@import '~@fortawesome/fontawesome-free/css/all.css';
+@import '@fortawesome/fontawesome-free/css/all.css';
 
 // Vendor Files
-@import '~dropzone/dist/dropzone.css';
-@import '~sweetalert2/src/sweetalert2.scss';
+@import 'dropzone/dist/dropzone.css';
+@import 'sweetalert2/src/sweetalert2.scss';
 @import './vendor/select2.custom.scss';
 
 // Oxygen Variables

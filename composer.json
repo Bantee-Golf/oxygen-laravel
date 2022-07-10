@@ -23,7 +23,8 @@
         "google/recaptcha": "^1.2",
         "laravel/fortify": "^1.0",
         "laravel/framework": "^9.0",
-        "silber/bouncer": "v1.0.0-rc.12",
+		"laravel/sanctum": "^2.14.1",
+        "silber/bouncer": "1.0.0-rc.13",
         "spatie/laravel-sluggable": "^3.3"
     },
     "require-dev": {

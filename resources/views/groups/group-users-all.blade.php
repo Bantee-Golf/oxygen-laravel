@@ -52,12 +52,12 @@
                                         <td>
                                             @if ($role->name === 'super-admin' && count($role->users) === 1)
                                                 {{-- Last Super admin can't leave the role --}}
-                                                <span class="btn btn-danger disabled" data-toggle="tooltip" title="Cannot Delete Last Super Admin"><i class="fa fa-trash"></i>
+                                                <span class="btn btn-danger disabled" data-bs-toggle="tooltip" title="Cannot Delete Last Super Admin"><i class="fa fa-trash"></i>
                                                     Remove User
                                                 </span>
                                             @else
                                                 <form class="form-inline js-confirm-delete" role="form" method="POST" action="/account/groups/{{ $role['id'] }}/users/{{ $currentUser->id }}"
-                                                      data-toggle="tooltip" title="Delete">
+                                                      data-bs-toggle="tooltip" title="Delete">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                                                     <input type="hidden" name="_method" value="delete" />
                                                     <button class="btn btn-danger"><i class="fa fa-trash"></i>

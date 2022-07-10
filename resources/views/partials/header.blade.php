@@ -3,7 +3,7 @@
 <header class="navbar navbar-static-top bs-docs-nav site-header" id="top" role="banner">
     <div class="container">
         <div class="navbar-header">
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+            <button class="navbar-toggle" type="button" data-bs-toggle="collapse" data-target=".bs-navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -22,7 +22,7 @@
                 @else
                     <li><a href="/users/register">Register</a></li>
                     {{--<li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">
                             For Job Seekers <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
