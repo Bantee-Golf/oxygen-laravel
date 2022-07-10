@@ -49,7 +49,7 @@
                                     <td>
                                         <a href="/account/groups/{{ $role['id'] }}/users"
                                            class="btn btn-info"
-                                           data-toggle="tooltip"
+                                           data-bs-toggle="tooltip"
                                            title="View Users">
                                             <i class="fas fa-eye"></i> View Users
                                         </a>
@@ -60,7 +60,7 @@
                                                   data-role_id="{{ $role['id'] }}">
                                                 <button
                                                         class="btn btn-warning"
-                                                        data-toggle="tooltip"
+                                                        data-bs-toggle="tooltip"
                                                         title="Add a User to {{ $role['title'] }}">
                                                     <i class="fas fa-user-plus"></i> Add Users
                                                 </button>
@@ -71,7 +71,7 @@
                                         @if ($user->can('edit-group-permissions'))
                                             <a href="/account/groups/{{ $role['id'] }}/permissions"
                                                class="btn btn-warning"
-                                               data-toggle="tooltip"
+                                               data-bs-toggle="tooltip"
                                                title="View Permissions">
                                                 <i class="fa fa-edit"></i> Permissions
                                             </a>
@@ -82,7 +82,7 @@
                                             @if ($user->can('edit-groups'))
                                                 <a href="/account/groups/{{ $role['id'] }}/edit"
                                                    class="btn btn-info"
-                                                   data-toggle="tooltip"
+                                                   data-bs-toggle="tooltip"
                                                    title="Edit">
                                                     <i class="fas fa-edit"></i> Edit Role
                                                 </a>
@@ -91,7 +91,7 @@
                                             @if ($user->can('delete-groups') && $role['allow_to_be_deleted'])
                                                 <form class="form-inline js-confirm-delete" role="form" method="POST"
                                                       action="/account/groups/{{ $role['id'] }}"
-                                                      data-toggle="tooltip" title="Delete">
+                                                      data-bs-toggle="tooltip" title="Delete">
                                                     {{ csrf_field() }}
                                                     {{ method_field('delete') }}
                                                     <button class="btn btn-danger"><i class="fas fa-times"></i> Delete
