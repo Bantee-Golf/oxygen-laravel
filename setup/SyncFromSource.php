@@ -38,7 +38,7 @@ $repos = [
 
 			'.env.example',
 			'README.md',
-			'webpack.mix.js',
+			'vite.config.js',
 		]
 	],
 ];

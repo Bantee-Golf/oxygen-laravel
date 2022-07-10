@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+{{--<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,8 +9,7 @@
 
 	<title>@yield('pageTitle', 'Register or Login')</title>
 
-	<link rel="stylesheet" href="{{ mix('css/dist/bootstrap.css') }}" />
-	<link rel="stylesheet" href="{{ mix('css/dist/auth.css') }}" />
+	@vite(['resources/sass/oxygen/bootstrap.scss', 'resources/sass/auth.scss'])
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 </head>
 <body class="master-auth">
@@ -66,8 +65,7 @@
 	</div>
 </div>
 
-<script src="{{ mix('js/dist/public.js') }}"></script>
-
+@vite(['resources/js/public.js'])
 @yield('scripts')
 
 </body>
