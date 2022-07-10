@@ -41,7 +41,7 @@ php artisan db:refresh
 
 Run the local development watcher
 ```
-npm run watch
+npm run dev
 ```
 
 Generate API documentation
@@ -66,7 +66,7 @@ php artisan dusk --stop-on-error --stop-on-failure
 
 Before releasing to production, compile the assets
 ```
-npm run production
+npm run build
 ```
 
 ## Licence
