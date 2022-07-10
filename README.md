@@ -44,25 +44,29 @@ php artisan setup:create-user
 
 You can generate default models using following commands. The examples below uses an object `car` as an example.
 
-| Command                                           | What it does                    |
-|---------------------------------------------------|---------------------------------|
-| `php artisan make:oxygen:model car`         	     | Create a new model              |
-| `php artisan make:oxygen:repository car`          | Create a new repository         |
-| `php artisan make:oxygen:admin-controller car`    | Create a new Admin controller   |
-| `php artisan make:oxygen:api-controller car`      | Create a new API controller 	   |
-| `php artisan scaffold:views`                      | Scaffold default admin views    |
-| `php artisan scaffold:views --path=manage.cars` 	 | Scaffold example                |
+| Command                                        | What it does                     |
+|------------------------------------------------|----------------------------------|
+| `php artisan make:oxygen:model car`         	  | Create a new model               |
+| `php artisan make:oxygen:repository car`       | Create a new repository          |
+| `php artisan make:oxygen:admin-controller car` | Create a new Admin controller    |
+| `php artisan make:oxygen:api-controller car`   | Create a new API controller      |
+| `php artisan make:oxygen:seeder car`           | Create a new seeder with Faker   |
+| `php artisan scaffold:views`                   | Scaffold default admin views     |
+| `php artisan scaffold:views manage.cars`       | Scaffold default views with name |
 
 The last command will create the default views within `resources/views/manage/cars`, or in the path that you specify.
 
 You can also create multiple resources with a single command.
 
-| Command                                               | What it does                    |
-|-------------------------------------------------------|---------------------------------|
-| `php artisan make:oxygen:models car van bus`          | Create new models               |
-| `php artisan make:oxygen:repositories car van`        | Create new repositories         |
-| `php artisan make:oxygen:admin-controllers car van` 	 | Create new Admin controllers    |
-| `php artisan make:oxygen:api-controllers car van`     | Create new API controllers      |
+| Command                                                | What it does                 |
+|--------------------------------------------------------|------------------------------|
+| `php artisan make:oxygen:models car van bus`           | Create new models            |
+| `php artisan make:oxygen:repositories car van`         | Create new repositories      |
+| `php artisan make:oxygen:admin-controllers car van` 	  | Create new Admin controllers |
+| `php artisan make:oxygen:api-controllers car van`      | Create new API controllers   |
+| `php artisan make:oxygen:migrations car van`           | Create multiple tables       |
+| `php artisan make:oxygen:seeders car van`              | Create multiple seeders      |
+| `php artisan scaffold:views manage.cars manage.vans`   | Scaffold multiple views      |
 
 ## Helper Functions
 
