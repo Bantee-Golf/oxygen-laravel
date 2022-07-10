@@ -4,17 +4,18 @@
 
 ## Version Compatibility
 
-| Laravel Version   | Oxygen Version    | Branch           |
-| -----------------:| ----------------- |------------------|
-| Laravel 9         | 6.x               | master           |
-| Laravel 8         | 5.x               | 5.x			   |
-| Laravel 7         | 4.x               | version/v4.x     |
+| Laravel Version | Oxygen Version | Branch       |
+|----------------:|----------------|--------------|
+|     Laravel 9.2 | 6.1            | master       |
+|       Laravel 9 | 6.0            | master       |
+|       Laravel 8 | 5.x            | 5.x          |
+|       Laravel 7 | 4.x            | version/v4.x |
 
 See [change log for change history](CHANGELOG.md) and compatibility with past versions.
 
 ## System Requirements
 
-- PHP 8+
+- [Laravel Server Requirements](https://laravel.com/docs/9.x/deployment#server-requirements)
 - [NodeJS with NPM](https://docs.npmjs.com/getting-started/installing-node)
 
 
@@ -137,29 +138,29 @@ Blade Variables
 
 You can get the current logged-in user by using any of these methods, based on where you are. For `$request` to work, the default Request must be available within the context.
 
-| Where | Code | When |
-| --- | --- | --- |
-| Views 	  		| `{{ $user->name }}` 							| Only when a user is logged in. |
-| Controllers 		| `request()->user()` or `auth()->user()`		| Only when a user is logged in. |
-| APIs		  		| `request()->user()` or `$request->user()`		| Only on routes with `auth.api.logged-in` middleware | 
-| User Class Name 	| `app('oxygen')::getUserClass()`				| Will return the FQ class name of the User model 	  |
+| Where             | Code                                      | When                                                |
+|-------------------|-------------------------------------------|-----------------------------------------------------|
+| Views             | `{{ $user->name }}`                       | Only when a user is logged in.                      |
+| Controllers       | `request()->user()` or `auth()->user()`   | Only when a user is logged in.                      |
+| APIs              | `request()->user()` or `$request->user()` | Only on routes with `auth.api.logged-in` middleware | 
+| User Class Name 	 | `app('oxygen')::getUserClass()`           | Will return the FQ class name of the User model 	   |
 
 ## Must Read Instructions
 
 Oxygen by default has a lot of built-in functions. Please read all the docs to understand all features. Otherwise you'll be spending a lot of time re-doing existing features.
 
-| Library | What it Does |
-| ------- | ------------ |
-| [Bouncer](https://github.com/JosephSilber/bouncer)                                                    | Access, Roles and Permission Handling |
-| [Formation](https://bitbucket.org/elegantmedia/formation/src/master/README.md)                        | Form Builder |
-| [Fortify](https://github.com/laravel/fortify)                                                         | Laravel Authentication |
-| [Oxygen App Settings](https://bitbucket.org/elegantmedia/laravel-app-settings/src/master/README.md)   | App setting storage and retrieval |
-| [Oxygen Devices](https://bitbucket.org/elegantmedia/devices-laravel/src/master/README.md)             | Device Authenticator for API Requests |
-| [Laravel API Helpers](https://bitbucket.org/elegantmedia/laravel-api-helpers/src/master/README.md)    | API and Documentation Generator |
-| [Laravel Media Manager](https://bitbucket.org/elegantmedia/laravel-media-manager/src/master//README.md)  | File and Media Handling Library |
-| [Laravel Test Kit](https://bitbucket.org/elegantmedia/laravel-test-kit/src/master/README.md)          | Integration Testing Helper Library |
-| [Lotus](https://bitbucket.org/elegantmedia/lotus/src/master/README.md)                                | Breadcrumbs, Page Titles, Tables, Pagination, Empty State and other Html Elements |
-| [PHP Toolkit](https://github.com/elegantmedia/PHP-Toolkit)                                            | PHP Utility Library |
+| Library                                                                                                 | What it Does                                                                      |
+|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| [Bouncer](https://github.com/JosephSilber/bouncer)                                                      | Access, Roles and Permission Handling                                             |
+| [Formation](https://bitbucket.org/elegantmedia/formation/src/master/README.md)                          | Form Builder                                                                      |
+| [Fortify](https://github.com/laravel/fortify)                                                           | Laravel Authentication                                                            |
+| [Oxygen App Settings](https://bitbucket.org/elegantmedia/laravel-app-settings/src/master/README.md)     | App setting storage and retrieval                                                 |
+| [Oxygen Devices](https://bitbucket.org/elegantmedia/devices-laravel/src/master/README.md)               | Device Authenticator for API Requests                                             |
+| [Laravel API Helpers](https://bitbucket.org/elegantmedia/laravel-api-helpers/src/master/README.md)      | API and Documentation Generator                                                   |
+| [Laravel Media Manager](https://bitbucket.org/elegantmedia/laravel-media-manager/src/master//README.md) | File and Media Handling Library                                                   |
+| [Laravel Test Kit](https://bitbucket.org/elegantmedia/laravel-test-kit/src/master/README.md)            | Integration Testing Helper Library                                                |
+| [Lotus](https://bitbucket.org/elegantmedia/lotus/src/master/README.md)                                  | Breadcrumbs, Page Titles, Tables, Pagination, Empty State and other Html Elements |
+| [PHP Toolkit](https://github.com/elegantmedia/PHP-Toolkit)                                              | PHP Utility Library                                                               |
 
 ## After Installation
 
@@ -232,4 +233,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for more developer and local setup instru
 
 ## Copyright
 
-Copyright (c) 2020 Elegant Media.
+Copyright (c) 2022 Elegant Media.

@@ -53,8 +53,19 @@ OR Alternatively, you can add it to `composer.json`, and run `composer update`.
 
 - Step 7 - Create a database called `workbench`
 
-- Step 6 - At this point commit your changes to the TEST PROJECT, so you can rollback to this point easily. Note that you're NOT COMMITING changes to oxygen project. The changes are commited to the TEST project, in this case `Workbench`
+- Step 6 - At this point commit your changes to the TEST PROJECT, so you can rollback to this point easily. Note that you're NOT COMMITING changes to oxygen project. The changes are commited to the TEST project, in this example, `Workbench` folder.
 
+```shell
+# Commit your changes to the TEST project
+git init
+git add . && git commit -m "Initial commit"
+```
+
+```shell
+# Reset the TEST project to the previous commit and remove unstaged changes
+# Do this if you want to rollback to the last commit and remove unstaged changes
+git reset --hard HEAD~1 && git clean -fd
+```
 
 ## Test Installation and Rollback
 

@@ -19,7 +19,7 @@ If you don't want to use the installer, you can install it manually.
 #### 1. Create a New Laravel Project
 ```
 // Create the project
-composer create-project --prefer-dist laravel/laravel="8.*" [project-name]
+composer create-project --prefer-dist laravel/laravel="9.*" [project-name]
 
 // Go to the directory
 cd [project-name]
@@ -74,7 +74,7 @@ This package and some dependent packages are available in private repositories. 
 
 2.2. Require the package into composer through the command line
 ```
-composer require emedia/oxygen:"^5.0"
+composer require emedia/oxygen:"^6.0"
 ```
 
 2.3. Edit `.env` file and update the database settings
