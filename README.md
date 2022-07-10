@@ -27,7 +27,7 @@ The easiest way to do it is by using the [Oxygen Installer](https://bitbucket.or
 oxygen new myproject --name 'Oxygen' --email apps@elegantmedia.com.au --dev_url 'localhost.test'
 ```
 
-If you don't want to use the installer, you can install it with manual setup. [See Manual Setup Instructions](INSTALLATION.md). After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
+If you don't want to use the installer, you can install it with manual setup. [See Manual Setup Instructions](wiki/INSTALLATION.md). After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
 
 ## Developer Commands
 
@@ -179,7 +179,7 @@ php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --ta
 
 #### I got an error while installing, what do to?
 
-Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit [during installation](INSTALLATION.md), and try the steps from there again.
+Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit [during installation](wiki/INSTALLATION.md), and try the steps from there again.
 
 ```
 // use this command to hard reset all files and remove any new files - NEVER DO THIS ON A LIVE SERVER!
@@ -225,11 +225,11 @@ Don't stay quiet and ignore any issues or improvement suggestions.
 - [Create an Issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues?status=new&status=open)
 - Submit a pull request (on a new branch) or [submit an issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues).
 - **DO NOT** commit new changes directly to the `master` branch. Create a development branch, and then send a pull-request to master, and get someone else to review the code before merging.
-- Please see [contributing guidelines](CONTRIBUTING.md) and for details.
+- Please see [contributing guidelines](wiki/CONTRIBUTING.md) and for details.
 
 ## Development Notes
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for more developer and local setup instructions.
+See [CONTRIBUTING.md](wiki/CONTRIBUTING.md) for more developer and local setup instructions.
 
 ## Copyright
 

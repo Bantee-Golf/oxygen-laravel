@@ -19,7 +19,7 @@ export default defineConfig({
 				'resources/sass/backend.scss',
 				'resources/sass/auth.scss',
 			],
-			publicDirectory: '/public_html/',
+			publicDirectory: '/public/',
 		}),
 
 		{

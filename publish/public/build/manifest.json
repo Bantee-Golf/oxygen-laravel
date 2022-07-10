@@ -1,0 +1,81 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app.9353cce9.js",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app.738f6898.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers.4e997714.js",
+      "_index.becf6c0c.js"
+    ]
+  },
+  "resources/js/public.js": {
+    "file": "assets/public.a23b4347.js",
+    "src": "resources/js/public.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery.937968ff.js",
+      "_bootstrap.esm.41332c63.js",
+      "__commonjsHelpers.4e997714.js"
+    ]
+  },
+  "resources/js/backend.js": {
+    "file": "assets/backend.647adf26.js",
+    "src": "resources/js/backend.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery.937968ff.js",
+      "_bootstrap.esm.41332c63.js",
+      "_index.becf6c0c.js",
+      "__commonjsHelpers.4e997714.js"
+    ]
+  },
+  "resources/js/add-users-to-group.js": {
+    "file": "assets/add-users-to-group.83aa9a62.js",
+    "src": "resources/js/add-users-to-group.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery.937968ff.js",
+      "__commonjsHelpers.4e997714.js"
+    ]
+  },
+  "_index.becf6c0c.js": {
+    "file": "assets/index.becf6c0c.js"
+  },
+  "__commonjsHelpers.4e997714.js": {
+    "file": "assets/_commonjsHelpers.4e997714.js"
+  },
+  "_jquery.937968ff.js": {
+    "file": "assets/jquery.937968ff.js",
+    "imports": [
+      "__commonjsHelpers.4e997714.js"
+    ]
+  },
+  "_bootstrap.esm.41332c63.js": {
+    "file": "assets/bootstrap.esm.41332c63.js"
+  },
+  "resources/sass/auth.scss": {
+    "file": "assets/auth.111c6c55.css",
+    "src": "resources/sass/auth.scss",
+    "isEntry": true
+  },
+  "resources/sass/backend.scss": {
+    "file": "assets/backend.df7f6e80.css",
+    "src": "resources/sass/backend.scss",
+    "isEntry": true
+  },
+  "resources/sass/oxygen/bootstrap.scss": {
+    "file": "assets/bootstrap.d399a20c.css",
+    "src": "resources/sass/oxygen/bootstrap.scss",
+    "isEntry": true
+  },
+  "resources/sass/public.scss": {
+    "file": "assets/public.bd2c4d0c.css",
+    "src": "resources/sass/public.scss",
+    "isEntry": true
+  }
+}

@@ -109,10 +109,14 @@ vendor/bin/phpunit
 
 Always ensure the tests pass before you send a pull-request.
 
-Before releasing a version, the assets must be pre-compiled. Run NPM to do this.
+Before releasing a version, the assets must be pre-compiled on the `publish` directory.
 
 ```
-npm run production
+cd publish
+npm run build
+# This will create a `node_modules` folder in the `publish` directory. But we don't want that.
+# So remove it.
+rm -rf node_modules
 ```
 
 

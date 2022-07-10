@@ -13,6 +13,7 @@ class UsersTableSeeder extends Seeder
 		if (app()->environment() !== 'production') {
 			$this->seedTestUsers();
 			$this->seedRegularUsers();
+			$this->seedEmailVerifications();
 		}
 	}
 
@@ -44,6 +45,11 @@ class UsersTableSeeder extends Seeder
 			[
 				'name'	 => 'Bruce Wayne (DEVELOPER)',
 				'email'	 => 'apps+dev@elegantmedia.com.au',
+				'password' => bcrypt('12345678')
+			],
+			[
+				'name'	 => 'Ultron Unverified (REGULAR USER - UNVERIFIED)',
+				'email'	 => 'apps+unverified1@elegantmedia.com.au',
 				'password' => bcrypt('12345678')
 			],
 		];
@@ -82,5 +88,21 @@ class UsersTableSeeder extends Seeder
 		}
 	}
 
+	protected function seedEmailVerifications()
+	{
+		$userModel = app('oxygen')::makeUserModel();
+
+		$users = $userModel::whereIn('email', [
+			'apps@elegantmedia.com.au',
+			'apps+user@elegantmedia.com.au',
+			'apps+admin@elegantmedia.com.au',
+			'apps+dev@elegantmedia.com.au',
+		])->get();
+
+		foreach ($users as $user) {
+			$user->email_verified_at = now();
+			$user->save();
+		}
+	}
 
 }
