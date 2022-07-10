@@ -85,7 +85,7 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 	];
 
 	protected $composerRequireDev = [
-		'barryvdh/laravel-debugbar:^3.5',
+		'barryvdh/laravel-debugbar:^3.6',
 		'laravel/dusk:^6.0',
 		'emedia/laravel-test-kit:^2.0'
 	];
@@ -100,25 +100,20 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 	];
 
 	protected $requiredNpmPackages = [
-		'@fortawesome/fontawesome-free' => '~5.15.0',
+		'@fortawesome/fontawesome-free' => '~5.15.4',
+		'@popperjs/core' => '~2.10.2',
+		'@vitejs/plugin-vue' => '^2.3.0',
 		'bootstrap' => '~5.1.3',
 		'jquery' => '~3.6.0',
 		'jquery-validation' => '~1.19.3',
-		'@popperjs/core' => '~2.10.2',
 		'select2' => '~4.1.0-rc.0',
-		'typeahead.js' => '~0.11.1',
 		'dropzone' => '~5.9.3',
-		'sweetalert2' => '~11.3.6',
+		'sweetalert2' => '~11.4.20',
+		'vue' => '^3.2.0',
 	];
 
 	protected $requiredNpmDevPackages = [
-		'postcss-import' => '^12.0.1',
-		'vue' => '^2.6.14',
-		'vue-template-compiler' => '^2.6.14',
-		'sass-loader' => '~12.4.0',
 		'sass' => '~1.49.7',
-		'browser-sync' => '~2.27.7',
-		'browser-sync-webpack-plugin' => '~2.3.0',
 	];
 
 	/**
@@ -329,7 +324,7 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 
 		if (!empty($this->config->dev_url)) {
 			$stringsToReplace[] = [
-				'path'		=> base_path('webpack.mix.js'),
+				'path'		=> base_path('vite.config.js'),
 				'search'	=> "localhost.test",
 				'replace'	=> $this->config->dev_url,
 			];
@@ -479,7 +474,7 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 
 			$stringsToReplace[] = [
 				'path'    => $filePath,
-				'search'  => "MAIL_FROM_ADDRESS=null",
+				'search'  => "MAIL_FROM_ADDRESS=hello@example.com",
 				'replace' => "MAIL_FROM_ADDRESS=\"{$this->config->email}\"",
 			];
 

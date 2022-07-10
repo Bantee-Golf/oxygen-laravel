@@ -23,7 +23,7 @@ class {{ class }} extends Model
 	/*
 	public function getSlugOptions(): \Spatie\Sluggable\SlugOptions
 	{
-		return \Spatie\Sluggable\SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('name');
+		return \Spatie\Sluggable\SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('slug');
 	}
     */
 

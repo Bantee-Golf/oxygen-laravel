@@ -7,7 +7,6 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -44,6 +43,10 @@ class OxygenServiceProvider extends ServiceProvider
 
 		Fortify::resetPasswordView(function () {
 			return view('oxygen::auth.passwords.reset');
+		});
+
+		Fortify::verifyEmailView(function () {
+			return view('oxygen::auth.verify-email');
 		});
 
 		RateLimiter::for('login', function (Request $request) {
