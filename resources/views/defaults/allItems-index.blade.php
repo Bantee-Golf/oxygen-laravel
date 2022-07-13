@@ -11,7 +11,9 @@
 @section('pageMainActions')
     @include('oxygen::dashboard.partials.searchField')
 
-    <a href="{{ entity_resource_path() . '/create' }}" class="btn btn-success"><em class="fas fa-plus-circle"></em> Add New</a>
+	@if ($canCreateEntities ?? false)
+		<a href="{{ entity_resource_path() . '/create' }}" class="btn btn-success"><em class="fas fa-plus-circle"></em> Add New</a>
+	@endif
 @stop
 
 {{-- DELETE THIS IF NOT USED
@@ -40,9 +42,11 @@
             </td>
             <td class="text-end">
                 <div class="btn-spaced">
-                    <a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
-                       class="btn btn-warning js-tooltip"
-                       title="Edit"><em class="fa fa-edit"></em> Edit</a>
+					@if ($canEditEntities ?? false)
+						<a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
+						   class="btn btn-warning js-tooltip"
+						   title="Edit"><em class="fa fa-edit"></em> Edit</a>
+					@endif
 
                     {{--
                     <form action="{{ entity_resource_path() . '/' . $item->id }}"
