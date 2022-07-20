@@ -168,6 +168,22 @@ class Business extends Model
 	protected $fillable = [
 		'name',
 		'email',
+		'address',
+		'description',
+		'phone',
+		'email',
+		'address',
+		'formatted_address',
+		'latitude',
+		'longitude',
+		'street',
+		'street_2',
+		'city',
+		'state',
+		'state_iso_code',
+		'zip',
+		'country',
+		'country_iso_code',
 	];
 	
 	// because location needs some customisation, we'll override the editable fields
@@ -190,5 +206,54 @@ class Business extends Model
 			],
 		];
 	}
+}
+```
+
+## Date Fields
+
+For date-time selection, the frontend requries a datepicker. The recommended datepicker is the [flatpickr library](https://flatpickr.js.org/).
+
+```php
+// Migration
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('business', function (Blueprint $table) {
+	        $table->id();
+	        $table->string('name')->nullable();
+	        $table->dateTime('started_at')->nullable();	   // create a date field     
+	        $table->timestamps();
+        });
+    }
+    
+    //...
+};
+```
+
+```php
+// Model
+use EMedia\Formation\Entities\GeneratesFields;
+
+class Business extends Model
+{
+	use GeneratesFields;
+	
+	// fillable will update the model fields
+	protected $fillable = [
+		'name',
+		'email',
+	];
+	
+	// define date fields <- this is important, so the dates will be properly cast
+	protected $dates = [
+		'started_at',
+	];
+	
+	// editable will show the form fields
+	protected $editable = [
+		'name',
+		'email',
+	];
 }
 ```
