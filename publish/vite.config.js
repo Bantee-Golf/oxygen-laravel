@@ -20,6 +20,7 @@ export default defineConfig({
 				'resources/sass/auth.scss',
 			],
 			publicDirectory: '/public/',
+			refresh: true,
 		}),
 
 		{
