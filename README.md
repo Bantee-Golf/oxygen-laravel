@@ -187,6 +187,8 @@ php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --ta
 
 Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit [during installation](wiki/INSTALLATION.md), and try the steps from there again.
 
+For more information, please read the [Troubleshooting Guide](wiki/TROUBLESHOOTING.md).
+
 ```
 // use this command to hard reset all files and remove any new files - NEVER DO THIS ON A LIVE SERVER!
 git reset --hard && git clean -fd
