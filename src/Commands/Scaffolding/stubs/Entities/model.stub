@@ -15,7 +15,7 @@ class {{ class }} extends Model
 	use GeneratesFields;
 
 	// Auto-generate UUIDs for new records
-	// user \ElegantMedia\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
+	// use \ElegantMedia\OxygenFoundation\Database\Eloquent\Traits\AssignsUuid;
 
 	// Uncomment the following if you want to use slug generation
 	// use \Spatie\Sluggable\HasSlug;

@@ -74,7 +74,7 @@ abstract class BaseScaffoldCommand extends GeneratorCommand
 
 		$stub = str_replace('{{tableName}}', $this->getEntityPluralLower('snake_case'), $stub);
 
-		$stub = str_replace('{{resourceName}}', $this->getEntityPluralLower('kebab_case'), $stub);
+		$stub = str_replace('{{resourceName}}', $this->getEntityPluralLower('kebab-case'), $stub);
 
 		return $stub;
 	}

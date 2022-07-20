@@ -157,6 +157,8 @@ Oxygen by default has a lot of built-in functions. Please read all the docs to u
 |---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
 | [Bouncer](https://github.com/JosephSilber/bouncer)                                                      | Access, Roles and Permission Handling                                             |
 | [Formation](https://bitbucket.org/elegantmedia/formation/src/master/README.md)                          | Form Builder                                                                      |
+| [Formation Examples](./wiki/FORMATION.md)                                                               | Form Builder Examples                                                             |
+| [Component Examples](./wiki/COMPONENTS.md)                                                              | Component Examples                                                                |
 | [Fortify](https://github.com/laravel/fortify)                                                           | Laravel Authentication                                                            |
 | [Oxygen App Settings](https://bitbucket.org/elegantmedia/laravel-app-settings/src/master/README.md)     | App setting storage and retrieval                                                 |
 | [Oxygen Devices](https://bitbucket.org/elegantmedia/devices-laravel/src/master/README.md)               | Device Authenticator for API Requests                                             |
@@ -184,6 +186,8 @@ php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --ta
 #### I got an error while installing, what do to?
 
 Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit [during installation](wiki/INSTALLATION.md), and try the steps from there again.
+
+For more information, please read the [Troubleshooting Guide](wiki/TROUBLESHOOTING.md).
 
 ```
 // use this command to hard reset all files and remove any new files - NEVER DO THIS ON A LIVE SERVER!

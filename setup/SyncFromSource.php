@@ -12,7 +12,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $repos = [
 	[
-		'branch' => 'https://raw.githubusercontent.com/laravel/laravel/master/',
+		'branch' => 'https://raw.githubusercontent.com/laravel/laravel/9.x/',
 		'local_dir' => __DIR__.'/../laravel/laravel/',
 		'files' => [
 			'app/Models/User.php',
