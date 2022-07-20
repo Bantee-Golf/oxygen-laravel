@@ -16,6 +16,7 @@ use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenRepositoryCommand;
 use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenSeederCommand;
 use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenSeedersCommand;
 use EMedia\Oxygen\Commands\Scaffolding\ScaffoldViewsCommand;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
@@ -84,6 +85,8 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->registerCustomValidators();
 
 		Fortify::viewPrefix('oxygen::auth.');
+
+		Blade::componentNamespace('EMedia\\Oxygen\\View\\Components', 'oxygen');
 	}
 
 
