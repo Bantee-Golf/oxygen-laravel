@@ -101,9 +101,9 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 
 	protected $requiredNpmPackages = [
 		'@fortawesome/fontawesome-free' => '~5.15.4',
-		'@popperjs/core' => '~2.10.2',
-		'@vitejs/plugin-vue' => '^2.3.0',
-		'bootstrap' => '~5.1.3',
+		'@popperjs/core' => '^2.10.2',
+		'@vitejs/plugin-vue' => '^3.0.1',
+		'bootstrap' => '^5.1.3',
 		'jquery' => '~3.6.0',
 		'jquery-validation' => '~1.19.3',
 		'select2' => '~4.1.0-rc.0',
