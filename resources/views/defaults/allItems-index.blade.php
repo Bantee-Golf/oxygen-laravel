@@ -33,7 +33,8 @@
         <tr>
             <td>{{ $item->id }}</td>
             <td>
-                <a href="{{ entity_resource_path() . '/' . $item->id }}">{{ $item->name }}</a>
+                <a href="{{ entity_resource_path() . '/' . $item->id }}"
+                   id="btn_view_{{ $item->id }}">{{ $item->name }}</a>
             </td>
             <td>
                 @if ($item->created_at)
@@ -44,6 +45,7 @@
                 <div class="btn-spaced">
 					@if ($canEditEntities ?? false)
 						<a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
+						   id="btn_edit_{{ $item->id }}"
 						   class="btn btn-warning js-tooltip"
 						   title="Edit"><em class="fa fa-edit"></em> Edit</a>
 					@endif
@@ -70,6 +72,7 @@
                             {{ method_field('delete') }}
                             {{ csrf_field() }}
                             <button class="btn btn-danger js-tooltip"
+									id="btn_delete_{{ $item->id }}"
                                     title="Delete"><em class="fa fa-times"></em> Delete</button>
                         </form>
                     @endif
