@@ -57,6 +57,6 @@ class OxygenServiceProvider extends ServiceProvider
 			return Limit::perMinute(5)->by($request->session()->get('login.id'));
 		});
 
-		\Illuminate\Pagination\Paginator::useBootstrap();
+		\Illuminate\Pagination\Paginator::useBootstrapFive();
 	}
 }
