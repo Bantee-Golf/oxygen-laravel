@@ -111,6 +111,7 @@ class ScaffoldViewsCommand extends BaseScaffoldCommand
 		return [
 			'index' => __DIR__ . '/../../../resources/views/defaults/allItems-index.blade.php',
 			'form'  => __DIR__ . '/../../../resources/views/defaults/formation-form.blade.php',
+			'show'  => __DIR__ . '/../../../resources/views/defaults/show.blade.php',
 		];
 	}
 
