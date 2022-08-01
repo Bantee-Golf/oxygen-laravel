@@ -1,4 +1,4 @@
-<div class="card card-style-data">
+<div {{ $attributes->merge(['class' => 'card card-style-data']) }}>
 	<div class="card-header text-white bg-secondary">
 		<span class="title">{{ $title }}</span>
 
