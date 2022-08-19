@@ -8,7 +8,7 @@
 
             <div class="col-md-8">
 
-                <div id="accordionLogin">
+                <div class="accordion" id="accordionLogin">
 
 					<div class="accordion-item">
 						<h2 class="accordion-header" id="headingTwo">
