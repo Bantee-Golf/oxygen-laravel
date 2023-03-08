@@ -390,6 +390,12 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 				'search'	=> "MAIL_HOST=mailhog",
 				'replace'	=> "MAIL_HOST=\"{$mailhost}\"",
 			];
+			// From Laravel v9.0, the default mail host changed to 'mailpit'
+			$stringsToReplace[] = [
+				'path'		=> base_path('.env'),
+				'search'	=> "MAIL_HOST=mailpit",
+				'replace'	=> "MAIL_HOST=\"{$mailhost}\"",
+			];
 		}
 
 		if ($mailport = $this->config->mailport) {
