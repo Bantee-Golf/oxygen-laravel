@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Session;
 class InvitationsController extends Controller
 {
 
-	private $invitationsRepo;
-	private $roleRepository;
+	protected $invitationsRepo;
+	protected $roleRepository;
 
 	public function __construct(InvitationRepository $invitationsRepo)
 	{

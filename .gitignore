@@ -6,6 +6,7 @@ LOCAL.md
 .DS_Store
 composer.lock
 .phpunit.result.cache
+.phpunit.cache/
 /publish/package.json
 /publish/package-lock.json
 /publish/yarn.lock

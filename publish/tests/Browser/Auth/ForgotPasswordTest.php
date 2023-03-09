@@ -128,7 +128,7 @@ class ForgotPasswordTest extends DuskTestCase
 	 */
 	protected function tearDown() : void
 	{
-		\DB::table('password_resets')->where('email', 'apps+user@elegantmedia.com.au')->delete();
+		\DB::table('password_reset_tokens')->where('email', 'apps+user@elegantmedia.com.au')->delete();
 
 		parent::tearDown();
 	}
