@@ -85,9 +85,9 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 	];
 
 	protected $composerRequireDev = [
-		'barryvdh/laravel-debugbar:^3.6',
-		'laravel/dusk:^6.0',
-		'emedia/laravel-test-kit:^2.0'
+		'barryvdh/laravel-debugbar:^3.8',
+		'laravel/dusk:^7.7',
+		'emedia/laravel-test-kit:3.x-dev'
 	];
 
 	protected $composerDontDiscover = [
@@ -178,9 +178,9 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 		$this->progressLog['instructions'][] = ['npm install',
 			'Install NPM packages. Check if Node.js is installed with `npm -v`'];
 		$this->progressLog['instructions'][] = ['npm run dev',
-			'Compile and build. If you get first time error, run it again.'];
-		$this->progressLog['instructions'][] = ['npm run watch',
 			'Run and watch the application on browser (Does NOT work with Homestead)'];
+		$this->progressLog['instructions'][] = ['npm run build',
+			'Compile and build for production.'];
 
 		// Setup Completed! Show any info to the user.
 		$this->showProgressLog();
