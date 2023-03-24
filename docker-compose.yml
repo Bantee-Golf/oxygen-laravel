@@ -4,7 +4,7 @@ services:
 
   # web app
   app:
-    image: emediaorg/php:8.1.0
+    image: emediaorg/php:8.1-202303
     container_name: appcontainer
     restart: unless-stopped
     volumes:
@@ -50,7 +50,10 @@ services:
 
   # selenium (for dusk and testing)
   selenium:
-    image: selenium/standalone-chrome:3.141.59
+    # Use official image (AMD/Linux)
+    # image: selenium/standalone-chrome:110.0
+    # Use experiment ARM/AMD Image
+    image: seleniarm/standalone-chromium:110.0-20230211
     container_name: selenium
     restart: unless-stopped
     shm_size: 2G

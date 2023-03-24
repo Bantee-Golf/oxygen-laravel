@@ -87,7 +87,7 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 	protected $composerRequireDev = [
 		'barryvdh/laravel-debugbar:^3.8',
 		'laravel/dusk:^7.7',
-		'emedia/laravel-test-kit:3.x-dev'
+		'emedia/laravel-test-kit:^3.0'
 	];
 
 	protected $composerDontDiscover = [

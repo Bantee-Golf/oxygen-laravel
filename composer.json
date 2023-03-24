@@ -75,9 +75,8 @@
 			"url": "git@bitbucket.org:elegantmedia/laravel-media-manager.git"
 		},
 		{
-			"type": "path",
-			"url": "../LaravelTestKit",
-			"url_live": "git@bitbucket.org:elegantmedia/laravel-test-kit.git"
+			"type": "vcs",
+			"url": "git@bitbucket.org:elegantmedia/laravel-test-kit.git"
 		},
         {
             "type":"vcs",

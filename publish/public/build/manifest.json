@@ -1,8 +1,4 @@
 {
-  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot": {
-    "file": "assets/fa-brands-400.e4299464.eot",
-    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot"
-  },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.eot": {
     "file": "assets/fa-regular-400.79d08806.eot",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.eot"
@@ -11,29 +7,33 @@
     "file": "assets/fa-solid-900.373c04fd.eot",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.eot"
   },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot": {
+    "file": "assets/fa-brands-400.e4299464.eot",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.eot"
+  },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
     "file": "assets/fa-regular-400.e42a8844.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
-  },
-  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
-    "file": "assets/fa-brands-400.8ea87917.woff2",
-    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
     "file": "assets/fa-solid-900.9834b82a.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400.8ea87917.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff": {
     "file": "assets/fa-regular-400.cb9e9e69.woff",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff"
   },
-  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff": {
-    "file": "assets/fa-brands-400.f9217f66.woff",
-    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff"
-  },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff": {
     "file": "assets/fa-solid-900.3f6d3488.woff",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff": {
+    "file": "assets/fa-brands-400.f9217f66.woff",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff"
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf": {
     "file": "assets/fa-regular-400.e8711bbb.ttf",
@@ -74,32 +74,32 @@
     ]
   },
   "resources/js/public.js": {
-    "file": "assets/public.05c0bbd2.js",
+    "file": "assets/public.690c3f36.js",
     "src": "resources/js/public.js",
     "isEntry": true,
     "imports": [
-      "_jquery.a78224b2.js",
+      "_jquery.84aed458.js",
       "_bootstrap.esm.b42d0391.js",
       "__commonjsHelpers.b8add541.js"
     ]
   },
   "resources/js/backend.js": {
-    "file": "assets/backend.7e52d4f1.js",
+    "file": "assets/backend.353d59dd.js",
     "src": "resources/js/backend.js",
     "isEntry": true,
     "imports": [
-      "_jquery.a78224b2.js",
+      "_jquery.84aed458.js",
       "_bootstrap.esm.b42d0391.js",
       "_index.f0052de0.js",
       "__commonjsHelpers.b8add541.js"
     ]
   },
   "resources/js/add-users-to-group.js": {
-    "file": "assets/add-users-to-group.0053858c.js",
+    "file": "assets/add-users-to-group.aff35c71.js",
     "src": "resources/js/add-users-to-group.js",
     "isEntry": true,
     "imports": [
-      "_jquery.a78224b2.js",
+      "_jquery.84aed458.js",
       "__commonjsHelpers.b8add541.js"
     ]
   },
@@ -112,8 +112,8 @@
   "__commonjsHelpers.b8add541.js": {
     "file": "assets/_commonjsHelpers.b8add541.js"
   },
-  "_jquery.a78224b2.js": {
-    "file": "assets/jquery.a78224b2.js",
+  "_jquery.84aed458.js": {
+    "file": "assets/jquery.84aed458.js",
     "imports": [
       "__commonjsHelpers.b8add541.js"
     ]
@@ -127,7 +127,7 @@
     "isEntry": true
   },
   "resources/sass/backend.scss": {
-    "file": "assets/backend.12f23387.css",
+    "file": "assets/backend.3d05bfe7.css",
     "src": "resources/sass/backend.scss",
     "isEntry": true
   },

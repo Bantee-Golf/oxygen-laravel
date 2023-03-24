@@ -2,12 +2,13 @@
 
 ## Version Compatibility
 
-| Laravel Version | Oxygen Version | Branch           |
-|----------------:|----------------|------------------|
-|     Laravel 9.2 | 6.1.x          | master           |
-|       Laravel 9 | 6.0            | master           |
-|       Laravel 8 | 5.x            | 5.x              |
-|       Laravel 7 | 4.x            | version/v4.x     |
+| Laravel Version | Oxygen Version | Branch       |
+|----------------:|----------------|--------------|
+|      Laravel 10 | 7.0.0          | 7.x          |
+|     Laravel 9.2 | 6.1.x          | 6.x          |
+|       Laravel 9 | 6.0            | 6.x          |
+|       Laravel 8 | 5.x            | 5.x          |
+|       Laravel 7 | 4.x            | version/v4.x |
 |              v6 | 3.x            |
 |             5.8 | 2.3.x          |
 |             5.7 | 2.2.20         |
@@ -15,6 +16,11 @@
 |             5.4 | 1.0.8          |
 |             5.3 | 0.3.2          |
 |             5.2 | 0.1.4          |
+
+## v7.0.0
+- Support for Laravel 10
+- Minimum PHP version is now 8.1
+- DB: `password_resets` tabled renamed to `password_reset_tokens` by Laravel.
 
 ## v6.1
 - Webpack replaced with Vite to support Laravel 9.2. If you want to use Webpack, follow [Laravel's Official guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-vite-to-laravel-mix).
