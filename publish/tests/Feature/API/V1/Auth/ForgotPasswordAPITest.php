@@ -26,7 +26,7 @@ class ForgotPasswordAPITest extends APIBaseTestCase
 
 		$response->assertStatus(200);
 
-		$this->assertDatabaseHas('password_resets', [
+		$this->assertDatabaseHas('password_reset_tokens', [
 			'email' => $data['email'],
 		]);
 	}

@@ -4,13 +4,6 @@
 
 ## Version Compatibility
 
-| Laravel Version | Oxygen Version | Branch       |
-|----------------:|----------------|--------------|
-|     Laravel 9.2 | 6.1            | 6.x          |
-|       Laravel 9 | 6.0            | 6.x          |
-|       Laravel 8 | 5.x            | 5.x          |
-|       Laravel 7 | 4.x            | version/v4.x |
-
 See [change log for change history](CHANGELOG.md) and compatibility with past versions.
 
 ## System Requirements

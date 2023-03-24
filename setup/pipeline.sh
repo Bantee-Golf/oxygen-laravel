@@ -20,11 +20,11 @@ BITBUCKET_CLONE_DIR=$(pwd)
 COMPOSER=$(which composer)
 cd ..
 rm -rf ./laravel_app
-composer create-project --prefer-dist --remove-vcs laravel/laravel="8.*" laravel_app --no-progress
+composer create-project --prefer-dist --remove-vcs laravel/laravel="10.*" laravel_app --no-progress
 cd laravel_app
 
 # step: Update composer values
-php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 5
+php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 7
 php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
 php -d memory_limit=8G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
 
@@ -34,22 +34,26 @@ php -d memory_limit=8G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no
 # step: Install Oxygen
 php artisan oxygen:dashboard:install --name Oxygen --email apps@elegantmedia.com.au --dev_url localhost.test:8000 --dbhost dbcontainer --dbuser appuser --dbpass userpass --mailhost mailhog --mailport 1025 --no-interaction
 composer dump-autoload
-npm install && npm run dev && npm run dev
+npm install && npm run build
 
 # step: test the Oxygen package setup
 sed -i -e 's#API_ACTIVE=false#API_ACTIVE=true#g' /laravel_app/.env
 sed -i -e 's#API_KEY=""#API_KEY="123-123-123-123"#g' /laravel_app/.env
 php artisan config:clear
 php artisan db:refresh
-./vendor/bin/phpunit --debug
+./vendor/bin/phpunit --testdox
 
 # step: install dusk
 php -d memory_limit=8G $COMPOSER require laravel/dusk --dev
 php artisan dusk:install
 
+# set the chrome driver version to the container version
+php artisan dusk:chrome-driver 110
+
 # step: change chrome port to selenium container
 # this should run after `dusk:install`
 sed -i 's#localhost:9515#selenium:4444/wd/hub#g' /laravel_app/tests/DuskTestCase.php
+sed -i -e 's#MAIL_MAILER=smtp#MAIL_MAILER=log#g' /laravel_app/.env
 
 # step: set .env for dusk
 cp .env .env.dusk.local
@@ -79,7 +83,7 @@ php artisan serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &
 
 
 # step: run dusk tests
-php artisan dusk --stop-on-error --stop-on-failure --debug --verbose
+php artisan dusk --stop-on-error --stop-on-failure
 
 # end.
 

@@ -1,4 +1,4 @@
-image: emediaorg/php:8.1.0
+image: emediaorg/php:8.1-202303
 
 pipelines:
     default:
@@ -11,9 +11,9 @@ pipelines:
               script:
                   - COMPOSER=$(which composer)
                   - cd /
-                  - php -d memory_limit=8G $COMPOSER create-project --prefer-dist --remove-vcs laravel/laravel="9.*" laravel_app
+                  - php -d memory_limit=8G $COMPOSER create-project --prefer-dist --remove-vcs laravel/laravel="10.*" laravel_app
                   - cd laravel_app
-                  - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 6
+                  - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run add-repositories --o_version 7
                   - php $BITBUCKET_CLONE_DIR/setup/oxygen-install.php --run set-local-repo --path $BITBUCKET_CLONE_DIR
                   - php -d memory_limit=8G $COMPOSER require emedia/oxygen:"@dev" --no-progress --no-interaction --ignore-platform-reqs --no-suggest
                   - php artisan oxygen:dashboard:install --name Oxygen --email apps@elegantmedia.com.au --dev_url 127.0.0.1:8000 --dbhost 127.0.0.1 --dbuser appuser --dbpass userpass --mailhost 127.0.0.1 --mailport 1025 --no-interaction
@@ -22,7 +22,9 @@ pipelines:
                   # Install Dusk
                   - php -d memory_limit=4G $COMPOSER require laravel/dusk --dev
                   - php artisan dusk:install
+                  - php artisan dusk:chrome-driver 110
                   - sed -i 's#localhost:9515#127.0.0.1:4444/wd/hub#g' /laravel_app/tests/DuskTestCase.php
+                  - sed -i -e 's#MAIL_MAILER=smtp#MAIL_MAILER=log#g' /laravel_app/.env
                   - cp .env .env.dusk.local
                   # clear cache after updating .env
                   - php artisan config:clear
@@ -30,13 +32,14 @@ pipelines:
                   # start the test server
                   - php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &
                   # run dusk tests
-                  - php artisan dusk --stop-on-error --stop-on-failure --debug --verbose
+                  - php artisan dusk --stop-on-error --stop-on-failure
                   # run application PHPUnit Tests
                   - sed -i -e 's#API_ACTIVE=false#API_ACTIVE=true#g' /laravel_app/.env
                   - sed -i -e 's#API_KEY=""#API_KEY="123-123-123-123"#g' /laravel_app/.env
+                  - sed -i -e 's#MAIL_MAILER=log#MAIL_MAILER=smtp#g' /laravel_app/.env
                   - php artisan config:clear
                   - php artisan db:refresh
-                  - vendor/bin/phpunit --debug
+                  - vendor/bin/phpunit --testdox
               services:
                   - mysql
                   - mail
@@ -84,7 +87,7 @@ definitions:
 
         # selenium (for dusk and testing)
         selenium:
-            image: selenium/standalone-chrome:3.141.59
+            image: seleniarm/standalone-chromium:110.0-20230211
             container_name: selenium
             restart: unless-stopped
             shm_size: 2G
@@ -93,6 +96,6 @@ definitions:
             ports:
                 - "4444:4444"
             links:
-                - app:localhost.devv
+                - app:localhost.test
             networks:
                 - app-network

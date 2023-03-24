@@ -8,7 +8,7 @@
  */
 function initialize()
 {
-	$args = getopt(null, ["run:", 'path:', 'o_version:']);
+	$args = getopt('', ["run:", 'path:', 'o_version:']);
 
 	$allowedCommands = [
 		'add-repositories',
@@ -27,7 +27,7 @@ function initialize()
 	// run the commands
 	switch ($command) {
 		case 'add-repositories':
-			$version = '5';
+			$version = '7';
 			if (!empty($args['o_version'])) {
 				$version = $args['o_version'];
 			}
@@ -55,7 +55,7 @@ function initialize()
  *
  * @return array
  */
-function get_composer_json()
+function get_composer_json(): array
 {
 
 	if (!file_exists('composer.json')) {
@@ -73,7 +73,7 @@ function get_composer_json()
  *
  * @param $jsonArray
  */
-function write_composer_json($jsonArray)
+function write_composer_json($jsonArray): void
 {
 	file_put_contents('composer.json', json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
@@ -86,7 +86,7 @@ function write_composer_json($jsonArray)
  *
  * @throws Exception
  */
-function add_repositories_to_composer_json($version = '5')
+function add_repositories_to_composer_json(string $version = '7')
 {
 	// merge the existing composer.json contents with a stub file
 	switch ($version) {
@@ -111,10 +111,12 @@ function add_repositories_to_composer_json($version = '5')
 }
 
 /**
- * @param $localRepoPath
+ * @param string $localRepoPath
+ *
  * @return bool
+ * @throws Exception
  */
-function replace_oxygen_with_a_local_repo($localRepoPath)
+function replace_oxygen_with_a_local_repo(string $localRepoPath): bool
 {
 	$json = get_composer_json();
 	if (!isset($json['repositories'])) {
