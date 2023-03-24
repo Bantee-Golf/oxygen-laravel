@@ -1,4 +1,4 @@
-# Oxygen v6 - Admin Dashboard for Laravel
+# Oxygen - Admin Dashboard for Laravel
 
 ![Admin Dashboard](https://bitbucket.org/repo/Gdn48E/images/570218285-Workbench%20Dashboard%202020-11-04%2015-52-49.png)
 
