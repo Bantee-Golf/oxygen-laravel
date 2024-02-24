@@ -56,39 +56,39 @@
     "repositories": [
 		{
 			"type": "vcs",
-			"url": "git@bitbucket.org:elegantmedia/devices-laravel.git"
+			"url": "git@github.com:Bantee-Golf/devices-laravel.git"
 		},
 		{
 			"type": "vcs",
-			"url": "git@bitbucket.org:elegantmedia/laravel-app-settings.git"
+			"url": "git@github.com:Bantee-Golf/laravel-app-settings.git"
 		},
 		{
 			"type": "vcs",
-			"url": "git@bitbucket.org:elegantmedia/devices-laravel.git"
+			"url": "git@github.com:Bantee-Golf/devices-laravel.git"
 		},
 		{
 			"type": "vcs",
-			"url": "git@bitbucket.org:elegantmedia/laravel-api-helpers.git"
+			"url": "git@github.com:Bantee-Golf/laravel-api-helpers.git"
 		},
 		{
 			"type": "vcs",
-			"url": "git@bitbucket.org:elegantmedia/laravel-media-manager.git"
+			"url": "git@github.com:Bantee-Golf/laravel-media-manager.git"
 		},
 		{
 			"type": "vcs",
-			"url": "git@bitbucket.org:elegantmedia/laravel-test-kit.git"
+			"url": "git@github.com:Bantee-Golf/laravel-test-kit.git"
 		},
         {
             "type":"vcs",
-            "url":"git@bitbucket.org:elegantmedia/lotus.git"
+            "url":"git@github.com:Bantee-Golf/lotus.git"
         },
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:elegantmedia/formation.git"
+            "url": "git@github.com:Bantee-Golf/formation.git"
         },
 		{
 			"type": "vcs",
-			"url": "git@bitbucket.org:elegantmedia/multitenant-laravel.git"
+			"url": "git@github.com:Bantee-Golf/multitenant-laravel.git"
 		}
 	],
 	"config": {
