@@ -4,7 +4,7 @@
 
 @section('page-container')
     <div id="page-container" class="admin-page-container">
-        <div id="page-container-wrapper">
+        <div id="page-container-wrapper" class="row">
             <div id="sidebar">
                 @include('oxygen::dashboard.sidebar')
             </div>

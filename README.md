@@ -4,11 +4,16 @@
 
 ## Version Compatibility
 
+| Laravel Version   | Oxygen Version    | Branch           |
+| -----------------:| ----------------- |------------------|
+| v8                | 5.x               | master           |
+| v7                | 4.x               | version/v4.x     |
+
 See [change log for change history](CHANGELOG.md) and compatibility with past versions.
 
 ## System Requirements
 
-- [Laravel Server Requirements](https://laravel.com/docs/9.x/deployment#server-requirements)
+- PHP 7.3+
 - [NodeJS with NPM](https://docs.npmjs.com/getting-started/installing-node)
 
 
@@ -17,10 +22,10 @@ See [change log for change history](CHANGELOG.md) and compatibility with past ve
 The easiest way to do it is by using the [Oxygen Installer](https://bitbucket.org/elegantmedia/oxygen-installer). With the installer, you can create a project with one line.
 
 ```
-oxygen new myproject --name 'Oxygen' --email apps@elegantmedia.com.au --dev_url 'localhost.test'
+oxygen new myproject --name 'Oxygen' --email apps@elegantmedia.com.au --devurl 'localhost.test'
 ```
 
-If you don't want to use the installer, you can install it with manual setup. [See Manual Setup Instructions](wiki/INSTALLATION.md). After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
+If you don't want to use the installer, you can install it with manual setup. [See Manual Setup Instructions](INSTALLATION.md). After the setup is done, you'll see the next steps on screen. These build instructions will be also added to your `README.md` file.
 
 ## Developer Commands
 
@@ -37,29 +42,17 @@ php artisan setup:create-user
 
 You can generate default models using following commands. The examples below uses an object `car` as an example.
 
-| Command                                        | What it does                     |
-|------------------------------------------------|----------------------------------|
-| `php artisan make:oxygen:model car`         	  | Create a new model               |
-| `php artisan make:oxygen:repository car`       | Create a new repository          |
-| `php artisan make:oxygen:admin-controller car` | Create a new Admin controller    |
-| `php artisan make:oxygen:api-controller car`   | Create a new API controller      |
-| `php artisan make:oxygen:seeder car`           | Create a new seeder with Faker   |
-| `php artisan scaffold:views`                   | Scaffold default admin views     |
-| `php artisan scaffold:views manage.cars`       | Scaffold default views with name |
+| Command | What it does |
+| --- | --- |
+| `php artisan make:oxygen:model car` 	  			| Create a new model 			|
+| `php artisan make:oxygen:repository car` 	  		| Create a new repository 		|
+| `php artisan make:oxygen:admin-controller car` 	| Create a new Admin controller |
+| `php artisan make:oxygen:api-controller car` 	  	| Create a new API controller 	|
+| `php artisan scaffold:views` 	  					| Scaffold default admin views 	|
+| `php artisan scaffold:views --path=manage.cars` 	| Scaffold example 	|
 
 The last command will create the default views within `resources/views/manage/cars`, or in the path that you specify.
 
-You can also create multiple resources with a single command.
-
-| Command                                                | What it does                 |
-|--------------------------------------------------------|------------------------------|
-| `php artisan make:oxygen:models car van bus`           | Create new models            |
-| `php artisan make:oxygen:repositories car van`         | Create new repositories      |
-| `php artisan make:oxygen:admin-controllers car van` 	  | Create new Admin controllers |
-| `php artisan make:oxygen:api-controllers car van`      | Create new API controllers   |
-| `php artisan make:oxygen:migrations car van`           | Create multiple tables       |
-| `php artisan make:oxygen:seeders car van`              | Create multiple seeders      |
-| `php artisan scaffold:views manage.cars manage.vans`   | Scaffold multiple views      |
 
 ## Helper Functions
 
@@ -135,31 +128,29 @@ Blade Variables
 
 You can get the current logged-in user by using any of these methods, based on where you are. For `$request` to work, the default Request must be available within the context.
 
-| Where             | Code                                      | When                                                |
-|-------------------|-------------------------------------------|-----------------------------------------------------|
-| Views             | `{{ $user->name }}`                       | Only when a user is logged in.                      |
-| Controllers       | `request()->user()` or `auth()->user()`   | Only when a user is logged in.                      |
-| APIs              | `request()->user()` or `$request->user()` | Only on routes with `auth.api.logged-in` middleware | 
-| User Class Name 	 | `app('oxygen')::getUserClass()`           | Will return the FQ class name of the User model 	   |
+| Where | Code | When |
+| --- | --- | --- |
+| Views 	  		| `{{ $user->name }}` 							| Only when a user is logged in. |
+| Controllers 		| `request()->user()` or `auth()->user()`		| Only when a user is logged in. |
+| APIs		  		| `request()->user()` or `$request->user()`		| Only on routes with `auth.api.logged-in` middleware | 
+| User Class Name 	| `app('oxygen')::getUserClass()`				| Will return the FQ class name of the User model 	  |
 
 ## Must Read Instructions
 
 Oxygen by default has a lot of built-in functions. Please read all the docs to understand all features. Otherwise you'll be spending a lot of time re-doing existing features.
 
-| Library                                                                                                 | What it Does                                                                      |
-|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| [Bouncer](https://github.com/JosephSilber/bouncer)                                                      | Access, Roles and Permission Handling                                             |
-| [Formation](https://bitbucket.org/elegantmedia/formation/src/master/README.md)                          | Form Builder                                                                      |
-| [Formation Examples](./wiki/FORMATION.md)                                                               | Form Builder Examples                                                             |
-| [Component Examples](./wiki/COMPONENTS.md)                                                              | Component Examples                                                                |
-| [Fortify](https://github.com/laravel/fortify)                                                           | Laravel Authentication                                                            |
-| [Oxygen App Settings](https://bitbucket.org/elegantmedia/laravel-app-settings/src/master/README.md)     | App setting storage and retrieval                                                 |
-| [Oxygen Devices](https://bitbucket.org/elegantmedia/devices-laravel/src/master/README.md)               | Device Authenticator for API Requests                                             |
-| [Laravel API Helpers](https://bitbucket.org/elegantmedia/laravel-api-helpers/src/master/README.md)      | API and Documentation Generator                                                   |
-| [Laravel Media Manager](https://bitbucket.org/elegantmedia/laravel-media-manager/src/master//README.md) | File and Media Handling Library                                                   |
-| [Laravel Test Kit](https://bitbucket.org/elegantmedia/laravel-test-kit/src/master/README.md)            | Integration Testing Helper Library                                                |
-| [Lotus](https://bitbucket.org/elegantmedia/lotus/src/master/README.md)                                  | Breadcrumbs, Page Titles, Tables, Pagination, Empty State and other Html Elements |
-| [PHP Toolkit](https://github.com/elegantmedia/PHP-Toolkit)                                              | PHP Utility Library                                                               |
+| Library | What it Does |
+| ------- | ------------ |
+| [Bouncer](https://github.com/JosephSilber/bouncer)                                                    | Access, Roles and Permission Handling |
+| [Formation](https://bitbucket.org/elegantmedia/formation/src/master/README.md)                        | Form Builder |
+| [Fortify](https://github.com/laravel/fortify)                                                         | Laravel Authentication |
+| [Oxygen App Settings](https://bitbucket.org/elegantmedia/laravel-app-settings/src/master/README.md)   | App setting storage and retrieval |
+| [Oxygen Devices](https://bitbucket.org/elegantmedia/devices-laravel/src/master/README.md)             | Device Authenticator for API Requests |
+| [Laravel API Helpers](https://bitbucket.org/elegantmedia/laravel-api-helpers/src/master/README.md)    | API and Documentation Generator |
+| [Laravel Media Manager](https://bitbucket.org/elegantmedia/laravel-media-manager/src/master//README.md)  | File and Media Handling Library |
+| [Laravel Test Kit](https://bitbucket.org/elegantmedia/laravel-test-kit/src/master/README.md)          | Integration Testing Helper Library |
+| [Lotus](https://bitbucket.org/elegantmedia/lotus/src/master/README.md)                                | Breadcrumbs, Page Titles, Tables, Pagination, Empty State and other Html Elements |
+| [PHP Toolkit](https://github.com/elegantmedia/PHP-Toolkit)                                            | PHP Utility Library |
 
 ## After Installation
 
@@ -178,9 +169,7 @@ php artisan vendor:publish --provider="EMedia\Oxygen\OxygenServiceProvider" --ta
 
 #### I got an error while installing, what do to?
 
-Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit [during installation](wiki/INSTALLATION.md), and try the steps from there again.
-
-For more information, please read the [Troubleshooting Guide](wiki/TROUBLESHOOTING.md).
+Probably it's a conflict with an previously partially completed setup. If this happens, rollback everything to the commit [during installation](INSTALLATION.md), and try the steps from there again.
 
 ```
 // use this command to hard reset all files and remove any new files - NEVER DO THIS ON A LIVE SERVER!
@@ -226,12 +215,12 @@ Don't stay quiet and ignore any issues or improvement suggestions.
 - [Create an Issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues?status=new&status=open)
 - Submit a pull request (on a new branch) or [submit an issue](https://bitbucket.org/elegantmedia/oxygen-laravel/issues).
 - **DO NOT** commit new changes directly to the `master` branch. Create a development branch, and then send a pull-request to master, and get someone else to review the code before merging.
-- Please see [contributing guidelines](wiki/CONTRIBUTING.md) and for details.
+- Please see [contributing guidelines](CONTRIBUTING.md) and for details.
 
 ## Development Notes
 
-See [CONTRIBUTING.md](wiki/CONTRIBUTING.md) for more developer and local setup instructions.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more developer and local setup instructions.
 
 ## Copyright
 
-Copyright (c) 2022 Elegant Media.
+Copyright (c) 2020 Elegant Media.

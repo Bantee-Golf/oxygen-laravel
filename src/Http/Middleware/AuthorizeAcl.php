@@ -128,7 +128,7 @@ class AuthorizeAcl
 	 *
 	 * @return array
 	 */
-	protected function splitRules($group, $rule)
+	private function splitRules($group, $rule)
 	{
 		$rules = null;
 
@@ -144,7 +144,7 @@ class AuthorizeAcl
 		return $rules;
 	}
 
-	protected function splitRulesWhitelist($group, $rule)
+	private function splitRulesWhitelist($group, $rule)
 	{
 		$rules = null;
 
@@ -160,7 +160,7 @@ class AuthorizeAcl
 		return $rules;
 	}
 
-	protected function unauthorizedResponse($request)
+	private function unauthorizedResponse($request)
 	{
 		if ($request->ajax()) {
 			return response('Unauthorized.', 401);

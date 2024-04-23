@@ -15,8 +15,8 @@ class ScaffoldViewsCommand extends BaseScaffoldCommand
 	 *
 	 * @var string
 	 */
-	protected $signature = 'scaffold:views {paths?* : View resource path}';
-
+	protected $signature = 'scaffold:views
+								{--path= : View resource path}';
 
 	/**
 	 * The console command description.
@@ -39,34 +39,17 @@ class ScaffoldViewsCommand extends BaseScaffoldCommand
 	{
 		// get resource path eg: manage.users, oxygen::manage.users
 
-		$paths = $this->argument('paths');
+		$path = $this->option('path');
 
-		if (empty($paths)) {
-			$answer = $this->ask("What is the view resource path, excluding final view name? (Example: manage.users)");
-			if ($answer) {
-				$paths[] = $answer;
-			}
+		if (empty($path)) {
+			$path = $this->ask("What is the view resource path, excluding final view name? (Example: manage.users)");
 		}
 
-		if (empty($paths)) {
+		if (empty($path)) {
 			$this->error("Need a resource path to continue");
 			return;
 		}
 
-		foreach ($paths as $path) {
-			$this->createViewsForPath($path);
-		}
-	}
-
-	/**
-	 * @param $path
-	 *
-	 * @return void
-	 * @throws FileNotFoundException
-	 * @throws \ElegantMedia\PHPToolkit\Exceptions\FIleSystem\DirectoryNotCreatedException
-	 */
-	protected function createViewsForPath($path)
-	{
 		$delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
 
 		$vendor = explode($delimiter, $path);
@@ -111,7 +94,6 @@ class ScaffoldViewsCommand extends BaseScaffoldCommand
 		return [
 			'index' => __DIR__ . '/../../../resources/views/defaults/allItems-index.blade.php',
 			'form'  => __DIR__ . '/../../../resources/views/defaults/formation-form.blade.php',
-			'show'  => __DIR__ . '/../../../resources/views/defaults/show.blade.php',
 		];
 	}
 

@@ -7,7 +7,6 @@ use ElegantMedia\SimpleRepository\Search\Eloquent\SearchableLike;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Spatie\Sluggable\SlugOptions;
 
 class File extends Model
 {
@@ -96,17 +95,21 @@ class File extends Model
 		return $keys;
 	}
 
-	// use \Spatie\Sluggable\HasSlug;
+	// use \Cviebrock\EloquentSluggable\Sluggable;
+
 	/**
-	 * Return the configuration options for this model.
+	 * Return the sluggable configuration array for this model.
 	 *
 	 * @return array
 	 */
 	/*
-	}
-	public function getSlugOptions(): \Spatie\Sluggable\SlugOptions
+	public function sluggable(): array
 	{
-		return \Spatie\Sluggable\SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
+		return [
+			'slug' => [
+				'source' => 'name'
+			]
+		];
 	}
 	*/
 

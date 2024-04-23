@@ -2,25 +2,29 @@
 
 namespace App\Entities\Auth;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use EMedia\Oxygen\Entities\Auth\SingleTenant\Ability as AbilityBase;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
 class Ability extends AbilityBase
 {
 
-	use HasSlug;
+	use Sluggable;
 
 	protected $fillable = ['name', 'title'];
 
-	public function getSlugOptions(): SlugOptions
+	public function sluggable(): array
 	{
-		return SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('name')
-									->slugsShouldBeNoLongerThan(150);
+		return [
+			'name' => [
+				'source' => 'title',
+				'maxLength' => 150,
+			]
+		];
 	}
 
 	public function category()
 	{
 		return $this->belongsTo(AbilityCategory::class, 'ability_category_id');
 	}
+
 }

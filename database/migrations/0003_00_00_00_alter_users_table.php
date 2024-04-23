@@ -33,6 +33,14 @@ class AlterUsersTable extends Migration
 
             $table->string('timezone')->nullable()->default('Australia/Melbourne');
 		});
+
+		if (!Schema::hasTable('password_resets')) {
+			Schema::create('password_resets', function (Blueprint $table) {
+				$table->string('email')->index();
+				$table->string('token');
+				$table->timestamp('created_at')->nullable();
+			});
+		}
 	}
 
 	/**
@@ -60,5 +68,7 @@ class AlterUsersTable extends Migration
                 'timezone'
 			]);
 		});
+
+		Schema::dropIfExists('password_resets');
 	}
 }

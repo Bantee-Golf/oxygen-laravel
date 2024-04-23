@@ -25,14 +25,14 @@
                     <input type="hidden" name="id" value="{{ $entity->id }}" />
                 @else
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label text-md-end">File Type</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label text-right">File Type</label>
                         <div class="col-sm-10">
-                        	{{ html()->select('key', $fileKeys, $selectedKey)->addClass('form-control') }}
+                            {{ Form::select('key', $fileKeys, $selectedKey, ['class' => 'form-control']) }}
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label text-md-end">Custom Key</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label text-right">Custom Key</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="custom_key" name="custom_key" value="{{ $entity->custom_key }}">
                             <small id="currentPasswordHelpBlock" class="form-text text-muted">
@@ -43,7 +43,7 @@
                 @endif
 
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label text-md-end">File</label>
+                    <label for="inputEmail3" class="col-sm-2 col-form-label text-right">File</label>
                     <div class="col-sm-10">
                         <input type="file" class="form-control" id="file" name="file">
                         <small id="currentPasswordHelpBlock" class="form-text text-muted">
@@ -53,9 +53,9 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="allow_public_access" class="col-sm-2 col-form-label text-md-end">Public Access</label>
-                    <div class="col-sm-10 align-self-center">
-                    	{{ html()->checkbox('allow_public_access', $entity->allow_public_access, 'true') }}
+                    <label for="allow_public_access" class="col-sm-2 col-form-label text-right">Public Access</label>
+                    <div class="col-sm-10">
+                        {{ Form::checkbox('allow_public_access', 'true', $entity->allow_public_access) }}
                         <small id="allow_public_access" class="form-text text-muted">
                             Should this file have public access?
                         </small>
@@ -65,8 +65,8 @@
                 <hr>
                 <div class="form-group row">
                     <div class="col-sm-10 offset-2">
-                        <button type="submit" class="btn btn btn-success btn-wide ">
-                            Upload File
+                        <button type="submit" class="btn btn btn-success btn-lg btn-wide ">
+                            Upload
                         </button>
                     </div>
                 </div>

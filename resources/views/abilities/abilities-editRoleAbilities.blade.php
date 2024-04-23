@@ -23,7 +23,7 @@
                                 @foreach($category->abilities as $ability)
                                     <div class="checkbox">
                                         <label>
-                                        	{{ html()->checkbox('abilities[]', in_array($ability->name, $currentAbilities), $ability->name) }}
+                                            {{ Form::checkbox('abilities[]', $ability->name, in_array($ability->name, $currentAbilities), []) }}
                                             {{ $ability->title }}
                                         </label>
                                     </div>

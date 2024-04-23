@@ -4,15 +4,10 @@
  * code may be modified to fit the specific needs of your application.
  */
 
-import $ from "jquery";
-window.$ = $;
+window.Popper = require('popper.js').default;
+window.$ = window.jQuery = require('jquery');
 
-// Popper.js
-import { createPopper } from '@popperjs/core';
-window.Popper = createPopper;
-
-// Bootstrap
-import * as bootstrap from 'bootstrap'
+require('bootstrap');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -20,35 +15,36 @@ import * as bootstrap from 'bootstrap'
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
-window.axios = axios;
+window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /*
- |-------------------------------------
+ |--------------------------------------------------------------------------
  |
  | Load the dependencies
  |
- |-------------------------------------
+ |--------------------------------------------------------------------------
  */
-
-// import 'dropzone';
+require('typeahead.js');
+require('jquery-validation');
+require('select2');
+require('dropzone');
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 /*
- |-------------------------------------
+ |--------------------------------------------------------------------------
  |
  | Custom Features for Oxygen
  |
- |-------------------------------------
+ |--------------------------------------------------------------------------
  */
 
 
 /*
- |-------------------------------------
+ |-----------------------------------------------------------
  | Setup Global Object
- |-------------------------------------
+ |-----------------------------------------------------------
  */
 // Responsive Breakpoints
 // Small    < 768px
@@ -297,10 +293,7 @@ $(document).ready(function () {
 	});
 
 	// trigger tooltips
-	let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-	let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-		return new bootstrap.Tooltip(tooltipTriggerEl)
-	})
+	$('.js-tooltip, [data-toggle="tooltip"]').tooltip();
 
 	// collapse sidebar
 	$('.js-toggle-right-mini-sidebar').on('click', function (e) {

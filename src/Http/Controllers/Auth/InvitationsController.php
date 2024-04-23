@@ -5,7 +5,6 @@ namespace EMedia\Oxygen\Http\Controllers\Auth;
 use EMedia\MultiTenant\Facades\TenantManager;
 use EMedia\Oxygen\Entities\Invitations\Invitation;
 use EMedia\Oxygen\Entities\Invitations\InvitationRepository;
-use EMedia\Oxygen\Mail\UserInvitedMail;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -17,8 +16,8 @@ use Illuminate\Support\Facades\Session;
 class InvitationsController extends Controller
 {
 
-	protected $invitationsRepo;
-	protected $roleRepository;
+	private $invitationsRepo;
+	private $roleRepository;
 
 	public function __construct(InvitationRepository $invitationsRepo)
 	{
@@ -133,7 +132,10 @@ class InvitationsController extends Controller
 			'subject'=> $subject
 		];
 
-		Mail::to($invite->email)->send(new UserInvitedMail($data));
+		Mail::send('oxygen::emails.invitations.invitation_group', $data, function ($message) use ($invite, $subject) {
+			$message->to($invite->email)
+				->subject($subject);
+		});
 
 		$this->invitationsRepo->touchSentTime($invite);
 

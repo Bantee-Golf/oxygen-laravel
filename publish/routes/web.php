@@ -6,7 +6,6 @@ use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
-use App\Http\Controllers\Common\PagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,13 +35,13 @@ Route::get('/', function () {
 })->name('home');
 
 // Filler Pages...
-Route::get('/privacy-policy', [PagesController::class, 'privacyPolicy'])->name('pages.privacy-policy');
-Route::get('/terms-conditions', [PagesController::class, 'termsConditions'])->name('pages.terms-conditions');
-Route::get('/faqs', [PagesController::class, 'faqs'])->name('pages.faqs');
+Route::get('/privacy-policy', 'Common\PagesController@privacyPolicy')->name('pages.privacy-policy');
+Route::get('/terms-conditions', 'Common\PagesController@termsConditions')->name('pages.terms-conditions');
+Route::get('/faqs', 'Common\PagesController@faqs')->name('pages.faqs');
 
 // Contact Us...
-Route::get('/contact-us', [PagesController::class, 'contactUs'])->name('contact-us');
-Route::post('/contact-us', [PagesController::class, 'postContactUs']);
+Route::get('/contact-us', 'Common\PagesController@contactUs')->name('contact-us');
+Route::post('/contact-us', 'Common\PagesController@postContactUs');
 
 // Add Other Custom Pages Here...
 

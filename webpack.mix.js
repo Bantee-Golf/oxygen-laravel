@@ -2,12 +2,6 @@ const mix = require('laravel-mix');
 
 mix.setPublicPath('publish/public/');
 
-/*
- |-----------------------------------------------------------
- | This file is deprecated. Only kept for reference and will be removed in future.
- |-----------------------------------------------------------
- */
-
 mix.js('publish/resources/js/public.js', 'js/dist')
 	.js('publish/resources/js/backend.js', 'js/dist')
 

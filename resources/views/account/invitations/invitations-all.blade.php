@@ -61,7 +61,7 @@
                                             @if (empty($invitation->claimed_at))
                                                 <a href="{{ $invitation->invitation_code_permalink }}"
                                                    class="btn btn-warning"
-                                                   data-bs-toggle="tooltip"
+                                                   data-toggle="tooltip"
                                                    target="_blank"
                                                    title="Visit link">
                                                     <i class="fas fa-external-link-alt"></i> Link
@@ -72,7 +72,7 @@
                                             @if (empty($invitation->claimed_at))
                                                 <form class="form-inline js-confirm-delete" role="form" method="POST"
                                                 	  action="/account/invitations/{{ $invitation->id }}"
-                                                      data-bs-toggle="tooltip" title="Delete Invite">
+                                                      data-toggle="tooltip" title="Delete Invite">
                                                     @csrf
                                                     <input type="hidden" name="_method" value="delete" />
                                                     <button class="btn btn-danger"><i class="fas fa-times"></i> Delete</button>

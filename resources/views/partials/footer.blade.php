@@ -13,7 +13,7 @@
                     </ul>
                 </div>
 
-                <div class="col-6 col-sm-6 text-end">
+                <div class="col-6 col-sm-6 text-right">
                     <span class="text">
                         Licenced to {{ config('app.name') }}
                         <br>

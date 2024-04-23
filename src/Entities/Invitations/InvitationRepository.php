@@ -56,6 +56,19 @@ class InvitationRepository extends BaseRepository
 
 		$invite = $query->first();
 
+		// if there's an existing invite, it must be either unaccepted or for an existing user
+		// if the user exists, we have to check if both emails match.
+		// if they don't match, it's likely the user's email is changed. In that case, we can delete the existing
+		// invitation code.
+		if ($invite && !empty($invite->claimed_at)) {
+			$userModel = app('oxygen')::makeUserModel();
+			$existingUser = $userModel->withTrashed()->where('email', $inviteEmail)->first();
+			if (!$existingUser) {
+				$invite->delete();
+				$invite = null;
+			}
+		}
+
 		if ((!$invite) || empty($invite->invitation_code)) {
 			$invitationCode = $this->generateUniqueInvitationCode();
 			if (! empty($invitationCode)) {

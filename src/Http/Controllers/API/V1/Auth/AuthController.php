@@ -205,7 +205,7 @@ class AuthController extends APIBaseController
 		]);
 
 		if (!auth()->attempt($request->only('email', 'password'), true)) {
-			return response()->apiErrorUnauthorized(trans('auth.failed'));
+			return response()->apiErrorUnauthorized(trans('auth.api.login-failed'));
 		}
 
 		$user = auth()->user();

@@ -85,9 +85,9 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 	];
 
 	protected $composerRequireDev = [
-		'barryvdh/laravel-debugbar:^3.8',
-		'laravel/dusk:^7.7',
-		'emedia/laravel-test-kit:^3.0'
+		'barryvdh/laravel-debugbar:^3.5',
+		'laravel/dusk:^6.0',
+		'emedia/laravel-test-kit:^1.0'
 	];
 
 	protected $composerDontDiscover = [
@@ -100,20 +100,25 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 	];
 
 	protected $requiredNpmPackages = [
-		'@fortawesome/fontawesome-free' => '~5.15.4',
-		'@popperjs/core' => '^2.10.2',
-		'@vitejs/plugin-vue' => '^4.1.0',
-		'bootstrap' => '^5.1.3',
-		'jquery' => '~3.6.0',
-		'jquery-validation' => '~1.19.3',
-		'select2' => '~4.1.0-rc.0',
-		'dropzone' => '~5.9.3',
-		'sweetalert2' => '~11.4.20',
-		'vue' => '^3.2.0',
+		'@fortawesome/fontawesome-free' => '~5.13.0',
+		'bootstrap' => '~4.5.2',
+		'jquery' => '~3.5.1',
+		'jquery-validation' => '~1.19.2',
+		'popper.js' => '~1.14.3',
+		'select2' => '~4.0.13',
+		'typeahead.js' => '~0.11.1',
+		'dropzone' => '~5.7.2',
+		'sweetalert2' => '~10.8.1',
 	];
 
 	protected $requiredNpmDevPackages = [
-		'sass' => '~1.49.7',
+		'postcss-import' => '^12.0.1',
+		'vue' => '^2.5.17',
+		'vue-template-compiler' => '^2.6.10',
+		'sass-loader' => '~8.0.2',
+		'sass' => '~1.26.11',
+		'browser-sync' => '~2.26.13',
+		'browser-sync-webpack-plugin' => '~2.2.2',
 	];
 
 	/**
@@ -178,9 +183,9 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 		$this->progressLog['instructions'][] = ['npm install',
 			'Install NPM packages. Check if Node.js is installed with `npm -v`'];
 		$this->progressLog['instructions'][] = ['npm run dev',
+			'Compile and build. If you get first time error, run it again.'];
+		$this->progressLog['instructions'][] = ['npm run watch',
 			'Run and watch the application on browser (Does NOT work with Homestead)'];
-		$this->progressLog['instructions'][] = ['npm run build',
-			'Compile and build for production.'];
 
 		// Setup Completed! Show any info to the user.
 		$this->showProgressLog();
@@ -324,7 +329,7 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 
 		if (!empty($this->config->dev_url)) {
 			$stringsToReplace[] = [
-				'path'		=> base_path('vite.config.js'),
+				'path'		=> base_path('webpack.mix.js'),
 				'search'	=> "localhost.test",
 				'replace'	=> $this->config->dev_url,
 			];
@@ -388,12 +393,6 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 			$stringsToReplace[] = [
 				'path'		=> base_path('.env'),
 				'search'	=> "MAIL_HOST=mailhog",
-				'replace'	=> "MAIL_HOST=\"{$mailhost}\"",
-			];
-			// From Laravel v9.0, the default mail host changed to 'mailpit'
-			$stringsToReplace[] = [
-				'path'		=> base_path('.env'),
-				'search'	=> "MAIL_HOST=mailpit",
 				'replace'	=> "MAIL_HOST=\"{$mailhost}\"",
 			];
 		}
@@ -480,7 +479,7 @@ class OxygenDashboardInstallCommand extends ExtensionInstallCommand
 
 			$stringsToReplace[] = [
 				'path'    => $filePath,
-				'search'  => "MAIL_FROM_ADDRESS=hello@example.com",
+				'search'  => "MAIL_FROM_ADDRESS=null",
 				'replace' => "MAIL_FROM_ADDRESS=\"{$this->config->email}\"",
 			];
 

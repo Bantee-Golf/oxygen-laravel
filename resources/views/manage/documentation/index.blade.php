@@ -21,7 +21,7 @@
                 @foreach ($apiKeys as $apiKey)
                     <tr>
                         <td>API KEY</td>
-                        <td class="text-end">
+                        <td class="text-right">
                             <code>{{ $apiKey }}</code>
                         </td>
                     </tr>
@@ -35,7 +35,7 @@
                             @endif
                         </td>
                         <td width="20%">
-                            <a class="btn btn-primary w-100" href="{{ $path['file_path'] }}?rev={{ mt_rand(500, 50000) }}" target="_blank">
+                            <a class="btn btn-primary btn-block" href="{{ $path['file_path'] }}?rev={{ mt_rand(500, 50000) }}" target="_blank">
                                 <i class="fas fa-external-link-alt"></i> View
                             </a>
                         </td>

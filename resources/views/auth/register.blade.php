@@ -7,8 +7,8 @@
 				<div class="card">
 					<div class="card-header">{{ __('Register') }}</div>
 
-					<div class="card-body pb-4 pt-4">
-						<form method="POST" action="{{ route('register.store') }}" class="form form-horizontal">
+					<div class="card-body">
+						<form method="POST" action="{{ route('register.store') }}">
 							@csrf
 
 							@include('oxygen::auth.register_form_fields')
