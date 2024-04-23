@@ -18,7 +18,7 @@ class AbilityCategory extends Model implements KeywordSearchable
 		'default_abilities'
 	];
 
-	public function sluggable(): array
+	public function sluggable()
 	{
 		return [
 			'slug' => [

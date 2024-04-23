@@ -14,10 +14,6 @@
 | 5.3               | 0.3.2             |
 | 5.2               | 0.1.4             |
 
-## v5.1
-- Support for PHP 8
-- Upgraded bouncer from v1.0.0-rc.9 to v1.0.0-rc.10
-
 ## v5.0
 - Support for Laravel 8
 - Complete rewrite of the architecture. This will not work with Laravel 7 or past versions.

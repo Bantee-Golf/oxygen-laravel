@@ -14,7 +14,7 @@ class Role extends BouncerRole
 
 	protected $fillable = ['title', 'description'];
 
-	public function sluggable(): array
+	public function sluggable()
 	{
 		return [
 			'name' => [
