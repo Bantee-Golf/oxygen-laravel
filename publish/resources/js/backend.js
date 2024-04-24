@@ -4,10 +4,15 @@
  * code may be modified to fit the specific needs of your application.
  */
 
-window.Popper = require('popper.js').default;
-window.$ = window.jQuery = require('jquery');
+import $ from "jquery";
+window.$ = $;
 
-require('bootstrap');
+// Popper.js
+import { createPopper } from '@popperjs/core';
+window.Popper = createPopper;
+
+// Bootstrap
+import * as bootstrap from 'bootstrap'
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -15,36 +20,35 @@ require('bootstrap');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+import axios from 'axios';
+window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /*
- |--------------------------------------------------------------------------
+ |-------------------------------------
  |
  | Load the dependencies
  |
- |--------------------------------------------------------------------------
+ |-------------------------------------
  */
-require('typeahead.js');
-require('jquery-validation');
-require('select2');
-require('dropzone');
+
+// import 'dropzone';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 /*
- |--------------------------------------------------------------------------
+ |-------------------------------------
  |
  | Custom Features for Oxygen
  |
- |--------------------------------------------------------------------------
+ |-------------------------------------
  */
 
 
 /*
- |-----------------------------------------------------------
+ |-------------------------------------
  | Setup Global Object
- |-----------------------------------------------------------
+ |-------------------------------------
  */
 // Responsive Breakpoints
 // Small    < 768px
@@ -293,7 +297,10 @@ $(document).ready(function () {
 	});
 
 	// trigger tooltips
-	$('.js-tooltip, [data-toggle="tooltip"]').tooltip();
+	let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+	let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl)
+	})
 
 	// collapse sidebar
 	$('.js-toggle-right-mini-sidebar').on('click', function (e) {

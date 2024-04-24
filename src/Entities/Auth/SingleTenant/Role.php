@@ -2,22 +2,20 @@
 
 namespace EMedia\Oxygen\Entities\Auth\SingleTenant;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Silber\Bouncer\Database\Role as BouncerRole;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Role extends BouncerRole
 {
 
-	use Sluggable;
+	use HasSlug;
 
 	protected $fillable = ['title', 'description'];
 
-	public function sluggable()
+	public function getSlugOptions(): SlugOptions
 	{
-		return [
-			'name' => [
-				'source' => 'title'
-			]
-		];
+		return SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('name');
 	}
+
 }

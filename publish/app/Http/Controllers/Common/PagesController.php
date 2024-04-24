@@ -49,7 +49,7 @@ class PagesController extends Controller
 		$this->validate($request, [
 			'name' => 'required',
 			'email' => 'required|email',
-			'userMessage' => 'required'
+			'userMessage' => 'required|max:255'
 		]);
 		$data = $request->only('name', 'email', 'phone', 'userMessage');
 
@@ -77,11 +77,12 @@ class PagesController extends Controller
 		$data['sender_email'] = $request->get('email');
 
 		$webmaster = env('WEBMASTER_EMAIL');
-		if (empty($webmaster)) throw new \InvalidArgumentException("Email receiver email has not been set.");
+		if (empty($webmaster)) {
+			throw new \InvalidArgumentException("Email receiver email has not been set.");
+		}
 		$receiverEmails = [$webmaster];
 
-		Mail::send(['text' => 'oxygen::emails.text.contact-us'], $data, function($mailMessage) use ($data, $receiverEmails)
-		{
+		Mail::send(['text' => 'oxygen::emails.text.contact-us'], $data, function ($mailMessage) use ($data, $receiverEmails) {
 			$mailMessage->to($receiverEmails)
 						->replyTo($data['sender_email'])
 						->subject(config('app.name') . ' - Contact Us - Message Received');

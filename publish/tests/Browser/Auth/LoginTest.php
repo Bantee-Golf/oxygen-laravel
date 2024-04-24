@@ -2,7 +2,9 @@
 
 namespace Tests\Browser\Auth;
 
+use App\Providers\RouteServiceProvider;
 use Auth;
+use Laravel\Fortify\Features;
 use Tests\DuskTestCase;
 use Tests\Browser\Pages\Login;
 use Laravel\Dusk\Browser;
@@ -19,10 +21,18 @@ class LoginTest extends DuskTestCase
 	{
 		$this->browse(function (Browser $browser) {
 			$browser->visit(new Login())
-				->type('@email', 'apps+user@elegantmedia.com.au')
+				->type('@email', 'apps@elegantmedia.com.au')
 				->type('@password', '12345678')
-				->click('@submit')
-				->assertPathIs('/')
+				->click('@submit');
+
+			// if email verification is enabled, the user should get redirected to `verification.notice` link
+			if (Features::enabled(Features::emailVerification())) {
+				$browser->assertRouteIs('verification.notice');
+			} else {
+				$browser->assertPathIs(RouteServiceProvider::HOME);
+			}
+
+			$browser->click('#navbarDropdown')
 				->assertSeeLink('Logout')
 				->clickLink('Logout')
 				->assertPathIs('/');
@@ -71,7 +81,7 @@ class LoginTest extends DuskTestCase
 	{
 		$this->browse(function (Browser $browser) {
 			$browser->visit(new Login())
-				->type('@email', 'apps+uesr@elegantmedia.com.au')
+				->type('@email', 'apps+user@elegantmedia.com.au')
 				->type('@password', '222222')
 				->click('@submit')
 				->assertPathIs('/login')
@@ -88,12 +98,20 @@ class LoginTest extends DuskTestCase
 	{
 		$this->browse(function (Browser $browser) {
 			$browser->visit(new Login())
-				->type('@email', 'apps+user@elegantmedia.com.au')
+				->type('@email', 'apps@elegantmedia.com.au')
 				->type('@password', '12345678')
 				->check('@remember')
-				->click('@submit')
-				->assertPathIs('/')
-				->assertHasCookie(Auth::guard()->getRecallerName())
+				->click('@submit');
+
+			// if email verification is enabled, the user should get redirected to `verification.notice` link
+			if (Features::enabled(Features::emailVerification())) {
+				$browser->assertRouteIs('verification.notice');
+			} else {
+				$browser->assertPathIs(RouteServiceProvider::HOME);
+			}
+
+			$browser->assertHasCookie(Auth::guard()->getRecallerName())
+				->click('#navbarDropdown')
 				->clickLink('Logout');
 		});
 	}

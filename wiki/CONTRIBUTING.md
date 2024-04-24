@@ -18,7 +18,7 @@
 - Step 3 - The easiest way for development is to setup a second Laravel project which will act as the parent project. For this example, we'll create a project called `Workbench` and it will have the local development URL `http://workbench.test`
 
 ```
-composer create-project --prefer-dist laravel/laravel="10.*" Workbench
+composer create-project --prefer-dist laravel/laravel Workbench
 cd Workbench
 ```
 
@@ -34,7 +34,7 @@ composer create-project --prefer-dist laravel/laravel Workbench dev-master
     {
         "type": "path",
         "url": "../your-local-oxygen-cloned-path"
-    }
+    },
 ]
 ```
 
@@ -72,7 +72,7 @@ git reset --hard HEAD~1 && git clean -fd
 Now you can run the test installer.
 
 ```
-php artisan oxygen:dashboard:install --name Workbench --dev_url workbench.test --email apps@elegantmedia.com.au --dbname workbench --dbpass root --mailer "log" --mailhost "0.0.0.0" --mailport 1025
+php artisan oxygen:dashboard:install --name Workbench --dev_url workbench.test --email apps@elegantmedia.com.au --dbname workbench --dbpass root --mailhost "0.0.0.0" --mailport 1025
 ```
 
 Migrate and seed
@@ -84,9 +84,7 @@ php artisan db:refresh
 Run the project
 
 ```
-npm run dev
-// OR, build it with
-npm run build
+npm run watch
 ```
 
 Now you can update files on either projects. If there are any errors, rollback to last commit.
@@ -100,27 +98,10 @@ Periodically, you'll have to sync files from Laravel's main project back so the 
 php ./setup/SyncFromSource.php
 ```
 
-Run the PHPUnit tests
+Run the tests
 
 ```
 vendor/bin/phpunit
-```
-
-#### Run Dusk Tests
-
-```
--- Install dusk
-composer require --dev laravel/dusk
-php artisan dusk:install
-
--- (optional) Set driver to a specific version
-php artisan dusk:chrome-driver 107
-
--- Open a new tab and run the server
-php artisan serve
-
--- Run dusk tests
-php artisan dusk --stop-on-error --stop-on-failure
 ```
 
 
@@ -137,5 +118,64 @@ npm run build
 # So remove it.
 rm -rf node_modules
 ```
+
+
+# Test Deployment Pipeline on a Local Machine
+
+You need these before starting.
+
+1. Docker installed and running
+2. A valid SSH key. Default is `~/.ssh/id_rsa`. This can be changed in `docker-compose.yml` and `setup/pipeline.sh`
+
+Step 1: Setup all containers
+```
+docker-compose up
+```
+
+Step 2: SSH to PHP container (on a new tab/window)
+```
+docker exec -it appcontainer /bin/bash
+```
+
+Step 3: Run the shell script
+The shell script will have similar commands to the Pipeline. Because now you're in the container, you'll have more control to see what happens, and can update the commands.
+```
+sh setup/pipeline.sh
+```
+
+Step 4: (Optional) See the application
+
+Dusk Screenshots - you can copy the screenshots generated to a shared volume
+```
+// Run this from Docker container
+rm /test_screenshots/*.png && cp /laravel_app/tests/Browser/screenshots/*.png /test_screenshots/
+```
+
+View the application
+```
+http://localhost:8095/
+```
+
+View the mail log
+```
+http://localhost:8025/
+```
+
+Connect to the Database
+```
+Host: 127.0.0.1
+Port: 3305
+User: root
+Pass: root
+```
+
+Selenium Container
+```
+http://localhost:4444/
+```
+
+// Step 4: Update the files
+If you make a change, ensure that you update BOTH `setup\pipeline.sh` and `bitbucket-pipelines.yml` with changes.
+
 
 

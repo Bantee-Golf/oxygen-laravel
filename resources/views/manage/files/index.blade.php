@@ -17,7 +17,7 @@
 @section('content')
     @include('oxygen::dashboard.partials.table-allItems', [
         'tableHeader' => [
-            'ID', 'Key', 'File', 'Size', 'Uploaded', 'Actions', 'Danger Zone|text-right'
+            'ID', 'Key', 'File', 'Size', 'Uploaded', 'Actions', 'Danger Zone|text-end'
         ]
     ])
 
@@ -28,10 +28,10 @@
                 {{ $item->name }}
                 @if ($item->key)
                     <br>
-                    <span class="badge badge-primary">{{ $item->key }}</span>
+                    <span class="badge bg-secondary">{{ $item->key }}</span>
                 @endif
                 @if ($item->allow_public_access)
-                    <span class="badge badge-success">Public</span>
+                    <span class="badge bg-success">Public</span>
                 @endif
             </td>
             <td>
@@ -62,7 +62,7 @@
                        title="Edit"><em class="fa fa-edit"></em> Edit</a>
                 </span>
             </td>
-            <td class="text-right">
+            <td class="text-end">
 
                 @if ($item->isDeleteAllowed())
                     <form action="{{ entity_resource_path() . '/' . $item->id }}"

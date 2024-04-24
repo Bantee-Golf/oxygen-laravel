@@ -5,10 +5,18 @@ namespace EMedia\Oxygen;
 use EMedia\Oxygen\Commands\CreateNewUserCommand;
 use EMedia\Oxygen\Commands\OxygenDashboardInstallCommand;
 use EMedia\Oxygen\Commands\Scaffolding\MakeAdminControllerCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeAdminControllersCommand;
 use EMedia\Oxygen\Commands\Scaffolding\MakeAPIControllerCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeAPIControllersCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenMigrationsCommand;
 use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenModelCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenModelsCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenRepositoriesCommand;
 use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenRepositoryCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenSeederCommand;
+use EMedia\Oxygen\Commands\Scaffolding\MakeOxygenSeedersCommand;
 use EMedia\Oxygen\Commands\Scaffolding\ScaffoldViewsCommand;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
@@ -25,11 +33,18 @@ class OxygenServiceProvider extends ServiceProvider
 			$this->commands(MakeOxygenRepositoryCommand::class);
 			$this->commands(MakeAdminControllerCommand::class);
 			$this->commands(MakeAPIControllerCommand::class);
+			$this->commands(MakeOxygenSeederCommand::class);
+
+			$this->commands(MakeOxygenModelsCommand::class);
+			$this->commands(MakeOxygenRepositoriesCommand::class);
+			$this->commands(MakeAdminControllersCommand::class);
+			$this->commands(MakeAPIControllersCommand::class);
+			$this->commands(MakeOxygenSeedersCommand::class);
+
+			$this->commands(MakeOxygenMigrationsCommand::class);
 		}
 
 		$this->commands(CreateNewUserCommand::class);
-
-		$this->loadRoutesFrom(__DIR__.'/../stubs/loaded-routes/web.php');
 
 		$this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'oxygen');
 	}
@@ -70,6 +85,8 @@ class OxygenServiceProvider extends ServiceProvider
 		$this->registerCustomValidators();
 
 		Fortify::viewPrefix('oxygen::auth.');
+
+		Blade::componentNamespace('EMedia\\Oxygen\\View\\Components', 'oxygen');
 	}
 
 

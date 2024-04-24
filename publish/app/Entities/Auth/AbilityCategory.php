@@ -6,25 +6,23 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use ElegantMedia\OxygenFoundation\Scout\KeywordSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class AbilityCategory extends Model implements KeywordSearchable
 {
 
 	use Searchable;
-	use Sluggable;
+	use HasSlug;
 
 	protected $fillable = [
 		'name',
 		'default_abilities'
 	];
 
-	public function sluggable()
+	public function getSlugOptions(): SlugOptions
 	{
-		return [
-			'slug' => [
-				'source' => 'name'
-			]
-		];
+		return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
 	}
 
 	public function getSearchableFields(): array

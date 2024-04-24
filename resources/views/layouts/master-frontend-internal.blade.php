@@ -1,6 +1,6 @@
 @extends('oxygen::layouts.master-frontend')
 
-@section('pageTitle', $title)
+@section('pageTitle', $pageTitle)
 
 @section('contents')
     <div class="internal-page">
@@ -8,7 +8,7 @@
         <header>
             <aside class="bg-dark">
                 <div class="container text-center">
-                    <h2>{{ $title }}</h2>
+                    <h2>{{ $pageTitle }}</h2>
                     <hr class="primary">
                 </div>
             </aside>

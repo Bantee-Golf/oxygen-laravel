@@ -4,7 +4,12 @@
  * code may be modified to fit the specific needs of your application.
  */
 
-window.Popper = require('popper.js').default;
-window.$ = window.jQuery = require('jquery');
+import $ from "jquery";
+window.$ = $;
 
-require('bootstrap');
+// Popper.js
+import { createPopper } from '@popperjs/core';
+window.Popper = createPopper;
+
+// Bootstrap
+import * as bootstrap from 'bootstrap'

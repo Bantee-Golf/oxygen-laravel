@@ -11,7 +11,9 @@
 @section('pageMainActions')
     @include('oxygen::dashboard.partials.searchField')
 
-    <a href="{{ entity_resource_path() . '/create' }}" class="btn btn-success"><em class="fas fa-plus-circle"></em> Add New</a>
+	@if ($canCreateEntities ?? false)
+		<a href="{{ entity_resource_path() . '/create' }}" class="btn btn-success"><em class="fas fa-plus-circle"></em> Add New</a>
+	@endif
 @stop
 
 {{-- DELETE THIS IF NOT USED
@@ -23,7 +25,7 @@
 @section('content')
     @include('oxygen::dashboard.partials.table-allItems', [
         'tableHeader' => [
-            'ID', 'Name', 'Created', 'Actions|text-right'
+            'ID', 'Name', 'Created', 'Actions|text-end'
         ]
     ])
 
@@ -31,18 +33,22 @@
         <tr>
             <td>{{ $item->id }}</td>
             <td>
-                <a href="{{ entity_resource_path() . '/' . $item->id }}">{{ $item->name }}</a>
+                <a href="{{ entity_resource_path() . '/' . $item->id }}"
+                   id="btn_view_{{ $item->id }}">{{ $item->name }}</a>
             </td>
             <td>
                 @if ($item->created_at)
                     {{ standard_datetime($item->created_at) }}
                 @endif
             </td>
-            <td class="text-right">
+            <td class="text-end">
                 <div class="btn-spaced">
-                    <a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
-                       class="btn btn-warning js-tooltip"
-                       title="Edit"><em class="fa fa-edit"></em> Edit</a>
+					@if ($canEditEntities ?? false)
+						<a href="{{ entity_resource_path() . '/' . $item->id . '/edit' }}"
+						   id="btn_edit_{{ $item->id }}"
+						   class="btn btn-warning js-tooltip"
+						   title="Edit"><em class="fa fa-edit"></em> Edit</a>
+					@endif
 
                     {{--
                     <form action="{{ entity_resource_path() . '/' . $item->id }}"
@@ -66,6 +72,7 @@
                             {{ method_field('delete') }}
                             {{ csrf_field() }}
                             <button class="btn btn-danger js-tooltip"
+									id="btn_delete_{{ $item->id }}"
                                     title="Delete"><em class="fa fa-times"></em> Delete</button>
                         </form>
                     @endif

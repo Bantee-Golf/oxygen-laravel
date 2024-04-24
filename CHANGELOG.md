@@ -2,17 +2,37 @@
 
 ## Version Compatibility
 
-| Laravel Version   | Oxygen Version    | Branch           |
-| -----------------:| ----------------- |------------------|
-| v8                | 5.x               | master           |
-| v7                | 4.x               | version/v4.x     |
-| v6                | 3.x               |
-| 5.8               | 2.3.x             |
-| 5.7               | 2.2.20            |
-| 5.6               | 1.1.6             |
-| 5.4               | 1.0.8             |
-| 5.3               | 0.3.2             |
-| 5.2               | 0.1.4             |
+| Laravel Version | Oxygen Version | Branch           |
+|----------------:|----------------|------------------|
+|     Laravel 9.2 | 6.1.x          | master           |
+|       Laravel 9 | 6.0            | master           |
+|       Laravel 8 | 5.x            | 5.x              |
+|       Laravel 7 | 4.x            | version/v4.x     |
+|              v6 | 3.x            |
+|             5.8 | 2.3.x          |
+|             5.7 | 2.2.20         |
+|             5.6 | 1.1.6          |
+|             5.4 | 1.0.8          |
+|             5.3 | 0.3.2          |
+|             5.2 | 0.1.4          |
+
+## v6.1
+- Webpack replaced with Vite to support Laravel 9.2. If you want to use Webpack, follow [Laravel's Official guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-vite-to-laravel-mix).
+- `typeahead.js`, `browsersync` dependencies removed.
+- Default namespace removed from RouteServiceProvider.
+- Default web routes moved to `routes/oxygen-web.php`
+- Use of `data-toggle` is replaced with `data-bs-toggle` to support Bootstrap 5.
+
+## v6.0
+- Support Laravel 9
+- Dropped Php 7 Support
+- Upgraded bouncer to v1.0.0-rc.12 
+- Replaced `cviebrock/eloquent-sluggable` with  `spatie/laravel-sluggable`
+- Upgrade to Bootstrap 5
+
+## v5.1
+- Support for PHP 8
+- Upgraded bouncer from v1.0.0-rc.9 to v1.0.0-rc.10
 
 ## v5.0
 - Support for Laravel 8

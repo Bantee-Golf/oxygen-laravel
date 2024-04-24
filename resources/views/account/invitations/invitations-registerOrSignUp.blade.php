@@ -8,82 +8,86 @@
 
             <div class="col-md-8">
 
-                <div id="accordion">
+                <div class="accordion" id="accordionLogin">
 
-                    <div class="card">
-                        <div class="card-header" role="tab" id="headingOne">
-                            <h5 class="mb-0">
-                                <div class="btn btn-light" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Register and Join the Team
-                                </div>
-                            </h5>
-                        </div>
-                        <div id="collapseOne" class="collapse @if (!$plausibleUser) show @endif" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="card-body">
-                                <form class="form-horizontal" role="form" method="POST" action="{{ route('register.store') }}">
-                                    @csrf
-                                    <input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingTwo">
+							<button class="accordion-button @if (!$plausibleUser) @else collapsed @endif " type="button"
+									data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+									aria-expanded="@if (!$plausibleUser) 'true' @else 'false' @endif"
+									aria-controls="collapseTwo">
+								Register and Join the Team
+							</button>
+						</h2>
+						<div id="collapseTwo" class="accordion-collapse collapse @if (!$plausibleUser) show @endif"
+							 aria-labelledby="headingTwo" data-bs-parent="#accordionLogin">
+							<div class="accordion-body">
+								<form class="form-horizontal" role="form" method="POST" action="{{ route('register.store') }}">
+									@csrf
+									<input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
 
-                                    <div class="form-group row text-center">
-                                        <div class="col-md-12">
-                                            <h3>You've been invited to join a team.</h3>
+									<div class="form-group row text-center">
+										<div class="col-md-12">
+											<h3>You've been invited to join a team.</h3>
 
-                                            <div class="copy">
-                                                <p>Complete registration and see what's inside.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+											<div class="copy">
+												<p>Complete registration and see what's inside.</p>
+											</div>
+										</div>
+									</div>
 
-                                    @include('oxygen::auth.register_form_fields')
+									@include('oxygen::auth.register_form_fields')
 
-                                    <div class="form-group row mb-0">
-                                        <div class="col-md-6 offset-md-4">
-                                            <button type="submit" class="btn btn-primary">
-                                                Accept the Invitation
-                                            </button>
-                                        </div>
-                                    </div>
+									<div class="form-group row mb-0">
+										<div class="col-md-6 offset-md-4">
+											<button type="submit" class="btn btn-primary">
+												Accept the Invitation
+											</button>
+										</div>
+									</div>
 
-                                    <hr/>
-                                    <div class="form-group">
-                                        <div class="col-md-8 offset-md-4">
-                                            Already have an account?
-                                            <a href="#collapseTwo" data-parent="#accordion" data-toggle="collapse" data-target="#collapseTwo">Login</a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+									<hr/>
+									<div class="form-group">
+										<div class="col-md-8 offset-md-4">
+											Already have an account?
+											<a href="#collapseThree" data-bs-parent="#accordionLogin" data-bs-toggle="collapse" data-bs-target="#collapseThree">Login</a>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingThree">
+							<button class="accordion-button @if (!$plausibleUser) collapsed @endif" type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#collapseThree"
+								aria-expanded="@if ($plausibleUser) 'true' @else 'false' @endif"
+								aria-controls="collapseThree">
+								Already have an account? Login Here
+							</button>
+						</h2>
+						<div id="collapseThree" class="accordion-collapse collapse @if ($plausibleUser) show @endif" aria-labelledby="headingThree" data-bs-parent="#accordionLogin">
+							<div class="accordion-body">
+								<form class="form-horizontal" role="form" method="POST" action="/login">
+									@csrf
+									<input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
 
-                    <div class="card">
-                        <div class="card-header" id="headingTwo">
-                            <h5 class="mb-0">
-                                <div class="btn btn-light collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Already have an account? Login Here
-                                </div>
-                            </h5>
-                        </div>
-                        <div id="collapseTwo" class="collapse @if ($plausibleUser) show @endif" data-parent="#accordion" aria-labelledby="headingTwo">
-                            <div class="card-body">
-                                <form class="form-horizontal" role="form" method="POST" action="/login">
-                                    @csrf
-                                    <input type="hidden" name="invitation_code" value="{{ $invite->invitation_code }}">
+									@include('oxygen::auth.login_form_fields')
 
-                                    @include('oxygen::auth.login_form_fields')
+									<hr/>
 
-                                    <hr/>
+									<div class="form-group">
+										<div class="col-md-8 offset-md-4">
+											Don't have an account?
+											<a href="#collapseTwo" data-bs-parent="#accordion" data-bs-toggle="collapse" data-bs-target="#collapseTwo">Signup for a New Account</a>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 
-                                    <div class="form-group">
-                                        <div class="col-md-8 offset-md-4">
-                                            Don't have an account?
-                                            <a href="#collapseOne" data-parent="#accordion" data-toggle="collapse" data-target="#collapseOne">Signup for a New Account</a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

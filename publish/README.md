@@ -7,10 +7,10 @@
 git pull origin master
 
 // create a local php alias to the correct version
-alias php=/opt/cpanel/ea-php73/root/usr/bin/php
+alias php=/opt/cpanel/ea-php80/root/usr/bin/php
 
 // install with composer
-/opt/cpanel/ea-php73/root/usr/bin/php /opt/cpanel/composer/bin/composer install --no-dev
+/opt/cpanel/ea-php80/root/usr/bin/php /opt/cpanel/composer/bin/composer install --no-dev
 ```
 
 ## Deployment Server Initial Setup Instructions
@@ -41,7 +41,7 @@ php artisan db:refresh
 
 Run the local development watcher
 ```
-npm run watch
+npm run dev
 ```
 
 Generate API documentation
@@ -66,7 +66,7 @@ php artisan dusk --stop-on-error --stop-on-failure
 
 Before releasing to production, compile the assets
 ```
-npm run production
+npm run build
 ```
 
 ## Licence

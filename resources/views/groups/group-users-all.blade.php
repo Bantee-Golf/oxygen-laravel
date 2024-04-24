@@ -10,8 +10,8 @@
         @if ($user->can('add-group-users'))
             <button type="button"
                     class="btn btn-wide btn-success"
-                    data-toggle="modal"
-                    data-target="#userControlModal"
+                    data-bs-toggle="modal"
+                    data-bs-target="#userControlModal"
                     data-role_id="{{ $role['id'] }}"><i class="fa fa-user-plus"></i> Add a New User</button>
             <br/><br/>
         @else
@@ -45,19 +45,19 @@
                                         <td>
                                             <strong>{{ $currentUser->name }}</strong>
                                             @if ($user->email == $currentUser->email)
-                                                <span class="badge badge-success">You</span>
+                                                <span class="bg badge-success">You</span>
                                             @endif
                                         </td>
                                         <td>{{ $currentUser->email }}</td>
                                         <td>
                                             @if ($role->name === 'super-admin' && count($role->users) === 1)
                                                 {{-- Last Super admin can't leave the role --}}
-                                                <span class="btn btn-danger disabled" data-toggle="tooltip" title="Cannot Delete Last Super Admin"><i class="fa fa-trash"></i>
+                                                <span class="btn btn-danger disabled" data-bs-toggle="tooltip" title="Cannot Delete Last Super Admin"><i class="fa fa-trash"></i>
                                                     Remove User
                                                 </span>
                                             @else
                                                 <form class="form-inline js-confirm-delete" role="form" method="POST" action="/account/groups/{{ $role['id'] }}/users/{{ $currentUser->id }}"
-                                                      data-toggle="tooltip" title="Delete">
+                                                      data-bs-toggle="tooltip" title="Delete">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                                                     <input type="hidden" name="_method" value="delete" />
                                                     <button class="btn btn-danger"><i class="fa fa-trash"></i>
