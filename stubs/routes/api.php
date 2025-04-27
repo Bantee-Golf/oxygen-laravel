@@ -17,7 +17,6 @@ Route::group([
 
 		// logged-in users
 		Route::group(['middleware' => ['auth.api.logged-in']], function () {
-			Route::get('/logout', 'Auth\AuthController@logout');
 			Route::get('/profile', 'Auth\ProfileController@index');
 			Route::put('/profile', 'Auth\ProfileController@update');
 			Route::post('/avatar', 'Auth\ProfileController@updateAvatar');
@@ -26,5 +25,10 @@ Route::group([
 			// TODO: add other logged-in user routes
 		});
 	}
+});
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+	Route::get('/user', 'Auth\AuthController@user');
+	Route::post('/logout', 'Auth\AuthController@logout');
 });
 // End Oxygen API routes
